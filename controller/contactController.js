@@ -115,7 +115,7 @@ exports.contact = async (req, res) => {
         </div>
       `
       });
-      res.redirect("/ssm/mca/main")
+      res.redirect("/")
     } catch (err) {
       console.log(err);
       res.send('Internal Server Error');
