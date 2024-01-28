@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fee Information</title>
+    <link rel="icon" href="https://your-favicon-url.png">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin-left: -62%;
+            color: #007bff;
+            margin-top: 20px;
+        }
+        .second {
+            margin-left: -57%;
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            text-align: center;
+            padding: 12px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .edit-icon, .delete-icon {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .edit-icon:hover, .delete-icon:hover {
+            color: #0056b3;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            color: #fff;
+            border: 2px solid #007bff;
+            background: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        .btn:hover {
+            background: #fff;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fee Information</h1>
+    <center>
+        <h2>FIRST YEAR FEES DETAILS</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Total Fee</th>
+                    <th>Pending Fee</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each firstYearStudents}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{year}}</td>
+                            <td>{{totalFee}}</td>
+                            <td>{{pendingFee}}</td>
+                            <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon"><img src="https://i.postimg.cc/1tZxP11M/draw.png" width="20"></a></td>
+                            <td><a href="/ssm/mca/deleteFee/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')"><img src="https://i.postimg.cc/NF3zcZVB/close.png" width="20"></a></td>
+                        </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <h2 class="second">SECOND YEAR FEES DETAILS</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Total Fee</th>
+                    <th>Pending Fee</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each secondYearStudents}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{year}}</td>
+                            <td>{{totalFee}}</td>
+                            <td>{{pendingFee}}</td>
+                            <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon"><img src="https://i.postimg.cc/1tZxP11M/draw.png" width="20"></a></td>
+                            <td><a href="/ssm/mca/deleteFee/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')"><img src="https://i.postimg.cc/NF3zcZVB/close.png" width="20"></a></td>
+                        </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <br>
+        <!-- Go back link -->
+        <div class="goback-container">
+            <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
+        </div>
+    </center>
+</body>
+</html>

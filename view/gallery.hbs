@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery</title>
+  <style>
+  
+    h1 {
+      text-align: center;
+      font-size: 2em;     
+      margin-bottom: 1em;  
+    }
+
+
+    div {
+      margin: 1em;    
+      border: 1px solid #ccc;  
+      padding: 1em;      
+      text-align: center;  
+    }
+
+
+    img {
+      max-width: 100%;    
+      height: auto;      
+      margin-bottom: 0.5em;  
+    }
+
+    
+    h2 {
+      font-size: 1.2em; 
+      margin-bottom: 0.25em;  
+    }
+
+    p {
+      font-size: 0.9em; 
+    }
+    .btn{
+    padding: 10px 18px;
+    background: #efefef;
+    border: none;
+    font-weight: bold;
+    border: 2.5px solid #3d6ef5ff;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+    transition: .4s;
+}
+.btn>i{
+    margin-left: 10px;
+}
+.btn:hover{
+    background: #3d6ef5ff;
+    font-weight: bold;
+    color:#efefef
+}
+a{
+  text-decoration: none;
+}
+  </style>
+</head>
+<body>
+  <h1>Images</h1>
+
+  {{#each images}}
+    <div>
+      <h2>{{ title }}</h2>
+      <p>{{ description }}</p>
+      <img src="{{ image }}" alt="{{ title }}">  </div>
+  {{/each}}
+  <br><br>
+  <center>
+  <a href="/ssm/mca/dashboard" class="btn">Back<i class="uil uil-image"></i></a><br>
+  </center>
+</body>
+</html>

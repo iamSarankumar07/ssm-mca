@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel="icon" href="https://i.postimg.cc/Y9kpSNhL/live-chat.png">
+
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    background-color: #f9f9f9;
+}
+
+.container {
+    width: 80%;
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #6610f2;
+}
+
+.chat-icon {
+    width: 50px;
+    height: 50px;
+    float: right;
+    margin-top: -30px;
+}
+
+.message-list {
+    list-style: none;
+    padding: 0;
+}
+
+.message {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.profile-image {
+    float: left;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+
+.user-profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.message-content {
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+strong {
+    font-weight: bold;
+    color: #6610f2;
+}
+.goback {
+        margin-top: -73px;
+        margin-left: -10px;
+        float: left;
+        width: 45px;
+        height: 45px;
+      }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="header">Messages</h1>
+        <img src="https://i.postimg.cc/Y9kpSNhL/live-chat.png" alt="Chat icon" class="chat-icon">
+        <a href="/ssm/mca/dashboard"><img src="https://i.postimg.cc/mD67M56k/back-button.png" alt="Go Back" class="goback"></a>
+        <ul class="message-list">
+            {{#each messages}}
+                <li class="message">
+                    <div class="profile-image">
+                        <img src="https://i.postimg.cc/4ddrMCpN/bussiness-man.png" alt="User profile" class="user-profile-img">
+                    </div>
+                    <div class="message-content">
+                        <strong>Name:</strong> {{this.name}}<br>
+                        <strong>Email:</strong> {{this.email}}<br>
+                        <strong>Message:</strong> {{this.message}}
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    
+</body>
+</html>
+

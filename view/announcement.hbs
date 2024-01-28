@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Send Announcement</h1>
+    <div class="nav-button">
+        <button class="btn" id="sendMail">Send Mail<i class="uil uil-envelope"></i> </button>
+    </div>
+    <script>
+        document.getElementById('sendMail').addEventListener('click', async function() {
+        let response = await fetch('/');
+    });
+    document.getElementById('sendMail').addEventListener('click', async function() {
+        alert('Mail sent successfully!');
+    });
+    </script>
+</body>
+</html>
