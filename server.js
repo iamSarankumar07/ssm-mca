@@ -10,11 +10,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-// app.set("view engine", "hbs");
-// const viewPath = path.join(__dirname, "view");
-// app.set("views", viewPath);
+app.set("view engine", "hbs");
+const viewPath = path.join(__dirname, "view");
+app.set("views", viewPath);
 
 app.use(bodyParser.json());
+
+app.get("/", (req, res) => {
+  res.render("main");
+});
+app.get("/home", (req, res) => {
+  res.render("home");
+});
 
 app.use("/ssm/mca", require("./routes/index"));
 
