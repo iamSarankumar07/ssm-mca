@@ -22,52 +22,150 @@
             text-align: center;
         }
 
-        .btn{
-    padding: 10px 18px;
-    background: #efefef;
-    border: none;
-    font-weight: bold;
-    border: 2.5px solid #3d6ef5ff;
-    border-radius: 10px;
-    color: black;
-    cursor: pointer;
-    transition: .4s;
-}
-.btn>i{
-    margin-left: 10px;
-}
-.btn:hover{
-    background: #3d6ef5ff;
-    font-weight: bold;
-    color:#efefef
-}
-a{
-    text-decoration: none;
-}
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
 
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            background-color: #fff;
+        }
+
+        th {
+            background-color: #3d6ef5ff;
+            color: #fff;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: #efefef;
+            border: none;
+            font-weight: bold;
+            border: 2.5px solid #3d6ef5ff;
+            border-radius: 10px;
+            color: black;
+            cursor: pointer;
+            transition: .4s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn>i {
+            margin-left: 10px;
+        }
+
+        .btn:hover {
+            background: #3d6ef5ff;
+            font-weight: bold;
+            color: #efefef;
+        }
+        .btnn {
+            padding: 8px 16px;
+            background: #efefef;
+            border: none;
+            font-weight: bold;
+            border: 2.5px solid rgb(245, 61, 61);
+            border-radius: 10px;
+            color: black;
+            cursor: pointer;
+            transition: .4s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btnn>i {
+            margin-left: 10px;
+        }
+
+        .btnn:hover {
+            background: rgb(246, 0, 0);
+            font-weight: bold;
+            color: #efefef;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        table {
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <h1>Admin Credentials</h1>
-    <a href="/ssm/mca/register" class="btn">Student Register</a><br>
-    <a href="/ssm/mca/studentList" class="btn">Student List</a><br>
-    <a href="/ssm/mca/feeRegister" class="btn">Student Fee Register</a><br>
-    <a href="/ssm/mca/feeList" class="btn">Student Fee List</a><br>
-    <a href="/ssm/mca/messages" class="btn">Messages<i class="uil uil-envelope"></i></a><br>
-    <a href="/ssm/mca/upload" class="btn">Upload Images<i class="uil uil-image"></i></a><br>
-    <a href="/ssm/mca/gallery" class="btn">Gallery<i class="uil uil-image"></i></a><br>
-    <div class="nav-button">
-        <button class="btn" id="sendMail">Send Mail<i class="uil uil-envelope"></i></button>
-    </div><br>
-    <a href="/" class="btn">Back<i class="uil uil-image"></i></a><br>
 
-     <script>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Register</th>
+                <th>List</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Student Register</td>
+                <td><a href="/ssm/mca/register" class="btn">Student Register</a></td>
+                <td><a href="/ssm/mca/studentList" class="btn">Student List</a></td>
+            </tr>
+            <tr>
+                <td>Student Fee Register</td>
+                <td><a href="/ssm/mca/feeRegister" class="btn">Fee Register</a></td>
+                <td><a href="/ssm/mca/feeList" class="btn">Fee List</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Action</th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            <tr>
+                <td>Message</td>
+                <td><a href="/ssm/mca/messages" class="btn">Messages<i class="uil uil-envelope"></i></a></td>
+            </tr>
+            <tr>
+                <td>Upload Image</td>
+                <td><a href="/ssm/mca/upload" class="btn">Upload Images<i class="uil uil-image"></i></a></td>
+            </tr>
+            <tr>
+                <td>Gallery</td>
+                <td><a href="/ssm/mca/gallery" class="btn">Gallery<i class="uil uil-image"></i></a></td>
+            </tr>
+            <tr>
+                <td>Send Mail to Everyone</td>
+                <td><div class="nav-button">
+    <button class="btn" id="sendMail">Send Mail<i class="uil uil-envelope"></i></button>
+</div></td>
+            </tr>
+        </tbody>
+    </table>
+
+<a href="/" class="btnn">< Back<i class="uil uil-image"></i></a>
+
+    <script>
         document.getElementById('sendMail').addEventListener('click', async function() {
-        let response = await fetch('/ssm/mca/sendMail');
-    });
-    document.getElementById('sendMail').addEventListener('click', async function() {
-        alert('Mail sent successfully!');
-    });
+            let response = await fetch('/ssm/mca/sendMail');
+        });
+        document.getElementById('sendMail').addEventListener('click', async function() {
+            alert('Mail sent successfully!');
+        });
     </script>
 </body>
 </html>
