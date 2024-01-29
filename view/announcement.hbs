@@ -3,20 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Email Sender</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            max-height: 150px; 
+            resize: none;
+        }
+
+        button {
+            background-color: #3d6ef5ff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            float: right; 
+        }
+
+        button:hover {
+            background-color: rgb(21, 77, 230);
+        }
+
+        .btn {
+            background-color: #3d6ef5ff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            margin-top: 467.5px;
+            margin-left: 3%;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: rgb(21, 77, 230);
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>Send Announcement</h1>
-    <div class="nav-button">
-        <button class="btn" id="sendMail">Send Mail<i class="uil uil-envelope"></i> </button>
-    </div>
-    <script>
-        document.getElementById('sendMail').addEventListener('click', async function() {
-        let response = await fetch('/');
-    });
-    document.getElementById('sendMail').addEventListener('click', async function() {
-        alert('Mail sent successfully!');
-    });
-    </script>
+    <form id="emailForm" action="/ssm/mca/sendMailById" method="post">
+        <h1>Send Mail to Student</h1>
+        <label for="registerNumber">Register Number:</label>
+        <input type="number" id="registerNumber" name="registerNumber" required>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit">Send Email</button>
+
+        <a class="btn" href="/ssm/mca/dashboard">Back</a>
+    </form>
 </body>
 </html>
