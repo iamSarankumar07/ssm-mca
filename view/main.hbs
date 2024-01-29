@@ -66,7 +66,6 @@ html{
     font-weight: bold;
     border: 2.5px solid #3d6ef5ff;
     border-radius: 10px;
-    color: black;
     cursor: pointer;
     transition: .4s;
 }
@@ -76,7 +75,7 @@ html{
 .btn:hover{
     background: #3d6ef5ff;
     font-weight: bold;
-    color:#efefef
+    color: var(--color-white);
 }
 
 /* ----- GLOBAL ICONS DESIGN ----- */
@@ -761,6 +760,27 @@ footer{
 .course-col:hover{
     box-shadow: 10px 10px 24px 0px rgba(0,0,0,0.4);
 }
+.btnn{
+    padding: 8px 14px;
+    background: #efefef;
+    border: none;
+    font-weight: bold;
+    border: 2.5px solid #3d6ef5ff;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+    transition: .4s;
+}
+.btnn>i{
+    margin-left: 10px;
+}
+.btnn:hover{
+    background: #3d6ef5ff;
+    font-weight: bold;
+    color:#efefef
+}
+
+
     </style>
 </head>
 <body>
@@ -768,43 +788,41 @@ footer{
     <!-- --------------- HEADER --------------- -->
       <nav id="header">
         <div class="nav-logo">
-            <p class="nav-name"><img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="" width="190"></p>
+            <p class="nav-name"><img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="" width="150"></p>
         </div>
         <div class="nav-menu" id="myNavMenu">
             <ul class="nav_menu_list">
                 <li class="nav_list">
-                    <a href="#home" class="nav-link active-link" style="font-size: 20px;">Home</a>
+                    <a href="#home" class="nav-link active-link">Home</a>
                     <div class="circle"></div>
                 </li>
                 <li class="nav_list">
-                    <a href="#about" class="nav-link" style="font-size: 20px;">About</a>
+                    <a href="#about" class="nav-link">About</a>
                     <div class="circle"></div>
                 </li>
                 <li class="nav_list">
-                    <a href="#admission" class="nav-link" style="font-size: 20px;">Admissions</a>
+                    <a href="#admission" class="nav-link">Admissions</a>
                     <div class="circle"></div>
                 </li>
                 <li class="nav_list">
-                    <a href="#course" class="nav-link" style="font-size: 20px;">Course</a>
+                    <a href="#course" class="nav-link">Course</a>
                     <div class="circle"></div>
                 </li>
                 <li class="nav_list">
-                    <a href="#facilities" class="nav-link" style="font-size: 20px;">Facilities</a>
+                    <a href="#facilities" class="nav-link">Facilities</a>
                     <div class="circle"></div>
                 </li>
                 <li class="nav_list">
-                    <a href="#contact" class="nav-link" style="font-size: 20px;">Contact</a>
+                    <a href="#contact" class="nav-link">Contact</a>
                     <div class="circle"></div>
                 </li>
                 {{!-- <li class="nav_list">
-                    <a href="/logout" class="nav-link" style="font-size: 20px;" onclick="return confirm('Are You Sure Want To Sign Out ?')">Sign Out</a>
+                    <a href="/logout" class="nav-link" onclick="return confirm('Are You Sure Want To Sign Out ?')">Sign Out</a>
                     <div class="circle"></div>
                 </li> --}}
             </ul>
         </div>
-            <div class="nav-button">
-            <a href="/ssm/mca/dashboard" class="btn">Admin</a>
-            </div>
+            
         <div class="nav-menu-btn">
             <i class="uil uil-bars" onclick="myMenuFunction()"></i>
         </div>
@@ -826,6 +844,9 @@ footer{
                 <p><span class="name">MASTER OF COMPUTER APPLICATIONS</span></p>
             </div>
 
+       <div class="nav-button">
+            <a href="/ssm/mca/dashboard" class="btnn">Admin</a>
+            </div>
           {{!-- <div class="featured-text-btn">
                 <div class="nav-button">
                   <button class="btn" id="sendMail">Send Mail<i class="uil uil-envelope"></i> </button>
@@ -838,6 +859,7 @@ footer{
             </div>
           </div>
        </section>
+
 
        <!-- -------------- COURSE ---------------- -->
 
