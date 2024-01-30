@@ -21,6 +21,12 @@ app.get("/home", (req, res) => {
 app.get("/announcement", (req, res) => {
   res.render("announcement");
 });
+app.get("/firstYearAnnouncement", (req, res) => {
+  res.render("firstYearAnnouncement");
+});
+app.get("/secondYearAnnouncement", (req, res) => {
+  res.render("secondYearAnnouncement");
+});
 app.get("/messages", viewController.message);
 
 app.get("/studentList", viewController.studentList);
