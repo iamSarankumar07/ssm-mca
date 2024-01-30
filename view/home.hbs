@@ -103,6 +103,7 @@ nav{
     justify-content: space-between;
     width: 100%;
     height: 90px;
+    
     line-height: 90px;
     background: var(--body-color);
     padding-inline: 9vw;
@@ -115,6 +116,7 @@ nav{
 }
 .nav-name{
     font-size: 30px;
+    padding-top: 10px;
     font-weight: 600;
     color: #3d6ef5ff;
 }
@@ -132,20 +134,42 @@ nav{
     list-style: none;
     position: relative;
 }
-.nav-link{
+.nav-link {
+    position: relative;
     text-decoration: none;
     color: var(--text-color-second);
     font-weight: bold;
-    font-size: 16px;
-    transition: .4s;
-    padding-inline: px;
+    font-size: 18px;
+    padding-inline: 10px; 
     margin-inline: 20px;
+    display: inline-block;
+    overflow: hidden; 
 }
-.nav-link:hover{
-  color: #3d6ef5ff;
-  font-size: 17px;
-  transition: .4s;
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: transparent;
+    transform: scaleX(0); 
+    transform-origin: 0% 50%; 
+    transition: transform 0.4s, background-color 0.4s; 
 }
+
+.nav-link:hover {
+    color: #3d6ef5ff; 
+}
+
+.nav-link:hover::before {
+    transform: scaleX(1); 
+    background-color: #3d6ef5ff; 
+}
+
+
+
 .nav-menu-btn{
     display: none;
 }
@@ -244,8 +268,8 @@ nav{
 .image{
     margin: auto 0;
     padding-top: 3px;
-    width: 100%;
-    height: 100%;
+    width: 85%;
+    height: 85%;
     border-radius: 5px;
     overflow: hidden;
 }
@@ -760,6 +784,27 @@ footer{
 .course-col:hover{
     box-shadow: 10px 10px 24px 0px rgba(0,0,0,0.4);
 }
+.btnn{
+    padding: 8px 14px;
+    background: #efefef;
+    border: none;
+    font-weight: bold;
+    border: 2.5px solid #3d6ef5ff;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+    transition: .4s;
+}
+.btnn>i{
+    margin-left: 10px;
+}
+.btnn:hover{
+    background: #3d6ef5ff;
+    font-weight: bold;
+    color:#efefef
+}
+
+
     </style>
 </head>
 <body>
@@ -767,12 +812,12 @@ footer{
     <!-- --------------- HEADER --------------- -->
       <nav id="header">
         <div class="nav-logo">
-            <p class="nav-name"><img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="" width="150"></p>
+            <p class="nav-name"><img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="" width="170"></p>
         </div>
         <div class="nav-menu" id="myNavMenu">
             <ul class="nav_menu_list">
                 <li class="nav_list">
-                    <a href="#home" class="nav-link active-link">Home</a>
+                    <a href="#home" class="nav-link active-link" >Home</a>
                     <div class="circle"></div>
                 </li>
                 <li class="nav_list">
@@ -795,15 +840,16 @@ footer{
                     <a href="#contact" class="nav-link">Contact</a>
                     <div class="circle"></div>
                 </li>
-                {{!-- <li class="nav_list">
-                    <a href="/logout" class="nav-link" onclick="return confirm('Are You Sure Want To Sign Out ?')">Sign Out</a>
+                <li class="nav_list">
+                    <a href="/ssm/mca/logout" class="nav-link" onclick="return confirm('Are You Sure Want To Sign Out ?')">Logout</a>
                     <div class="circle"></div>
-                </li> --}}
+                </li>
             </ul>
         </div>
-            <div class="nav-button">
-            <a href="/ssm/mca/dashboard" class="btn">Dashboard </a>
+            <div class="">
+            <a href="/ssm/mca/dashboard" class="btnn">Admin</a>
             </div>
+            
         <div class="nav-menu-btn">
             <i class="uil uil-bars" onclick="myMenuFunction()"></i>
         </div>
@@ -825,6 +871,9 @@ footer{
                 <p><span class="name">MASTER OF COMPUTER APPLICATIONS</span></p>
             </div>
 
+       <div class="nav-button">
+            <a href="/ssm/mca/dashboard" class="btnn">Admin</a>
+            </div>
           {{!-- <div class="featured-text-btn">
                 <div class="nav-button">
                   <button class="btn" id="sendMail">Send Mail<i class="uil uil-envelope"></i> </button>
@@ -902,7 +951,7 @@ footer{
 
             <div class="row">
                 <div class="teacher-col">
-                    <img src="https://i.postimg.cc/4ZTmjvmL/d270f57ef778b98f5cc129225dcb17a1.jpg" alt="">
+                    <img src="https://i.postimg.cc/FR0Ft07R/saran.jpg" alt="">
                     <div class="layer">
                         <h3>Sarankumar</h3>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
@@ -910,7 +959,7 @@ footer{
                 </div>
 
                 <div class="teacher-col">
-                    <img src="https://i.postimg.cc/rMVzw8G5/d4c2c8486bab224ea6f23a41142f3020.jpg" alt="">
+                    <img src="https://i.postimg.cc/FR0Ft07R/saran.jpg" alt="">
                     <div class="layer">
                         <h3>Sarankumar</h3>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
@@ -946,8 +995,6 @@ footer{
     </div>
   </section>
    
-    
-
        <!-- -------------- CONTACT BOX ---------------- -->
 
        <section class="section" id="contact">
@@ -1039,14 +1086,6 @@ footer{
         menuBtn.className = "nav-menu";
       }
     };
-
-    document.getElementById('sendMail').addEventListener('click', async function() {
-        let response = await fetch('users/sendMail');
-    });
-    document.getElementById('sendMail').addEventListener('click', async function() {
-        alert('Mail sent successfully!');
-    });
-
     </script>
 </body>
 </html>
