@@ -282,7 +282,7 @@ exports.otp = async (req, res) => {
     if (!user) {
       console.log("User not found");
       return res.send(
-        '<script>alert("Incorrect OTP or OTP Expired!"); window.location.href = "/signin";</script>'
+        '<script>alert("Incorrect OTP or OTP Expired!"); window.location.href = "/ssm/mca/login";</script>'
       );
     }
 
