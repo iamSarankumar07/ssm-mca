@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sender</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            max-height: 150px; 
+            resize: none;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        button[type="submit"],
+        button[type="button"] {
+            width: 30%;
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px 14px;
+            border: none;
+            font-size: 12px;
+            border-radius: 5px;
+            border: 2px solid #3d6ef5ff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form id="emailForm" action="/ssm/mca/sendMailSecondYear" method="post">
+        <h1>Second Year Announcement</h1>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <div class="button-container">
+            <button type="button" onclick="goBack()">Back</button>
+            <button type="submit" id="firstYrMail" onclick="return confirmAndAlert('Are you sure you want to Send Email?')">Send</button>
+        </div>
+    </form>
+    <script>
+        function confirmAndAlert(message) {
+        const isConfirmed = confirm(message);
+        return isConfirmed;
+    };
+    function goBack() {
+        window.location.href = '/ssm/mca/dashboard';
+    };
+    </script>
+</body>
+</html>
