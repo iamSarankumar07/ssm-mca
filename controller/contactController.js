@@ -122,5 +122,4 @@ exports.contact = async (req, res) => {
     }
 };
 
-
 module.exports = exports;
