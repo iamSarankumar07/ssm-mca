@@ -19,11 +19,16 @@
         margin-top: 20px;
       }
 
-      h2 {
-        margin-left: -63%;
-        color: #007bff;
-        margin-top: 20px;
-      }
+      .first {
+            margin-left: -59%;
+            color: #007bff;
+            margin-top: 20px;
+        }
+        .second {
+            margin-left: -57%;
+            color: #007bff;
+            margin-top: 20px;
+        }
 
       table {
         width: 80%;
@@ -66,7 +71,7 @@
   <body>
     <h1>MCA STUDENT LIST</h1>
     <center>
-      <h2>FIRST YEAR STUDENTS</h2>
+      <h2 class="first">FIRST YEAR STUDENTS</h2>
       <table>
         <thead>
           <tr>
@@ -95,10 +100,8 @@
           {{/each}}
         </tbody>
       </table>
-
-      <p style="text-align: center;">---------------------------------------------------------------------------</p>
-
-      <h2>SECOND YEAR STUDENTS</h2>
+      <br><br>
+      <h2 class="second">SECOND YEAR STUDENTS</h2>
       <table>
         <thead>
           <tr>
@@ -128,8 +131,6 @@
           {{/each}}
         </tbody>
       </table>
-
-      <p style="text-align: center;">---------------------------------------------------------------------------</p>
       
       <br>
       <!-- Go back link -->
