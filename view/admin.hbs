@@ -41,29 +41,32 @@
             color: #fff;
         }
 
-        .btn {
-            padding: 8px 16px;
-            background: #efefef;
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        button[type="submit"],
+        button[type="button"] {
+            width: 30%;
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px 14px;
             border: none;
-            font-weight: bold;
-            border: 2.5px solid #3d6ef5ff;
-            border-radius: 10px;
-            color: black;
+            font-size: 12px;
+            border-radius: 5px;
+            border: 2px solid #3d6ef5ff;
             cursor: pointer;
-            transition: .4s;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            transition: background-color 0.3s;
         }
 
-        .btn>i {
-            margin-left: 10px;
-        }
-
-        .btn:hover {
-            background: #3d6ef5ff;
+        button[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
             font-weight: bold;
-            color: #efefef;
         }
         .btnn {
             padding: 8px 16px;
@@ -117,13 +120,17 @@
         <tbody>
             <tr>
                 <td>Student Register</td>
-                <td><a href="/ssm/mca/register" class="btn">Student Register</a></td>
-                <td><a href="/ssm/mca/studentList" class="btn">Student List</a></td>
+                <div class="button-container">
+                    <td><button type="button" onclick="register()">Register</button></td>
+                    <td><button type="button" onclick="studentList()">List</button></td>
+                </div>
             </tr>
             <tr>
                 <td>Student Fee Register</td>
-                <td><a href="/ssm/mca/feeRegister" class="btn">Fee Register</a></td>
-                <td><a href="/ssm/mca/feeList" class="btn">Fee List</a></td>
+                <div class="button-container">
+                    <td><button type="button" onclick="feeRegister()">Register</button></td>
+                    <td><button type="button" onclick="feeList()">List</button></td>
+                </div>
             </tr>
         </tbody>
     </table>
@@ -138,33 +145,45 @@
         </thead>
         <tbody>
             <tr>
-                <td>Message</td>
-                <td><a href="/ssm/mca/messages" class="btn">Messages<i class="uil uil-envelope"></i></a></td>
+                <td>Received Contact Messages</td>
+                <div class="button-container">
+                    <td><button type="button" onclick="messages()">Messages</button></td>
+                </div>
             </tr>
             <tr>
                 <td>Announcement</td>
-                <td><a href="/ssm/mca/announcement" class="btn">Announcement<i class="uil uil-image"></i></a></td>
+                <div class="button-container">
+                    <td><button type="button" onclick="announcement()">Announcement</button></td>
+                </div>
             </tr>
             <tr>
                 <td>First Year Announcement</td>
-                <td><a href="/ssm/mca/firstYearAnnouncement" id="firstYrMail" class="btn">Send Mail<i class="uil uil-image"></i></a></td>
+                <div class="button-container">
+                    <td><button type="button" onclick="firstYearAnnouncement()">First Year</button></td>
+                </div>
             </tr>
             <tr>
                 <td>Second Year Announcement</td>
-                <td><a href="/ssm/mca/secondYearAnnouncement" id="secondYrMail" class="btn">Send Mail<i class="uil uil-image"></i></a></td>
+                <div class="button-container">
+                    <td><button type="button" onclick="secondYearAnnouncement()">Second Year</button></td>
+                </div>
             </tr>
             <tr>
-                <td>Send Mail to Everyone</td>
-                <td><div class="nav-button">
-    <button class="btn" id="sendMail">Send Mail<i class="uil uil-envelope"></i></button>
-</div></td>
+                <td>Send Everyone</td>
+                <div class="button-container">
+                    <td><button type="button" id="sendMail" onclick="sendMail()">Send Everyone</button></td>
+                </div>
             <tr>
                 <td>Upload Image</td>
-                <td><a href="/ssm/mca/upload" class="btn">Upload Images<i class="uil uil-image"></i></a></td>
+                <div class="button-container">
+                    <td><button type="button" onclick="upload()">Image Upload</button></td>
+                </div>
             </tr>
             <tr>
                 <td>Gallery</td>
-                <td><a href="/ssm/mca/gallery" class="btn">Gallery<i class="uil uil-image"></i></a></td>
+                <div class="button-container">
+                    <td><button type="button" onclick="gallery()">Gallery</button></td>
+                </div>
             </tr>
             </tr>
         </tbody>
@@ -179,6 +198,36 @@
         document.getElementById('sendMail').addEventListener('click', async function() {
             alert('Mail sent successfully!');
         });
+        function register() {
+        window.location.href = '/ssm/mca/register';
+        };
+        function studentList() {
+        window.location.href = '/ssm/mca/studentList';
+        };
+        function feeRegister() {
+        window.location.href = '/ssm/mca/feeRegister';
+        };
+        function feeList() {
+        window.location.href = '/ssm/mca/feeList';
+        };
+        function messages() {
+        window.location.href = '/ssm/mca/messages';
+        };
+        function announcement() {
+        window.location.href = '/ssm/mca/announcement';
+        };
+        function firstYearAnnouncement() {
+        window.location.href = '/ssm/mca/firstYearAnnouncement';
+        };
+        function secondYearAnnouncement() {
+        window.location.href = '/ssm/mca/secondYearAnnouncement';
+        };
+        function upload() {
+        window.location.href = '/ssm/mca/upload';
+        };
+        function gallery() {
+        window.location.href = '/ssm/mca/gallery';
+        };
 
     </script>
 </body>
