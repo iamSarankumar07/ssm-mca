@@ -1,8 +1,6 @@
-const express = require("express");
-const StudentFee = require("../models/feesModel");
-const app = express();
+const StudentFee = require("../models/studentModel");
 
-exports.newFee = async (req, res) => {
+/* exports.newFee = async (req, res) => {
   const body = req.body;
   const student = StudentFee({
     name: body.name,
@@ -19,7 +17,7 @@ exports.newFee = async (req, res) => {
     console.log(err);
     res.send(err.message);
   }
-};
+}; */
 
 exports.deleteFee = async (req, res) => {
   try {
