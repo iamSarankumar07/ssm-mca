@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fee Information</title>
     <link rel="icon" href="https://your-favicon-url.png">
     <style>
@@ -11,6 +11,20 @@
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
         }
 
         h1 {
@@ -19,23 +33,15 @@
             margin-top: 20px;
         }
 
-        .first {
-            margin-left: -59%;
-            color: #007bff;
-            margin-top: 20px;
-        }
-        .second {
-            margin-left: -57%;
+        h2 {
             color: #007bff;
             margin-top: 20px;
         }
 
         table {
-            width: 80%;
-            margin: 20px auto;
+            width: 100%;
             border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
 
         th, td {
@@ -52,10 +58,16 @@
         .edit-icon, .delete-icon {
             text-decoration: none;
             color: #007bff;
+            transition: color 0.3s;
         }
 
         .edit-icon:hover, .delete-icon:hover {
             color: #0056b3;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
         }
 
         .btn {
@@ -72,73 +84,65 @@
         }
 
         .btn:hover {
-            background: #fff;
-            color: #007bff;
+            background: #0056b3;
+            color: #fff;
         }
     </style>
 </head>
 <body>
+<div class="container">
     <h1>Fee Information</h1>
-    <center>
-        <h2 class="first">FIRST YEAR FEES DETAILS</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Year</th>
-                    <th>Total Fee</th>
-                    <th>Pending Fee</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each firstYearStudents}}
-                        <tr>
-                            <td>{{name}}</td>
-                            <td>{{year}}</td>
-                            <td>{{totalFee}}</td>
-                            <td>{{pendingFee}}</td>
-                            <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon"><img src="https://i.postimg.cc/1tZxP11M/draw.png" width="20"></a></td>
-                            <td><a href="/ssm/mca/deleteFee/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')"><img src="https://i.postimg.cc/NF3zcZVB/close.png" width="20"></a></td>
-                        </tr>
-                {{/each}}
-            </tbody>
-        </table>
+    <h2>FIRST YEAR FEES DETAILS</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Total Fee</th>
+            <th>Pending Fee</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each firstYearStudents}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{year}}</td>
+            <td>{{totalFee}}</td>
+            <td>{{pendingFee}}</td>
+            <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
 
-        <br><br>
+    <h2>SECOND YEAR FEES DETAILS</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Total Fee</th>
+            <th>Pending Fee</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each secondYearStudents}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{year}}</td>
+            <td>{{totalFee}}</td>
+            <td>{{pendingFee}}</td>
+            <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
 
-        <h2 class="second">SECOND YEAR FEES DETAILS</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Year</th>
-                    <th>Total Fee</th>
-                    <th>Pending Fee</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each secondYearStudents}}
-                        <tr>
-                            <td>{{name}}</td>
-                            <td>{{year}}</td>
-                            <td>{{totalFee}}</td>
-                            <td>{{pendingFee}}</td>
-                            <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon"><img src="https://i.postimg.cc/1tZxP11M/draw.png" width="20"></a></td>
-                            <td><a href="/ssm/mca/deleteFee/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')"><img src="https://i.postimg.cc/NF3zcZVB/close.png" width="20"></a></td>
-                        </tr>
-                {{/each}}
-            </tbody>
-        </table>
-
-        <br>
-        <!-- Go back link -->
-        <div class="goback-container">
-            <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
-        </div>
-    </center>
+    <div class="btn-container">
+        <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
+    </div>
+</div>
 </body>
 </html>
