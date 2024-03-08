@@ -1,142 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCA Student List</title>
     <link rel="icon" href="https://your-favicon-url.png"> <!-- Replace with your favicon URL -->
     <style>
-      body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f8f9fa;
-        margin: 0;
-        padding: 0;
-      }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-      h1 {
-        text-align: center;
-        color: #007bff;
-        margin-top: 20px;
-      }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
 
-      .first {
-            margin-left: -59%;
+        h1 {
+            text-align: center;
             color: #007bff;
             margin-top: 20px;
         }
-        .second {
-            margin-left: -57%;
+
+        h2 {
             color: #007bff;
             margin-top: 20px;
         }
 
-      table {
-        width: 80%;
-        margin: 20px auto;
-        border-collapse: collapse;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-      th, td {
-        border: 1px solid #dee2e6;
-        text-align: center;
-        padding: 12px;
-      }
+        th, td {
+            border: 1px solid #dee2e6;
+            text-align: center;
+            padding: 12px;
+        }
 
-      th {
-        background-color: #007bff;
-        color: #fff;
-      }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
 
-      .btn {
-        padding: 10px 20px;
-        color: #fff;
-        border: 2px solid #007bff;
-        background: #007bff;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 14px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.4s, color 0.4s;
-      }
+        .edit-icon, .delete-icon {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s;
+        }
 
-      .btn:hover {
-        background: #fff;
-        color: #007bff;
-      }
+        .edit-icon:hover, .delete-icon:hover {
+            color: #0056b3;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            color: #fff;
+            border: 2px solid #007bff;
+            background: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            color: #fff;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
+<div class="container">
     <h1>MCA STUDENT LIST</h1>
-    <center>
-      <h2 class="first">FIRST YEAR STUDENTS</h2>
-      <table>
+    <h2>FIRST YEAR STUDENTS</h2>
+    <table>
         <thead>
-          <tr>
+        <tr>
             <th>Name</th>
             <th>Register Number</th>
             <th>Gender</th>
-            <th>Age</th>
+            <th>Date Of Birth</th>
             <th>Phone</th>
             <th>Email</th>
             <th>Edit</th>
             <th>Delete</th>
-          </tr>
+        </tr>
         </thead>
         <tbody>
-          {{#each firstYearStudents}}
-            <tr>
-              <td>{{name}}</td>
-              <td>{{registerNumber}}</td>
-              <td>{{gender}}</td>
-              <td>{{age}}</td>
-              <td>{{phone}}</td>
-              <td>{{email}}</td>
-              <td><a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon"><img src="https://i.postimg.cc/1tZxP11M/draw.png" width="20"></a></td>
-              <td><a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')"><img src="https://i.postimg.cc/NF3zcZVB/close.png" width="20"></a></td>
-            </tr>
-          {{/each}}
+        {{#each firstYearStudents}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{registerNumber}}</td>
+            <td>{{gender}}</td>
+            <td>{{dob}}</td>
+            <td>{{phone}}</td>
+            <td>{{email}}</td>
+            <td><a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            <td><a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a></td>
+        </tr>
+        {{/each}}
         </tbody>
-      </table>
-      <br><br>
-      <h2 class="second">SECOND YEAR STUDENTS</h2>
-      <table>
+    </table>
+
+    <h2>SECOND YEAR STUDENTS</h2>
+    <table>
         <thead>
-          <tr>
+        <tr>
             <th>Name</th>
             <th>Register Number</th>
             <th>Gender</th>
-            <th>Age</th>
+            <th>Date Of Birth</th>
             <th>Phone</th>
             <th>Email</th>
             <th>Edit</th>
             <th>Delete</th>
-          </tr>
+        </tr>
         </thead>
-        
         <tbody>
-          {{#each secondYearStudents}}
-            <tr>
-              <td>{{name}}</td>
-              <td>{{registerNumber}}</td>
-              <td>{{gender}}</td>
-              <td>{{age}}</td>
-              <td>{{phone}}</td>
-              <td>{{email}}</td>
-              <td><a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon"><img src="https://i.postimg.cc/1tZxP11M/draw.png" width="20"></a></td>
-              <td><a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')"><img src="https://i.postimg.cc/NF3zcZVB/close.png" width="20"></a></td>
-            </tr>
-          {{/each}}
+        {{#each secondYearStudents}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{registerNumber}}</td>
+            <td>{{gender}}</td>
+            <td>{{dob}}</td>
+            <td>{{phone}}</td>
+            <td>{{email}}</td>
+            <td><a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            <td><a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a></td>
+        </tr>
+        {{/each}}
         </tbody>
-      </table>
-      
-      <br>
-      <!-- Go back link -->
-      <div class="goback-container">
+    </table>
+
+    <div class="btn-container">
         <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
-      </div>
-    </center>
-  </body>
+    </div>
+</div>
+</body>
 </html>
