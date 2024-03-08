@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const loginController = require("../controller/loginController");
+const studentController = require("../controller/studentController");
 const authFile = require("../middleware/auth");
 const app = express();
 app.use(cookieParser());
@@ -14,6 +15,10 @@ app.get('/login', (req, res)=>{
     res.render('login')
 });
 
+app.get('/studentLogin', (req, res)=>{
+    res.render('studentLogin')
+});
+
 app.get('/signup', (req, res)=>{
     res.render('signup')
 });
@@ -21,6 +26,8 @@ app.get('/signup', (req, res)=>{
 app.post('/signup', loginController.signup);
 
 app.post('/login', loginController.login);
+
+app.post('/studentLogin', studentController.login);
 
 app.post('/otp', loginController.otp);
 
