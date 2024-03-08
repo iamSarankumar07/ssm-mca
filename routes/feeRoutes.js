@@ -4,7 +4,7 @@ const app = express();
 
 const feeController = require("../controller/feeController");
 
-app.post("/feeRegister", authFile.validateToken, feeController.newFee);
+// app.post("/feeRegister", authFile.validateToken, feeController.newFee);
 
 app.post("/updateFee/:userId", authFile.validateToken, feeController.updateFee);
 
