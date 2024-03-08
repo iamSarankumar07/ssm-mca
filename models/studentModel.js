@@ -1,37 +1,58 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const studentSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     registerNumber: {
         type: Number,
-        required: true
+        required: true,
     },
     gender: {
         type: String,
-        required: true
+        required: true,
     },
-    age: {
-        type: Number,
+    dob: {
+        type: String,
         required: true
     },
     year: {
         type: Number,
-        required: true
+        required: true,
     },
     phone: {
         type: Number,
-        required: true
+        required: true,
     },
     email: {
         type: String,
-        required: true
+        required: true,
+    },
+    studentId: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    totalFee: {
+        type: Number,
+        required: false
+    },
+    pendingFee: {
+        type: Number,
+        required: false
+    },
+    paymentStatus: {
+        type: String,
+        required: false
     },
     isDelete: {
         type: Boolean,
-        default: false
+        default: false,
     },
     createdAt: {
         type: Date,
