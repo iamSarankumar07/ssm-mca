@@ -1,8 +1,12 @@
 const express = require("express");
 const path = require("path");
 const viewController = require("../controller/viewController");
+// const studentController = require("../controller/studentController");
+const cookieParser = require("cookie-parser");
 const authFile = require("../middleware/auth");
 const app = express();
+
+app.use(cookieParser());
 
 app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
@@ -46,6 +50,8 @@ app.get("/upload", (req, res) => {
   res.render("imageUpload");
 });
 app.get("/dashboard", authFile.validateToken, viewController.dashboard);
+
+app.get("/studentProfile", authFile.sValidateToken, viewController.getStudentDetails);
 
 app.get("/feeRegister", authFile.validateToken, viewController.feeRegister);
 
