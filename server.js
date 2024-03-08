@@ -14,6 +14,8 @@ app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "view");
 app.set("views", viewPath);
 
+app.use(express.static("images"));
+
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
@@ -21,6 +23,9 @@ app.get("/", (req, res) => {
 });
 app.get("/home", (req, res) => {
   res.render("home");
+});
+app.get("/studentHome", (req, res) => {
+  res.render("studentHome");
 });
 
 app.use("/ssm/mca", require("./routes/index"));
