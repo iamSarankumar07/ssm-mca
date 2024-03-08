@@ -3,9 +3,15 @@ const path = require("path");
 const Contact = require("../models/contactModel");
 const Student = require("../models/studentModel");
 const studentFee = require("../models/feesModel");
+const authFile = require("../middleware/auth");
 const Image = require("../models/imageModel");
 const app = express();
+const { verify } = require("jsonwebtoken");
 app.use(express.static(path.join(__dirname, "../Images")));
+
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
 
 app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
@@ -13,6 +19,10 @@ app.set("views", viewPath);
 
 exports.dashboard = async (req, res) => {
   res.render("admin");
+};
+
+exports.studentProfile = async (req, res) => {
+  res.render("studentProfile");
 };
 
 exports.register = async (req, res) => {
@@ -106,7 +116,7 @@ exports.studentEdit = async (req, res) => {
 
 exports.studentFeeList = async (req, res) => {
   try {
-    const allStudents = await studentFee.find({ isDelete: false });
+    const allStudents = await Student.find({ isDelete: false });
     const firstYearStudents = allStudents.filter(
       (student) => student.year === 1
     );
@@ -124,7 +134,7 @@ exports.studentFeeList = async (req, res) => {
 exports.feeEdit = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const fee = await studentFee.findById(userId);
+    const fee = await Student.findById(userId);
     res.render("feeEdit", { fee });
   } catch (err) {
     console.error(err);
@@ -141,5 +151,25 @@ exports.gallery = async (req, res) => {
     res.send(err.message);
   }
 };
+
+exports.getStudentDetails = async (req, res) => {
+  const accessToken = req.cookies['access-token'];
+  try {
+    const decodedToken = await verify(accessToken, "mnbvcxzlkjhgfdsapoiuytrewq");
+    const studentId = decodedToken.studentId;
+
+    const student = await Student.findOne({ studentId });
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    res.render("studentProfile", { student });
+  } catch (err) {
+    console.error("Error fetching user details:", err);
+    res.status(500).send("Failed to fetch user details");
+  }
+};
+
 
 module.exports = exports;
