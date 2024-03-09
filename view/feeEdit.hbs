@@ -112,8 +112,12 @@
         <label for="pendingFee">Pending Fee:</label>
         <input type="number" id="pendingFee" name="pendingFee" value="{{fee.pendingFee}}" required />
 
-        <label for="paymentStatus">Payment Status:</label>
-        <input type="text" id="paymentStatus" name="paymentStatus" value="{{fee.paymentStatus}}" required />
+        <label for="paymentStatus">Payment Status:</label></td>
+        <select id="paymentStatus" name="paymentStatus" value="{{fee.paymentStatus}}" required>
+            <option>Select Status</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+        </select>
 
         <div class="button-container">
             <button type="button" onclick="history.back()">Back</button>
