@@ -13,7 +13,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             width: 100%;
             margin-bottom: 5%;
         }
@@ -47,9 +46,7 @@
             width: 100%;
         }
 
-        button[type="submit"],
         button[type="button"] {
-            width: 30%;
             background-color: #3d6ef5ff;
             color: #f2f2f2;
             font-weight: bold;
@@ -57,56 +54,59 @@
             border: none;
             font-size: 13px;
             border-radius: 5px;
-            border: 2px solid #3d6ef5ff;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
-        button[type="submit"]:hover,
         button[type="button"]:hover {
             background-color: #f2f2f2;
             color: #3d6ef5ff;
             font-weight: bold;
         }
+
         .btnn {
-            padding: 8px 16px;
-            background: #efefef;
-            border: none;
-            font-weight: bold;
-            border: 2.5px solid rgb(245, 61, 61);
-            border-radius: 10px;
-            color: black;
-            cursor: pointer;
-            transition: .4s;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
+    padding: 10px 20px;
+    color: #fff;
+    border: 2px solid #3d6ef5ff;
+    background: #3d6ef5ff;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s, color 0.4s;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    margin: 10px;
+    margin-left: 10%; 
+}
 
-        .btnn>i {
-            margin-left: 10px;
-        }
-
-        .btnn:hover {
-            background: rgb(246, 0, 0);
-            font-weight: bold;
-            color: #efefef;
-        }
-
+.btnn:hover {
+    background: #fff;
+    color: #3d6ef5ff;
+}
         a {
             text-decoration: none;
-        }
-        table {
-            margin-bottom: 10px;
         }
 
         th, td {
             text-align: center;
             font-weight: bold;
         }
+        .goback {
+    position: absolute;
+    top: 30px;
+    width: 45px;
+    height: 45px;
+    left: 10%;
+}
     </style>
 </head>
 <body>
+    {{!-- <a href="/home" class="btnn"> Back<i class="uil uil-image"></i></a> --}}
+    <a href="/home"><img src="https://i.postimg.cc/mD67M56k/back-button.png" alt="Go Back" class="goback"></a>
+
     <h1>Admin Credentials</h1>
 
     <table>
@@ -114,24 +114,24 @@
             <tr>
                 <th>Title</th>
                 <th>Register</th>
-                <th>List</th>
+                <th>Student Details</th>
+                <th>Fees Details</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>Student Register</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="register()">Register</button></td>
-                    <td><button type="button" onclick="studentList()">List</button></td>
-                </div>
+                <td><button type="button" onclick="register()">Register</button></td>
+                <td><button type="button" onclick="studentList()">Details</button></td>
+                <td><button type="button" onclick="feeList()">Details</button></td>
             </tr>
-            <tr>
+            {{!-- <tr>
                 <td>Student Fee Register</td>
                 <div class="button-container">
                     <td><button type="button" onclick="feeRegister()">Register</button></td>
                     <td><button type="button" onclick="feeList()">List</button></td>
                 </div>
-            </tr>
+            </tr> --}}
         </tbody>
     </table>
     <hr>
@@ -146,50 +146,33 @@
         <tbody>
             <tr>
                 <td>Received Contact Messages</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="messages()">Messages</button></td>
-                </div>
+                <td><button type="button" onclick="messages()">Messages</button></td>
             </tr>
             <tr>
                 <td>Announcement</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="announcement()">Announcement</button></td>
-                </div>
+                <td><button type="button" onclick="announcement()">Announcement</button></td>
             </tr>
             <tr>
                 <td>First Year Announcement</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="firstYearAnnouncement()">First Year</button></td>
-                </div>
+                <td><button type="button" onclick="firstYearAnnouncement()">First Year</button></td>
             </tr>
             <tr>
                 <td>Second Year Announcement</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="secondYearAnnouncement()">Second Year</button></td>
-                </div>
+                <td><button type="button" onclick="secondYearAnnouncement()">Second Year</button></td>
             </tr>
             <tr>
                 <td>Send Everyone</td>
-                <div class="button-container">
-                    <td><button type="button" id="sendMail" onclick="sendMail()">Send Everyone</button></td>
-                </div>
+                <td><button type="button" id="sendMail" onclick="sendMail()">Send Everyone</button></td>
             <tr>
                 <td>Upload Image</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="upload()">Image Upload</button></td>
-                </div>
+                <td><button type="button" onclick="upload()">Image Upload</button></td>
             </tr>
             <tr>
                 <td>Gallery</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="gallery()">Gallery</button></td>
-                </div>
-            </tr>
+                <td><button type="button" onclick="gallery()">Gallery</button></td>
             </tr>
         </tbody>
     </table>
-
-<a href="/home" class="btnn"> Back<i class="uil uil-image"></i></a>
 
     <script>
         document.getElementById('sendMail').addEventListener('click', async function() {
@@ -207,9 +190,6 @@
         function feeRegister() {
         window.location.href = '#';
         };
-        {{!-- function feeRegister() {
-        window.location.href = '/ssm/mca/feeRegister';
-        }; --}}
         function feeList() {
         window.location.href = '/ssm/mca/feeList';
         };
