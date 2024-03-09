@@ -39,7 +39,8 @@ exports.updateFee = async (req, res) => {
         name: body.name,
         year: body.year,
         totalFee: body.totalFee,
-        pendingFee: body.pendingFee
+        pendingFee: body.pendingFee,
+        paymentStatus: body.paymentStatus
     });
 
     res.redirect("/ssm/mca/feeList");
