@@ -100,6 +100,7 @@
             <th>Year</th>
             <th>Total Fee</th>
             <th>Pending Fee</th>
+            <th>Payment Status</th>
             <th>Edit</th>
         </tr>
         </thead>
@@ -110,6 +111,7 @@
             <td>{{year}}</td>
             <td>{{totalFee}}</td>
             <td>{{pendingFee}}</td>
+            <td>{{paymentStatus}}</td>
             <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
         </tr>
         {{/each}}
@@ -124,6 +126,7 @@
             <th>Year</th>
             <th>Total Fee</th>
             <th>Pending Fee</th>
+            <th>Payment Status</th>
             <th>Edit</th>
         </tr>
         </thead>
@@ -134,12 +137,13 @@
             <td>{{year}}</td>
             <td>{{totalFee}}</td>
             <td>{{pendingFee}}</td>
+            <td>{{paymentStatus}}</td>
             <td><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
         </tr>
         {{/each}}
         </tbody>
     </table>
-
+    <br><br>
     <div class="btn-container">
         <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
     </div>
