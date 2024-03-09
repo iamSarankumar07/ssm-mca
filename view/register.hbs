@@ -154,8 +154,21 @@
                 <td><input type="text" id="paymentStatus" name="paymentStatus" required></td>
             </tr>
         </table>
-        <button type="submit">Register</button>
+        <button type="submit" onclick="return confirmRegistration()">Register</button>
         <div class="home-link"><a href="/ssm/mca/dashboard">Back</a></div>
     </form>
+    
+
+<script>
+function confirmRegistration() {
+  if (confirm("Are You Sure You Want To Register ?")) {
+    alert("Student Registered Successfully!");
+    return true;
+  } else {
+    return false;
+  }
+}
+</script>
+
 </body>
 </html>
