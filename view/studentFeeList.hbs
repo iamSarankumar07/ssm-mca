@@ -29,8 +29,12 @@
 
         h1 {
             text-align: center;
-            color: #007bff;
-            margin-top: 20px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 10px;
         }
 
         h2 {
@@ -87,17 +91,24 @@
             background: #0056b3;
             color: #fff;
         }
+        .goback {
+    position: absolute;
+    top: 10%;
+    width: 45px;
+    height: 45px;
+    left: 10.5%;
+}
+        
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Fee Information</h1>
+    <h1>FEES DETAILS</h1>
     <h2>FIRST YEAR FEES DETAILS</h2>
     <table>
         <thead>
         <tr>
             <th>Name</th>
-            <th>Year</th>
             <th>Total Fee</th>
             <th>Pending Fee</th>
             <th>Payment Status</th>
@@ -108,7 +119,6 @@
         {{#each firstYearStudents}}
         <tr>
             <td>{{name}}</td>
-            <td>{{year}}</td>
             <td>{{totalFee}}</td>
             <td>{{pendingFee}}</td>
             <td>{{paymentStatus}}</td>
@@ -117,13 +127,15 @@
         {{/each}}
         </tbody>
     </table>
+    <div class="btn-container">
+        <button class="btn" onclick="printFirstYearFee()">Print First Year</button>
+    </div>
 
     <h2>SECOND YEAR FEES DETAILS</h2>
     <table>
         <thead>
         <tr>
             <th>Name</th>
-            <th>Year</th>
             <th>Total Fee</th>
             <th>Pending Fee</th>
             <th>Payment Status</th>
@@ -134,7 +146,6 @@
         {{#each secondYearStudents}}
         <tr>
             <td>{{name}}</td>
-            <td>{{year}}</td>
             <td>{{totalFee}}</td>
             <td>{{pendingFee}}</td>
             <td>{{paymentStatus}}</td>
@@ -143,10 +154,153 @@
         {{/each}}
         </tbody>
     </table>
-    <br><br>
+    <div class="btn-container">
+        <button class="btn" onclick="printSecondYearFee()">Print Second Year</button>
+    </div>
     <div class="btn-container">
         <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
     </div>
 </div>
+
+<div id="printDiv" style="display:none;"></div>
+
+<script>
+    function printFirstYearFee() {
+        var printWindow = window.open('', '_blank');
+        
+        var printContent = `
+            <html>
+            <head>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background-color: #fff;
+                        margin: 0; 
+                        padding: 20px;
+                    }
+
+                    h1,h2,h3 {
+                        color: #000; 
+                        text-align: center;
+                        margin-top: 20px;
+                    }
+
+                    table {
+                        width: 100%; 
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                    }
+
+                    th, td {
+                        border: 1px solid #000; 
+                        text-align: center;
+                        padding: 12px;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>SSM COLLEGE OF ENGINEERING</h1>
+                <h2>Department Of MCA - I</h2>
+                <h3>Tution Fees Details</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Total Fee</th>
+                            <th>Pending Fee</th>
+                            <th>Payment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each firstYearStudents}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{totalFee}}</td>
+                            <td>{{pendingFee}}</td>
+                            <td>{{paymentStatus}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `;
+        
+        printWindow.document.write(printContent);
+        
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    function printSecondYearFee() {
+        var printWindow = window.open('', '_blank');
+        
+        var printContent = `
+            <html>
+            <head>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background-color: #fff; 
+                        margin: 0; 
+                        padding: 20px;
+                    }
+
+                    h1,h2,h3 {
+                        color: #000;
+                        text-align: center;
+                        margin-top: 20px;
+                    }
+
+                    table {
+                        width: 100%; 
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                    }
+
+                    th, td {
+                        border: 1px solid #000;
+                        text-align: center;
+                        padding: 12px;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>SSM COLLEGE OF ENGINEERING</h1>
+                <h2>Department Of MCA - II</h2>
+                <h3>Tution Fees Details</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Total Fee</th>
+                            <th>Pending Fee</th>
+                            <th>Payment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each secondYearStudents}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{totalFee}}</td>
+                            <td>{{pendingFee}}</td>
+                            <td>{{paymentStatus}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `;
+        
+        printWindow.document.write(printContent);
+        
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+
+
 </body>
 </html>
