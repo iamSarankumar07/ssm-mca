@@ -20,6 +20,7 @@ body {
     background-color: #007bff;
     color: #fff;
     text-align: center;
+    border-radius: 5px;
     padding: 10px 0;
     margin-bottom: 20px;
 }
@@ -33,6 +34,10 @@ body {
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+}
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 .card h3 {
     margin-top: 0;
@@ -41,63 +46,112 @@ body {
     margin-bottom: 0;
 }
 .details {
-    margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #ddd;
+    margin-bottom: 20px;
     border-radius: 5px;
 }
-.details p {
-    margin: 10px 0;
-    font-size: 16px;
+.details.student-details {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+.details.fees-details {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+.details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.details th, .details td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+.details th {
+    background-color: #f2f2f2;
 }
 .details strong {
     font-weight: bold;
-    color: #007bff;
+    color: #333;
 }
 
 .back-button {
     position: absolute;
-    top: 54px;
+    top: 50px;
     left: 12%; 
-    background-color: #fff;
-    color: #007bff;
-    padding: 5px 10px;
-    border-radius: 5px;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 13px;
-    border-radius: 5px;
-    border: 2px solid #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
+
+.back-button img {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
 </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>Student Dashboard</h1>
+        <h1>Profile</h1>
     </div>
     <div class="dashboard">
-    <a href="/studentHome" class="back-button">Back</a>
+    <a href="/studentHome" class="back-button">
+        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
+    </a>
         <div class="card">
             <h3>Student Details</h3>
-            <div class="details">
-                <p><strong>Name:</strong> {{student.name}}</p>
-                <p><strong>Register Number :</strong> {{student.registerNumber}}</p>
-                <p><strong>Gender :</strong> {{student.gender}}</p>
-                <p><strong>Date Of Birth :</strong> {{student.dob}}</p>
-                <p><strong>Year :</strong> {{student.year}}</p>
-                <p><strong>Phone :</strong> {{student.phone}}</p>
-                <p><strong>Email :</strong> {{student.email}}</p>
+            <div class="details student-details">
+                <table>
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td>{{student.name}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Register Number:</strong></td>
+                        <td>{{student.registerNumber}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gender:</strong></td>
+                        <td>{{student.gender}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date Of Birth:</strong></td>
+                        <td>{{student.dob}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Year:</strong></td>
+                        <td>{{student.year}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phone:</strong></td>
+                        <td>{{student.phone}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email:</strong></td>
+                        <td>{{student.email}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div class="card">
             <h3>Fees Details</h3>
-            <div class="details">
-                <p><strong>Payment Status:</strong> {{student.paymentStatus}}</p>
-                <p><strong>Total Amount:</strong> {{student.totalFee}}</p>
-                <p><strong>Amount Due:</strong> {{student.pendingFee}}</p>
+            <div class="details fees-details">
+                <table>
+                    <tr>
+                        <td><strong>Payment Status:</strong></td>
+                        <td>{{student.paymentStatus}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Amount:</strong></td>
+                        <td>{{student.totalFee}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Amount Due:</strong></td>
+                        <td>{{student.pendingFee}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
