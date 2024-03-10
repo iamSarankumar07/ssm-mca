@@ -12,42 +12,44 @@ const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
 
 exports.signup = async (req, res) => {
-  const user = new Login({
-    name: req.body.name,
-    email: req.body.email,
-    gender: req.body.gender,
-  });
+  const { name, email, password, confirmPassword } = req.body;
 
-  const uniqueNumber = Math.floor(1000 + Math.random() * 9000);
-  const userName = `${user.name.toLowerCase()}${uniqueNumber}`;
-
-  user.userName = userName;
-
-  const password = Math.random().toString(36).substring(2, 8);
-  console.log(
-    `Name : ${user.name} \nUsername: ${userName} \nPassword : ${password}`
-  );
-
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-  user.password = hashedPassword;
+  if (password !== confirmPassword) {
+    return res.send(
+      '<script>alert("Passwords do not match!"); window.location.href = "/ssm/mca/signup";</script>'
+    );
+  }
 
   try {
-    const a1 = await user.save();
+    const existingUser = await Login.findOne({ email });
+    if (existingUser) {
+      return res.send(
+        '<script>alert("Email already registered!"); window.location.href = "/ssm/mca/login";</script>'
+      );
+    }
 
-    const transPorter = nodemailer.createTransport({
-      service: "gmail",
+    const user = new Login({ name, email, password });
+
+    pwd = user.password
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    user.password = hashedPassword;
+
+    await user.save();
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
       auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
+        user: 'verifyuserofficial@gmail.com',
+        pass: 'wsdv megz vecp wzen',
       },
     });
 
     const mailOptions = {
-      from: "verifyuserofficial@gmail.com",
+      from: 'verifyuserofficial@gmail.com',
       to: user.email,
-      subject: "Registration Successful.",
+      subject: 'Registration Successful.',
       html: `
     <!DOCTYPE html>
   <html lang="en">
@@ -115,8 +117,8 @@ exports.signup = async (req, res) => {
       <p>We are thrilled to welcome you to our community! Your account has been successfully created 🚀.</p>
       <p>Here are your login details:</p>
       <ul>
-        <li><strong>Username : </strong> ${userName}</li>
-        <li><strong>Password : </strong> ${password}</li>
+        <li><strong>Email : </strong> ${user.email}</li>
+        <li><strong>Password : </strong> ${pwd}</li>
       </ul>
       <p>If you have any questions or need further assistance, please feel free to <a href="mailto:verifyuserofficial@gmail.com" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
       <p>Best regards,<br>Saran Kumar.</p>
@@ -129,26 +131,26 @@ exports.signup = async (req, res) => {
   `,
     };
 
-    transPorter.sendMail(mailOptions, (err, info) => {
+    transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
-        console.log(err, "Email Sent Failed...");
+        console.log(err, 'Email Sent Failed...');
       } else {
-        console.log("Email Sent Successfully....");
+        console.log('Email Sent Successfully....');
       }
     });
 
-    res.render("signupSucces");
+    res.redirect('/ssm/mca/login')
   } catch (error) {
-    res.send(err.message, "Error");
+    res.status(500).send(error.message);
   }
 };
 
 exports.login = async (req, res) => {
   try {
-    const user = await Login.findOne({ userName: req.body.userName });
+    const user = await Login.findOne({ email: req.body.email });
     if (!user) {
       return res.send(
-        '<script>alert("Incorrect Username"); window.location.href = "/ssm/mca/login";</script>'
+        '<script>alert("User Not Found!"); window.location.href = "/ssm/mca/login";</script>'
       );
     }
     const isPasswordMatch = await bcrypt.compare(
