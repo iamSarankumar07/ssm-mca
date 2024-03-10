@@ -93,7 +93,9 @@ exports.sendEmailByRegNum = async (req, res) => {
     const student = await Student.findOne({ registerNumber });
 
     if (!student) {
-      return res.send({ error: "Student not found" });
+      return res.send(
+        '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/announcement";</script>'
+      );
     }
 
     const transporter = nodemailer.createTransport({
