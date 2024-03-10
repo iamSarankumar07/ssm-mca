@@ -17,10 +17,24 @@ exports.newStudent = async (req, res) => {
     email: body.email,
     totalFee: body.totalFee,
     pendingFee: body.pendingFee,
-    paymentStatus: body.paymentStatus
+    paymentStatus: body.paymentStatus,
+    examTotalFee: body.examTotalFee,
+    examPendingFee: body.examPendingFee,
+    examPaymentStatus: body.examPaymentStatus,
+    tutionDueDate: body.tutionDueDate,
+    examDueDate: body.examDueDate,
   });
 
-  const studentId = student.registerNumber
+  student.pendingFee = student.totalFee;
+  student.paymentStatus = "Pending";
+  student.tutionDueDate = "";
+
+  student.examTotalFee = 0;
+  student.examPendingFee = 0;
+  student.examPaymentStatus = "Pending";
+  student.examDueDate = "";
+
+  const studentId = student.registerNumber;
   student.studentId = studentId;
 
   const password = student.dob.toString();
@@ -197,7 +211,10 @@ exports.updateStudent = async (req, res) => {
       email: body.email,
       totalFee: body.totalFee,
       pendingFee: body.pendingFee,
-      paymentStatus: body.paymentStatus
+      paymentStatus: body.paymentStatus,
+      examTotalFee: body.examTotalFee,
+      examPendingFee: body.examPendingFee,
+      examPaymentStatus: body.examPaymentStatus,
     });
 
     res.redirect("/ssm/mca/studentList");
