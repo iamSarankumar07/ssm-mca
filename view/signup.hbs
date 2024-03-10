@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,25 +38,23 @@
             box-sizing: border-box;
         }
 
-        .btn{
-            padding: 8px 15px;
-            color: #f2f2f2;
+        .btn {
+            padding: 8px 0;
+            color: #fff;
             width: 100%;
             border: 2px solid #3d6ef5ff;
             background: #3d6ef5ff;
             font-weight: bold;
             font-size: 15px;
-            font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
             transition: .4s;
         }
-        .btn:hover{
+
+        .btn:hover {
             background: #f2f2f2;
-            font-weight: bold;
-            font-size: 15px;
             color: #3d6ef5ff;
-        } 
+        }
 
         h1 {
             text-align: center;
@@ -66,9 +65,10 @@
             display: block;
             text-align: center;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 10px;
             text-decoration: none;
             color: #472ddb;
+            font-size: 15px;
         }
 
         a:hover {
@@ -77,10 +77,28 @@
 
         p {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px;
             text-decoration: none;
             color: #333;
+            font-size: 15px;
         }
+        .showPassCode{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 10px 0px;
+        }
+        #showPassword{
+            width: min-content;
+        }
+        .box {
+            margin-right: 10px;
+        }
+        .txt {
+            margin-bottom: 12px;
+        }
+
     </style>
 </head>
 <body>
@@ -88,29 +106,38 @@
     <form action="/ssm/mca/signup" method="post">
         <h1>Sign Up</h1>
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter Your Name" autocomplete="off" required>
+        <input type="text" id="name" name="name" placeholder="Enter Your Name" required>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="you@gmail.com" autocomplete="off" required>
+        <input type="email" id="email" name="email" placeholder="you@gmail.com" required>
 
-<!--         <label for="phone">Mobile:</label>
-        <input type="number" id="phone" name="phone" placeholder="+91 8569784578" autocomplete="off" max="9999999999" required> -->
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" aria-label="Password" required>
 
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" aria-label="confirmPassword" required>
 
-        <button type="submit" id="signup-button" class="btn">Sign Up</button>
+        <div class="showPassCode">
+            <input class="box" type="checkbox" id="showPassword" name="showPassword">
+            <label class="txt" for="showPassword"> Show Password</label>
+        </div>
+
+        <button type="submit" id="signupButton" class="btn">Sign Up</button>
 
         <p>Already have an account? <a href="/ssm/mca/login">Login</a></p>
     </form>
-<script>
-    document.getElementById("signup-button").addEventListener("click", function() {
-    (confirm("Are You Sure You Want To Signing Up ?.")) 
+
+    <script>
+    const showPasswordCheckbox = document.getElementById('showPassword');
+    const passwordField = document.getElementById('password');
+    const confirmPasswordField = document.getElementById('confirmPassword');
+
+    showPasswordCheckbox.addEventListener('change', function() {
+        const passwordFieldType = this.checked ? 'text' : 'password';
+        passwordField.type = passwordFieldType;
+        confirmPasswordField.type = passwordFieldType;
     });
 </script>
+
 </body>
 </html>
