@@ -8,8 +8,6 @@ app.get("/sendMail", authFile.validateToken, studentController.sendMail);
 
 app.post("/sendMailById", authFile.validateToken, announcementController.sendEmailByRegNum);
 
-app.post("/sendMailFirstYear", authFile.validateToken, announcementController.firstYearMail);
-
-app.post("/sendMailSecondYear", authFile.validateToken, announcementController.secondYearMail);
+app.post("/commonAnnouncement", authFile.validateToken, announcementController.commonMail);
 
 module.exports = app;
