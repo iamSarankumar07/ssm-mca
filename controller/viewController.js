@@ -59,10 +59,10 @@ exports.studentList = async (req, res) => {
   try {
     const allStudents = await Student.find({ isDelete: false });
     const firstYearStudents = allStudents.filter(
-      (student) => student.year === 1
+      (student) => student.year === "I"
     );
     const secondYearStudents = allStudents.filter(
-      (student) => student.year === 2
+      (student) => student.year === "II"
     );
 
     res.render("studentList", { firstYearStudents, secondYearStudents });
@@ -118,10 +118,10 @@ exports.studentFeeList = async (req, res) => {
   try {
     const allStudents = await Student.find({ isDelete: false });
     const firstYearStudents = allStudents.filter(
-      (student) => student.year === 1
+      (student) => student.year === "I"
     );
     const secondYearStudents = allStudents.filter(
-      (student) => student.year === 2
+      (student) => student.year === "II"
     );
 
     res.render("studentFeeList", { firstYearStudents, secondYearStudents });
@@ -135,10 +135,10 @@ exports.examFeeList = async (req, res) => {
   try {
     const allStudents = await Student.find({ isDelete: false });
     const firstYearStudents = allStudents.filter(
-      (student) => student.year === 1
+      (student) => student.year === "I"
     );
     const secondYearStudents = allStudents.filter(
-      (student) => student.year === 2
+      (student) => student.year === "II"
     );
 
     res.render("examFeeList", { firstYearStudents, secondYearStudents });
