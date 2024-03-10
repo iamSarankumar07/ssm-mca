@@ -30,7 +30,7 @@
         h1 {
             text-align: center;
             color: #fff;
-            background-color: #007bff;
+            background-color: #3d6ef5ff;
             border-radius: 5px;
             padding-top: 10px;
             padding-bottom: 10px;
@@ -38,7 +38,7 @@
         }
 
         h2 {
-            color: #007bff;
+            color: #3d6ef5ff;
             margin-top: 20px;
         }
 
@@ -55,13 +55,13 @@
         }
 
         th {
-            background-color: #007bff;
+            background-color: #3d6ef5ff;
             color: #fff;
         }
 
         .edit-icon, .delete-icon {
             text-decoration: none;
-            color: #007bff;
+            color: #3d6ef5ff;
             transition: color 0.3s;
         }
 
@@ -75,21 +75,21 @@
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 14px;
             color: #fff;
-            border: 2px solid #007bff;
-            background: #007bff;
+            border: 2px solid #3d6ef5ff;
+            background: #3d6ef5ff;
             font-weight: bold;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 12px;
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.4s, color 0.4s;
         }
 
         .btn:hover {
-            background: #0056b3;
-            color: #fff;
+            background: #fff;
+            color: #3d6ef5ff;
         }
         .goback {
     position: absolute;
@@ -103,8 +103,10 @@
 </head>
 <body>
 <div class="container">
-    <h1>FEES DETAILS</h1>
-    <h2>FIRST YEAR FEES DETAILS</h2>
+    <h1>TUTION FEES DETAILS</h1>
+    <h2>MCA - I</h2>
+        {{#each firstYearStudents}}
+    <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
     <table>
         <thead>
         <tr>
@@ -116,7 +118,6 @@
         </tr>
         </thead>
         <tbody>
-        {{#each firstYearStudents}}
         <tr>
             <td>{{name}}</td>
             <td>{{totalFee}}</td>
@@ -128,10 +129,12 @@
         </tbody>
     </table>
     <div class="btn-container">
-        <button class="btn" onclick="printFirstYearFee()">Print First Year</button>
+        <button class="btn" onclick="printFirstYearFee()">Print</button>
     </div>
 
-    <h2>SECOND YEAR FEES DETAILS</h2>
+    <h2>MCA - II</h2>
+        {{#each secondYearStudents}}
+    <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
     <table>
         <thead>
         <tr>
@@ -143,7 +146,6 @@
         </tr>
         </thead>
         <tbody>
-        {{#each secondYearStudents}}
         <tr>
             <td>{{name}}</td>
             <td>{{totalFee}}</td>
@@ -155,10 +157,10 @@
         </tbody>
     </table>
     <div class="btn-container">
-        <button class="btn" onclick="printSecondYearFee()">Print Second Year</button>
+        <button class="btn" onclick="printSecondYearFee()">Print</button>
     </div>
     <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
+        <a class="btn" href="/ssm/mca/dashboard">< Go back!</a>
     </div>
 </div>
 
@@ -202,6 +204,8 @@
                 <h1>SSM COLLEGE OF ENGINEERING</h1>
                 <h2>Department Of MCA - I</h2>
                 <h3>Tution Fees Details</h3>
+                        {{#each firstYearStudents}}
+                <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
                 <table>
                     <thead>
                         <tr>
@@ -212,7 +216,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each firstYearStudents}}
                         <tr>
                             <td>{{name}}</td>
                             <td>{{totalFee}}</td>
@@ -227,7 +230,7 @@
         `;
         
         printWindow.document.write(printContent);
-        
+        printWindow.document.title = 'MCA-I Tution Fees Details';
         printWindow.document.close();
         printWindow.print();
     }
@@ -269,6 +272,8 @@
                 <h1>SSM COLLEGE OF ENGINEERING</h1>
                 <h2>Department Of MCA - II</h2>
                 <h3>Tution Fees Details</h3>
+                        {{#each secondYearStudents}}
+                <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
 
                 <table>
                     <thead>
@@ -280,7 +285,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each secondYearStudents}}
                         <tr>
                             <td>{{name}}</td>
                             <td>{{totalFee}}</td>
@@ -295,7 +299,7 @@
         `;
         
         printWindow.document.write(printContent);
-        
+        printWindow.document.title = 'MCA-II Tution Fees Details';
         printWindow.document.close();
         printWindow.print();
     }
