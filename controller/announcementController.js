@@ -359,15 +359,20 @@ exports.sendPaymentAlert = async (req, res) => {
       mailOptions.to = students[i].email;
       mailOptions.html = `
         <!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <title>Tuition Fee Payment Reminder</title>
-        <style>
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #f4f4f4;
+      <html lang="en">
+      <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Tuition Fee Payment Reminder</title>
+      <style>
+        body, h1, p, a {
           margin: 0;
           padding: 0;
+          font-family: Arial, sans-serif;
+        }
+        body {
+          background-color: #f4f4f4;
         }
         .container {
           max-width: 600px;
@@ -380,32 +385,38 @@ exports.sendPaymentAlert = async (req, res) => {
         h1 {
           color: #ff9900;
           text-align: center;
+          margin-bottom: 20px;
         }
         p {
-          margin-bottom: 15px;
-        }
+        margin-bottom: 15px;
+        text-align: justify;
+      }
         .footer {
           margin-top: 20px;
           font-size: 12px;
           color: #777777;
           text-align: center;
         }
-        </style>
-        </head>
-        <body>
-        <div class="container">
+        a {
+          color: #007bff;
+          text-decoration: none;
+        }
+      </style>
+      </head>
+      <body>
+      <div class="container">
         <h1>${type} Fee Payment Reminder ⏰</h1>
         <p>Dear ${students[i].name},</p>
         <p>This is a reminder that your ${type} fee payment is pending. Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
         <p>If you have already made the payment, please disregard this message.</p>
-        <p>If you have any questions or need assistance, please contact us at <a href="mailto:verifyuserofficial@gmail.com" style="color: #007bff; text-decoration: none;">verifyuserofficial@gmail.com</a>.</p>
+        <p>If you have any questions or need assistance, please <a href="mailto:verifyuserofficial@gmail.com">Contact</a> us.</p>
         <p>Best regards,<br>SSM COLLEGE OF ENGINEERING</p>
         <div class="footer">
-        This is an automated message. Please do not reply to this email.
+          This is an automated message. Please do not reply to this email.
         </div>
-        </div>
-        </body>
-        </html>
+      </div>
+      </body>
+      </html>
       `;
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
