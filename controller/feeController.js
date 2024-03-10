@@ -19,16 +19,16 @@ const StudentFee = require("../models/studentModel");
   }
 }; */
 
-exports.deleteFee = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const user = await StudentFee.findByIdAndUpdate(userId, { isDelete: true });
-    res.redirect("/ssm/mca/feeList");
-  } catch (err) {
-    console.error(err);
-    res.send("Error");
-  }
-};
+// exports.deleteFee = async (req, res) => {
+//   try {
+//     const userId = req.params.userId;
+//     const user = await StudentFee.findByIdAndUpdate(userId, { isDelete: true });
+//     res.redirect("/ssm/mca/feeList");
+//   } catch (err) {
+//     console.error(err);
+//     res.send("Error");
+//   }
+// };
 
 exports.updateFee = async (req, res) => {
   try {
@@ -37,7 +37,6 @@ exports.updateFee = async (req, res) => {
 
     await StudentFee.findByIdAndUpdate(userId, {
         name: body.name,
-        year: body.year,
         totalFee: body.totalFee,
         pendingFee: body.pendingFee,
         paymentStatus: body.paymentStatus
@@ -49,5 +48,48 @@ exports.updateFee = async (req, res) => {
     res.send("Error");
   }
 };
+exports.updateExamFee = async (req, res) => {
+  try {
+    const body = req.body;
+    const userId = req.params.userId;
+
+    await StudentFee.findByIdAndUpdate(userId, {
+        name: body.name,
+        examTotalFee: body.examTotalFee,
+        examPendingFee: body.examPendingFee,
+        examPaymentStatus: body.examPaymentStatus
+    });
+
+    res.redirect("/ssm/mca/examFeeList");
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
+  }
+};
+
+exports.updateDueDatesForAll = async (req, res) => {
+  try {
+    const body = req.body;
+    const year = body.year;
+
+    let filter = {};
+    if (year === "first" || year === "second") {
+      filter = { year: year === "first" ? 1 : 2 };
+    } else {
+      return res.status(400).json({ message: "Invalid year specified." });
+    }
+
+    await StudentFee.updateMany(filter, {
+        tutionDueDate: body.tutionDueDate,
+        examDueDate: body.examDueDate
+    });
+
+    res.redirect("/ssm/mca/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
+  }
+};
+
 
 module.exports = exports;
