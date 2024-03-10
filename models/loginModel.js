@@ -4,7 +4,7 @@ const Loginschema = new mongoose.Schema({
 
     userName: {
         type: String,
-        required:true
+        required:false
     },
     name: {
         type:String,
@@ -21,7 +21,7 @@ const Loginschema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true
+        required: false
     },
     token: {
         type: String
