@@ -131,8 +131,8 @@
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" required>
             <option >Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
         </select>
 
         <label for="dob">Date of Birth:</label>
@@ -141,8 +141,8 @@
         <label for="year">Year:</label>
         <select id="year" name="year" required>
             <option >Select Year</option>
-            <option value="1">First Year</option>
-            <option value="2">Second Year</option>
+            <option value="I">First Year</option>
+            <option value="II">Second Year</option>
         </select>
 
         <label for="phone">Phone:</label>
@@ -160,7 +160,6 @@
     <script>
         function confirmRegistration() {
             if (confirm("Are You Sure You Want To Register ?")) {
-                alert("Student Registered Successfully!");
                 return true;
             } else {
                 return false;
