@@ -79,7 +79,23 @@
             font-weight: bold;
             font-size: 15px;
             color: #3d6ef5ff;
-        }   
+        }
+        .showPassCode{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 10px 0px;
+        }
+        #showPassword{
+            width: min-content;
+        }
+        .box {
+            margin-right: 10px;
+        }
+        .txt {
+            margin-bottom: 12px;
+        }
     </style>
 </head>
 <body>
@@ -92,10 +108,24 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
 
+        <div class="showPassCode">
+            <input class="box" type="checkbox" id="showPassword" name="showPassword">
+            <label class="txt" for="showPassword"> Show Password</label>
+        </div>
+
         <button type="submit" class="btn">Login</button>
 
         <p><a href="/">Home</a></p>
     </form>
+    <script>
+        const showPasswordCheckbox = document.getElementById('showPassword');
+        const passwordField = document.getElementById('password');
+
+        showPasswordCheckbox.addEventListener('change', function() {
+            const passwordFieldType = this.checked ? 'text' : 'password';
+            passwordField.type = passwordFieldType;          
+        });
+    </script>
 
 </body>
 </html>
