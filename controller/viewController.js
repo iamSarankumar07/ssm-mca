@@ -33,12 +33,12 @@ exports.announcement = async (req, res) => {
   res.render("announcement");
 };
 
-exports.firstYearAnnouncement = async (req, res) => {
-  res.render("firstYearAnnouncement");
+exports.commonAnnouncement = async (req, res) => {
+  res.render("commonAnnouncement");
 };
 
-exports.secondYearAnnouncement = async (req, res) => {
-  res.render("secondYearAnnouncement");
+exports.updateDueDatesForAll = async (req, res) => {
+  res.render("dueDate");
 };
 
 exports.feeRegister = async (req, res) => {
@@ -128,6 +128,34 @@ exports.studentFeeList = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.send("Error", err);
+  }
+};
+
+exports.examFeeList = async (req, res) => {
+  try {
+    const allStudents = await Student.find({ isDelete: false });
+    const firstYearStudents = allStudents.filter(
+      (student) => student.year === 1
+    );
+    const secondYearStudents = allStudents.filter(
+      (student) => student.year === 2
+    );
+
+    res.render("examFeeList", { firstYearStudents, secondYearStudents });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
+exports.examFeeEdit = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const fee = await Student.findById(userId);
+    res.render("examFeeEdit", { fee });
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
   }
 };
 
