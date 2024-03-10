@@ -10,4 +10,6 @@ app.post("/sendMailById", authFile.validateToken, announcementController.sendEma
 
 app.post("/commonAnnouncement", authFile.validateToken, announcementController.commonMail);
 
+app.post("/commonAnnouncement", authFile.validateToken, announcementController.sendPaymentAlert);
+
 module.exports = app;
