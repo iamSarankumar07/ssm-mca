@@ -149,6 +149,10 @@
         </thead>
         <tbody>
             <tr>
+                <td>Payment Alert</td>
+                <td><button type="button" onclick="paymentAlert()">Alert</button></td>
+            </tr>
+            <tr>
                 <td>Announcement</td>
                 <td><button type="button" onclick="announcement()">Send</button></td>
             </tr>
@@ -183,6 +187,9 @@
         });
         function register() {
         window.location.href = '/ssm/mca/register';
+        };
+        function paymentAlert() {
+        window.location.href = '/ssm/mca/paymentAlert';
         };
         function studentList() {
         window.location.href = '/ssm/mca/studentList';
