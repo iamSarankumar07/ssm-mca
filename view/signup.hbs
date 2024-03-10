@@ -87,7 +87,7 @@
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            margin: 10px 0px;
+            margin: 5px 0px;
         }
         #showPassword{
             width: min-content;
@@ -97,6 +97,7 @@
         }
         .txt {
             margin-bottom: 12px;
+            font-size: 14px;
         }
 
     </style>
@@ -106,16 +107,16 @@
     <form action="/ssm/mca/signup" method="post">
         <h1>Sign Up</h1>
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter Your Name" required>
+        <input type="text" id="name" name="name" placeholder="" autocomplete="off" required>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="you@gmail.com" required>
+        <input type="email" id="email" name="email" placeholder="" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'true');" required>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" aria-label="Password" required>
+        <input type="password" id="password" name="password" aria-label="Password" aria-label="Password" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'true');" required>
 
         <label for="confirmPassword">Confirm Password:</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" aria-label="confirmPassword" required>
+        <input type="password" id="confirmPassword" name="confirmPassword" aria-label="confirmPassword" autocomplete="off" required>
 
         <div class="showPassCode">
             <input class="box" type="checkbox" id="showPassword" name="showPassword">
