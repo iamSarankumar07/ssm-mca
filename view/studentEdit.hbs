@@ -7,12 +7,8 @@
     <link rel="icon" href="https://i.postimg.cc/kGVvWqPn/edit-user-1.png">
     <script>
         function confirmAndAlert(message) {
-            if (confirm(message)) {
-                alert('Updated Successfully...');
-                return true;
-            } else {
-                return false;
-            }
+            const isConfirmed = confirm(message);
+            return isConfirmed;
         }
     </script>
     <style>
@@ -157,18 +153,7 @@
                 <td><label for="totalFee">Total Fees:</label></td>
                 <td><input type="number" id="totalFee" name="totalFee" value="{{student.totalFee}}" required></td>
             </tr>
-            <tr>
-                <td><label for="pendingFee">Pending Fees:</label></td>
-                <td><input type="number" id="pendingFee" name="pendingFee" value="{{student.pendingFee}}" required></td>
-            </tr>
-            <tr>
-                <td><label for="paymentStatus">Payment Status:</label></td>
-                <td><select id="paymentStatus" name="paymentStatus" value="{{fee.paymentStatus}}" required>
-                    <option >Select Status</option>
-                    <option value="Paid">Paid</option>
-                    <option value="Pending">Pending</option>
-                </select></td>
-            </tr>
+        
         </table>
                 <div class="button-container">
                     <button type="button" onclick="history.back()">Back</button>
