@@ -37,6 +37,10 @@ exports.commonAnnouncement = async (req, res) => {
   res.render("commonAnnouncement");
 };
 
+exports.paymentAlert = async (req, res) => {
+  res.render("paymentAlert");
+};
+
 exports.updateDueDatesForAll = async (req, res) => {
   res.render("dueDate");
 };
