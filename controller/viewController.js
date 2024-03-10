@@ -189,7 +189,9 @@ exports.getStudentDetails = async (req, res) => {
     const student = await Student.findOne({ studentId });
 
     if (!student) {
-      return res.status(404).json({ message: "Student not found" });
+      return res.send(
+        '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/studentLogin";</script>'
+      );
     }
 
     res.render("studentProfile", { student });
