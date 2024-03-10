@@ -2,7 +2,7 @@ const { sign, verify } = require("jsonwebtoken");
 
 exports.token = async (user) => {
   const accessToken = sign(
-    { userName: user.userName, id: user.id },
+    { email: user.email, id: user.id },
     "qwertyuiopasdfghjklzxcvbnm"
   );
   return accessToken;
