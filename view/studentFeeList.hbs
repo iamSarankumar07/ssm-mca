@@ -105,8 +105,6 @@
 <div class="container">
     <h1>TUTION FEES DETAILS</h1>
     <h2>MCA - I</h2>
-        {{#each firstYearStudents}}
-    <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
     <table>
         <thead>
         <tr>
@@ -118,6 +116,7 @@
         </tr>
         </thead>
         <tbody>
+        {{#each firstYearStudents}}
         <tr>
             <td>{{name}}</td>
             <td>{{totalFee}}</td>
@@ -133,8 +132,6 @@
     </div>
 
     <h2>MCA - II</h2>
-        {{#each secondYearStudents}}
-    <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
     <table>
         <thead>
         <tr>
@@ -146,6 +143,7 @@
         </tr>
         </thead>
         <tbody>
+        {{#each secondYearStudents}}
         <tr>
             <td>{{name}}</td>
             <td>{{totalFee}}</td>
@@ -204,8 +202,6 @@
                 <h1>SSM COLLEGE OF ENGINEERING</h1>
                 <h2>Department Of MCA - I</h2>
                 <h3>Tution Fees Details</h3>
-                        {{#each firstYearStudents}}
-                <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
                 <table>
                     <thead>
                         <tr>
@@ -216,6 +212,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each firstYearStudents}}
                         <tr>
                             <td>{{name}}</td>
                             <td>{{totalFee}}</td>
@@ -272,9 +269,6 @@
                 <h1>SSM COLLEGE OF ENGINEERING</h1>
                 <h2>Department Of MCA - II</h2>
                 <h3>Tution Fees Details</h3>
-                        {{#each secondYearStudents}}
-                <h4>Tution Fees Due Date : {{tutionDueDate}}</h4>
-
                 <table>
                     <thead>
                         <tr>
@@ -285,6 +279,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each secondYearStudents}}
                         <tr>
                             <td>{{name}}</td>
                             <td>{{totalFee}}</td>
