@@ -20,11 +20,9 @@ app.get("/register", authFile.validateToken, viewController.register);
 
 app.get("/announcement", authFile.validateToken, viewController.announcement);
 
-app.get(
-  "/commonAnnouncement",
-  authFile.validateToken,
-  viewController.commonAnnouncement
-  );
+app.get("/paymentAlert", authFile.validateToken, viewController.paymentAlert);
+
+app.get("/commonAnnouncement",authFile.validateToken,viewController.commonAnnouncement);
 
 app.get("/updateDueDatesForAll", authFile.validateToken, viewController.updateDueDatesForAll);
 
