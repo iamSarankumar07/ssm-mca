@@ -42,14 +42,14 @@
             color: #3d6ef5ff;
         }
 
-        a {
+        {{!-- a {
             display: block;
             text-align: center;
             font-weight: bold;
             margin-top: 10px;
             text-decoration: none;
             color: #472ddb;
-        }
+        } --}}
 
         a:hover {
             color: #1459da;
@@ -85,7 +85,7 @@
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            margin: 10px 0px;
+            margin: 5px 0px;
         }
         #showPassword{
             width: min-content;
@@ -95,6 +95,21 @@
         }
         .txt {
             margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .signup-link {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            justify-content: center;
+        }
+        a {
+            color: #3d6ef5ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .home {
+            text-align: center;
+            margin-top: 10px; 
         }
     </style>
 </head>
@@ -115,8 +130,14 @@
 
         <button type="submit" class="btn">Login</button>
 
-        <p>Don't have an Account? <a href="/ssm/mca/signup">Sign up</a></p>
-        <a href="/">Home</a>
+        {{!-- <p>Don't have an Account? <a href="/ssm/mca/signup">Sign up</a></p> --}}
+        <div class="signup-link">
+            Don't have an account? <a href="/ssm/mca/signup">Sign up</a>
+        </div>
+        <br>
+        <div class="home">
+        <a  href="/">Home</a>
+        </div>
     </form>
     <script>
         const showPasswordCheckbox = document.getElementById('showPassword');
