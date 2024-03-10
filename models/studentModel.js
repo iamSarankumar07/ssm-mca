@@ -50,6 +50,26 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    examTotalFee: {
+        type: Number,
+        required: false
+    },
+    examPendingFee: {
+        type: Number,
+        required: false
+    },
+    examPaymentStatus: {
+        type: String,
+        required: false
+    },
+    tutionDueDate: {
+        type: String,
+        required: false
+    },
+    examDueDate: {
+        type: String,
+        required: false
+    },
     isDelete: {
         type: Boolean,
         default: false,
