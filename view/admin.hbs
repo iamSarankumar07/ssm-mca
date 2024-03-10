@@ -115,7 +115,9 @@
                 <th>Title</th>
                 <th>Register</th>
                 <th>Student Details</th>
-                <th>Fees Details</th>
+                <th>Tution Fees</th>
+                <th>Exam Fees</th>
+                <th>Due Date</th>
             </tr>
         </thead>
         <tbody>
@@ -124,6 +126,8 @@
                 <td><button type="button" onclick="register()">Register</button></td>
                 <td><button type="button" onclick="studentList()">Details</button></td>
                 <td><button type="button" onclick="feeList()">Details</button></td>
+                <td><button type="button" onclick="examFeeList()">Details</button></td>
+                <td><button type="button" onclick="updateDue()">Update</button></td>
             </tr>
             {{!-- <tr>
                 <td>Student Fee Register</td>
@@ -145,24 +149,20 @@
         </thead>
         <tbody>
             <tr>
+                <td>Announcement</td>
+                <td><button type="button" onclick="announcement()">Send</button></td>
+            </tr>
+            <tr>
+                <td>Common Announcement</td>
+                <td><button type="button" onclick="commonAnnouncement()">Send</button></td>
+            </tr>
+            <tr>
                 <td>Received Contact Messages</td>
                 <td><button type="button" onclick="messages()">Messages</button></td>
             </tr>
             <tr>
-                <td>Announcement</td>
-                <td><button type="button" onclick="announcement()">Announcement</button></td>
-            </tr>
-            <tr>
-                <td>First Year Announcement</td>
-                <td><button type="button" onclick="firstYearAnnouncement()">First Year</button></td>
-            </tr>
-            <tr>
-                <td>Second Year Announcement</td>
-                <td><button type="button" onclick="secondYearAnnouncement()">Second Year</button></td>
-            </tr>
-            <tr>
                 <td>Send Everyone</td>
-                <td><button type="button" id="sendMail" onclick="sendMail()">Send Everyone</button></td>
+                <td><button type="button" id="sendMail">Send Everyone</button></td>
             <tr>
                 <td>Upload Image</td>
                 <td><button type="button" onclick="upload()">Image Upload</button></td>
@@ -187,11 +187,14 @@
         function studentList() {
         window.location.href = '/ssm/mca/studentList';
         };
-        function feeRegister() {
-        window.location.href = '#';
-        };
         function feeList() {
         window.location.href = '/ssm/mca/feeList';
+        };
+        function examFeeList() {
+        window.location.href = '/ssm/mca/examFeeList';
+        };
+        function updateDue() {
+        window.location.href = '/ssm/mca/updateDueDatesForAll';
         };
         function messages() {
         window.location.href = '/ssm/mca/messages';
@@ -199,11 +202,8 @@
         function announcement() {
         window.location.href = '/ssm/mca/announcement';
         };
-        function firstYearAnnouncement() {
-        window.location.href = '/ssm/mca/firstYearAnnouncement';
-        };
-        function secondYearAnnouncement() {
-        window.location.href = '/ssm/mca/secondYearAnnouncement';
+        function commonAnnouncement() {
+        window.location.href = '/ssm/mca/commonAnnouncement';
         };
         function upload() {
         window.location.href = '/ssm/mca/upload';
