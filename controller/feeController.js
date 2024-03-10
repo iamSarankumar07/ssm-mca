@@ -74,9 +74,11 @@ exports.updateDueDatesForAll = async (req, res) => {
 
     let filter = {};
     if (year === "first" || year === "second") {
-      filter = { year: year === "first" ? 1 : 2 };
+      filter = { year: year === "first" ? "I" : "II" };
     } else {
-      return res.status(400).json({ message: "Invalid year specified." });
+      return res.send(
+        '<script>alert("Please Select Year"); window.location.href = "/ssm/mca/studentLogin";</script>'
+      );
     }
 
     await StudentFee.updateMany(filter, {
