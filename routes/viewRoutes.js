@@ -21,16 +21,12 @@ app.get("/register", authFile.validateToken, viewController.register);
 app.get("/announcement", authFile.validateToken, viewController.announcement);
 
 app.get(
-  "/firstYearAnnouncement",
+  "/commonAnnouncement",
   authFile.validateToken,
-  viewController.firstYearAnnouncement
-);
+  viewController.commonAnnouncement
+  );
 
-app.get(
-  "/secondYearAnnouncement",
-  authFile.validateToken,
-  viewController.secondYearAnnouncement
-);
+app.get("/updateDueDatesForAll", authFile.validateToken, viewController.updateDueDatesForAll);
 
 app.get("/messages", authFile.validateToken, viewController.message);
 
@@ -60,7 +56,11 @@ app.get("/sessionExpired", (req, res) => {
 });
 app.get("/feeList", authFile.validateToken, viewController.studentFeeList);
 
+app.get("/examFeeList", authFile.validateToken, viewController.examFeeList);
+
 app.get("/feeEdit/:userId", authFile.validateToken, viewController.feeEdit);
+
+app.get("/examFeeEdit/:userId", authFile.validateToken, viewController.examFeeEdit);
 
 app.get("/gallery", authFile.validateToken, viewController.gallery);
 
