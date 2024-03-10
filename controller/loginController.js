@@ -15,7 +15,6 @@ exports.signup = async (req, res) => {
   const user = new Login({
     name: req.body.name,
     email: req.body.email,
-    phone: req.body.phone,
     gender: req.body.gender,
   });
 
