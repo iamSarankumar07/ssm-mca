@@ -105,8 +105,6 @@
 <div class="container">
     <h1>EXAM FEES DETAILS</h1>
     <h2>MCA - I</h2>
-    {{#each firstYearStudents}}
-    <h4>Exam Fees Due Date : {{examDueDate}}</h4>
     <table>
         <thead>
         <tr>
@@ -118,6 +116,7 @@
         </tr>
         </thead>
         <tbody>
+    {{#each firstYearStudents}}
         <tr>
             <td>{{name}}</td>
             <td>{{examTotalFee}}</td>
@@ -133,8 +132,6 @@
     </div>
 
     <h2>MCA - II</h2>
-    {{#each secondYearStudents}}
-    <h4>Exam Fees Due Date : {{examDueDate}} </h4>
     <table>
         <thead>
         <tr>
@@ -146,6 +143,7 @@
         </tr>
         </thead>
         <tbody>
+    {{#each secondYearStudents}}
         <tr>
             <td>{{name}}</td>
             <td>{{examTotalFee}}</td>
@@ -203,9 +201,7 @@
             <body>
                 <h1>SSM COLLEGE OF ENGINEERING</h1>
                 <h2>Department Of MCA - I</h2>
-                {{#each firstYearStudents}}
                 <h3>Exam Fees Details</h3>
-                <h4>Exam Fees Due Date  : {{examDueDate}}</h4>
                 <table>
                     <thead>
                         <tr>
@@ -216,6 +212,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                {{#each firstYearStudents}}
                         <tr>
                             <td>{{name}}</td>
                             <td>{{examTotalFee}}</td>
@@ -271,10 +268,7 @@
             <body>
                 <h1>SSM COLLEGE OF ENGINEERING</h1>
                 <h2>Department Of MCA - II</h2>
-                {{#each secondYearStudents}}
                 <h3>Exam Fees Details</h3>
-                <h4>Exam Fees Due Date  : {{examDueDate}}</h4>
-
 
                 <table>
                     <thead>
@@ -286,6 +280,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                {{#each secondYearStudents}}
                         <tr>
                             <td>{{name}}</td>
                             <td>{{examTotalFee}}</td>
