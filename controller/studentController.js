@@ -129,7 +129,7 @@ exports.newStudent = async (req, res) => {
       <p>We are thrilled to welcome you to our College! Your account has been successfully Registered 🚀.</p>
       <p>Here are your login details:</p>
       <ul>
-        <li><strong>Username : </strong> ${studentId}</li>
+        <li><strong>Student ID : </strong> ${studentId}</li>
         <li><strong>Password : </strong> ${password}</li>
       </ul>
       <p>If you have any questions or need further assistance, please feel free to <a href="mailto:verifyuserofficial@gmail.com" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
