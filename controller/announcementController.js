@@ -448,7 +448,8 @@ exports.sendPaymentAlert = async (req, res) => {
     }
 
     let students;
-    let dueDate, pendingFee;
+    let dueDate;
+    let pendingFee;
     if (type === "Tuition") {
       if (year === "I") {
         students = await Student.find({ year: "I", paymentStatus: "Pending" }, "name email tutionDueDate pendingFee");
@@ -529,9 +530,13 @@ exports.sendPaymentAlert = async (req, res) => {
           margin-bottom: 20px;
         }
         p {
-        margin-bottom: 15px;
-        text-align: justify;
-      }
+          margin-bottom: 15px;
+          text-align: justify;
+        }
+        .highlight {
+          font-weight: bold;
+          color: #ff0000; /* Red color */
+        }
         .footer {
           margin-top: 20px;
           font-size: 12px;
@@ -548,7 +553,7 @@ exports.sendPaymentAlert = async (req, res) => {
       <div class="container">
         <h1>${type} Fee Payment Reminder ⏰</h1>
         <p>Dear ${students[i].name},</p>
-        <p>This is a reminder that your ${type} fee payment is pending. The due date for the payment is ${dueDate}. Your pending fee is ${pendingFee}. Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
+        <p>This is a reminder that your ${type} fee payment is pending. The due date for the payment is <span class="highlight">${dueDate}</span>. Your pending fee is <span class="highlight"> Rs. ${pendingFee}</span>. Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
         <p>If you have already made the payment, please disregard this message.</p>
         <p>If you have any questions or need assistance, please <a href="mailto:verifyuserofficial@gmail.com">contact us</a>.</p>
         <p>Best regards,<br>SSM COLLEGE OF ENGINEERING</p>
@@ -577,6 +582,5 @@ exports.sendPaymentAlert = async (req, res) => {
     console.error("Error:", err.message);
   }
 };
-
 
 module.exports = exports;
