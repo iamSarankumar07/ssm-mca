@@ -305,7 +305,7 @@ exports.commonMail = async (req, res) => {
   }
 };
 
-exports.sendPaymentAlert = async (req, res) => {
+/* exports.sendPaymentAlert = async (req, res) => {
   try {
     const { year, type } = req.body;
 
@@ -358,7 +358,7 @@ exports.sendPaymentAlert = async (req, res) => {
     for (let i = 0; i < students.length; i++) {
       mailOptions.to = students[i].email;
       mailOptions.html = `
-        <!DOCTYPE html>
+      <!DOCTYPE html>
       <html lang="en">
       <head>
       <meta charset="UTF-8">
@@ -417,6 +417,7 @@ exports.sendPaymentAlert = async (req, res) => {
       </div>
       </body>
       </html>
+      
       `;
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
@@ -427,6 +428,143 @@ exports.sendPaymentAlert = async (req, res) => {
       });
     }
   //  res.send('<script>alert(`Alert Sent to ${year} Year ${type} Fees Pending Students`); window.location.href = "/ssm/mca/paymentAlert";</script>');
+    res.redirect('/ssm/mca/paymentAlert')
+  } catch (err) {
+    return res.send(
+      '<script>alert("Error in Payment Alert"); window.location.href = "/ssm/mca/paymentAlert";</script>'
+    );
+    console.error("Error:", err.message);
+  }
+}; */
+
+exports.sendPaymentAlert = async (req, res) => {
+  try {
+    const { year, type } = req.body;
+
+    if (!year || !type) {
+      return res.send(
+        '<script>alert("Select Options Correctly"); window.location.href = "/ssm/mca/paymentAlert";</script>'
+      );
+    }
+
+    let students;
+    let dueDate;
+    if (type === "Tuition") {
+      if (year === "I") {
+        students = await Student.find({ year: "I", paymentStatus: "Pending" }, "name email tutionDueDate");
+        dueDate = students[0].tutionDueDate;
+      } else if (year === "II") {
+        students = await Student.find({ year: "II", paymentStatus: "Pending" }, "name email tutionDueDate");
+        dueDate = students[0].tutionDueDate;
+      } else {
+        return res.send(
+          '<script>alert("Invalid Year"); window.location.href = "/ssm/mca/paymentAlert";</script>'
+        );
+      }
+    } else if (type === "Exam") {
+      if (year === "I") {
+        students = await Student.find({ year: "I", examPaymentStatus: "Pending" }, "name email examDueDate");
+        dueDate = students[0].examDueDate;
+      } else if (year === "II") {
+        students = await Student.find({ year: "II", examPaymentStatus: "Pending" }, "name email examDueDate");
+        dueDate = students[0].examDueDate;
+      } else {
+        return res.send(
+          '<script>alert("Invalid Year"); window.location.href = "/ssm/mca/paymentAlert";</script>'
+        );
+      }
+    } else {
+      return res.send(
+        '<script>alert("Select Type"); window.location.href = "/ssm/mca/paymentAlert";</script>'
+      );
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "verifyuserofficial@gmail.com",
+        pass: "wsdv megz vecp wzen",
+      },
+    });
+
+    const mailOptions = {
+      from: "verifyuserofficial@gmail.com",
+      subject: `${type} Fee Payment Reminder ⏰.`,
+    };
+
+    for (let i = 0; i < students.length; i++) {
+      mailOptions.to = students[i].email;
+      mailOptions.html = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${type} Fee Payment Reminder</title>
+      <style>
+        body, h1, p, a {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+        }
+        body {
+          background-color: #f4f4f4;
+        }
+        .container {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+          color: #ff9900;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        p {
+        margin-bottom: 15px;
+        text-align: justify;
+      }
+        .footer {
+          margin-top: 20px;
+          font-size: 12px;
+          color: #777777;
+          text-align: center;
+        }
+        a {
+          color: #007bff;
+          text-decoration: none;
+        }
+      </style>
+      </head>
+      <body>
+      <div class="container">
+        <h1>${type} Fee Payment Reminder ⏰</h1>
+        <p>Dear ${students[i].name},</p>
+        <p>This is a reminder that your ${type} fee payment is pending. The due date for the payment is ${dueDate}. Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
+        <p>If you have already made the payment, please disregard this message.</p>
+        <p>If you have any questions or need assistance, please <a href="mailto:verifyuserofficial@gmail.com">contact us</a>.</p>
+        <p>Best regards,<br>SSM COLLEGE OF ENGINEERING</p>
+        <div class="footer">
+          This is an automated message. Please do not reply to this email.
+        </div>
+      </div>
+      </body>
+      </html>
+      
+      `;
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log(`Error sending email to ${students[i].email}:`, err);
+        } else {
+          console.log(`Email sent successfully to ${students[i].email}.`);
+        }
+      });
+    }
+    //  res.send('<script>alert(`Alert Sent to ${year} Year ${type} Fees Pending Students`); window.location.href = "/ssm/mca/paymentAlert";</script>');
     res.redirect('/ssm/mca/paymentAlert')
   } catch (err) {
     return res.send(
