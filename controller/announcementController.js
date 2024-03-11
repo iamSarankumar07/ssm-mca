@@ -556,7 +556,7 @@ exports.sendPaymentAlert = async (req, res) => {
         <p>This is a reminder that your ${type} fee payment is pending. The due date for the payment is <span class="highlight">${dueDate}</span>. Your pending fee is <span class="highlight"> Rs. ${pendingFee}</span>. Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
         <p>If you have already made the payment, please disregard this message.</p>
         <p>If you have any questions or need assistance, please <a href="mailto:verifyuserofficial@gmail.com">contact us</a>.</p>
-        <p>Best regards,<br>SSM COLLEGE OF ENGINEERING</p>
+        <p>Best regards,<br>SSM COLLEGE OF ENGINEERING.</p>
         <div class="footer">
           This is an automated message. Please do not reply to this email.
         </div>
