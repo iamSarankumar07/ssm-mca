@@ -448,14 +448,16 @@ exports.sendPaymentAlert = async (req, res) => {
     }
 
     let students;
-    let dueDate;
+    let dueDate, pendingFee;
     if (type === "Tuition") {
       if (year === "I") {
-        students = await Student.find({ year: "I", paymentStatus: "Pending" }, "name email tutionDueDate");
+        students = await Student.find({ year: "I", paymentStatus: "Pending" }, "name email tutionDueDate pendingFee");
         dueDate = students[0].tutionDueDate;
+        pendingFee = students[0].pendingFee;
       } else if (year === "II") {
-        students = await Student.find({ year: "II", paymentStatus: "Pending" }, "name email tutionDueDate");
+        students = await Student.find({ year: "II", paymentStatus: "Pending" }, "name email tutionDueDate pendingFee");
         dueDate = students[0].tutionDueDate;
+        pendingFee = students[0].pendingFee;
       } else {
         return res.send(
           '<script>alert("Invalid Year"); window.location.href = "/ssm/mca/paymentAlert";</script>'
@@ -463,11 +465,13 @@ exports.sendPaymentAlert = async (req, res) => {
       }
     } else if (type === "Exam") {
       if (year === "I") {
-        students = await Student.find({ year: "I", examPaymentStatus: "Pending" }, "name email examDueDate");
+        students = await Student.find({ year: "I", examPaymentStatus: "Pending" }, "name email examDueDate examPendingFee");
         dueDate = students[0].examDueDate;
+        pendingFee = students[0].examPendingFee;
       } else if (year === "II") {
-        students = await Student.find({ year: "II", examPaymentStatus: "Pending" }, "name email examDueDate");
+        students = await Student.find({ year: "II", examPaymentStatus: "Pending" }, "name email examDueDate examPendingFee");
         dueDate = students[0].examDueDate;
+        pendingFee = students[0].examPendingFee;
       } else {
         return res.send(
           '<script>alert("Invalid Year"); window.location.href = "/ssm/mca/paymentAlert";</script>'
@@ -544,7 +548,7 @@ exports.sendPaymentAlert = async (req, res) => {
       <div class="container">
         <h1>${type} Fee Payment Reminder ⏰</h1>
         <p>Dear ${students[i].name},</p>
-        <p>This is a reminder that your ${type} fee payment is pending. The due date for the payment is ${dueDate}. Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
+        <p>This is a reminder that your ${type} fee payment is pending. The due date for the payment is ${dueDate}. Your pending fee is ${pendingFee}. Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
         <p>If you have already made the payment, please disregard this message.</p>
         <p>If you have any questions or need assistance, please <a href="mailto:verifyuserofficial@gmail.com">contact us</a>.</p>
         <p>Best regards,<br>SSM COLLEGE OF ENGINEERING</p>
