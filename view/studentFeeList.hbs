@@ -11,20 +11,17 @@
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
 
         .container {
             width: 80%;
             max-width: 1200px;
-            margin: 20px;
+            margin: 20px auto; 
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
+            overflow: auto;  
         }
 
         h1 {
@@ -32,9 +29,8 @@
             color: #fff;
             background-color: #3d6ef5ff;
             border-radius: 5px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            margin-top: 10px;
+            padding: 10px;
+            margin: 0; 
         }
 
         h2 {
@@ -91,71 +87,88 @@
             background: #fff;
             color: #3d6ef5ff;
         }
-        .goback {
+
+        .table-container {
+            margin: 0 auto; 
+            width: 80%; 
+        }
+        .back-button {
     position: absolute;
-    top: 10%;
-    width: 45px;
-    height: 45px;
-    left: 10.5%;
+    top: 48px;
+    left: 12%; 
+    text-decoration: none;
 }
-        
+
+.back-button img {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
     </style>
 </head>
 <body>
 <div class="container">
     <h1>TUTION FEES DETAILS</h1>
-    <h2>MCA - I</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Total Fee</th>
-            <th>Pending Fee</th>
-            <th>Payment Status</th>
-            <th>Edit</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each firstYearStudents}}
-        <tr>
-            <td>{{name}}</td>
-            <td>{{totalFee}}</td>
-            <td>{{pendingFee}}</td>
-            <td>{{paymentStatus}}</td>
-            <td style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
-        </tr>
-        {{/each}}
-        </tbody>
-    </table>
-    <div class="btn-container">
-        <button class="btn" onclick="printFirstYearFee()">Print</button>
+    <a href="/studentHome" class="back-button">
+        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
+    </a>
+    <div class="table-container">
+        <h2>MCA - I</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Fee</th>
+                <th>Pending Fee</th>
+                <th>Payment Status</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each firstYearStudents}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{totalFee}}</td>
+                <td>{{pendingFee}}</td>
+                <td>{{paymentStatus}}</td>
+                <td style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <div class="btn-container">
+            <button class="btn" onclick="printFirstYearFee()">Print</button>
+        </div>
     </div>
 
-    <h2>MCA - II</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Total Fee</th>
-            <th>Pending Fee</th>
-            <th>Payment Status</th>
-            <th>Edit</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each secondYearStudents}}
-        <tr>
-            <td>{{name}}</td>
-            <td>{{totalFee}}</td>
-            <td>{{pendingFee}}</td>
-            <td>{{paymentStatus}}</td>
-            <td style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
-        </tr>
-        {{/each}}
-        </tbody>
-    </table>
-    <div class="btn-container">
-        <button class="btn" onclick="printSecondYearFee()">Print</button>
+    <div class="table-container">
+        <h2>MCA - II</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Fee</th>
+                <th>Pending Fee</th>
+                <th>Payment Status</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each secondYearStudents}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{totalFee}}</td>
+                <td>{{pendingFee}}</td>
+                <td>{{paymentStatus}}</td>
+                <td style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <div class="btn-container">
+            <button class="btn" onclick="printSecondYearFee()">Print</button>
+        </div>
     </div>
     <div class="btn-container">
         <a class="btn" href="/ssm/mca/dashboard">< Go back!</a>
