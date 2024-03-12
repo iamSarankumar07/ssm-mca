@@ -278,7 +278,9 @@ exports.login = async (req, res) => {
 
 exports.otp = async (req, res) => {
   try {
-    const user = await Login.findOne({ otp: req.body.otp });
+    const otp = req.body.otp1 + req.body.otp2 + req.body.otp3 + req.body.otp4 + req.body.otp5 + req.body.otp6;
+
+    const user = await Login.findOne({ otp });
 
     if (!user) {
       console.log("User not found");
