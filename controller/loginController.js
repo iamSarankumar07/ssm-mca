@@ -166,7 +166,9 @@ exports.login = async (req, res) => {
     const OTP = Math.floor(100000 + Math.random() * 900000);
     console.log(OTP);
 
-    user.otp = OTP;
+    const OTPString = OTP.toString(); // Convert OTP to string
+
+    user.otp = OTPString; // Store OTP as string
     await user.save();
 
     const transporter = nodemailer.createTransport({
@@ -182,82 +184,103 @@ exports.login = async (req, res) => {
       to: user.email,
       subject: "Email Verification",
       html: `<!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Email Verification</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              font-size: 16px;
-              color: #333;
-              margin: 0;
-              padding: 0;
-            }
-        
-            .container {
-              width: 80%;
-              max-width: 600px;
-              margin: 20px auto;
-              background-color: #f5f5f5;
-              border-radius: 5px;
-              padding: 30px;
-              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
-        
-            .header {
-              text-align: center;
-              margin-bottom: 20px;
-            }
-        
-            .header h1 {
-              font-size: 24px;
-              font-weight: bold;
-              margin-bottom: 10px;
-              color: #007bff; 
-            }
-        
-            .content {
-              line-height: 1.5;
-            }
-        
-            .otp-code {
-              font-weight: bold;
-              font-size: 18px;
-              text-align: center;
-              margin-bottom: 20px;
-              border: 1px solid #ccc;
-              padding: 10px 20px;
-              border-radius: 5px;
-            }
-        
-            .footer {
-              text-align: center;
-              font-size: 14px;
-              margin-top: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>Email Verification</h1>
-            </div>
-            <div class="content">
-              <p>Hello ${user.name},</p>
-              <p>Please use the following OTP to verify your login:</p>
-              <p class="otp-code">${OTP}</p>
-              <p>This OTP is valid for 10 Minutes.</p>
-              <p>If you didn't request this OTP, please ignore this email.</p>
-            </div>
-            <div class="footer">
-              <p>Thank you.</p>
-            </div>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Verification</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+            padding: 0;
+          }
+      
+          .container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          }
+      
+          .header {
+            text-align: center;
+            margin-bottom: 20px;
+          }
+      
+          .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #007bff;
+          }
+      
+          .content {
+            line-height: 1.6;
+          }
+      
+          .otp-code {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+          }
+      
+          .otp-box {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 24px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            border: 2px solid #007bff;
+            margin-right: 5px;
+          }
+      
+          .footer {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 20px;
+            color: #666;
+          }
+      
+          .footer p {
+            margin: 5px 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Email Verification</h1>
           </div>
-        </body>
-        </html>
-        `,
+          <div class="content">
+            <p>Hello ${user.name},</p>
+            <p>Please use the following OTP to verify your login:</p>
+            <div class="otp-code">
+              <div class="otp-box">${OTPString[0]}</div>
+              <div class="otp-box">${OTPString[1]}</div>
+              <div class="otp-box">${OTPString[2]}</div>
+              <div class="otp-box">${OTPString[3]}</div>
+              <div class="otp-box">${OTPString[4]}</div>
+              <div class="otp-box">${OTPString[5]}</div>
+            </div>
+            <p>This OTP is valid for 10 minutes.</p>
+            <p>If you didn't request this OTP, please ignore this email.</p>
+          </div>
+          <div class="footer">
+            <p>Thank you for using our service.</p>
+            <p>If you need any assistance, please contact us at iamsarankumar@outlook.com.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+      `,
     };
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -275,6 +298,7 @@ exports.login = async (req, res) => {
     res.send("Internal Server Error");
   }
 };
+
 
 exports.otp = async (req, res) => {
   try {
