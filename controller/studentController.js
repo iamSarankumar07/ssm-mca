@@ -204,6 +204,7 @@ exports.updateStudent = async (req, res) => {
 
     await Student.findByIdAndUpdate(userId, {
       name: body.name,
+      registerNumber: body.registerNumber,
       gender: body.gender,
       dob: body.dob,
       year: body.year,
