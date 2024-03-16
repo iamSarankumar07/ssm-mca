@@ -16,6 +16,14 @@ exports.newStudent = async (req, res) => {
       '<script>alert("Registration number already exists!"); window.location="/ssm/mca/register";</script>'
     );
   }
+  const existingEmail = await Student.findOne({
+    email: body.email,
+  });
+  if (existingEmail) {
+    return res.send(
+      '<script>alert("Email already exists!"); window.location="/ssm/mca/register";</script>'
+    );
+  }
 
   const student = new Student({
     name: body.name,
