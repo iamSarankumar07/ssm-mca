@@ -7,6 +7,10 @@ const app = express();
 
 exports.newStudent = async (req, res) => {
   const body = req.body;
+  const existingStudent = await Student.findOne({ registerNumber: body.registerNumber });
+    if (existingStudent) {
+        return res.send('<script>alert("Registration number already exists!"); window.location="/ssm/mca/register";</script>');
+    }
   const student = new Student({
     name: body.name,
     registerNumber: body.registerNumber,
