@@ -135,14 +135,10 @@
 
         <div class="button-container">
             <button type="button" onclick="goBack()">Back</button>
-            <button type="submit" id="firstYrMail" onclick="return confirmAndAlert('Are you sure you want to Send Email?')">Send</button>
+            <button type="submit" id="firstYrMail" >Send</button>
         </div>
     </form>
     <script>
-        function confirmAndAlert(message) {
-            const isConfirmed = confirm(message);
-            return isConfirmed;
-        }
         function goBack() {
             window.location.href = '/ssm/mca/dashboard';
         }
