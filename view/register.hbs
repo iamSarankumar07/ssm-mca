@@ -154,17 +154,11 @@
         <label for="totalFee">Total Fees:</label>
         <input type="text" id="totalFee" name="totalFee" required>
         
-        <button type="submit" onclick="return confirmRegistration()">Register</button>
+        <button type="submit">Register</button>
         <div class="home-link"><a href="/ssm/mca/dashboard">Back</a></div>
     </form>
     <script>
-        function confirmRegistration() {
-            if (confirm("Are You Sure You Want To Register ?")) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+
         document.getElementById("phone").addEventListener("input", function() {
         this.value = this.value.replace(/\D/g, '');
         if (this.value.length > 10) {
