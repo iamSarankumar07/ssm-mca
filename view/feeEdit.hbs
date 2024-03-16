@@ -120,6 +120,14 @@
             <button type="submit" onclick="return confirmAndAlert('Are you sure you want to update?')">Update</button>
         </div>
     </form>
+    <script>
+        document.getElementById("totalFee").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        });
+        document.getElementById("pendingFee").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
 
 </body>
 </html>
