@@ -103,10 +103,10 @@
         <input type="text" id="name" name="name" value="{{fee.name}}" disabled />
 
         <label for="examTotalFee">Total Fee:</label>
-        <input type="number" id="examTotalFee" name="examTotalFee" value="{{fee.examTotalFee}}" required />
+        <input type="text" id="examTotalFee" name="examTotalFee" value="{{fee.examTotalFee}}" required />
 
         <label for="examPendingFee">Pending Fee:</label>
-        <input type="number" id="examPendingFee" name="examPendingFee" value="{{fee.examPendingFee}}" required />
+        <input type="text" id="examPendingFee" name="examPendingFee" value="{{fee.examPendingFee}}" required />
 
         <label for="examPaymentStatus">Payment Status:</label></td>
         <select id="examPaymentStatus" name="examPaymentStatus" value="{{fee.examPaymentStatus}}" required>
@@ -120,6 +120,13 @@
             <button type="submit" onclick="return confirmAndAlert('Are you sure you want to update?')">Update</button>
         </div>
     </form>
-
+    <script>
+        document.getElementById("examTotalFee").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        });
+        document.getElementById("examPendingFee").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
 </body>
 </html>
