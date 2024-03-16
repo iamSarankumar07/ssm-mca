@@ -155,7 +155,9 @@ exports.newStudent = async (req, res) => {
       }
     });
 
-    res.redirect("/ssm/mca/register");
+    // res.redirect("/ssm/mca/register");
+    res.send('<script>alert("Registered Successfully!"); window.location="/ssm/mca/register";</script>');
+
   } catch (err) {
     res.send(err.message, "Error");
   }
