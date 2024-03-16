@@ -98,7 +98,7 @@
 
         <div class="button-container">
             <button type="button" onclick="goBack()">Back</button>
-            <button type="submit" onclick="return confirmAndAlert('Are you sure you want to Send Email?')">Send</button>
+            <button type="submit" >Send</button>
         </div>
 
     </form>
@@ -107,14 +107,7 @@ function goBack() {
   window.history.back();
   window.location.href = '/ssm/mca/dashboard';
 };
-function confirmAndAlert(message) {
-  if (confirm(message)) {
-    alert('Email sent!');
-    return true;
-  } else {
-    return false;
-  }
-}
+
 </script>
 </body>
 </html>
