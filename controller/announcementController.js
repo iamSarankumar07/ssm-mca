@@ -22,6 +22,7 @@ exports.sendMail = async (req, res) => {
     };
 
     for (let i = 0; i < studentEmails.length; i++) {
+      setTimeout(() => {
       mailOptions.to = studentEmails[i];
       mailOptions.html = `
           <!DOCTYPE html>
@@ -79,6 +80,8 @@ exports.sendMail = async (req, res) => {
           console.log(`Email sent successfully to ${studentEmails[i]}.`);
         }
       });
+    }, i * 1000); 
+
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
