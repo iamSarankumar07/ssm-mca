@@ -81,7 +81,6 @@ exports.sendMail = async (req, res) => {
         }
       });
     }, i * 1000); 
-
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -334,6 +333,7 @@ exports.commonMail = async (req, res) => {
     };
 
     for (let i = 0; i < studentEmails.length; i++) {
+      setTimeout(() => {
       mailOptions.to = studentEmails[i];
       mailOptions.html = `
         <!DOCTYPE html>
@@ -403,7 +403,8 @@ exports.commonMail = async (req, res) => {
           console.log(`Email sent successfully to ${studentEmails[i]}.`);
         }
       });
-    }
+    }, i * 1000); 
+  }
 
     // res.redirect("/ssm/mca/commonAnnouncement");
     res.send(
@@ -890,6 +891,7 @@ exports.sendPaymentAlert = async (req, res) => {
         </script>
       </body>
       </html>
+      
       `
      );
   } catch (err) {
