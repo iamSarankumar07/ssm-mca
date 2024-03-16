@@ -5,17 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Alert</title>
     <link rel="icon" href="https://i.postimg.cc/kGVvWqPn/edit-user-1.png">
-    <script>
-  function confirmAndAlert(message) {
-    if (confirm(message)) {
-      document.getElementById('myForm').submit();
-      alert('Message sent successfully.');
-      return true; 
-    } else {
-      return false; 
-    }
-  }
-</script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -119,7 +109,7 @@
         <br><br>
         <div class="button-container">
             <button type="button" onclick="window.location.href='/ssm/mca/dashboard'">Back</button>
-            <button type="submit" onclick="return confirmAndAlert('Are you sure you want to Send?')">Send</button>
+            <button type="submit">Send</button>
         </div>
     </form>
 
