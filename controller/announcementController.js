@@ -80,7 +80,7 @@ exports.sendMail = async (req, res) => {
           console.log(`Email sent successfully to ${studentEmails[i]}.`);
         }
       });
-    }, i * 1000); 
+    }, i * 500); 
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -403,7 +403,7 @@ exports.commonMail = async (req, res) => {
           console.log(`Email sent successfully to ${studentEmails[i]}.`);
         }
       });
-    }, i * 1000); 
+    }, i * 500); 
   }
 
     // res.redirect("/ssm/mca/commonAnnouncement");
@@ -785,7 +785,7 @@ exports.sendPaymentAlert = async (req, res) => {
             console.log(`Email sent successfully to ${students[i].email}.`);
           }
         });
-      }, i * 1000); 
+      }, i * 500); 
     }
     //  res.send('<script>alert(`Alert Sent to ${year} Year ${type} Fees Pending Students`); window.location.href = "/ssm/mca/paymentAlert";</script>');
     // res.redirect('/ssm/mca/paymentAlert')
