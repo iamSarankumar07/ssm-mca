@@ -4,7 +4,7 @@ const Student = require("../models/studentModel");
 
 exports.sendMail = async (req, res) => {
   try {
-    const students = await Student.find({}, "email");
+    const students = await Student.find({isDelete: false}, "email");
     const studentEmails = students.map((user) => user.email);
     console.log("All user emails:", studentEmails);
 
@@ -92,7 +92,7 @@ exports.sendEmailByRegNum = async (req, res) => {
   try {
     const { registerNumber, title, subject, message } = req.body;
 
-    const student = await Student.findOne({ registerNumber });
+    const student = await Student.findOne({ registerNumber, isDelete: false });
 
     if (!student) {
       return res.send(
@@ -298,11 +298,11 @@ exports.commonMail = async (req, res) => {
     let students = [];
     
     if (year === "first") {
-      students = await Student.find({ year: "I" }, "email");
+      students = await Student.find({ year: "I", isDelete: false }, "email");
     } else if (year === "second") {
-      students = await Student.find({ year: "II" }, "email");
+      students = await Student.find({ year: "II", isDelete: false }, "email");
     } else if (year === "all") {
-      students = await Student.find({}, "email");
+      students = await Student.find({isDelete: false}, "email");
     } else {
       return res.send(
         '<script>alert("Invalid Year Selection"); window.location.href = "/ssm/mca/commonAnnouncement";</script>'
