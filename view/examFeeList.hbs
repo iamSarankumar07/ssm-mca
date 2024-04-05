@@ -46,8 +46,12 @@
 
         th, td {
             border: 1px solid #dee2e6;
-            text-align: center;
+            {{!-- text-align: center; --}}
             padding: 12px;
+        }
+
+        .td {
+            text-align: center;
         }
 
         th {
@@ -136,16 +140,17 @@
     {{#each firstYearStudents}}
         <tr>
             <td>{{name}}</td>
-            <td>Rs.{{examTotalFee}}</td>
-            <td>Rs.{{examPendingFee}}</td>
-            <td>{{examPaymentStatus}}</td>
-            <td style="font-weight: bold;"><a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            <td class="td">Rs.{{examTotalFee}}</td>
+            <td class="td">Rs.{{examPendingFee}}</td>
+            <td class="td">{{examPaymentStatus}}</td>
+            <td class="td" style="font-weight: bold;"><a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">Edit</a></td>
         </tr>
         {{/each}}
         </tbody>
     </table>
     <div class="btn-container">
         <button class="btn" onclick="printFirstYearFee()">Print</button>
+        <button class="btn" onclick="window.location.href = '/ssm/mca/downloadFirstYrExFeePDF'">Download</button>
     </div>
 </div>
 <div class="table-container">
@@ -164,16 +169,17 @@
     {{#each secondYearStudents}}
         <tr>
             <td>{{name}}</td>
-            <td>Rs.{{examTotalFee}}</td>
-            <td>Rs.{{examPendingFee}}</td>
-            <td>{{examPaymentStatus}}</td>
-            <td style="font-weight: bold;"><a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            <td class="td">Rs.{{examTotalFee}}</td>
+            <td class="td">Rs.{{examPendingFee}}</td>
+            <td class="td">{{examPaymentStatus}}</td>
+            <td class="td" style="font-weight: bold;"><a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">Edit</a></td>
         </tr>
         {{/each}}
         </tbody>
     </table>
     <div class="btn-container">
         <button class="btn" onclick="printSecondYearFee()">Print</button>
+        <button class="btn" onclick="window.location.href = '/ssm/mca/downloadSecondYrExFeePDF'">Download</button>
     </div>
 </div>
     <div class="btn-container">
@@ -212,8 +218,12 @@
 
                     th, td {
                         border: 1px solid #000; 
-                        text-align: center;
+                        {{!-- text-align: center; --}}
                         padding: 12px;
+                    }
+
+                    .td {
+                        text-align: center;
                     }
                 </style>
             </head>
@@ -234,9 +244,9 @@
                 {{#each firstYearStudents}}
                         <tr>
                             <td>{{name}}</td>
-                            <td>Rs.{{examTotalFee}}</td>
-                            <td>Rs.{{examPendingFee}}</td>
-                            <td>{{examPaymentStatus}}</td>
+                            <td class="td">Rs.{{examTotalFee}}</td>
+                            <td class="td">Rs.{{examPendingFee}}</td>
+                            <td class="td">{{examPaymentStatus}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -279,8 +289,12 @@
 
                     th, td {
                         border: 1px solid #000;
-                        text-align: center;
+                        {{!-- text-align: center; --}}
                         padding: 12px;
+                    }
+
+                    .td {
+                        text-align: center;
                     }
                 </style>
             </head>
@@ -302,9 +316,9 @@
                 {{#each secondYearStudents}}
                         <tr>
                             <td>{{name}}</td>
-                            <td>Rs.{{examTotalFee}}</td>
-                            <td>Rs.{{examPendingFee}}</td>
-                            <td>{{examPaymentStatus}}</td>
+                            <td class="td">Rs.{{examTotalFee}}</td>
+                            <td class="td">Rs.{{examPendingFee}}</td>
+                            <td class="td">{{examPaymentStatus}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
