@@ -46,8 +46,11 @@
 
         th, td {
             border: 1px solid #dee2e6;
-            text-align: center;
             padding: 12px;
+        }
+
+        .td {
+            text-align: center;
         }
 
         th {
@@ -129,16 +132,17 @@
             {{#each firstYearStudents}}
             <tr>
                 <td>{{name}}</td>
-                <td>Rs.{{totalFee}}</td>
-                <td>Rs.{{pendingFee}}</td>
-                <td>{{paymentStatus}}</td>
-                <td style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+                <td class="td">Rs.{{totalFee}}</td>
+                <td class="td">Rs.{{pendingFee}}</td>
+                <td class="td">{{paymentStatus}}</td>
+                <td class="td" style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
             </tr>
             {{/each}}
             </tbody>
         </table>
         <div class="btn-container">
             <button class="btn" onclick="printFirstYearFee()">Print</button>
+            <button class="btn" onclick="window.location.href = '/ssm/mca/downloadFirstYrTuFeePDF'">Download</button>
         </div>
     </div>
 
@@ -158,9 +162,9 @@
             {{#each secondYearStudents}}
             <tr>
                 <td>{{name}}</td>
-                <td>Rs.{{totalFee}}</td>
-                <td>Rs.{{pendingFee}}</td>
-                <td>{{paymentStatus}}</td>
+                <td class="td">Rs.{{totalFee}}</td>
+                <td class="td">Rs.{{pendingFee}}</td>
+                <td class="td">{{paymentStatus}}</td>
                 <td style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
             </tr>
             {{/each}}
@@ -168,6 +172,7 @@
         </table>
         <div class="btn-container">
             <button class="btn" onclick="printSecondYearFee()">Print</button>
+            <button class="btn" onclick="window.location.href = '/ssm/mca/downloadSecondYrTuFeePDF'">Download</button>
         </div>
     </div>
     <div class="btn-container">
@@ -206,8 +211,12 @@
 
                     th, td {
                         border: 1px solid #000; 
-                        text-align: center;
+                        {{!-- text-align: center; --}}
                         padding: 12px;
+                    }
+
+                    .td {
+                        text-align: center;
                     }
                 </style>
             </head>
@@ -228,9 +237,9 @@
                         {{#each firstYearStudents}}
                         <tr>
                             <td>{{name}}</td>
-                            <td>Rs.{{totalFee}}</td>
-                            <td>Rs.{{pendingFee}}</td>
-                            <td>{{paymentStatus}}</td>
+                            <td class="td">Rs.{{totalFee}}</td>
+                            <td class="td">Rs.{{pendingFee}}</td>
+                            <td class="td">{{paymentStatus}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -273,8 +282,12 @@
 
                     th, td {
                         border: 1px solid #000;
-                        text-align: center;
+                        {{!-- text-align: center; --}}
                         padding: 12px;
+                    }
+
+                    .td {
+                        text-align: center;
                     }
                 </style>
             </head>
@@ -295,9 +308,9 @@
                         {{#each secondYearStudents}}
                         <tr>
                             <td>{{name}}</td>
-                            <td>Rs.{{totalFee}}</td>
-                            <td>Rs.{{pendingFee}}</td>
-                            <td>{{paymentStatus}}</td>
+                            <td class="td">Rs.{{totalFee}}</td>
+                            <td class="td">Rs.{{pendingFee}}</td>
+                            <td class="td">{{paymentStatus}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
