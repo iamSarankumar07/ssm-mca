@@ -184,107 +184,107 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
       const firstYearStudents = await Student.find({ year: 'I', isDelete: false });
 
       const html = `
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Tuition Fees Details</title>
-              <style>
-                  body {
-                      font-family: Arial, sans-serif;
-                      background-color: #f7f7f7;
-                      margin: 0;
-                      padding: 20px;
-                  }
-              
-                  .container {
-                      max-width: 800px;
-                      margin: 0 auto;
-                      padding: 15px;
-                      background-color: #fff;
-                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                      border-radius: 10px;
-                  }
-              
-                  h1, h2, h3 {
-                      color: #333;
-                      text-align: center;
-                      padding-top: 1px;
-                      margin-bottom: 5px;
-                  }
-              
-                  table {
-                      width: 100%;
-                      border-collapse: collapse;
-                      margin-top: 15px;
-                  }
-              
-                  th, td {
-                      border: 1px solid #ccc;
-                      padding: 10px;
-                      text-align: center;
-                      font-size: 16px;
-                  }
-              
-                  th {
-                      background-color: #3e64ff;
-                      color: #fff;
-                  }
-              
-                  tr:nth-child(even) {
-                      background-color: #f2f2f2;
-                  }
-              
-                  tr:hover {
-                      background-color: #ddd;
-                  }
-              
-                  .total {
-                      font-weight: bold;
-                  }
-              
-                  .status-paid {
-                      color: green;
-                  }
-              
-                  .status-pending {
-                      color: orange;
-                  }
-              
-                  .status-due {
-                      color: red;
-                  }
-              </style>
-          </head>
-          <body>
-              <div class="container">
-                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
-                  <h2>Department Of MCA - I</h2>
-                  <h3>Tuition Fees Details</h3>
-                  <table>
-                      <thead>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Tuition Fees Details</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f7f7f7;
+                  margin: 0;
+                  padding: 20px;
+              }
+      
+              .container {
+                  max-width: 800px;
+                  margin: 0 auto;
+                  padding: 15px;
+                  background-color: #fff;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  border-radius: 10px;
+              }
+      
+              h1, h2, h3 {
+                  color: #333;
+                  text-align: center;
+                  padding-top: 1px;
+                  margin-bottom: 5px;
+              }
+      
+              table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin-top: 15px;
+              }
+      
+              th, td {
+                  border: 1px solid #ccc;
+                  padding: 10px;
+                  text-align: center;
+                  font-size: 16px;
+              }
+      
+              th {
+                  background-color: #3e64ff;
+                  color: #fff;
+              }
+      
+              tr:nth-child(even) {
+                  background-color: #f2f2f2;
+              }
+      
+              tr:hover {
+                  background-color: #ddd;
+              }
+      
+              .total {
+                  font-weight: bold;
+              }
+      
+              .status-paid {
+                  color: green;
+              }
+      
+              .status-pending {
+                  color: orange;
+              }
+      
+              .status-due {
+                  color: red;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+              <h2>Department Of MCA - I</h2>
+              <h3>Tuition Fees Details</h3>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Total Fee</th>
+                          <th>Pending Fee</th>
+                          <th>Payment Status</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      ${firstYearStudents.map(student => `
                           <tr>
-                              <th>Name</th>
-                              <th>Total Fee</th>
-                              <th>Pending Fee</th>
-                              <th>Payment Status</th>
+                              <td style="text-align: left">${student.name}</td>
+                              <td>Rs.${student.totalFee}</td>
+                              <td>Rs.${student.pendingFee}</td>
+                              <td class="${student.paymentStatus}">${student.paymentStatus}</td>
                           </tr>
-                      </thead>
-                      <tbody>
-                          ${firstYearStudents.map(student => `
-                              <tr>
-                                  <td style="text-align: left">${student.name}</td>
-                                  <td>Rs.${student.totalFee}</td>
-                                  <td>Rs.${student.pendingFee}</td>
-                                  <td class="${student.paymentStatus}">${student.paymentStatus}</td>
-                              </tr>
-                          `).join('')}
-                      </tbody>
-                  </table>
-              </div>
-          </body>
-          </html>
+                      `).join('')}
+                  </tbody>
+              </table>
+          </div>
+      </body>
+      </html>
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
@@ -331,107 +331,107 @@ exports.downloadSecondYrTuFeePDF = async (req, res) => {
       const secondYearStudents = await Student.find({ year: 'II', isDelete: false });
 
       const html = `
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Tuition Fees Details</title>
-              <style>
-                  body {
-                      font-family: Arial, sans-serif;
-                      background-color: #f7f7f7;
-                      margin: 0;
-                      padding: 20px;
-                  }
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Tuition Fees Details</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f7f7f7;
+                  margin: 0;
+                  padding: 20px;
+              }
 
-                  .container {
-                      max-width: 800px;
-                      margin: 0 auto;
-                      padding: 15px; 
-                      background-color: #fff;
-                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                      border-radius: 10px;
-                  }
+              .container {
+                  max-width: 800px;
+                  margin: 0 auto;
+                  padding: 15px; 
+                  background-color: #fff;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  border-radius: 10px;
+              }
 
-                  h1, h2, h3 {
-                      color: #333;
-                      text-align: center;
-                      padding-top: 1px;
-                      margin-bottom: 5px;
-                  }
+              h1, h2, h3 {
+                  color: #333;
+                  text-align: center;
+                  padding-top: 1px;
+                  margin-bottom: 5px;
+              }
 
-                  table {
-                      width: 100%;
-                      border-collapse: collapse;
-                      margin-top: 15px;
-                  }
+              table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin-top: 15px;
+              }
 
-                  th, td {
-                      border: 1px solid #ccc;
-                      padding: 10px; 
-                      text-align: center;
-                      font-size: 16px; 
-                  }
+              th, td {
+                  border: 1px solid #ccc;
+                  padding: 10px; 
+                  text-align: center;
+                  font-size: 16px; 
+              }
 
-                  th {
-                      background-color: #3e64ff;
-                      color: #fff;
-                  }
+              th {
+                  background-color: #3e64ff;
+                  color: #fff;
+              }
 
-                  tr:nth-child(even) {
-                      background-color: #f2f2f2;
-                  }
+              tr:nth-child(even) {
+                  background-color: #f2f2f2;
+              }
 
-                  tr:hover {
-                      background-color: #ddd;
-                  }
+              tr:hover {
+                  background-color: #ddd;
+              }
 
-                  .total {
-                      font-weight: bold;
-                  }
+              .total {
+                  font-weight: bold;
+              }
 
-                  .status-paid {
-                      color: green;
-                  }
+              .status-paid {
+                  color: green;
+              }
 
-                  .status-pending {
-                      color: orange;
-                  }
+              .status-pending {
+                  color: orange;
+              }
 
-                  .status-due {
-                      color: red;
-                  }
-              </style>
-          </head>
-          <body>
-              <div class="container">
-                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
-                  <h2>Department Of MCA - II</h2>
-                  <h3>Tuition Fees Details</h3>
-                  <table>
-                      <thead>
+              .status-due {
+                  color: red;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+          <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+              <h2>Department Of MCA - II</h2>
+              <h3>Tuition Fees Details</h3>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Total Fee</th>
+                          <th>Pending Fee</th>
+                          <th>Payment Status</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      ${secondYearStudents.map(student => `
                           <tr>
-                              <th>Name</th>
-                              <th>Total Fee</th>
-                              <th>Pending Fee</th>
-                              <th>Payment Status</th>
+                              <td style="text-align: left">${student.name}</td>
+                              <td>Rs.${student.totalFee}</td>
+                              <td>Rs.${student.pendingFee}</td>
+                              <td class="${student.paymentStatus}">${student.paymentStatus}</td>
                           </tr>
-                      </thead>
-                      <tbody>
-                          ${secondYearStudents.map(student => `
-                              <tr>
-                                  <td style="text-align: left">${student.name}</td>
-                                  <td>Rs.${student.totalFee}</td>
-                                  <td>Rs.${student.pendingFee}</td>
-                                  <td class="${student.paymentStatus}">${student.paymentStatus}</td>
-                              </tr>
-                          `).join('')}
-                      </tbody>
-                  </table>
-              </div>
-          </body>
-          </html>
+                      `).join('')}
+                  </tbody>
+              </table>
+          </div>
+      </body>
+      </html>
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
@@ -478,107 +478,107 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
       const firstYearStudents = await Student.find({ year: 'I', isDelete: false });
 
       const html = `
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Exam Fees Details</title>
-              <style>
-                  body {
-                      font-family: Arial, sans-serif;
-                      background-color: #f7f7f7;
-                      margin: 0;
-                      padding: 20px;
-                  }
-
-                  .container {
-                      max-width: 800px;
-                      margin: 0 auto;
-                      padding: 15px; 
-                      background-color: #fff;
-                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                      border-radius: 10px;
-                  }
-
-                  h1, h2, h3 {
-                      color: #333;
-                      text-align: center;
-                      padding-top: 1px;
-                      margin-bottom: 5px;
-                  }
-
-                  table {
-                      width: 100%;
-                      border-collapse: collapse;
-                      margin-top: 15px;
-                  }
-
-                  th, td {
-                      border: 1px solid #ccc;
-                      padding: 12px; 
-                      text-align: center;
-                      font-size: 17px; 
-                  }
-
-                  th {
-                      background-color: #3e64ff;
-                      color: #fff;
-                  }
-
-                  tr:nth-child(even) {
-                      background-color: #f2f2f2;
-                  }
-
-                  tr:hover {
-                      background-color: #ddd;
-                  }
-
-                  .total {
-                      font-weight: bold;
-                  }
-
-                  .status-paid {
-                      color: green;
-                  }
-
-                  .status-pending {
-                      color: orange;
-                  }
-
-                  .status-due {
-                      color: red;
-                  }
-              </style>
-          </head>
-          <body>
-              <div class="container">
-                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
-                  <h2>Department Of MCA - I</h2>
-                  <h3>Exam Fees Details</h3>
-                  <table>
-                      <thead>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Exam Fees Details</title>
+          <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f7f7f7;
+              margin: 0;
+              padding: 20px;
+          }
+  
+          .container {
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 15px; 
+              background-color: #fff;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              border-radius: 10px;
+          }
+  
+          h1, h2, h3 {
+              color: #333;
+              text-align: center;
+              padding-top: 1px;
+              margin-bottom: 5px;
+          }
+  
+          table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 15px;
+          }
+  
+          th, td {
+              border: 1px solid #ccc;
+              padding: 12px; 
+              text-align: center;
+              font-size: 17px; 
+          }
+  
+          th {
+              background-color: #3e64ff;
+              color: #fff;
+          }
+  
+          tr:nth-child(even) {
+              background-color: #f2f2f2;
+          }
+  
+          tr:hover {
+              background-color: #ddd;
+          }
+  
+          .total {
+              font-weight: bold;
+          }
+  
+          .status-paid {
+              color: green;
+          }
+  
+          .status-pending {
+              color: orange;
+          }
+  
+          .status-due {
+              color: red;
+          }
+      </style>
+      </head>
+      <body>
+          <div class="container">
+          <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+              <h2>Department Of MCA - I</h2>
+              <h3>Exam Fees Details</h3>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Total Fee</th>
+                          <th>Pending Fee</th>
+                          <th>Payment Status</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      ${firstYearStudents.map(student => `
                           <tr>
-                              <th>Name</th>
-                              <th>Total Fee</th>
-                              <th>Pending Fee</th>
-                              <th>Payment Status</th>
+                              <td style="text-align:left">${student.name}</td>
+                              <td>Rs.${student.examTotalFee}</td>
+                              <td>Rs.${student.examPendingFee}</td>
+                              <td class="${student.examPaymentStatus}">${student.examPaymentStatus}</td>
                           </tr>
-                      </thead>
-                      <tbody>
-                          ${firstYearStudents.map(student => `
-                              <tr>
-                                  <td style="text-align:left">${student.name}</td>
-                                  <td>Rs.${student.examTotalFee}</td>
-                                  <td>Rs.${student.examPendingFee}</td>
-                                  <td class="${student.examPaymentStatus}">${student.examPaymentStatus}</td>
-                              </tr>
-                          `).join('')}
-                      </tbody>
-                  </table>
-              </div>
-          </body>
-          </html>
+                      `).join('')}
+                  </tbody>
+              </table>
+          </div>
+      </body>
+      </html>
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
@@ -625,107 +625,107 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
       const secondYearStudents = await Student.find({ year: 'II', isDelete: false });
 
       const html = `
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Exam Fees Details</title>
-              <style>
-                  body {
-                      font-family: Arial, sans-serif;
-                      background-color: #f7f7f7;
-                      margin: 0;
-                      padding: 20px;
-                  }
-
-                  .container {
-                      max-width: 800px;
-                      margin: 0 auto;
-                      padding: 15px; 
-                      background-color: #fff;
-                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                      border-radius: 10px;
-                  }
-
-                  h1, h2, h3 {
-                      color: #333;
-                      text-align: center;
-                      padding-top: 1px;
-                      margin-bottom: 5px;
-                  }
-
-                  table {
-                      width: 100%;
-                      border-collapse: collapse;
-                      margin-top: 15px;
-                  }
-
-                  th, td {
-                      border: 1px solid #ccc;
-                      padding: 12px; 
-                      text-align: center;
-                      font-size: 17px; 
-                  }
-
-                  th {
-                      background-color: #3e64ff;
-                      color: #fff;
-                  }
-
-                  tr:nth-child(even) {
-                      background-color: #f2f2f2;
-                  }
-
-                  tr:hover {
-                      background-color: #ddd;
-                  }
-
-                  .total {
-                      font-weight: bold;
-                  }
-
-                  .status-paid {
-                      color: green;
-                  }
-
-                  .status-pending {
-                      color: orange;
-                  }
-
-                  .status-due {
-                      color: red;
-                  }
-              </style>
-          </head>
-          <body>
-              <div class="container">
-                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
-                  <h2>Department Of MCA - II</h2>
-                  <h3>Exam Fees Details</h3>
-                  <table>
-                      <thead>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Exam Fees Details</title>
+          <style>
+          body {
+              font-family: Arial, sans-serif;
+              background-color: #f7f7f7;
+              margin: 0;
+              padding: 20px;
+          }
+  
+          .container {
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 15px; 
+              background-color: #fff;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              border-radius: 10px;
+          }
+  
+          h1, h2, h3 {
+              color: #333;
+              text-align: center;
+              padding-top: 1px;
+              margin-bottom: 5px;
+          }
+  
+          table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 15px;
+          }
+  
+          th, td {
+              border: 1px solid #ccc;
+              padding: 12px; 
+              text-align: center;
+              font-size: 17px; 
+          }
+  
+          th {
+              background-color: #3e64ff;
+              color: #fff;
+          }
+  
+          tr:nth-child(even) {
+              background-color: #f2f2f2;
+          }
+  
+          tr:hover {
+              background-color: #ddd;
+          }
+  
+          .total {
+              font-weight: bold;
+          }
+  
+          .status-paid {
+              color: green;
+          }
+  
+          .status-pending {
+              color: orange;
+          }
+  
+          .status-due {
+              color: red;
+          }
+      </style>
+      </head>
+      <body>
+          <div class="container">
+          <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+              <h2>Department Of MCA - II</h2>
+              <h3>Exam Fees Details</h3>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Total Fee</th>
+                          <th>Pending Fee</th>
+                          <th>Payment Status</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      ${secondYearStudents.map(student => `
                           <tr>
-                              <th>Name</th>
-                              <th>Total Fee</th>
-                              <th>Pending Fee</th>
-                              <th>Payment Status</th>
+                              <td style="text-align: left">${student.name}</td>
+                              <td>Rs.${student.examTotalFee}</td>
+                              <td>Rs.${student.examPendingFee}</td>
+                              <td class="${student.examPaymentStatus}">${student.examPaymentStatus}</td>
                           </tr>
-                      </thead>
-                      <tbody>
-                          ${secondYearStudents.map(student => `
-                              <tr>
-                                  <td style="text-align: left">${student.name}</td>
-                                  <td>Rs.${student.examTotalFee}</td>
-                                  <td>Rs.${student.examPendingFee}</td>
-                                  <td class="${student.examPaymentStatus}">${student.examPaymentStatus}</td>
-                              </tr>
-                          `).join('')}
-                      </tbody>
-                  </table>
-              </div>
-          </body>
-          </html>
+                      `).join('')}
+                  </tbody>
+              </table>
+          </div>
+      </body>
+      </html>
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
