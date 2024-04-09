@@ -184,113 +184,111 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
       const firstYearStudents = await Student.find({ year: 'I', isDelete: false });
 
       const html = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Tuition Fees Details</title>
-          <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  background-color: #f7f7f7;
-                  margin: 0;
-                  padding: 20px;
-              }
-      
-              .container {
-                  max-width: 800px;
-                  margin: 0 auto;
-                  padding: 15px;
-                  background-color: #fff;
-                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                  border-radius: 10px;
-              }
-      
-              h1, h2, h3 {
-                  color: #333;
-                  text-align: center;
-                  padding-top: 1px;
-                  margin-bottom: 5px;
-              }
-      
-              table {
-                  width: 100%;
-                  border-collapse: collapse;
-                  margin-top: 15px;
-              }
-      
-              th, td {
-                  border: 1px solid #ccc;
-                  padding: 10px;
-                  text-align: center;
-                  font-size: 16px;
-              }
-      
-              th {
-                  background-color: #3e64ff;
-                  color: #fff;
-              }
-      
-              tr:nth-child(even) {
-                  background-color: #f2f2f2;
-              }
-      
-              tr:hover {
-                  background-color: #ddd;
-              }
-      
-              .total {
-                  font-weight: bold;
-              }
-      
-              .status-paid {
-                  color: green;
-              }
-      
-              .status-pending {
-                  color: orange;
-              }
-      
-              .status-due {
-                  color: red;
-              }
-          </style>
-      </head>
-      <body>
-          <div class="container">
-              <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
-              <h2>Department Of MCA - I</h2>
-              <h3>Tuition Fees Details</h3>
-              <table>
-                  <thead>
-                      <tr>
-                          <th>Name</th>
-                          <th>Total Fee</th>
-                          <th>Pending Fee</th>
-                          <th>Payment Status</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      ${firstYearStudents.map(student => `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Tuition Fees Details</title>
+              <style>
+                  body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f7f7f7;
+                      margin: 0;
+                      padding: 20px;
+                  }
+              
+                  .container {
+                      max-width: 800px;
+                      margin: 0 auto;
+                      padding: 15px;
+                      background-color: #fff;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                      border-radius: 10px;
+                  }
+              
+                  h1, h2, h3 {
+                      color: #333;
+                      text-align: center;
+                      padding-top: 1px;
+                      margin-bottom: 5px;
+                  }
+              
+                  table {
+                      width: 100%;
+                      border-collapse: collapse;
+                      margin-top: 15px;
+                  }
+              
+                  th, td {
+                      border: 1px solid #ccc;
+                      padding: 10px;
+                      text-align: center;
+                      font-size: 16px;
+                  }
+              
+                  th {
+                      background-color: #3e64ff;
+                      color: #fff;
+                  }
+              
+                  tr:nth-child(even) {
+                      background-color: #f2f2f2;
+                  }
+              
+                  tr:hover {
+                      background-color: #ddd;
+                  }
+              
+                  .total {
+                      font-weight: bold;
+                  }
+              
+                  .status-paid {
+                      color: green;
+                  }
+              
+                  .status-pending {
+                      color: orange;
+                  }
+              
+                  .status-due {
+                      color: red;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+                  <h2>Department Of MCA - I</h2>
+                  <h3>Tuition Fees Details</h3>
+                  <table>
+                      <thead>
                           <tr>
-                              <td style="text-align: left">${student.name}</td>
-                              <td>Rs.${student.totalFee}</td>
-                              <td>Rs.${student.pendingFee}</td>
-                              <td class="${student.paymentStatus}">${student.paymentStatus}</td>
+                              <th>Name</th>
+                              <th>Total Fee</th>
+                              <th>Pending Fee</th>
+                              <th>Payment Status</th>
                           </tr>
-                      `).join('')}
-                  </tbody>
-              </table>
-          </div>
-      </body>
-      </html>
+                      </thead>
+                      <tbody>
+                          ${firstYearStudents.map(student => `
+                              <tr>
+                                  <td style="text-align: left">${student.name}</td>
+                                  <td>Rs.${student.totalFee}</td>
+                                  <td>Rs.${student.pendingFee}</td>
+                                  <td class="${student.paymentStatus}">${student.paymentStatus}</td>
+                              </tr>
+                          `).join('')}
+                      </tbody>
+                  </table>
+              </div>
+          </body>
+          </html>
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-
       const page = await browser.newPage();
-      
       await page.setContent(html);
 
       const pdfBuffer = await page.pdf({ 
@@ -300,19 +298,26 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
 
       await browser.close();
 
-      fs.writeFile('./temp/firstYearFeeList.pdf', pdfBuffer, (err) => {
+      const tempDir = path.join(__dirname, 'temp');
+      if (!fs.existsSync(tempDir)) {
+          fs.mkdirSync(tempDir);
+      }
+
+      const pdfPath = path.join(tempDir, 'firstYearFeeList.pdf');
+
+      fs.writeFile(pdfPath, pdfBuffer, (err) => {
           if (err) {
               console.error(err);
               return res.status(500).send('Error creating PDF');
           }
 
-          res.download('./temp/firstYearFeeList.pdf', 'I_MCA_Tuition_Fees_Details.pdf', (err) => {
+          res.download(pdfPath, 'I_MCA_Tuition_Fees_Details.pdf', (err) => {
               if (err) {
                   console.error(err);
                   return res.status(500).send('Error downloading PDF');
               }
 
-              fs.unlinkSync('./temp/firstYearFeeList.pdf');
+              fs.unlinkSync(pdfPath);
           });
       });
   } catch (err) {
@@ -401,7 +406,7 @@ exports.downloadSecondYrTuFeePDF = async (req, res) => {
           </head>
           <body>
               <div class="container">
-              <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
                   <h2>Department Of MCA - II</h2>
                   <h3>Tuition Fees Details</h3>
                   <table>
@@ -430,31 +435,36 @@ exports.downloadSecondYrTuFeePDF = async (req, res) => {
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-
       const page = await browser.newPage();
-      
       await page.setContent(html);
 
-      const options = {
+      const pdfBuffer = await page.pdf({ 
           format: 'A4',
           printBackground: true
-      };
+      });
 
       await browser.close();
 
-      fs.writeFile('./temp/firstYearFeeList.pdf', pdfBuffer, (err) => {
-        if (err) {
+      const tempDir = path.join(__dirname, 'temp');
+      if (!fs.existsSync(tempDir)) {
+          fs.mkdirSync(tempDir);
+      }
+
+      const pdfPath = path.join(tempDir, 'secondYearFeeList.pdf');
+
+      fs.writeFile(pdfPath, pdfBuffer, (err) => {
+          if (err) {
               console.error(err);
               return res.status(500).send('Error creating PDF');
           }
 
-          res.download('./temp/secondYearFeeList.pdf', 'II_MCA_Tuition_Fees_Details.pdf', (err) => {
+          res.download(pdfPath, 'II_MCA_Tuition_Fees_Details.pdf', (err) => {
               if (err) {
                   console.error(err);
                   return res.status(500).send('Error downloading PDF');
               }
 
-              fs.unlinkSync('./temp/secondYearFeeList.pdf');
+              fs.unlinkSync(pdfPath);
           });
       });
   } catch (err) {
@@ -475,75 +485,75 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>Exam Fees Details</title>
               <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  background-color: #f7f7f7;
-                  margin: 0;
-                  padding: 20px;
-              }
-      
-              .container {
-                  max-width: 800px;
-                  margin: 0 auto;
-                  padding: 15px; 
-                  background-color: #fff;
-                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                  border-radius: 10px;
-              }
-      
-              h1, h2, h3 {
-                  color: #333;
-                  text-align: center;
-                  padding-top: 1px;
-                  margin-bottom: 5px;
-              }
-      
-              table {
-                  width: 100%;
-                  border-collapse: collapse;
-                  margin-top: 15px;
-              }
-      
-              th, td {
-                  border: 1px solid #ccc;
-                  padding: 12px; 
-                  text-align: center;
-                  font-size: 17px; 
-              }
-      
-              th {
-                  background-color: #3e64ff;
-                  color: #fff;
-              }
-      
-              tr:nth-child(even) {
-                  background-color: #f2f2f2;
-              }
-      
-              tr:hover {
-                  background-color: #ddd;
-              }
-      
-              .total {
-                  font-weight: bold;
-              }
-      
-              .status-paid {
-                  color: green;
-              }
-      
-              .status-pending {
-                  color: orange;
-              }
-      
-              .status-due {
-                  color: red;
-              }
-          </style>
+                  body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f7f7f7;
+                      margin: 0;
+                      padding: 20px;
+                  }
+
+                  .container {
+                      max-width: 800px;
+                      margin: 0 auto;
+                      padding: 15px; 
+                      background-color: #fff;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                      border-radius: 10px;
+                  }
+
+                  h1, h2, h3 {
+                      color: #333;
+                      text-align: center;
+                      padding-top: 1px;
+                      margin-bottom: 5px;
+                  }
+
+                  table {
+                      width: 100%;
+                      border-collapse: collapse;
+                      margin-top: 15px;
+                  }
+
+                  th, td {
+                      border: 1px solid #ccc;
+                      padding: 12px; 
+                      text-align: center;
+                      font-size: 17px; 
+                  }
+
+                  th {
+                      background-color: #3e64ff;
+                      color: #fff;
+                  }
+
+                  tr:nth-child(even) {
+                      background-color: #f2f2f2;
+                  }
+
+                  tr:hover {
+                      background-color: #ddd;
+                  }
+
+                  .total {
+                      font-weight: bold;
+                  }
+
+                  .status-paid {
+                      color: green;
+                  }
+
+                  .status-pending {
+                      color: orange;
+                  }
+
+                  .status-due {
+                      color: red;
+                  }
+              </style>
           </head>
           <body>
               <div class="container">
-              <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
                   <h2>Department Of MCA - I</h2>
                   <h3>Exam Fees Details</h3>
                   <table>
@@ -572,9 +582,7 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-
       const page = await browser.newPage();
-      
       await page.setContent(html);
 
       const pdfBuffer = await page.pdf({ 
@@ -584,19 +592,26 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
 
       await browser.close();
 
-      fs.writeFile('./temp/firstYearFeeList.pdf', pdfBuffer, (err) => {
-        if (err) {
+      const tempDir = path.join(__dirname, 'temp');
+      if (!fs.existsSync(tempDir)) {
+          fs.mkdirSync(tempDir);
+      }
+
+      const pdfPath = path.join(tempDir, 'firstYearExamFeeList.pdf');
+
+      fs.writeFile(pdfPath, pdfBuffer, (err) => {
+          if (err) {
               console.error(err);
               return res.status(500).send('Error creating PDF');
           }
 
-          res.download('./temp/firstYearExamFeeList.pdf', 'I_MCA_Exam_Fees_Details.pdf', (err) => {
+          res.download(pdfPath, 'I_MCA_Exam_Fees_Details.pdf', (err) => {
               if (err) {
                   console.error(err);
                   return res.status(500).send('Error downloading PDF');
               }
 
-              fs.unlinkSync('./temp/firstYearExamFeeList.pdf');
+              fs.unlinkSync(pdfPath); 
           });
       });
   } catch (err) {
@@ -617,75 +632,75 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>Exam Fees Details</title>
               <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  background-color: #f7f7f7;
-                  margin: 0;
-                  padding: 20px;
-              }
-      
-              .container {
-                  max-width: 800px;
-                  margin: 0 auto;
-                  padding: 15px; 
-                  background-color: #fff;
-                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                  border-radius: 10px;
-              }
-      
-              h1, h2, h3 {
-                  color: #333;
-                  text-align: center;
-                  padding-top: 1px;
-                  margin-bottom: 5px;
-              }
-      
-              table {
-                  width: 100%;
-                  border-collapse: collapse;
-                  margin-top: 15px;
-              }
-      
-              th, td {
-                  border: 1px solid #ccc;
-                  padding: 12px; 
-                  text-align: center;
-                  font-size: 17px; 
-              }
-      
-              th {
-                  background-color: #3e64ff;
-                  color: #fff;
-              }
-      
-              tr:nth-child(even) {
-                  background-color: #f2f2f2;
-              }
-      
-              tr:hover {
-                  background-color: #ddd;
-              }
-      
-              .total {
-                  font-weight: bold;
-              }
-      
-              .status-paid {
-                  color: green;
-              }
-      
-              .status-pending {
-                  color: orange;
-              }
-      
-              .status-due {
-                  color: red;
-              }
-          </style>
+                  body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f7f7f7;
+                      margin: 0;
+                      padding: 20px;
+                  }
+
+                  .container {
+                      max-width: 800px;
+                      margin: 0 auto;
+                      padding: 15px; 
+                      background-color: #fff;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                      border-radius: 10px;
+                  }
+
+                  h1, h2, h3 {
+                      color: #333;
+                      text-align: center;
+                      padding-top: 1px;
+                      margin-bottom: 5px;
+                  }
+
+                  table {
+                      width: 100%;
+                      border-collapse: collapse;
+                      margin-top: 15px;
+                  }
+
+                  th, td {
+                      border: 1px solid #ccc;
+                      padding: 12px; 
+                      text-align: center;
+                      font-size: 17px; 
+                  }
+
+                  th {
+                      background-color: #3e64ff;
+                      color: #fff;
+                  }
+
+                  tr:nth-child(even) {
+                      background-color: #f2f2f2;
+                  }
+
+                  tr:hover {
+                      background-color: #ddd;
+                  }
+
+                  .total {
+                      font-weight: bold;
+                  }
+
+                  .status-paid {
+                      color: green;
+                  }
+
+                  .status-pending {
+                      color: orange;
+                  }
+
+                  .status-due {
+                      color: red;
+                  }
+              </style>
           </head>
           <body>
               <div class="container">
-              <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
+                  <h1 style="color:#3e64ff;">SSM COLLEGE OF ENGINEERING</h1>
                   <h2>Department Of MCA - II</h2>
                   <h3>Exam Fees Details</h3>
                   <table>
@@ -714,9 +729,7 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
       `;
 
       const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-
       const page = await browser.newPage();
-      
       await page.setContent(html);
 
       const pdfBuffer = await page.pdf({ 
@@ -726,19 +739,26 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
 
       await browser.close();
 
-      fs.writeFile('./temp/firstYearFeeList.pdf', pdfBuffer, (err) => {
-        if (err) {
+      const tempDir = path.join(__dirname, 'temp');
+      if (!fs.existsSync(tempDir)) {
+          fs.mkdirSync(tempDir);
+      }
+
+      const pdfPath = path.join(tempDir, 'secondYearExamFeeList.pdf');
+
+      fs.writeFile(pdfPath, pdfBuffer, (err) => {
+          if (err) {
               console.error(err);
               return res.status(500).send('Error creating PDF');
           }
 
-          res.download('./temp/secondYearExamFeeList.pdf', 'II_MCA_Exam_Fees_Details.pdf', (err) => {
+          res.download(pdfPath, 'II_MCA_Exam_Fees_Details.pdf', (err) => {
               if (err) {
                   console.error(err);
                   return res.status(500).send('Error downloading PDF');
               }
 
-              fs.unlinkSync('./temp/secondYearExamFeeList.pdf');
+              fs.unlinkSync(pdfPath);
           });
       });
   } catch (err) {
