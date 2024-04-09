@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const fs = require('fs');
-const pdf = require('html-pdf');
 const Contact = require("../models/contactModel");
 const Student = require("../models/studentModel");
 const Image = require("../models/imageModel");
@@ -202,7 +201,7 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
               .container {
                   max-width: 800px;
                   margin: 0 auto;
-                  padding: 15px; 
+                  padding: 15px;
                   background-color: #fff;
                   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                   border-radius: 10px;
@@ -223,9 +222,9 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
       
               th, td {
                   border: 1px solid #ccc;
-                  padding: 10px; 
+                  padding: 10px;
                   text-align: center;
-                  font-size: 16px; 
+                  font-size: 16px;
               }
       
               th {
@@ -288,7 +287,8 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
       </html>
       `;
 
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+
       const page = await browser.newPage();
       
       await page.setContent(html);
@@ -429,12 +429,21 @@ exports.downloadSecondYrTuFeePDF = async (req, res) => {
           </html>
       `;
 
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+
+      const page = await browser.newPage();
+      
+      await page.setContent(html);
+
       const options = {
-          format: 'A4', 
+          format: 'A4',
+          printBackground: true
       };
 
-      pdf.create(html, options).toFile('./temp/secondYearFeeList.pdf', (err, result) => {
-          if (err) {
+      await browser.close();
+
+      fs.writeFile('./temp/firstYearFeeList.pdf', pdfBuffer, (err) => {
+        if (err) {
               console.error(err);
               return res.status(500).send('Error creating PDF');
           }
@@ -562,12 +571,21 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
           </html>
       `;
 
-      const options = {
-          format: 'A4', 
-      };
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 
-      pdf.create(html, options).toFile('./temp/firstYearExamFeeList.pdf', (err, result) => {
-          if (err) {
+      const page = await browser.newPage();
+      
+      await page.setContent(html);
+
+      const pdfBuffer = await page.pdf({ 
+          format: 'A4',
+          printBackground: true
+      });
+
+      await browser.close();
+
+      fs.writeFile('./temp/firstYearFeeList.pdf', pdfBuffer, (err) => {
+        if (err) {
               console.error(err);
               return res.status(500).send('Error creating PDF');
           }
@@ -695,12 +713,21 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
           </html>
       `;
 
-      const options = {
-          format: 'A4', 
-      };
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 
-      pdf.create(html, options).toFile('./temp/secondYearExamFeeList.pdf', (err, result) => {
-          if (err) {
+      const page = await browser.newPage();
+      
+      await page.setContent(html);
+
+      const pdfBuffer = await page.pdf({ 
+          format: 'A4',
+          printBackground: true
+      });
+
+      await browser.close();
+
+      fs.writeFile('./temp/firstYearFeeList.pdf', pdfBuffer, (err) => {
+        if (err) {
               console.error(err);
               return res.status(500).send('Error creating PDF');
           }
