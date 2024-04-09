@@ -516,9 +516,9 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
   
           th, td {
               border: 1px solid #ccc;
-              padding: 12px; 
+              padding: 10px; 
               text-align: center;
-              font-size: 17px; 
+              font-size: 16px; 
           }
   
           th {
@@ -663,9 +663,9 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
   
           th, td {
               border: 1px solid #ccc;
-              padding: 12px; 
+              padding: 10px; 
               text-align: center;
-              font-size: 17px; 
+              font-size: 16px; 
           }
   
           th {
