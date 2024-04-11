@@ -287,7 +287,7 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
       </html>
       `;
 
-      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/path/to/chrome' });
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/actual/path/to/chrome' });
       const page = await browser.newPage();
       await page.setContent(html);
 
@@ -434,7 +434,7 @@ exports.downloadSecondYrTuFeePDF = async (req, res) => {
       </html>
       `;
 
-      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/path/to/chrome' });
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/actual/path/to/chrome' });
       const page = await browser.newPage();
       await page.setContent(html);
 
@@ -581,7 +581,7 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
       </html>
       `;
 
-      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/path/to/chrome' });
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/actual/path/to/chrome' });
       const page = await browser.newPage();
       await page.setContent(html);
 
@@ -728,7 +728,7 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
       </html>
       `;
 
-      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/path/to/chrome' });
+      const browser = await puppeteer.launch({ args: ['--no-sandbox'], executablePath: '/actual/path/to/chrome' });
       const page = await browser.newPage();
       await page.setContent(html);
 
