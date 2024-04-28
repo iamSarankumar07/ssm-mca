@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject and Link List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto; 
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: auto; 
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            background-color: #3d6ef5ff;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 0; 
+        }
+
+        h2 {
+            color: #3d6ef5ff;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .edit-icon, .delete-icon {
+            text-decoration: none;
+            color: #3d6ef5ff;
+            transition: color 0.3s;
+            font-weight: bold;
+        }
+
+        .edit-icon:hover, .delete-icon:hover {
+            color: #0056b3;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            color: #fff;
+            border: 2px solid #3d6ef5ff;
+            background: #3d6ef5ff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            color: #fff;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 48px;
+            left: 12%; 
+            text-decoration: none;
+        }
+
+        .back-button img {
+            width: 40px;
+            height: 40px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Subject and Link List</h1>
+        <a href="/ssm/mca/dashboard" class="back-button">
+            <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
+        </a>
+        <h2>MCA - I</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject Code</th>
+                    <th>Subject Title</th>
+                    <th>Link</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each firstYear}}
+                <tr>
+                    <td>{{code}}</td>
+                    <td>{{title}}</td>
+                    <td><a href="{{link}}" target="_blank">Download</a></td>
+                    <td><a href="/ssm/mca/deleteSubject/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <h2>MCA - II</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject Code</th>
+                    <th>Subject Title</th>
+                    <th>Link</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each secondYear}}
+                <tr>
+                    <td>{{code}}</td>
+                    <td>{{title}}</td>
+                    <td><a href="{{link}}" target="_blank">Download</a></td>
+                    <td><a href="/ssm/mca/deleteSubject/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <br><br>
+
+        <div class="btn-container">
+            <a class="btn" href="/ssm/mca/dashboard">Go back!</a>
+        </div>
+    </div>
+</body>
+</html>
