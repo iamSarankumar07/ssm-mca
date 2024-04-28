@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Admin Dashboard</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -107,7 +107,7 @@
     {{!-- <a href="/home" class="btnn"> Back<i class="uil uil-image"></i></a> --}}
     <a href="/home"><img src="https://i.postimg.cc/mD67M56k/back-button.png" alt="Go Back" class="goback"></a>
 
-    <h1>Admin</h1>
+    <h1>Admin Credentials</h1>
 
     <table>
         <thead>
@@ -122,7 +122,7 @@
         </thead>
         <tbody>
             <tr>
-                <td>Students</td>
+                <td>Student</td>
                 <td><button type="button" onclick="register()">Register</button></td>
                 <td><button type="button" onclick="studentList()">Details</button></td>
                 <td><button type="button" onclick="feeList()">Details</button></td>
@@ -159,6 +159,14 @@
             <tr>
                 <td>Common Announcement</td>
                 <td><button type="button" onclick="commonAnnouncement()">Send</button></td>
+            </tr>
+            <tr>
+                <td>Upload Study Materials</td>
+                <td><button type="button" onclick="subject()">Upload</button></td>
+            </tr>
+            <tr>
+                <td>Study Materials List</td>
+                <td><button type="button" onclick="subjectList()">Details</button></td>
             </tr>
             <tr>
                 <td>Received Contact Messages</td>
@@ -211,6 +219,12 @@
         };
         function commonAnnouncement() {
         window.location.href = '/ssm/mca/commonAnnouncement';
+        };
+        function subject() {
+        window.location.href = '/ssm/mca/subject';
+        };
+        function subjectList() {
+        window.location.href = '/ssm/mca/subjectList';
         };
         function upload() {
         window.location.href = '/ssm/mca/upload';
