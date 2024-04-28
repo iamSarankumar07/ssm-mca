@@ -54,6 +54,10 @@ app.get("/sessionExpired", (req, res) => {
 });
 app.get("/feeList", authFile.validateToken, viewController.studentFeeList);
 
+app.get("/subjectList", authFile.validateToken, viewController.subjectList);
+
+app.get("/subject", authFile.validateToken, viewController.subject);
+
 app.get("/examFeeList", authFile.validateToken, viewController.examFeeList);
 
 app.get("/feeEdit/:userId", authFile.validateToken, viewController.feeEdit);
