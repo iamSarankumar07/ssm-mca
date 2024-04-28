@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require('fs');
 const Contact = require("../models/contactModel");
 const Student = require("../models/studentModel");
+const Subject = require("../models/subjectModel");
 const Image = require("../models/imageModel");
 const puppeteer = require('puppeteer');
 const app = express();
@@ -51,6 +52,10 @@ exports.feeRegister = async (req, res) => {
   res.render("feeRegister");
 };
 
+exports.subject = async (req, res) => {
+  res.render("subject");
+};
+
 exports.message = async (req, res) => {
   try {
     const messages = await Contact.find();
@@ -88,6 +93,24 @@ exports.studentEdit = async (req, res) => {
     res.send("Error");
   }
 };
+
+exports.subjectList = async (req, res) => {
+  try {
+    const allStudents = await Subject.find({ isDelete: false });
+    const firstYear = allStudents.filter(
+      (subject) => subject.year === "I"
+    );
+    const secondYear = allStudents.filter(
+      (subject) => subject.year === "II"
+    );
+
+    res.render("subjectList", { firstYear, secondYear });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
 
 exports.studentFeeList = async (req, res) => {
   try {
@@ -166,13 +189,15 @@ exports.getStudentDetails = async (req, res) => {
 
     const student = await Student.findOne({ studentId });
 
+    const subject = await Subject.find({ year: student.year });
+
     if (!student) {
       return res.send(
         '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/studentLogin";</script>'
       );
     }
 
-    res.render("studentProfile", { student });
+    res.render("studentProfile", { student, subject });
   } catch (err) {
     console.error("Error fetching user details:", err);
     res.status(500).send("Failed to fetch user details");
