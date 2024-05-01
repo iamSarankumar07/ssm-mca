@@ -1,9 +1,11 @@
 const express = require("express");
 const path = require("path");
 const fs = require('fs');
-const Contact = require("../models/contactModel");
+const Admin = require("../models/adminModel");
+const mongoose = require('mongoose');
 const Student = require("../models/studentModel");
 const Subject = require("../models/subjectModel");
+const Contact = require("../models/contactModel");
 const Image = require("../models/imageModel");
 const puppeteer = require('puppeteer');
 const app = express();
@@ -21,7 +23,21 @@ const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
 
 exports.dashboard = async (req, res) => {
-  res.render("admin");
+    const accessToken = req.cookies["access-token"];
+  try {
+    const decodedToken = await verify(
+      accessToken,
+      "qwertyuiopasdfghjklzxcvbnm"
+    );
+    const userId = decodedToken.id;
+
+    const user = await Admin.findOne({ _id: new mongoose.Types.ObjectId(userId) });
+
+    res.render("admin", { user });
+  } catch (err) {
+    console.error("Error fetching user details:", err);
+    res.status(500).send("Failed to fetch user details");
+  }
 };
 
 exports.studentProfile = async (req, res) => {
