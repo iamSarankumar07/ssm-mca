@@ -39,4 +39,4 @@ const Loginschema = new mongoose.Schema({
 
   
 
-module.exports = mongoose.model('Login', Loginschema)
+module.exports = mongoose.model('Admin', Loginschema)
