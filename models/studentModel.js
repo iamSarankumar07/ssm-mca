@@ -74,7 +74,13 @@ const studentSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    createdAt: {
+    editRequest: {
+        newName: String,
+        newEmail: String,
+        newDob: String,
+        newPhone: String,
+        status: String
+    },createdAt: {
         type: Date,
         immutable: true,
         default: () => Date.now(),
