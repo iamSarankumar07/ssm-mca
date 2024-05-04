@@ -99,17 +99,20 @@
             color: #1459da;
 
         }
+        .hint {
+            color: #5f5f5f;
+        }
     </style>
 </head>
 <body>
 
     <form action="/ssm/mca/studentLogin" method="post">
         <h1>Student Login</h1>
-        <label for="userName">Student ID :</label>
-        <input type="text" id="userName" name="studentId" autocomplete="off" placeholder="Registered Student ID" required>
+        <label for="userName">Register Number</label>
+        <input type="text" id="userName" name="studentId" autocomplete="off" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="DD/MM/YYYY" required>
+        <label for="password">Date of Birth <span class="hint">[ DD/MM/YYYY ]</span> </label>
+        <input type="password" id="password" name="password" required>
 
         <div class="showPassCode">
             <input class="box" type="checkbox" id="showPassword" name="showPassword">
