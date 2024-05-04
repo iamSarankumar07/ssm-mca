@@ -20,6 +20,10 @@ app.get("/register", authFile.validateToken, viewController.register);
 
 app.get("/announcement", authFile.validateToken, viewController.announcement);
 
+app.get("/studentProfileEdit/:userId", authFile.sValidateToken, viewController.studentProfileEdit);
+
+app.get("/reviewRequest", authFile.validateToken, viewController.reviewRequest);
+
 app.get("/paymentAlert", authFile.validateToken, viewController.paymentAlert);
 
 app.get("/commonAnnouncement",authFile.validateToken,viewController.commonAnnouncement);
