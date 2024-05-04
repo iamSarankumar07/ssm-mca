@@ -144,6 +144,8 @@
             <tr>
                 <th>Title</th>
                 <th>Action</th>
+                <th>Title</th>
+                <th>Action</th>
             </tr>
             
         </thead>
@@ -151,35 +153,29 @@
             <tr>
                 <td>Payment Alert</td>
                 <td><button type="button" onclick="paymentAlert()">Alert</button></td>
+                <td>Student Update Request</td>
+                <td><button type="button" onclick="updateReq()">Show Request</button></td>
             </tr>
             <tr>
                 <td>Announcement</td>
                 <td><button type="button" onclick="announcement()">Send</button></td>
-            </tr>
-            <tr>
                 <td>Common Announcement</td>
                 <td><button type="button" onclick="commonAnnouncement()">Send</button></td>
             </tr>
             <tr>
                 <td>Upload Study Materials</td>
                 <td><button type="button" onclick="subject()">Upload</button></td>
-            </tr>
-            <tr>
                 <td>Study Materials List</td>
                 <td><button type="button" onclick="subjectList()">Details</button></td>
             </tr>
             <tr>
                 <td>Received Contact Messages</td>
                 <td><button type="button" onclick="messages()">Messages</button></td>
-            </tr>
-            <tr>
                 <td>Send Everyone</td>
                 <td><button type="button" id="sendMail">Send Everyone</button></td>
-            <tr>
+            </tr>
                 <td>Upload Image</td>
                 <td><button type="button" onclick="upload()">Image Upload</button></td>
-            </tr>
-            <tr>
                 <td>Gallery</td>
                 <td><button type="button" onclick="gallery()">Gallery</button></td>
             </tr>
@@ -219,6 +215,9 @@
         };
         function commonAnnouncement() {
         window.location.href = '/ssm/mca/commonAnnouncement';
+        };
+        function updateReq() {
+        window.location.href = '/ssm/mca/reviewRequest';
         };
         function subject() {
         window.location.href = '/ssm/mca/subject';
