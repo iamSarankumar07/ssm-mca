@@ -9,4 +9,9 @@ app.post("/studentUpdate/:userId", authFile.validateToken, studentController.upd
 
 app.get("/studentDelete/:userId", authFile.validateToken, studentController.deleteStudent);
 
+app.post('/requestChange', studentController.requestChange);
+
+app.post('/approveAndReject', studentController.approveAndReject);
+
+
 module.exports = app;
