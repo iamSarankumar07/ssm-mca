@@ -41,8 +41,31 @@ body {
 }
 .card h3 {
     margin-top: 0;
+    display: flex;
+    font-size: 20px;
+    justify-content: space-between;
+    align-items: center;
 }
 .card p {
+    margin-bottom: 0;
+}
+.cardd {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+}
+.cardd:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.cardd h3 {
+    margin-top: 0;
+    font-size: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+.cardd p {
     margin-bottom: 0;
 }
 .details {
@@ -74,112 +97,92 @@ body {
     font-weight: bold;
     color: #333;
 }
-
 .back-button {
     position: absolute;
     top: 33px;
     left: 11.5%; 
     text-decoration: none;
 }
-
 .back-button img {
     width: 55px;
     height: 55px;
     margin-right: 5px;
     vertical-align: middle;
 }
-
 .job-opportunities ul {
     list-style-type: disc;
     margin-left: 20px;
     padding-left: 0;
 }
-
 .job-opportunities li {
     margin-bottom: 10px;
 }
-
 .skills-needed {
     margin-top: 10px;
 }
-
 .skills-needed ul {
     list-style-type: disc;
     margin-left: 20px;
     padding-left: 0;
 }
-
 .skills-needed li {
     margin-bottom: 5px;
 }
-h3{
+h3 {
     text-align: center;
 }
 .job-opportunities {
     margin-top: 20px;
 }
-
 .job-opportunities h3 {
     text-align: center;
     font-size: 24px;
     margin-bottom: 10px;
     color: #3d6ef5ff;
 }
-
 .job-opportunities h4 {
     font-size: 18px;
     text-align: center;
     margin-bottom: 10px;
     color: #333; 
 }
-
-
 .job-opportunities p {
     font-size: 16px;
     line-height: 1.5;
     margin-bottom: 10px;
 }
-
 .job-opportunities ul {
     list-style-type: none;
     padding-left: 0;
 }
-
 .job-opportunities li {
     margin-bottom: 20px;
     padding-left: 20px;
     position: relative;
 }
-
 .job-opportunities li:before {
     content: "\2022";
     position: absolute;
     left: 0;
     color: #3d6ef5ff;
 }
-
 .job-opportunities li strong {
     font-weight: bold;
     color: #333;
 }
-
 .job-opportunities li ul {
     list-style-type: none;
     padding-left: 20px;
 }
-
 .job-opportunities li ul li {
     margin-bottom: 5px;
 }
-
 h3 {
     color: #3d6ef5ff;
 }
-
 a {
     text-decoration: none;
 }
-
 .text {
     text-align: center;
     margin-top: -10px;
@@ -188,24 +191,16 @@ a {
 .sd {
     color: #3d6ef5ff;
 }
-.edit-button {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.material {
+    text-align: center;
+    color: #3d6ef5ff;
+    margin-top: 0;
+    font-size: 20px;
 }
-
-.edit-button:hover {
-    background-color: #0056b3;
-}
-
-.edit-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #007bff;
+.card img {
+    width: 35px;
+    height: 35px;
+    vertical-align: middle;
 }
 
 </style>
@@ -220,8 +215,7 @@ a {
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
         <div class="card">
-            <a href="/ssm/mca/studentProfileEdit/{{student._id}}" class="edit-button">Edit</a>
-            <h3>Student Details</h3>
+            <h3 style="text-align: center;">Student Details <a href="/ssm/mca/studentProfileEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
             <div class="details student-details">
                 <table>
                     <tr>
@@ -300,7 +294,7 @@ a {
             </div>
         </div>
         <div class="card">
-            <h3>Study Materials for MCA - {{student.year}}</h3>
+            <h4 class="material">Study Materials for MCA - {{student.year}}</h4>
             <p class="text">(Click Below  to Download Study Materials.)</p>
             <div class="details fees-details">
                 <table>
@@ -315,8 +309,8 @@ a {
         </div>
     </div>
     <br>
-        <div class="card">
-            <h3 style="text-align: center; padding-bottom: 20px; color: #fff; font-size: 30px; background-color: #3d6ef5ff; padding-top: 18px; border-radius:5px ">JOB OPPORTUNITIES</h3>
+        <div class="cardd">
+            <h3 style="text-align: center; padding-bottom: 20px; color: #fff; font-size: 30px; background-color: #3d6ef5ff; padding-top: 18px; border-radius:5px;">JOB OPPORTUNITIES</h3>
             <h4 style="text-align: center;">Transform Your Master of Computer Application into a Rewarding Career</h4>
                 <p style="text-align: center;">Explore various career paths after completing Master of Computer Application (MCA) and the skills needed for each:</p>
             <div class="details job-opportunities">
