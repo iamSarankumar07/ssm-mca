@@ -40,6 +40,27 @@ exports.dashboard = async (req, res) => {
   }
 };
 
+exports.reviewRequest = async (req, res) => {
+    try {
+        const students = await Student.find({ 'editRequest.status': 'requested' });
+        res.render('requestReview', { students });
+    } catch (err) {
+        console.log(err.message, err);
+        return res.json(err.message);
+    }
+};
+
+exports.studentProfileEdit = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const student = await Student.findById(userId);
+        res.render("stdProfileEdit", { student });
+      } catch (err) {
+        console.error(err);
+        res.send("Error");
+      }
+};
+
 exports.studentProfile = async (req, res) => {
   res.render("studentProfile");
 };
