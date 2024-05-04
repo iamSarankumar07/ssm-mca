@@ -185,6 +185,28 @@ a {
     margin-top: -10px;
     padding-bottom: 15px;
 }
+.sd {
+    color: #3d6ef5ff;
+}
+.edit-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.edit-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #007bff;
+}
 
 </style>
 </head>
@@ -198,36 +220,37 @@ a {
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
         <div class="card">
+            <a href="/ssm/mca/studentProfileEdit/{{student._id}}" class="edit-button">Edit</a>
             <h3>Student Details</h3>
             <div class="details student-details">
                 <table>
                     <tr>
                         <td><strong>Name:</strong></td>
-                        <td>{{student.name}}</td>
+                        <td class="sd">{{student.name}}</td>
                     </tr>
                     <tr>
                         <td><strong>Register Number:</strong></td>
-                        <td>{{student.registerNumber}}</td>
+                        <td class="sd">{{student.registerNumber}}</td>
                     </tr>
                     <tr>
                         <td><strong>Gender:</strong></td>
-                        <td>{{student.gender}}</td>
+                        <td class="sd">{{student.gender}}</td>
                     </tr>
                     <tr>
                         <td><strong>Date Of Birth:</strong></td>
-                        <td>{{student.dob}}</td>
+                        <td class="sd">{{student.dob}}</td>
                     </tr>
                     <tr>
-                        <td><strong>Year:</strong></td>
-                        <td>{{student.year}}</td>
+                        <td><strong>Branch:</strong></td>
+                        <td class="sd">MCA - {{student.year}}</span></td>
                     </tr>
                     <tr>
                         <td><strong>Phone:</strong></td>
-                        <td>+91 {{student.phone}}</td>
+                        <td class="sd">+91 {{student.phone}}</td>
                     </tr>
                     <tr>
                         <td><strong>Email:</strong></td>
-                        <td>{{student.email}}</td>
+                        <td class="sd">{{student.email}}</td>
                     </tr>
                 </table>
             </div>
@@ -238,19 +261,19 @@ a {
                 <table>
                     <tr>
                         <td><strong>Payment Status:</strong></td>
-                        <td>{{student.paymentStatus}}</td>
+                        <td class="sd">{{student.paymentStatus}}</td>
                     </tr>
                     <tr>
                         <td><strong>Total Amount:</strong></td>
-                        <td>Rs.{{student.totalFee}}</td>
+                        <td class="sd">Rs.{{student.totalFee}}</td>
                     </tr>
                     <tr>
                         <td><strong>Amount Due:</strong></td>
-                        <td>Rs.{{student.pendingFee}}</td>
+                        <td class="sd">Rs.{{student.pendingFee}}</td>
                     </tr>
                     <tr>
                         <td><strong>Due Date:</strong></td>
-                        <td>{{student.tutionDueDate}}</td>
+                        <td class="sd">{{student.tutionDueDate}}</td>
                     </tr>
                 </table>
             </div>
@@ -259,19 +282,19 @@ a {
                 <table>
                     <tr>
                         <td><strong>Payment Status:</strong></td>
-                        <td>{{student.examPaymentStatus}}</td>
+                        <td class="sd">{{student.examPaymentStatus}}</td>
                     </tr>
                     <tr>
                         <td><strong>Total Amount:</strong></td>
-                        <td>Rs.{{student.examTotalFee}}</td>
+                        <td class="sd">Rs.{{student.examTotalFee}}</td>
                     </tr>
                     <tr>
                         <td><strong>Amount Due:</strong></td>
-                        <td>Rs.{{student.examPendingFee}}</td>
+                        <td class="sd">Rs.{{student.examPendingFee}}</td>
                     </tr>
                     <tr>
                         <td><strong>Due Date:</strong></td>
-                        <td>{{student.examDueDate}}</td>
+                        <td class="sd">{{student.examDueDate}}</td>
                     </tr>
                 </table>
             </div>
