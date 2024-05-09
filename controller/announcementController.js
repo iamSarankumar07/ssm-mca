@@ -740,7 +740,7 @@ exports.sendPaymentAlert = async (req, res) => {
           }
           .highlight {
             font-weight: bold;
-            color: #ff0000; /* Red color */
+            color: #ff0000; 
           }
           .footer {
             margin-top: 20px;
