@@ -61,10 +61,6 @@ exports.studentProfileEdit = async (req, res) => {
       }
 };
 
-exports.studentProfile = async (req, res) => {
-  res.render("studentProfile");
-};
-
 exports.register = async (req, res) => {
   res.render("register");
 };
@@ -93,6 +89,10 @@ exports.subject = async (req, res) => {
   res.render("subject");
 };
 
+exports.moveStudents = async (req, res) => {
+  res.render("moveStudents");
+};
+
 exports.message = async (req, res) => {
   try {
     const messages = await Contact.find();
@@ -105,7 +105,7 @@ exports.message = async (req, res) => {
 
 exports.studentList = async (req, res) => {
   try {
-    const allStudents = await Student.find({ isDelete: false });
+    const allStudents = await Student.find({ isDelete: false, isAlumni: false });
     const firstYearStudents = allStudents.filter(
       (student) => student.year === "I"
     );
@@ -131,6 +131,17 @@ exports.studentEdit = async (req, res) => {
   }
 };
 
+exports.alumniList = async (req, res) => {
+    try {
+      const students = await Student.find({ isDelete: false, isAlumni: true });
+  
+      res.render("alumniList", { students });
+    } catch (err) {
+      console.error(err);
+      res.send("Error", err);
+    }
+  };
+
 exports.subjectList = async (req, res) => {
   try {
     const allStudents = await Subject.find({ isDelete: false });
@@ -148,10 +159,20 @@ exports.subjectList = async (req, res) => {
   }
 };
 
+exports.alumniStatus = async (req, res) => {
+    try {
+      await Student.updateMany({}, { $set: { graduationYear: req.body.graduationYear } });
+      res.status(200).json({ message: `Successfully updated all students to isAlumni: ${req.body.graduationYear}.` });
+    } catch (error) {
+      console.error("Error occurred while updating students:", error);
+      res.status(500).json({ error: "Failed to update students." });
+    }
+  };
+
 
 exports.studentFeeList = async (req, res) => {
   try {
-    const allStudents = await Student.find({ isDelete: false });
+    const allStudents = await Student.find({ isDelete: false, isAlumni: false });
     const firstYearStudents = allStudents.filter(
       (student) => student.year === "I"
     );
@@ -168,7 +189,7 @@ exports.studentFeeList = async (req, res) => {
 
 exports.examFeeList = async (req, res) => {
   try {
-    const allStudents = await Student.find({ isDelete: false });
+    const allStudents = await Student.find({ isDelete: false, isAlumni: false });
     const firstYearStudents = allStudents.filter(
       (student) => student.year === "I"
     );
