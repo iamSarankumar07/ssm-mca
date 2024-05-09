@@ -153,7 +153,7 @@
             <tr>
                 <td>Payment Alert</td>
                 <td><button type="button" onclick="paymentAlert()">Alert</button></td>
-                <td>Student Update Request</td>
+                <td>Profile Update Request</td>
                 <td><button type="button" onclick="updateReq()">Show Request</button></td>
             </tr>
             <tr>
@@ -167,6 +167,12 @@
                 <td><button type="button" onclick="subject()">Upload</button></td>
                 <td>Study Materials List</td>
                 <td><button type="button" onclick="subjectList()">Details</button></td>
+            </tr>
+            <tr>
+                <td>Move Students</td>
+                <td><button type="button" onclick="moveStudents()">Move</button></td>
+                <td>Alumni List</td>
+                <td><button type="button" onclick="alumniList()">Details</button></td>
             </tr>
             <tr>
                 <td>Received Contact Messages</td>
@@ -203,6 +209,12 @@
         };
         function examFeeList() {
         window.location.href = '/ssm/mca/examFeeList';
+        };
+        function moveStudents() {
+        window.location.href = '/ssm/mca/moveStudentsPage';
+        };
+        function alumniList() {
+        window.location.href = '/ssm/mca/alumniList';
         };
         function updateDue() {
         window.location.href = '/ssm/mca/updateDueDatesForAll';
