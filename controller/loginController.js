@@ -2,7 +2,6 @@ const express = require("express");
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const cookieParser = require("cookie-parser");0
 const authFile = require("../middleware/auth");
 const path = require("path");
 const app = express();
