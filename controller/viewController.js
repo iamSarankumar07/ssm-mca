@@ -134,6 +134,7 @@ exports.studentEdit = async (req, res) => {
 exports.alumniList = async (req, res) => {
     try {
       const students = await Student.find({ isDelete: false, isAlumni: true });
+        return res.json(students);
   
       res.render("alumniList", { students });
     } catch (err) {
