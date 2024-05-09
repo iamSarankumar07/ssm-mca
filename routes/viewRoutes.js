@@ -34,6 +34,8 @@ app.get("/messages", authFile.validateToken, viewController.message);
 
 app.get("/studentList", authFile.validateToken, viewController.studentList);
 
+app.get("/alumniList", authFile.validateToken, viewController.alumniList);
+
 app.get(
   "/studentEdit/:userId",
   authFile.validateToken,
@@ -62,6 +64,8 @@ app.get("/subjectList", authFile.validateToken, viewController.subjectList);
 
 app.get("/subject", authFile.validateToken, viewController.subject);
 
+app.get("/moveStudentsPage", authFile.validateToken, viewController.moveStudents);
+
 app.get("/examFeeList", authFile.validateToken, viewController.examFeeList);
 
 app.get("/feeEdit/:userId", authFile.validateToken, viewController.feeEdit);
@@ -77,6 +81,8 @@ app.get('/downloadSecondYrTuFeePDF', viewController.downloadSecondYrTuFeePDF);
 app.get('/downloadFirstYrExFeePDF', viewController.downloadFirstYrExFeePDF);
 
 app.get('/downloadSecondYrExFeePDF', viewController.downloadSecondYrExFeePDF);
+
+app.post('/alumniStatus', viewController.alumniStatus);
 
 
 module.exports = app;
