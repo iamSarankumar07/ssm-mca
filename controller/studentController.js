@@ -284,7 +284,11 @@ exports.login = async (req, res) => {
   const { studentId, password } = req.body;
 
   try {
-    const student = await Student.findOne({ studentId });
+    const student = await Student.findOne({ 
+      studentId,
+      isDelete: false,
+      isAlumni: false
+  });
 
     if (!student) {
       return res.send(
@@ -314,6 +318,41 @@ exports.deleteStudent = async (req, res) => {
     const userId = req.params.userId;
     const user = await Student.findByIdAndUpdate(userId, { isDelete: true });
     res.redirect("/ssm/mca/studentList");
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
+  }
+};
+
+exports.moveStudents = async (req, res) => {
+  const selectedYear = req.body.year;
+  const graduationYear = req.body.graduationYear;
+  const type = req.body.type;
+  try {
+    if (type === "alumni"){
+      const query = { year: selectedYear };
+      const result = await Student.updateMany(query, { 
+        $set: { 
+          isAlumni: true,
+          graduationYear: graduationYear,
+          year: null,
+          tutionDueDate: null,
+          examDueDate: null,
+          examPaymentStatus: null,
+          examTotalFee: null,
+          examPendingFee: null,
+          totalFee: null,
+          pendingFee: null,
+          password: null
+        } 
+      });
+      res.redirect("/ssm/mca/alumniList");
+    } else {
+      const query = { year: selectedYear };
+      const result = await Student.updateMany(query, { $set: { year: type } });
+      res.redirect("/ssm/mca/studentList");
+    }
+    
   } catch (err) {
     console.error(err);
     res.send("Error");
