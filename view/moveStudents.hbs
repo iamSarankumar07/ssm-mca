@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move Students</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            position: relative;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        button[type="submit"],
+        button[type="button"] {
+            width: 45%;
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px 14px;
+            border: none;
+            font-size: 12px;
+            border-radius: 5px;
+            border: 2px solid #3d6ef5ff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <form id="emailForm" action="/ssm/mca/moveStudents" method="post">
+        <h1>Move Students</h1>
+
+        <label for="title">Select Year :</label>
+        <select id="year" name="year" required>
+            <option>Select</option>
+            <option value="I">MCA-I</option>
+            <option value="II">MCA-II</option>
+        </select>
+
+        <label for="title">Move To :</label>
+        <select id="type" name="type" required onchange="showGraduationInput()">
+            <option>Select</option>
+            <option value="I">MCA-I</option>
+            <option value="II">MCA-II</option>
+            <option value="alumni">Alumni</option>
+        </select>
+
+        <label for="graduationYear" id="graduationYearLabel" style="display: none;">Graduation Year:</label>
+        <input type="text" id="graduationYear" name="graduationYear" style="display: none;">
+        <br><br>
+
+        <div class="button-container">
+            <button type="button" onclick="window.location.href='/ssm/mca/dashboard'">Back</button>
+            <button type="submit" id="update">Update</button>
+        </div>
+    </form>
+
+    <script>
+        function showGraduationInput() {
+            var typeSelect = document.getElementById("type");
+            var graduationYearLabel = document.getElementById("graduationYearLabel");
+            var graduationYearInput = document.getElementById("graduationYear");
+
+            if (typeSelect.value === "alumni") {
+                graduationYearLabel.style.display = "block";
+                graduationYearInput.style.display = "block";
+            } else {
+                graduationYearLabel.style.display = "none";
+                graduationYearInput.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
