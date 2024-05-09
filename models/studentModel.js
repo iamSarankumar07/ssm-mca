@@ -1,42 +1,41 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 const studentSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     registerNumber: {
         type: Number,
-        required: true,
+        required: false,
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
     },
     dob: {
         type: String,
-        required: true
+        required: false
     },
     year: {
         type: String,
-        required: true,
+        required: false,
     },
     phone: {
         type: Number,
-        required: true,
+        required: false,
     },
     email: {
         type: String,
-        required: true,
+        required: false,
     },
     studentId: {
         type: String,
-        required: true,
+        required: false,
     },
     password: {
         type: String,
-        required: true,
+        required: false,
     },
     totalFee: {
         type: Number,
@@ -70,7 +69,15 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    graduationYear: {
+        type: String,
+        default: null,
+    },
     isDelete: {
+        type: Boolean,
+        default: false,
+    },
+    isAlumni: {
         type: Boolean,
         default: false,
     },
