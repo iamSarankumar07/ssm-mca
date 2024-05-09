@@ -79,15 +79,15 @@
     <form id="emailForm" action="/ssm/mca/moveStudents" method="post">
         <h1>Move Students</h1>
 
-        <label for="title">Select Year :</label>
-        <select id="year" name="year" required>
+        <label for="title">Move From :</label>
+        <select id="year" name="year" required onchange="showYearInput()">
             <option>Select</option>
             <option value="I">MCA-I</option>
             <option value="II">MCA-II</option>
         </select>
 
         <label for="title">Move To :</label>
-        <select id="type" name="type" required onchange="showGraduationInput()">
+        <select id="type" name="type" required onchange="showYearInput()">
             <option>Select</option>
             <option value="I">MCA-I</option>
             <option value="II">MCA-II</option>
@@ -105,17 +105,38 @@
     </form>
 
     <script>
-        function showGraduationInput() {
+        function showYearInput() {
+            var yearSelect = document.getElementById("year");
             var typeSelect = document.getElementById("type");
+            var alumniOption = typeSelect.options[3];
             var graduationYearLabel = document.getElementById("graduationYearLabel");
             var graduationYearInput = document.getElementById("graduationYear");
 
-            if (typeSelect.value === "alumni") {
-                graduationYearLabel.style.display = "block";
-                graduationYearInput.style.display = "block";
+            if (yearSelect.value === typeSelect.value) {
+                alert("Move From & Move To Cannot Be The Same.");
+                typeSelect.value = "";
+            }
+            if (yearSelect.value === "II" && typeSelect.value === "I") {
+                alert("Sorry, you cannot move students from MCA-II to MCA-I.");
+                typeSelect.value = "";
+            }
+
+            if (yearSelect.value === "I") {
+                alumniOption.style.display = "none";
+                if (typeSelect.value === "alumni") {
+                    typeSelect.value = ""; 
+                }
+                graduationYearLabel.style.display = "none"; 
+                graduationYearInput.style.display = "none"; 
             } else {
-                graduationYearLabel.style.display = "none";
-                graduationYearInput.style.display = "none";
+                alumniOption.style.display = "block";
+                if (typeSelect.value === "alumni") {
+                    graduationYearLabel.style.display = "block"; 
+                    graduationYearInput.style.display = "block"; 
+                } else {
+                    graduationYearLabel.style.display = "none"; 
+                    graduationYearInput.style.display = "none"; 
+                }
             }
         }
     </script>
