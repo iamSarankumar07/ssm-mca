@@ -18,7 +18,7 @@
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #3d6ef5ff;
         }
 
         form {
@@ -47,6 +47,7 @@
 
         .button-container {
             display: flex;
+            padding-top: 20px;
             justify-content: space-between;
             width: 100%;
         }
@@ -96,7 +97,6 @@
 
         <label for="graduationYear" id="graduationYearLabel" style="display: none;">Graduation Year :</label>
         <input type="text" id="graduationYear" name="graduationYear" style="display: none;">
-        <br><br>
 
         <div class="button-container">
             <button type="button" onclick="window.location.href='/ssm/mca/dashboard'">Back</button>
@@ -117,7 +117,7 @@
                 typeSelect.value = "";
             }
             if (yearSelect.value === "II" && typeSelect.value === "I") {
-                alert("Sorry, you cannot move students from MCA-II to MCA-I.");
+                alert("Sorry, You Cannot Move students from MCA-II to MCA-I.");
                 typeSelect.value = "";
             }
 
