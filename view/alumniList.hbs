@@ -7,9 +7,9 @@
     <link rel="icon" href="https://your-favicon-url.png"> 
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
+        * {
+            font-family: "Poppins", sans-serif;
+        }
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
@@ -37,11 +37,6 @@
             margin: 0; 
         }
 
-        h2 {
-            color: #3d6ef5ff;
-            margin-top: 20px;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -50,7 +45,6 @@
 
         th, td {
             border: 1px solid #dee2e6;
-            {{!-- text-align: center; --}}
             padding: 12px;
         }
 
@@ -63,19 +57,74 @@
             color: #fff;
         }
 
-        .edit-icon, .delete-icon {
+        .back-button {
+            position: absolute;
+            top: 48px;
+            left: 12%; 
             text-decoration: none;
-            color: #3d6ef5ff;
-            transition: color 0.3s;
         }
 
-        .edit-icon:hover, .delete-icon:hover {
-            color: #0056b3;
+        .back-button img {
+            width: 40px;
+            height: 40px;
+            margin-right: 5px;
+            vertical-align: middle;
         }
 
-        .btn-container {
+        .search-container, .filter-container {
+            width: 45%;
+            margin-top: 15px;
+            margin-bottom: 15px;
             text-align: center;
-            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .search-container {
+            text-align: left; 
+            float: left; 
+        }
+
+        .filter-container {
+            text-align: right; 
+            float: right; 
+        }
+
+        .filter-container label, .search-container label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .filter-container select, .search-container input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 200px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .filter-container select:hover, .filter-container select:focus, 
+        .search-container input[type="text"]:hover, .search-container input[type="text"]:focus {
+            border-color: #3d6ef5ff;
+        }
+
+        .search-container button {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: #fff;
+            border: 2px solid #3d6ef5ff;
+            background: #3d6ef5ff;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        .search-container button:hover {
+            background: #fff;
+            color: #3d6ef5ff;
         }
 
         .btn-container {
@@ -100,19 +149,7 @@
             background: #fff;
             color: #3d6ef5ff;
         }
-        .back-button {
-    position: absolute;
-    top: 48px;
-    left: 12%; 
-    text-decoration: none;
-}
-
-.back-button img {
-    width: 40px;
-    height: 40px;
-    margin-right: 5px;
-    vertical-align: middle;
-}
+       
     </style>
 </head>
 <body>
@@ -121,6 +158,20 @@
     <a href="/ssm/mca/dashboard" class="back-button">
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
+    <div class="search-container">
+        <label for="searchName">Search by Name :</label>
+        <input type="text" id="searchName" name="searchName" placeholder="Enter name">
+        <button onclick="applySearch()">Search</button>
+    </div>
+    <div class="filter-container">
+        <label for="gradYear">Filter by Graduation Year :</label>
+        <select id="gradYear" name="gradYear" onchange="applyFilter(this.value)">
+            <option value="">Select</option>
+            {{#each gradYears}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+    </div>
     <table>
         <thead>
         <tr>
@@ -148,11 +199,28 @@
         </tbody>
     </table>
 
-    <br><br>
-
     <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard">< Go back!</a>
+        <a class="btn" href="/ssm/mca/dashboard">&lt; Go back!</a>
     </div>
 </div>
+
+<script>
+    function applyFilter(year) {
+        document.getElementById('searchName').value = '';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('name');
+        urlParams.set('year', year);
+        window.location.href = window.location.pathname + '?' + urlParams.toString();
+    }
+    
+    function applySearch() {
+        const searchName = document.getElementById('searchName').value.trim();
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('year');
+        urlParams.set('name', searchName);
+        window.location.href = window.location.pathname + '?' + urlParams.toString();
+    }
+</script>
 </body>
 </html>
