@@ -94,7 +94,7 @@
             <option value="alumni">Alumni</option>
         </select>
 
-        <label for="graduationYear" id="graduationYearLabel" style="display: none;">Graduation Year:</label>
+        <label for="graduationYear" id="graduationYearLabel" style="display: none;">Graduation Year :</label>
         <input type="text" id="graduationYear" name="graduationYear" style="display: none;">
         <br><br>
 
@@ -139,6 +139,15 @@
                 }
             }
         }
+        document.getElementById("graduationYear").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        if (this.value.length > 4) {
+            this.value = this.value.slice(0, 4);
+        }
+        });
+        document.getElementById("graduationYear").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        });
     </script>
 </body>
 </html>
