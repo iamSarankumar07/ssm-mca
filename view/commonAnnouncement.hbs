@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Sender</title>
     <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+      * {
+      font-family: "Poppins", sans-serif;
+    }
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
@@ -114,14 +118,14 @@
 </head>
 <body>
     <form id="emailForm" action="/ssm/mca/commonAnnouncement" method="post">
-        <h1>Announcement</h1>
+        <h1>Common Announcement</h1>
 
         <label for="title">To:</label>
         <select id="year" name="year" required>
             <option>Select</option>
             <option value="first">MCA-I</option>
             <option value="second">MCA-II</option>
-            <option value="all">All</option>
+            <option value="all">ALL</option>
         </select>
 
         <label for="title">Title:</label>
