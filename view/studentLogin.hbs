@@ -6,6 +6,10 @@
     <title>Student Login</title>
     <link rel="icon" href="https://i.postimg.cc/x1RfJjWH/user-1.png">
     <style>
+         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+      * {
+      font-family: "Poppins", sans-serif;
+    }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -111,8 +115,8 @@
         <label for="userName">Register Number</label>
         <input type="text" id="userName" name="studentId" autocomplete="off" required>
 
-        <label for="password">Date of Birth <span class="hint">[ DD/MM/YYYY ]</span> </label>
-        <input type="password" id="password" name="password" required>
+        <label for="password">Date of Birth</label>
+        <input type="password" id="password" name="password" required placeholder="DD/MM/YYYY">
 
         <div class="showPassCode">
             <input class="box" type="checkbox" id="showPassword" name="showPassword">
