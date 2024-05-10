@@ -132,15 +132,30 @@ exports.studentEdit = async (req, res) => {
 };
 
 exports.alumniList = async (req, res) => {
-    try {
-      const students = await Student.find({ isDelete: false, isAlumni: true });
-  
-      res.render("alumniList", { students });
-    } catch (err) {
+  try {
+      let filterYear = req.query.year || null; 
+      let searchName = req.query.name || '';
+      
+      let query = { isDelete: false, isAlumni: true };
+      if (filterYear && filterYear !== 'All') {
+          query.graduationYear = filterYear;
+      }
+
+      if (searchName) {
+        query.name = { $regex: new RegExp(searchName, 'i') }; 
+      }
+
+      const students = await Student.find(query);
+
+      let gradYears = await Student.distinct('graduationYear', { isDelete: false, isAlumni: true });
+      gradYears.unshift('All');
+
+      res.render("alumniList", { students, filterYear, gradYears, searchName  });
+  } catch (err) {
       console.error(err);
       res.send("Error", err);
-    }
-  };
+  }
+};
 
 exports.subjectList = async (req, res) => {
   try {
