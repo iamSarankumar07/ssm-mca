@@ -150,7 +150,7 @@
             </tr>
             <tr>
                 <td><label for="totalFee">Total Fees:</label></td>
-                <td><input type="number" id="totalFee" name="totalFee" value="{{student.totalFee}}" required></td>
+                <td><input type="text" id="totalFee" name="totalFee" value="{{student.totalFee}}" required></td>
             </tr>
         
         </table>
@@ -162,6 +162,21 @@
     </form>
 </table>
 
+<script>
+        
+        document.getElementById("phone").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10);
+        }
+        });
+        document.getElementById("registerNumber").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        });
+        document.getElementById("totalFee").addEventListener("input", function() {
+        this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
 
 </body>
 </html>
