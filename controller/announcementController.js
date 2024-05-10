@@ -4,7 +4,7 @@ const Student = require("../models/studentModel");
 
 exports.sendMail = async (req, res) => {
   try {
-    const students = await Student.find({isDelete: false}, "email");
+    const students = await Student.find({isDelete: false, isAlumni: false}, "email");
     const studentEmails = students.map((user) => user.email);
     console.log("All user emails:", studentEmails);
 
@@ -302,7 +302,7 @@ exports.commonMail = async (req, res) => {
     } else if (year === "second") {
       students = await Student.find({ year: "II", isDelete: false }, "email");
     } else if (year === "all") {
-      students = await Student.find({isDelete: false}, "email");
+      students = await Student.find({isDelete: false, isAlumni: false}, "email");
     } else {
       return res.send(
         '<script>alert("Invalid Year Selection"); window.location.href = "/ssm/mca/commonAnnouncement";</script>'
