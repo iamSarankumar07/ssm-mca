@@ -260,9 +260,13 @@ exports.getStudentDetails = async (req, res) => {
     );
     const studentId = decodedToken.studentId;
 
-    const student = await Student.findOne({ studentId });
+    const student = await Student.findOne({ studentId, isAlumni: false, isDelete: false });
 
-    const subject = await Subject.find({ year: student.year });
+    let subject;
+
+    if (student) {
+      subject = await Subject.find({ year: student.year });
+    }
 
     if (!student) {
       return res.send(
