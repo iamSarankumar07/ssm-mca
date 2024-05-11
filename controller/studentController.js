@@ -276,7 +276,9 @@ exports.newStudent = async (req, res) => {
      `
     );
   } catch (err) {
-    res.send(err.message, "Error");
+    return res.send(
+      '<script>alert("Registration Failed! - Internal Server Error"); window.location.href = "/ssm/mca/register";</script>'
+    );
   }
 };
 
