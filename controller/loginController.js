@@ -288,7 +288,9 @@ exports.login = async (req, res) => {
     });
   } catch (err) {
     console.log("Error in userLogin:", err);
-    res.send("Internal Server Error");
+    return res.send(
+      '<script>alert("Login Failed! - Internal Server Error"); window.location.href = "/ssm/mca/login";</script>'
+    );
   }
 };
 
