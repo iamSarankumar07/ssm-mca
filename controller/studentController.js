@@ -309,7 +309,9 @@ exports.login = async (req, res) => {
     res.redirect("/studentHome");
   } catch (err) {
     console.error("Error logging in:", err);
-    res.status(500).send("Failed to login");
+    return res.send(
+      '<script>alert("Login Failed! - Internal Server Error"); window.location.href = "/ssm/mca/studentLogin";</script>'
+    );
   }
 };
 
