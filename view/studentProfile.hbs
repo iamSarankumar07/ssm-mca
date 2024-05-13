@@ -254,13 +254,9 @@ a {
             </div>
         </div>
         <div class="card">
-            <h3>Tution Fees Details</h3>
+            <h3>Tution Fees Details <a href="/ssm/mca/studentProfileTuEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
             <div class="details  fees-details">
                 <table>
-                    <tr>
-                        <td><strong>Payment Status:</strong></td>
-                        <td class="sd">{{student.paymentStatus}}</td>
-                    </tr>
                     <tr>
                         <td><strong>Total Amount:</strong></td>
                         <td class="sd">Rs.{{student.totalFee}}</td>
@@ -270,18 +266,18 @@ a {
                         <td class="sd">Rs.{{student.pendingFee}}</td>
                     </tr>
                     <tr>
+                        <td><strong>Payment Status:</strong></td>
+                        <td class="sd">{{student.paymentStatus}}</td>
+                    </tr>
+                    <tr>
                         <td><strong>Due Date:</strong></td>
                         <td class="sd">{{student.tutionDueDate}}</td>
                     </tr>
                 </table>
             </div>
-            <h3>Exam Fees Details</h3>
+            <h3>Exam Fees Details <a href="/ssm/mca/studentProfileExEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
             <div class="details fees-details">
                 <table>
-                    <tr>
-                        <td><strong>Payment Status:</strong></td>
-                        <td class="sd">{{student.examPaymentStatus}}</td>
-                    </tr>
                     <tr>
                         <td><strong>Total Amount:</strong></td>
                         <td class="sd">Rs.{{student.examTotalFee}}</td>
@@ -289,6 +285,10 @@ a {
                     <tr>
                         <td><strong>Amount Due:</strong></td>
                         <td class="sd">Rs.{{student.examPendingFee}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payment Status:</strong></td>
+                        <td class="sd">{{student.examPaymentStatus}}</td>
                     </tr>
                     <tr>
                         <td><strong>Due Date:</strong></td>
