@@ -87,7 +87,18 @@ const studentSchema = new mongoose.Schema({
         newDob: String,
         newPhone: String,
         status: String
-    },createdAt: {
+    },
+    tuEditRequest: {
+        newTuPending: String,
+        newTuStatus: String,
+        status: String
+    },
+    exEditRequest: {
+        newExPending: String,
+        newExStatus: String,
+        status: String
+    },
+    createdAt: {
         type: Date,
         immutable: true,
         default: () => Date.now(),
