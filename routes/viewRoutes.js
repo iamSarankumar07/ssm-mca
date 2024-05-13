@@ -22,7 +22,15 @@ app.get("/announcement", authFile.validateToken, viewController.announcement);
 
 app.get("/studentProfileEdit/:userId", authFile.sValidateToken, viewController.studentProfileEdit);
 
+app.get("/studentProfileTuEdit/:userId", authFile.sValidateToken, viewController.studentProfileTuEdit);
+
+app.get("/studentProfileExEdit/:userId", authFile.sValidateToken, viewController.studentProfileExEdit);
+
 app.get("/reviewRequest", authFile.validateToken, viewController.reviewRequest);
+
+app.get("/reviewRequestTu", authFile.validateToken, viewController.reviewRequestTu);
+
+app.get("/reviewRequestEx", authFile.validateToken, viewController.reviewRequestEx);
 
 app.get("/paymentAlert", authFile.validateToken, viewController.paymentAlert);
 
