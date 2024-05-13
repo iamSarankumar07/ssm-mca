@@ -161,6 +161,12 @@
                 <td><button type="button" onclick="updateReq()">Show Request</button></td>
             </tr>
             <tr>
+                <td>Student Tuition Fee Change Req</td>
+                <td><button type="button" onclick="updateReqTu()">Show Request</button></td>
+                <td>Student Exam Fee Change Req</td>
+                <td><button type="button" onclick="updateReqEx()">Show Request</button></td>
+            </tr>
+            <tr>
                 <td>Announcement</td>
                 <td><button type="button" onclick="announcement()">Send</button></td>
                 <td>Common Announcement</td>
@@ -234,6 +240,12 @@
         };
         function updateReq() {
         window.location.href = '/ssm/mca/reviewRequest';
+        };
+        function updateReqTu() {
+        window.location.href = '/ssm/mca/reviewRequestTu';
+        };
+        function updateReqEx() {
+        window.location.href = '/ssm/mca/reviewRequestEx';
         };
         function subject() {
         window.location.href = '/ssm/mca/subject';
