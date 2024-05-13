@@ -13,7 +13,15 @@ app.post("/moveStudents", authFile.validateToken, studentController.moveStudents
 
 app.post('/requestChange', studentController.requestChange);
 
+app.post('/requestChangeTu', studentController.requestChangeTu);
+
+app.post('/requestChangeEx', studentController.requestChangeEx);
+
 app.post('/approveAndReject', studentController.approveAndReject);
+
+app.post('/approveAndRejectTu', studentController.approveAndRejectTu);
+
+app.post('/approveAndRejectEx', studentController.approveAndRejectEx);
 
 
 module.exports = app;
