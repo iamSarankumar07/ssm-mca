@@ -50,11 +50,53 @@ exports.reviewRequest = async (req, res) => {
     }
 };
 
+exports.reviewRequestTu = async (req, res) => {
+    try {
+        const students = await Student.find({ 'tuEditRequest.status': 'requested' });
+        res.render('tuRequestReview', { students });
+    } catch (err) {
+        console.log(err.message, err);
+        return res.json(err.message);
+    }
+};
+
+exports.reviewRequestEx = async (req, res) => {
+    try {
+        const students = await Student.find({ 'exEditRequest.status': 'requested' });
+        res.render('exRequestReview', { students });
+    } catch (err) {
+        console.log(err.message, err);
+        return res.json(err.message);
+    }
+};
+
 exports.studentProfileEdit = async (req, res) => {
     try {
         const userId = req.params.userId;
         const student = await Student.findById(userId);
         res.render("stdProfileEdit", { student });
+      } catch (err) {
+        console.error(err);
+        res.send("Error");
+      }
+};
+
+exports.studentProfileTuEdit = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const student = await Student.findById(userId);
+        res.render("stdProfileTuEdit", { student });
+      } catch (err) {
+        console.error(err);
+        res.send("Error");
+      }
+};
+
+exports.studentProfileExEdit = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const student = await Student.findById(userId);
+        res.render("stdProfileExEdit", { student });
       } catch (err) {
         console.error(err);
         res.send("Error");
