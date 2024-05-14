@@ -130,6 +130,7 @@
 
         .dd {
             color: #3d6ef5ff;
+            font-weight: bold;
         }
 
         a {
@@ -163,7 +164,8 @@
         
         {{#each students}}
         <div class="student">
-            <p style="text-align: center;"><strong>Register Number - </strong> <span class="dd">{{registerNumber}}</span></p>
+            <p style="text-align: center;"><strong>Register Number : </strong> <span class="dd">{{registerNumber}}</span></p>
+            <p style="text-align: center; margin-top: -15px"><strong>Branch : </strong> <span class="dd">MCA - {{year}}</span></p>
             <div class="details-section">
                 <div class="details">
                     <h3>Current Student Details</h3>
@@ -190,19 +192,19 @@
                     <h3>To Update</h3>
                     <table>
                         <tr>
-                            <td>New Name</td>
+                            <td>Name</td>
                             <td class="dd">{{editRequest.newName}}</td>
                         </tr>
                         <tr>
-                            <td>New DOB</td>
+                            <td>DOB</td>
                             <td class="dd">{{editRequest.newDob}}</td>
                         </tr>
                         <tr>
-                            <td>New Phone</td>
+                            <td>Phone</td>
                             <td class="dd">{{editRequest.newPhone}}</td>
                         </tr>
                         <tr>
-                            <td>New Email</td>
+                            <td>Email</td>
                             <td class="dd">{{editRequest.newEmail}}</td>
                         </tr>
                     </table>
