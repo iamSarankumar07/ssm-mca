@@ -900,8 +900,10 @@ exports.approveAndReject = async (req, res) => {
       student = await Student.findOne({registerNumber: registerNumber});
 
       if (student.editRequest && student.editRequest.status === 'requested') {
-          student.pendingFee = student.tuEditRequest.newTuPending;
-          student.paymentStatus = student.tuEditRequest.newTuStatus;
+          student.name = student.editRequest.newName;
+          student.phone = student.editRequest.newPhone;
+          student.dob = student.editRequest.newDob;
+          student.email = student.editRequest.newEmail;
           student.editRequest = null;
           await student.save();
         };
