@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Student</title>
+    <title>Tution Fee Update Request</title>
     <link rel="icon" href="https://i.postimg.cc/kGVvWqPn/edit-user-1.png">
 
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
+        * {
+            font-family: "Poppins", sans-serif;
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -52,7 +52,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        
+
         a {
             display: block;
             margin-top: 20px;
@@ -92,6 +92,7 @@
             color: #3d6ef5ff;
             font-weight: bold;
         }
+
         h2 {
             color: #3d6ef5ff;
             text-align: center;
@@ -103,49 +104,50 @@
 <body>
 
     <table>
-    <tr>
-        <td>
-            <form action="/ssm/mca/requestChangeTu" method="post">
-            <h2>Tution Fee Update Request</h2>
-        <table>
-            <tr>
-                <td><label for="newName">Name :</label></td>
-                <td><input type="text" id="newName" name="newName" value="{{student.name}}" readonly></td>
-            </tr>
-            <tr>
-                <td><label for="registerNumber">Reg Number :</label></td>
-                <td><input type="text" id="registerNumber" name="registerNumber" value="{{student.registerNumber}}" readonly></td>
-            </tr>
-            <tr>
-                <td><label for="totalFee">Total Fee:</label></td>
-                <td><input type="text" id="totalFee" name="totalFee" value="{{student.totalFee}}" readonly /></td>
-            </tr>
-            <tr>
-                <td><label for="newTuPending">Pending Fee:</label></td>
-                <td><input type="text" id="newTuPending" name="newTuPending" value="{{student.pendingFee}}" required /></td>
-            </tr>
-            <tr>
-                <td><label for="newTuStatus">Payment Status:</label></td>
-                <td><select id="newTuStatus" name="newTuStatus" value="{{student.paymentStatus}}" required>
-                        <option>Select Status</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Pending">Pending</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="dueDate">Due Date :</label></td>
-                <td><input type="phone" id="dueDate" name="dueDate" value="{{student.tutionDueDate}}" readonly></td>
-            </tr>
-        </table>
-                <div class="button-container">
-                    <button type="button" onclick="history.back()">Back</button>
-                    <button type="submit" >Request</button>
-                </div>
-
-    </form>
-</table>
-
+        <tr>
+            <td>
+                <form id="feeUpdateForm" action="/ssm/mca/requestChangeTu" method="post">
+                    <h2>Tution Fee Update Request</h2>
+                    <table>
+                        <tr>
+                            <td><label for="newName">Name :</label></td>
+                            <td><input type="text" id="newName" name="newName" value="{{student.name}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label for="registerNumber">Reg Number :</label></td>
+                            <td><input type="text" id="registerNumber" name="registerNumber" value="{{student.registerNumber}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label for="totalFee">Total Fee:</label></td>
+                            <td><input type="text" id="totalFee" name="totalFee" value="{{student.totalFee}}" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="newTuPending">Pending Fee:</label></td>
+                            <td><input type="text" id="newTuPending" name="newTuPending" value="{{student.pendingFee}}" required /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="newTuStatus">Payment Status:</label></td>
+                            <td>
+                                <select id="newTuStatus" name="newTuStatus" value="{{student.paymentStatus}}" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Pending">Pending</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="dueDate">Due Date :</label></td>
+                            <td><input type="text" id="dueDate" name="dueDate" value="{{student.tutionDueDate}}" readonly></td>
+                        </tr>
+                    </table>
+                    <div class="button-container">
+                        <button type="button" onclick="history.back()">Back</button>
+                        <button type="submit">Request</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
 
 </body>
 </html>
