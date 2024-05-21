@@ -162,7 +162,7 @@ exports.login = async (req, res) => {
       );
     }
 
-    if (user.email === "sarankumar@outlook.in") {
+    if (user.email === "sarankumar@outlook.in" || user.email === "saran@outlook.in") {
       const accessToken = await authFile.token(user);
       res.cookie("access-token", accessToken, {
       maxAge: 60 * 60 * 1000,
