@@ -1,9 +1,9 @@
-const express = require("express");
 const Student = require("../models/studentModel");
+const TemplateModel = require("../models/templateModel");
 const authFile = require("../middleware/auth");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const app = express();
+const pdf = require("html-pdf");
 
 exports.newStudent = async (req, res) => {
   const body = req.body;
@@ -1279,6 +1279,62 @@ exports.approveAndRejectEx = async (req, res) => {
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+exports.studentDownload = async (req, res) => {
+  let data = req.body;
+  try {
+    let [studentsData, maleRecords, femaleRecords, totalRecords] = await Promise.all([
+      Student.find({ isDelete: false, isAlumni: false, year: data.year }),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, gender: "Male" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, gender: "Female" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
+    ]);
+
+    let templateData = {
+      studentsData: studentsData,
+      maleRecords: maleRecords,
+      femaleRecords: femaleRecords,
+      totalRecords: totalRecords
+    };
+
+    let dbTemplate = await TemplateModel.findOne({ name: "STUDENTS_LIST_PDF" });
+    let attachment = eval("`" + dbTemplate.content + "`");
+
+    if (data.isPdf) {
+      pdf.create(attachment, {
+        childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
+        orientation: "portrait",
+        width: "8.27in",
+        height: "11.69in",
+        timeout: "100000",
+      }).toBuffer((err, buffer) => {
+        if (err) {
+          console.log("Error: " + err);
+          appLogsService.insertLogs(
+            req.originalUrl,
+            req.method,
+            JSON.stringify(req.body),
+            "",
+            req.headers,
+            err
+          );
+          return res.status(500).send({ success: false, message: err.message });
+        }
+        res.writeHead(200, {
+          "Content-Length": Buffer.byteLength(buffer),
+          "Content-Type": "application/pdf",
+          "Content-Disposition": "attachment; filename=students_list.pdf"
+        });
+        res.end(buffer);
+      });
+    } else {
+      res.status(400).send({ success: false, message: "isPdf flag is required to download PDF" });
+    }
+  } catch (err) {
+    console.log(err.message, err);
+    return res.status(500).send({ success: false, message: err.message });
   }
 };
 
