@@ -1312,14 +1312,6 @@ exports.studentDownload = async (req, res) => {
       }).toBuffer((err, buffer) => {
         if (err) {
           console.log("Error: " + err);
-          appLogsService.insertLogs(
-            req.originalUrl,
-            req.method,
-            JSON.stringify(req.body),
-            "",
-            req.headers,
-            err
-          );
           return res.status(500).send({ success: false, message: err.message });
         }
         res.writeHead(200, {
