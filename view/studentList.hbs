@@ -150,6 +150,14 @@
         </tbody>
     </table>
 
+    <form id="downloadForm" action="/ssm/mca/studentDownload" method="post">
+        <input type="hidden" name="year" value="I">
+        <input type="hidden" name="isPdf" value="true">
+        <div class="btn-container">
+            <button type="submit" class="btn">Download</button>
+        </div>
+    </form>
+
     <h2>MCA - II</h2>
     <table>
         <thead>
@@ -179,6 +187,15 @@
         {{/each}}
         </tbody>
     </table>
+
+    <form id="downloadForm" action="/ssm/mca/studentDownload" method="post">
+        <input type="hidden" name="year" value="II">
+        <input type="hidden" name="isPdf" value="true">
+        <div class="btn-container">
+            <button type="submit" class="btn">Download</button>
+        </div>
+    </form>
+
     <br><br>
 
     <div class="btn-container">
