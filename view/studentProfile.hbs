@@ -209,6 +209,24 @@ a {
     vertical-align: middle;
 }
 
+ button[type="button"] {
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px 14px;
+            border: none;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="button"]:hover {
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+            font-weight: bold;
+        }
+
 </style>
 </head>
 <body>
@@ -221,37 +239,43 @@ a {
         <div class="card">
             <h3 style="text-align: center;">Student Details <a href="/ssm/mca/studentProfileEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
             <div class="details student-details">
-                <table>
-                    <tr>
-                        <td><strong>Name:</strong></td>
-                        <td class="sd">{{student.name}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Register Number:</strong></td>
-                        <td class="sd">{{student.registerNumber}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gender:</strong></td>
-                        <td class="sd">{{student.gender}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Date Of Birth:</strong></td>
-                        <td class="sd">{{student.dob}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Branch:</strong></td>
-                        <td class="sd">MCA - {{student.year}}</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Phone:</strong></td>
-                        <td class="sd">+91 {{student.phone}}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Email:</strong></td>
-                        <td class="sd">{{student.email}}</td>
-                    </tr>
-                </table>
-            </div>
+    <table>
+        <tr>
+            <td><strong>Name:</strong></td>
+            <td class="sd">{{ student.name }}</td>
+        </tr>
+        <tr>
+            <td><strong>Register Number:</strong></td>
+            <td class="sd">{{ student.registerNumber }}</td>
+        </tr>
+        <tr>
+            <td><strong>Gender:</strong></td>
+            <td class="sd">{{ student.gender }}</td>
+        </tr>
+        <tr>
+            <td><strong>Date Of Birth:</strong></td>
+            <td class="sd">{{ student.dob }}</td>
+        </tr>
+        <tr>
+            <td><strong>Branch:</strong></td>
+            <td class="sd">MCA - {{ student.year }}</td>
+        </tr>
+        <tr>
+            <td><strong>Phone:</strong></td>
+            <td class="sd">+91 {{ student.phone }}</td>
+        </tr>
+        <tr>
+            <td><strong>Email:</strong></td>
+            <td class="sd">{{ student.email }}</td>
+        </tr>
+        <tr>
+            <td><strong>Address:</strong></td>
+            <td id="hideButton"><button type="button" onclick="addressUpdate()">Update Address</button></td>
+            <td id="hideTd" class="sd">{{ student.address.address }}, {{ student.address.city }}, {{ student.address.state }}, {{ student.address.pinCode }}, {{ student.address.country }}.</td>
+        </tr>
+    </table>
+</div>
+
         </div>
         <div class="card">
             <h3>Tution Fees Details <a href="/ssm/mca/studentProfileTuEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
@@ -421,5 +445,24 @@ a {
 
         </div>
 </div>
+
+<script>
+    function addressUpdate() {
+        window.location.href = '/ssm/mca/studentAddressUpdate/{{student._id}}';
+    };
+
+    function hideUpdateButton() {
+        var updateButtonRow = document.getElementById("hideButton");
+        var hideTd = document.getElementById("hideTd");
+            if ({{ student.addressUpdate }}) {
+                updateButtonRow.style.display = "none";
+            } else {
+                hideTd.style.display = "none";
+            }
+    }
+    window.onload = function() {
+        hideUpdateButton();
+    };
+</script>
 </body>
 </html>
