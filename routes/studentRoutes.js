@@ -7,6 +7,8 @@ app.post("/studentRegister", authFile.validateToken, studentController.newStuden
 
 app.post("/studentUpdate/:userId", authFile.validateToken, studentController.updateStudent);
 
+app.post("/addressUpdate/:userId", authFile.sValidateToken, studentController.addressUpdate);
+
 app.get("/studentDelete/:userId", authFile.validateToken, studentController.deleteStudent);
 
 app.post("/moveStudents", authFile.validateToken, studentController.moveStudents);
