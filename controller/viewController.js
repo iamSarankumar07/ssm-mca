@@ -81,6 +81,17 @@ exports.studentProfileEdit = async (req, res) => {
       }
 };
 
+exports.studentAddressUpdate = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const student = await Student.findById(userId);
+        res.render("updateAddress", { student });
+      } catch (err) {
+        console.error(err);
+        res.send("Error");
+      }
+};
+
 exports.studentProfileTuEdit = async (req, res) => {
     try {
         const userId = req.params.userId;
