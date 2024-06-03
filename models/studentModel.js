@@ -33,6 +33,17 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    address: {
+        address: String,
+        city: String,
+        state: String,
+        pinCode: String,
+        country: String
+    },
+    state: {
+        type: String,
+        required: false,
+    },
     password: {
         type: String,
         required: false,
@@ -78,6 +89,10 @@ const studentSchema = new mongoose.Schema({
         default: false,
     },
     isAlumni: {
+        type: Boolean,
+        default: false,
+    },
+    addressUpdate: {
         type: Boolean,
         default: false,
     },
