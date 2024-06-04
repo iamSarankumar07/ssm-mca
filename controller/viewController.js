@@ -92,6 +92,10 @@ exports.studentAddressUpdate = async (req, res) => {
       }
 };
 
+exports.addressUpdateReq = async (req, res) => {
+  res.render("addressUpdateReq");
+};
+
 exports.studentProfileTuEdit = async (req, res) => {
     try {
         const userId = req.params.userId;
