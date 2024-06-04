@@ -24,6 +24,8 @@ app.get("/studentProfileEdit/:userId", authFile.sValidateToken, viewController.s
 
 app.get("/studentAddressUpdate/:userId", authFile.sValidateToken, viewController.studentAddressUpdate);
 
+app.get("/addressUpdateReq", authFile.validateToken, viewController.addressUpdateReq);
+
 app.get("/studentProfileTuEdit/:userId", authFile.sValidateToken, viewController.studentProfileTuEdit);
 
 app.get("/studentProfileExEdit/:userId", authFile.sValidateToken, viewController.studentProfileExEdit);
