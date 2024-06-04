@@ -9,6 +9,8 @@ app.post("/studentUpdate/:userId", authFile.validateToken, studentController.upd
 
 app.post("/addressUpdate/:userId", authFile.sValidateToken, studentController.addressUpdate);
 
+app.post("/sendAddressUpdateReq", authFile.validateToken, studentController.sendAddressUpdateReq);
+
 app.get("/studentDelete/:userId", authFile.validateToken, studentController.deleteStudent);
 
 app.post("/moveStudents", authFile.validateToken, studentController.moveStudents);
