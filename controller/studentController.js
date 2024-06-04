@@ -495,6 +495,169 @@ exports.updateStudent = async (req, res) => {
   }
 };
 
+exports.sendAddressUpdateReq = async (req, res) => {
+  let data = req.body;
+  let selectedYear = data.year;
+  let registerNumber = data.registerNumber;
+
+  try {
+    if (registerNumber) {
+      let query = { registerNumber: registerNumber };
+      const result = await Student.findOneAndUpdate(query, {
+        $set: {
+          addressUpdate: false,
+        },
+      });
+
+      if (!result) {
+        return res.status(404).send(`
+          <script>
+            alert("Student not found");
+            window.location.href = "/ssm/mca/addressUpdateReq";
+          </script>
+        `);
+      }
+    } else if (selectedYear) {
+      const query = { year: selectedYear };
+      const result = await Student.updateMany(query, {
+        $set: {
+          addressUpdate: false,
+        },
+      });
+
+      if (result.matchedCount === 0) {
+        return res.status(404).send(`
+          <script>
+            alert("No students found for the given year");
+            window.location.href = "/ssm/mca/addressUpdateReq";
+          </script>
+        `);
+      }
+    } else {
+      return res.status(400).send(`
+        <script>
+          alert("Invalid request data");
+          window.location.href = "/ssm/mca/addressUpdateReq";
+        </script>
+      `);
+    }
+
+    res.send(
+      `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registration</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+          }
+      
+          .modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+          }
+      
+          .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+      
+          p {
+            margin: 0 0 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745; /* Green color */
+            text-align: center;
+          }
+      
+          .button-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+          }
+      
+          button[type="button"] {
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px 14px;
+            border: none;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+      
+          button[type="button"]:hover {
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <p>Address Update Request Sent!</p>
+            <div class="button-container">
+              <button type="button" onclick="redirect()">Continue</button>
+            </div>
+          </div>
+        </div>
+      
+        <script>
+          function redirect() {
+            window.location.href = "/ssm/mca/addressUpdateReq";
+          }
+      
+          window.onload = function() {
+            var modal = document.getElementById("myModal");
+      
+            modal.style.display = "flex";
+      
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+                redirect();
+              }
+            }
+          }
+        </script>
+      </body>
+      </html>
+      `
+     );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(`
+      <script>
+        alert("Internal Server Error");
+        window.location.href = "/ssm/mca/studentList";
+      </script>
+    `);
+  }
+};
+
+
 exports.addressUpdate = async (req, res) => {
   try {
     let data = req.body;
