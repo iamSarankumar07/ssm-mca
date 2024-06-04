@@ -500,6 +500,104 @@ exports.sendAddressUpdateReq = async (req, res) => {
   let selectedYear = data.year;
   let registerNumber = data.registerNumber;
 
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "verifyuserofficial@gmail.com",
+      pass: "wsdv megz vecp wzen",
+    },
+  });
+
+  const sendMail = (studentEmail, studentName) => {
+    const mailOptions = {
+      from: "verifyuserofficial@gmail.com",
+      to: studentEmail,
+      subject: "Address Update Option Enabled",
+      html: `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <title>Address Update Option Enabled</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              font-size: 16px;
+              line-height: 1.6;
+              color: #333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 20px auto;
+              padding: 20px;
+              background-color: #fff;
+              border-radius: 10px;
+              box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+              font-size: 36px;
+              color: #007bff; 
+              margin-bottom: 20px;
+              text-align: center;
+              text-transform: uppercase;
+            }
+            p {
+              margin-bottom: 15px;
+              text-align: justify;
+            }
+            ul {
+              margin-bottom: 15px;
+              padding-left: 20px;
+            }
+            li {
+              margin-bottom: 5px;
+            }
+            a {
+              color: #007bff;
+              text-decoration: none;
+            }
+            a:hover {
+              text-decoration: underline;
+            }
+            .footer {
+              font-size: 14px;
+              color: #999;
+              margin-top: 20px;
+              text-align: center;
+            }
+            .highlight {
+              background-color: #eaf6ff;
+              padding: 5px 10px;
+              border-radius: 5px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Address Update Option Enabled</h1>
+            <p>Dear ${studentName},</p>
+            <p>We are pleased to inform you that the address update option has been enabled for your account. You can now log into your student portal and update your address information in your profile.</p>
+            <p>If you have any questions or need further assistance, please feel free to <a href="mailto:iamsarankumar@outlook.in" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
+            <p>Best regards,<br>Saran Kumar</p>
+            <div class="footer">
+              This is an automated message. Please do not reply to this email.
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.log(err, "Email Sent Failed...");
+      } else {
+        console.log(`Email Sent Successfully to ${studentName} - ${studentEmail}`);
+      }
+    });
+  };
+
   try {
     if (registerNumber) {
       let query = { registerNumber: registerNumber };
@@ -517,6 +615,8 @@ exports.sendAddressUpdateReq = async (req, res) => {
           </script>
         `);
       }
+
+      sendMail(result.email, result.name);
     } else if (selectedYear) {
       const query = { year: selectedYear };
       const result = await Student.updateMany(query, {
@@ -533,6 +633,13 @@ exports.sendAddressUpdateReq = async (req, res) => {
           </script>
         `);
       }
+
+      const students = await Student.find(query);
+      students.forEach((student, index) => {
+        setTimeout(() => {
+          sendMail(student.email, student.name);
+        }, index * 500);
+      });
     } else {
       return res.status(400).send(`
         <script>
@@ -645,7 +752,7 @@ exports.sendAddressUpdateReq = async (req, res) => {
       </body>
       </html>
       `
-     );
+    );
   } catch (err) {
     console.error(err);
     res.status(500).send(`
@@ -656,7 +763,6 @@ exports.sendAddressUpdateReq = async (req, res) => {
     `);
   }
 };
-
 
 exports.addressUpdate = async (req, res) => {
   try {
