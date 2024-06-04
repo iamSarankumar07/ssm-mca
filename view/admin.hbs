@@ -173,6 +173,12 @@
                 <td><button type="button" onclick="commonAnnouncement()">Send</button></td>
             </tr>
             <tr>
+                <td>Send Address Update Req</td>
+                <td><button type="button" onclick="addressUpdateReq()">Send</button></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
                 <td>Upload Study Materials</td>
                 <td><button type="button" onclick="subject()">Upload</button></td>
                 <td>Study Materials List</td>
@@ -189,6 +195,7 @@
                 <td><button type="button" onclick="messages()">Messages</button></td>
                 <td>Send Everyone</td>
                 <td><button type="button" id="sendMail">Send Everyone</button></td>
+            </tr>
             {{!-- </tr>
                 <td>Upload Image</td>
                 <td><button type="button" onclick="upload()">Image Upload</button></td>
@@ -237,6 +244,9 @@
         };
         function commonAnnouncement() {
         window.location.href = '/ssm/mca/commonAnnouncement';
+        };
+        function addressUpdateReq() {
+        window.location.href = '/ssm/mca/addressUpdateReq';
         };
         function updateReq() {
         window.location.href = '/ssm/mca/reviewRequest';
