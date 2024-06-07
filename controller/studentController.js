@@ -1713,7 +1713,7 @@ exports.studentDownload = async (req, res) => {
         res.writeHead(200, {
           "Content-Length": Buffer.byteLength(buffer),
           "Content-Type": "application/pdf",
-          "Content-Disposition": "attachment; filename=students_list.pdf"
+          "Content-Disposition": `attachment; filename = MCA - ${data.year} Students list.pdf`
         });
         res.end(buffer);
       });
@@ -1761,7 +1761,7 @@ exports.studentTuitionDownload = async (req, res) => {
         res.writeHead(200, {
           "Content-Length": Buffer.byteLength(buffer),
           "Content-Type": "application/pdf",
-          "Content-Disposition": "attachment; filename=students_list.pdf"
+          "Content-Disposition": `attachment; filename = MCA - ${data.year} Tuition fees.pdf`
         });
         res.end(buffer);
       });
@@ -1809,7 +1809,7 @@ exports.studentExamDownload = async (req, res) => {
         res.writeHead(200, {
           "Content-Length": Buffer.byteLength(buffer),
           "Content-Type": "application/pdf",
-          "Content-Disposition": "attachment; filename=students_list.pdf"
+          "Content-Disposition": `attachment; filename = MCA - ${data.year} Exam fees.pdf`
         });
         res.end(buffer);
       });
@@ -1857,7 +1857,7 @@ exports.studentAlumniDownload = async (req, res) => {
         res.writeHead(200, {
           "Content-Length": Buffer.byteLength(buffer),
           "Content-Type": "application/pdf",
-          "Content-Disposition": "attachment; filename=students_list.pdf"
+          "Content-Disposition": `attachment; filename = MCA Alumni Students list.pdf`
         });
         res.end(buffer);
       });
