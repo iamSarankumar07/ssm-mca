@@ -1726,4 +1726,148 @@ exports.studentDownload = async (req, res) => {
   }
 };
 
+exports.studentTuitionDownload = async (req, res) => {
+  let data = req.body;
+  try {
+    let [studentsData, paidRecords, pendingRecords, totalRecords] = await Promise.all([
+      Student.find({ isDelete: false, isAlumni: false, year: data.year }),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, paymentStatus: "Paid" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, paymentStatus: "Pending" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
+    ]);
+
+    let templateData = {
+      studentsData: studentsData,
+      paidRecords: paidRecords,
+      pendingRecords: pendingRecords,
+      totalRecords: totalRecords
+    };
+
+    let dbTemplate = await TemplateModel.findOne({ name: "TUITION_FEE_PDF" });
+    let attachment = eval("`" + dbTemplate.content + "`");
+
+    if (data.isPdf) {
+      pdf.create(attachment, {
+        childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
+        orientation: "portrait",
+        width: "8.27in",
+        height: "11.69in",
+        timeout: "100000",
+      }).toBuffer((err, buffer) => {
+        if (err) {
+          console.log("Error: " + err);
+          return res.status(500).send({ success: false, message: err.message });
+        }
+        res.writeHead(200, {
+          "Content-Length": Buffer.byteLength(buffer),
+          "Content-Type": "application/pdf",
+          "Content-Disposition": "attachment; filename=students_list.pdf"
+        });
+        res.end(buffer);
+      });
+    } else {
+      res.status(400).send({ success: false, message: "isPdf flag is required to download PDF" });
+    }
+  } catch (err) {
+    console.log(err.message, err);
+    return res.status(500).send({ success: false, message: err.message });
+  }
+};
+
+exports.studentExamDownload = async (req, res) => {
+  let data = req.body;
+  try {
+    let [studentsData, paidRecords, pendingRecords, totalRecords] = await Promise.all([
+      Student.find({ isDelete: false, isAlumni: false, year: data.year }),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, examPaymentStatus: "Paid" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, examPaymentStatus: "Pending" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
+    ]);
+
+    let templateData = {
+      studentsData: studentsData,
+      paidRecords: paidRecords,
+      pendingRecords: pendingRecords,
+      totalRecords: totalRecords
+    };
+
+    let dbTemplate = await TemplateModel.findOne({ name: "EXAM_FEE_PDF" });
+    let attachment = eval("`" + dbTemplate.content + "`");
+
+    if (data.isPdf) {
+      pdf.create(attachment, {
+        childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
+        orientation: "portrait",
+        width: "8.27in",
+        height: "11.69in",
+        timeout: "100000",
+      }).toBuffer((err, buffer) => {
+        if (err) {
+          console.log("Error: " + err);
+          return res.status(500).send({ success: false, message: err.message });
+        }
+        res.writeHead(200, {
+          "Content-Length": Buffer.byteLength(buffer),
+          "Content-Type": "application/pdf",
+          "Content-Disposition": "attachment; filename=students_list.pdf"
+        });
+        res.end(buffer);
+      });
+    } else {
+      res.status(400).send({ success: false, message: "isPdf flag is required to download PDF" });
+    }
+  } catch (err) {
+    console.log(err.message, err);
+    return res.status(500).send({ success: false, message: err.message });
+  }
+};
+
+exports.studentAlumniDownload = async (req, res) => {
+  let data = req.body;
+  try {
+    let [studentsData, paidRecords, pendingRecords, totalRecords] = await Promise.all([
+      Student.find({ isDelete: false, isAlumni: true }),
+      Student.find({ isDelete: false, isAlumni: true, gender: "Male" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: true, gender: "Female" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: true }).countDocuments()
+    ]);
+
+    let templateData = {
+      studentsData: studentsData,
+      paidRecords: paidRecords,
+      pendingRecords: pendingRecords,
+      totalRecords: totalRecords
+    };
+
+    let dbTemplate = await TemplateModel.findOne({ name: "EXAM_FEE_PDF" });
+    let attachment = eval("`" + dbTemplate.content + "`");
+
+    if (data.isPdf) {
+      pdf.create(attachment, {
+        childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
+        orientation: "portrait",
+        width: "8.27in",
+        height: "11.69in",
+        timeout: "100000",
+      }).toBuffer((err, buffer) => {
+        if (err) {
+          console.log("Error: " + err);
+          return res.status(500).send({ success: false, message: err.message });
+        }
+        res.writeHead(200, {
+          "Content-Length": Buffer.byteLength(buffer),
+          "Content-Type": "application/pdf",
+          "Content-Disposition": "attachment; filename=students_list.pdf"
+        });
+        res.end(buffer);
+      });
+    } else {
+      res.status(400).send({ success: false, message: "isPdf flag is required to download PDF" });
+    }
+  } catch (err) {
+    console.log(err.message, err);
+    return res.status(500).send({ success: false, message: err.message });
+  }
+};
+
 module.exports = exports;
