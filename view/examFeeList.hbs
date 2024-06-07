@@ -154,9 +154,13 @@
         </tbody>
     </table>
     <div class="btn-container">
-        <button class="btn" onclick="printFirstYearFee()">Print</button>
-        <button class="btn" onclick="window.location.href = '/ssm/mca/downloadFirstYrExFeePDF'">Download</button>
-    </div>
+            <form id="downloadForm" action="/ssm/mca/studentExamDownload" method="post">
+                <input type="hidden" name="year" value="I">
+                <input type="hidden" name="isPdf" value="true">
+                <button class="btn" onclick="printFirstYearFee()">Print</button>
+                <button type="submit" class="btn">Download</button>
+            </form>
+        </div>
 </div>
 <div class="table-container">
     <h2>MCA - II</h2>
@@ -183,9 +187,13 @@
         </tbody>
     </table>
     <div class="btn-container">
-        <button class="btn" onclick="printSecondYearFee()">Print</button>
-        <button class="btn" onclick="window.location.href = '/ssm/mca/downloadSecondYrExFeePDF'">Download</button>
-    </div>
+            <form id="downloadForm" action="/ssm/mca/studentExamDownload" method="post">
+                <input type="hidden" name="year" value="II">
+                <input type="hidden" name="isPdf" value="true">
+                <button class="btn" onclick="printFirstYearFee()">Print</button>
+                <button type="submit" class="btn">Download</button>
+            </form>
+        </div>
 </div>
     <div class="btn-container">
         <a class="btn" href="/ssm/mca/dashboard">< Go back!</a>
