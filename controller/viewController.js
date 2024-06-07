@@ -201,7 +201,7 @@ exports.alumniList = async (req, res) => {
         res.writeHead(200, {
           "Content-Length": Buffer.byteLength(response.buffer),
           "Content-Type": "application/pdf",
-          "Content-Disposition": `attachment; filename=MCA_Alumni_Students_list.pdf`
+          "Content-Disposition": `attachment; filename = MCA ${filterYear || "All"} Alumni Students list.pdf`
         });
         res.end(response.buffer);
       } else {
