@@ -1823,50 +1823,55 @@ exports.studentExamDownload = async (req, res) => {
 };
 
 exports.studentAlumniDownload = async (req, res) => {
-  let data = req.body;
   try {
-    let [studentsData, paidRecords, pendingRecords, totalRecords] = await Promise.all([
-      Student.find({ isDelete: false, isAlumni: true }),
-      Student.find({ isDelete: false, isAlumni: true, gender: "Male" }).countDocuments(),
-      Student.find({ isDelete: false, isAlumni: true, gender: "Female" }).countDocuments(),
-      Student.find({ isDelete: false, isAlumni: true }).countDocuments()
+    let selectedYear = req.query.year || null;
+    let query = { isDelete: false, isAlumni: true };
+    
+    if (selectedYear && selectedYear !== 'All') {
+      query.graduationYear = selectedYear;
+    }
+
+    let [studentsData, maleRecords, femaleRecords, totalRecords] = await Promise.all([
+      Student.find(query),
+      Student.countDocuments({ ...query, gender: "Male" }),
+      Student.countDocuments({ ...query, gender: "Female" }),
+      Student.countDocuments(query)
     ]);
 
     let templateData = {
       studentsData: studentsData,
-      paidRecords: paidRecords,
-      pendingRecords: pendingRecords,
+      maleRecords: maleRecords,
+      femaleRecords: femaleRecords,
       totalRecords: totalRecords
     };
 
-    let dbTemplate = await TemplateModel.findOne({ name: "EXAM_FEE_PDF" });
+    let dbTemplate = await TemplateModel.findOne({ name: "ALUMNI_LIST_PDF" });
     let attachment = eval("`" + dbTemplate.content + "`");
 
-    if (data.isPdf) {
-      pdf.create(attachment, {
-        childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
-        orientation: "portrait",
-        width: "8.27in",
-        height: "11.69in",
-        timeout: "100000",
-      }).toBuffer((err, buffer) => {
-        if (err) {
-          console.log("Error: " + err);
-          return res.status(500).send({ success: false, message: err.message });
-        }
-        res.writeHead(200, {
-          "Content-Length": Buffer.byteLength(buffer),
-          "Content-Type": "application/pdf",
-          "Content-Disposition": `attachment; filename = MCA Alumni Students list.pdf`
+    if (req.body.isPdf) {
+      const pdfBuffer = await new Promise((resolve, reject) => {
+        pdf.create(attachment, {
+          childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
+          orientation: "portrait",
+          width: "8.27in",
+          height: "11.69in",
+          timeout: "100000",
+        }).toBuffer((err, buffer) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(buffer);
+          }
         });
-        res.end(buffer);
       });
+
+      return { success: true, buffer: pdfBuffer };
     } else {
-      res.status(400).send({ success: false, message: "isPdf flag is required to download PDF" });
+      return { success: false, message: "isPdf flag is required to download PDF" };
     }
   } catch (err) {
-    console.log(err.message, err);
-    return res.status(500).send({ success: false, message: err.message });
+    console.error(err);
+    return { success: false, message: err.message };
   }
 };
 
