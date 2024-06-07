@@ -86,13 +86,13 @@ app.get("/examFeeEdit/:userId", authFile.validateToken, viewController.examFeeEd
 
 app.get("/gallery", authFile.validateToken, viewController.gallery);
 
-app.get('/downloadFirstYrTuFeePDF', viewController.downloadFirstYrTuFeePDF);
+// app.get('/downloadFirstYrTuFeePDF', viewController.downloadFirstYrTuFeePDF);
 
-app.get('/downloadSecondYrTuFeePDF', viewController.downloadSecondYrTuFeePDF);
+// app.get('/downloadSecondYrTuFeePDF', viewController.downloadSecondYrTuFeePDF);
 
-app.get('/downloadFirstYrExFeePDF', viewController.downloadFirstYrExFeePDF);
+// app.get('/downloadFirstYrExFeePDF', viewController.downloadFirstYrExFeePDF);
 
-app.get('/downloadSecondYrExFeePDF', viewController.downloadSecondYrExFeePDF);
+// app.get('/downloadSecondYrExFeePDF', viewController.downloadSecondYrExFeePDF);
 
 app.post('/alumniStatus', viewController.alumniStatus);
 
