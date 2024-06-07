@@ -338,7 +338,7 @@ exports.getStudentDetails = async (req, res) => {
   }
 };
 
-exports.downloadFirstYrTuFeePDF = async (req, res) => {
+/* exports.downloadFirstYrTuFeePDF = async (req, res) => {
   try {
       const firstYearStudents = await Student.find({ year: 'I', isDelete: false });
 
@@ -483,9 +483,9 @@ exports.downloadFirstYrTuFeePDF = async (req, res) => {
       console.error(err);
       res.status(500).send('Internal Server Error');
   }
-};
+}; */
 
-exports.downloadSecondYrTuFeePDF = async (req, res) => {
+/* exports.downloadSecondYrTuFeePDF = async (req, res) => {
   try {
       const secondYearStudents = await Student.find({ year: 'II', isDelete: false });
 
@@ -630,9 +630,9 @@ exports.downloadSecondYrTuFeePDF = async (req, res) => {
       console.error(err);
       res.status(500).send('Internal Server Error');
   }
-};
+}; */
 
-exports.downloadFirstYrExFeePDF = async (req, res) => {
+/* exports.downloadFirstYrExFeePDF = async (req, res) => {
   try {
       const firstYearStudents = await Student.find({ year: 'I', isDelete: false });
 
@@ -777,9 +777,9 @@ exports.downloadFirstYrExFeePDF = async (req, res) => {
       console.error(err);
       res.status(500).send('Internal Server Error');
   }
-};
+}; */
 
-exports.downloadSecondYrExFeePDF = async (req, res) => {
+/* exports.downloadSecondYrExFeePDF = async (req, res) => {
   try {
       const secondYearStudents = await Student.find({ year: 'II', isDelete: false });
 
@@ -924,7 +924,7 @@ exports.downloadSecondYrExFeePDF = async (req, res) => {
       console.error(err);
       res.status(500).send('Internal Server Error');
   }
-};
+}; */
 
 
 module.exports = exports;
