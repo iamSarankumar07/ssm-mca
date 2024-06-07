@@ -145,9 +145,14 @@
             {{/each}}
             </tbody>
         </table>
+
         <div class="btn-container">
-            <button class="btn" onclick="printFirstYearFee()">Print</button>
-            <button class="btn" onclick="window.location.href = '/ssm/mca/downloadFirstYrTuFeePDF'">Download</button>
+            <form id="downloadForm" action="/ssm/mca/studentTuitionDownload" method="post">
+                <input type="hidden" name="year" value="I">
+                <input type="hidden" name="isPdf" value="true">
+                <button class="btn" onclick="printFirstYearFee()">Print</button>
+                <button type="submit" class="btn">Download</button>
+            </form>
         </div>
     </div>
 
@@ -176,8 +181,12 @@
             </tbody>
         </table>
         <div class="btn-container">
-            <button class="btn" onclick="printSecondYearFee()">Print</button>
-            <button class="btn" onclick="window.location.href = '/ssm/mca/downloadSecondYrTuFeePDF'">Download</button>
+            <form id="downloadForm" action="/ssm/mca/studentTuitionDownload" method="post">
+                <input type="hidden" name="year" value="II">
+                <input type="hidden" name="isPdf" value="true">
+                <button class="btn" onclick="printFirstYearFee()">Print</button>
+                <button type="submit" class="btn">Download</button>
+            </form>
         </div>
     </div>
     <div class="btn-container">
