@@ -4,6 +4,7 @@ const fs = require('fs');
 const Admin = require("../models/adminModel");
 const mongoose = require('mongoose');
 const Student = require("../models/studentModel");
+const studentController = require("../controller/studentController")
 const Subject = require("../models/subjectModel");
 const Contact = require("../models/contactModel");
 const Image = require("../models/imageModel");
@@ -190,27 +191,41 @@ exports.studentEdit = async (req, res) => {
 
 exports.alumniList = async (req, res) => {
   try {
-      let filterYear = req.query.year || null; 
-      let searchName = req.query.name || '';
-      
+    let filterYear = req.query.year || null;
+    let searchName = req.query.name || "";
+
+    if (req.query.download) {
+      req.body.isPdf = true;
+      let response = await studentController.studentAlumniDownload(req, res);
+      if (response.success) {
+        res.writeHead(200, {
+          "Content-Length": Buffer.byteLength(response.buffer),
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename=MCA_Alumni_Students_list.pdf`
+        });
+        res.end(response.buffer);
+      } else {
+        res.status(500).send({ success: false, message: "Error generating PDF" });
+      }
+    } else {
       let query = { isDelete: false, isAlumni: true };
-      if (filterYear && filterYear !== 'All') {
-          query.graduationYear = filterYear;
+      if (filterYear && filterYear !== "All") {
+        query.graduationYear = filterYear;
       }
 
       if (searchName) {
-        query.name = { $regex: new RegExp(searchName, 'i') }; 
+        query.name = { $regex: new RegExp(searchName, "i") };
       }
 
       const students = await Student.find(query);
+      let gradYears = await Student.distinct("graduationYear", { isDelete: false, isAlumni: true });
+      gradYears.unshift("All");
 
-      let gradYears = await Student.distinct('graduationYear', { isDelete: false, isAlumni: true });
-      gradYears.unshift('All');
-
-      res.render("alumniList", { students, filterYear, gradYears, searchName  });
+      res.render("alumniList", { students, filterYear, gradYears, searchName });
+    }
   } catch (err) {
-      console.error(err);
-      res.send("Error", err);
+    console.error(err);
+    res.status(500).send({ success: false, message: err.message });
   }
 };
 
