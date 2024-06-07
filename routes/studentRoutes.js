@@ -29,5 +29,11 @@ app.post('/approveAndRejectEx', studentController.approveAndRejectEx);
 
 app.post("/studentDownload", studentController.studentDownload);
 
+app.post("/studentTuitionDownload", studentController.studentTuitionDownload);
+
+app.post("/studentExamDownload", studentController.studentExamDownload);
+
+app.post("/studentAlumniDownload", studentController.studentAlumniDownload);
+
 
 module.exports = app;
