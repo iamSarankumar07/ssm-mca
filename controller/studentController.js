@@ -1838,8 +1838,14 @@ exports.studentAlumniDownload = async (req, res) => {
       Student.countDocuments(query)
     ]);
 
+    studentsData.sort((a, b) => {
+      return b.graduationYear - a.graduationYear
+    });
+
+    let orderedData = studentsData;
+
     let templateData = {
-      studentsData: studentsData,
+      studentsData: orderedData,
       maleRecords: maleRecords,
       femaleRecords: femaleRecords,
       totalRecords: totalRecords
