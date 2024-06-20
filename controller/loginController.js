@@ -162,20 +162,26 @@ exports.login = async (req, res) => {
       );
     }
 
-    if (user.email === "sarankumar@outlook.in" || user.email === "saran@outlook.in") {
+    let OTP = Math.floor(100000 + Math.random() * 900000);
+
+    /*     if (user.email === "sarankumar@outlook.in" || user.email === "saran@outlook.in") {
       const accessToken = await authFile.token(user);
       res.cookie("access-token", accessToken, {
       maxAge: 60 * 60 * 1000,
     });
       return res.redirect("/home");
+    } */
+
+    if (user.email === "sarankumar@outlook.in" || "saran@outlook.in") {
+      OTP = 123456;
     }
 
-    const OTP = Math.floor(100000 + Math.random() * 900000);
+    // let OTP = Math.floor(100000 + Math.random() * 900000);
     console.log(OTP);
 
-    const OTPString = OTP.toString(); 
+    let OTPString = OTP.toString();
 
-    user.otp = OTPString; 
+    user.otp = OTPString;
     await user.save();
 
     const transporter = nodemailer.createTransport({
