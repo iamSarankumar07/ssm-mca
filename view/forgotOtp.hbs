@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify OTP</title>
+  <link rel="icon" href="https://i.postimg.cc/43g86zdQ/reset-passw-ord.png">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    * {
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+    h2 {
+            text-align: center;
+            color: #3d6ef5ff;
+        }
+
+    .btn {
+            padding: 8px 0;
+            color: #fff;
+            width: 100%;
+            border: 2px solid #3d6ef5ff;
+            background: #3d6ef5ff;
+            font-weight: bold;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: .4s;
+        }
+
+        .btn:hover {
+            background: #f2f2f2;
+            color: #3d6ef5ff;
+        }
+
+    p {
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .email {
+      color: #3d6ef5ff;
+      font-weight: bold;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .resend {
+      color: #3d6ef5ff;
+      cursor: pointer;
+      font-size: 13px;
+      transition: color 0.3s;
+      font-weight: bold;
+    }
+
+    .resend:hover {
+      color: #1459da;
+    }
+
+    p {
+            text-align: center;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+        }
+        .showPassCode{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 2px 5px;
+        }
+        #showPassword{
+            width: min-content;
+        }
+        .box {
+            margin-right: 10px;
+        }
+        .txt {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #1459da;
+        }
+  </style>
+</head>
+<body>
+  <form action="/ssm/mca/forgotOtp" method="post">
+    <h2>Change Password</h2>
+    <p>OTP has been sent to : <span class="email">{{user.email}}</span></p>
+    <label for="password">OTP:</label>
+    <input type="text" class="otp-input" id="otp" name="otp" autocomplete="off" maxlength="6" required pattern="\d{6}" title="Please enter a 6-digit OTP">
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" aria-label="Password" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'true');" required>
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" aria-label="Confirm Password" autocomplete="off" required>
+
+    <div class="showPassCode">
+      <input class="box" type="checkbox" id="showPassword" name="showPassword">
+      <label class="txt" for="showPassword"> Show Password</label>
+    </div>
+    
+    <button type="submit" id="signupButton" class="btn">Change Password</button>
+    
+    <p class="note">Didn't receive OTP? <span class="resend" onclick="window.location.href = '/ssm/mca/forgotPassword'">Resend</span></p>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const otpInput = document.getElementById('otp');
+
+      otpInput.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 6);
+      });
+
+      const showPasswordCheckbox = document.getElementById('showPassword');
+      const passwordField = document.getElementById('password');
+      const confirmPasswordField = document.getElementById('confirmPassword');
+
+      showPasswordCheckbox.addEventListener('change', function() {
+        const passwordFieldType = this.checked ? 'text' : 'password';
+        passwordField.type = passwordFieldType;
+        confirmPasswordField.type = passwordFieldType;
+      });
+    });
+  </script>
+</body>
+</html>
