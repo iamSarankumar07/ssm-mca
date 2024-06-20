@@ -31,7 +31,7 @@ exports.signup = async (req, res) => {
 
     const pwd = user.password
 
-    const saltRounds = 10;
+    const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     user.password = hashedPassword;
 
