@@ -30,6 +30,10 @@ const Loginschema = new mongoose.Schema({
         type: String,
         required: false
     },
+    forgotOtp: {
+        type: String,
+        required: false
+    },
     createdAt: {
         type: Date,
         immutable: true,
