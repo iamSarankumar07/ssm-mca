@@ -1300,7 +1300,7 @@ exports.approveAndReject = async (req, res) => {
     if (status === "Approved"){
       student = await Student.findOne({registerNumber: registerNumber});
 
-      let password = student.dob.toString();
+      let password = student.editRequest.newDob.toString();
 
       let saltRounds = 12;
       let hashedPassword = await bcrypt.hash(password, saltRounds);
