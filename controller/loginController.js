@@ -172,7 +172,7 @@ exports.login = async (req, res) => {
       return res.redirect("/home");
     } */
 
-    if (user.email === "sarankumar@outlook.in" || "saran@outlook.in") {
+    if (user.email === "sarankumar@outlook.in" || user.email === "saran@outlook.in") {
       OTP = 123456;
     }
 
