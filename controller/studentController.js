@@ -365,13 +365,18 @@ exports.moveStudents = async (req, res) => {
 
 exports.updateStudent = async (req, res) => {
   try {
-    const body = req.body;
-    const userId = req.params.userId;
+    let body = req.body;
+    let userId = req.params.userId;
+    let password = body.dob.toString();
+
+    let saltRounds = 12;
+    let hashedPassword = await bcrypt.hash(password, saltRounds);
 
     await Student.findByIdAndUpdate(userId, {
       name: body.name,
       registerNumber: body.registerNumber,
       gender: body.gender,
+      password: hashedPassword,
       dob: body.dob,
       year: body.year,
       phone: body.phone,
@@ -1295,11 +1300,17 @@ exports.approveAndReject = async (req, res) => {
     if (status === "Approved"){
       student = await Student.findOne({registerNumber: registerNumber});
 
+      let password = student.dob.toString();
+
+      let saltRounds = 12;
+      let hashedPassword = await bcrypt.hash(password, saltRounds);
+
       if (student.editRequest && student.editRequest.status === 'requested') {
           student.name = student.editRequest.newName;
           student.phone = student.editRequest.newPhone;
           student.dob = student.editRequest.newDob;
           student.email = student.editRequest.newEmail;
+          student.password = hashedPassword;
           student.editRequest = null;
           await student.save();
         };
