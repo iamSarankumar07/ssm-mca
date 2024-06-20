@@ -29,7 +29,7 @@ exports.signup = async (req, res) => {
 
     const user = new Admin({ name, email, password });
 
-    const pwd = user.password
+    const pwd = user.password;
 
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
