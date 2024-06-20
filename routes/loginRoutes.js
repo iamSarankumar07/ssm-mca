@@ -15,6 +15,10 @@ app.get('/login', (req, res)=>{
     res.render('login')
 });
 
+app.get("/forgotPassword", (req, res) => {
+    res.render("forgotPassword");
+})
+
 app.get('/studentLogin', (req, res)=>{
     res.render('studentLogin')
 });
@@ -26,6 +30,10 @@ app.get('/signup', (req, res)=>{
 app.post('/signup', loginController.signup);
 
 app.post('/login', loginController.login);
+
+app.post("/forgotPassword", loginController.forgotPassword)
+
+app.post('/forgotOtp', loginController.forgotOtp);
 
 app.post('/studentLogin', studentController.login);
 
