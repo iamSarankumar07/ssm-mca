@@ -4,12 +4,14 @@ const authFile = require("../middleware/auth");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const pdf = require("html-pdf");
+const moment = require("moment");
 
 exports.newStudent = async (req, res) => {
   const body = req.body;
+  body.dob = moment(body.dob).format('DD-MM-YYYY');
 
   const existingStudent = await Student.findOne({
-    registerNumber: body.registerNumber,
+    registerNumber: body.registerNumber, isDelete: false
   });
   if (existingStudent) {
     return res.send(
@@ -17,7 +19,7 @@ exports.newStudent = async (req, res) => {
     );
   }
   const existingEmail = await Student.findOne({
-    email: body.email,
+    email: body.email, isDelete: false
   });
   if (existingEmail) {
     return res.send(
@@ -367,7 +369,9 @@ exports.updateStudent = async (req, res) => {
   try {
     let body = req.body;
     let userId = req.params.userId;
-    let password = body.dob.toString();
+    body.dob = moment(body.dob).format("DD-MM-YYYY")
+    let password = body.dob;
+
 
     let saltRounds = 12;
     let hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -897,7 +901,8 @@ exports.addressUpdate = async (req, res) => {
 };
 
 exports.requestChange = async (req, res) => {
-  const { newName, newEmail, registerNumber, newDob, newPhone } = req.body;
+  let { newName, newEmail, registerNumber, newDob, newPhone } = req.body;
+  newDob = moment(newDob).format("DD-MM-YYYY")
 
   try {
       let student = await Student.findOneAndUpdate(
