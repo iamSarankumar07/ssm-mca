@@ -1,4 +1,5 @@
 const StudentFee = require("../models/studentModel");
+const moment = require("moment");
 
 /* exports.newFee = async (req, res) => {
   const body = req.body;
@@ -279,6 +280,9 @@ exports.updateDueDatesForAll = async (req, res) => {
   try {
     const body = req.body;
     const year = body.year;
+
+    body.tutionDueDate = moment(body.tutionDueDate).format('DD-MM-YYYY');
+    body.examDueDate = moment(body.examDueDate).format('DD-MM-YYYY');
 
     let filter = {};
     if (year === "first" || year === "second") {
