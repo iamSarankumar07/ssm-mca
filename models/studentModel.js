@@ -6,7 +6,7 @@ const studentSchema = new mongoose.Schema({
         required: false,
     },
     registerNumber: {
-        type: Number,
+        type: String,
         required: false,
     },
     gender: {
@@ -22,7 +22,7 @@ const studentSchema = new mongoose.Schema({
         required: false,
     },
     phone: {
-        type: Number,
+        type: String,
         required: false,
     },
     email: {
@@ -49,11 +49,11 @@ const studentSchema = new mongoose.Schema({
         required: false,
     },
     totalFee: {
-        type: Number,
+        type: String,
         required: false
     },
     pendingFee: {
-        type: Number,
+        type: String,
         required: false
     },
     paymentStatus: {
@@ -61,11 +61,11 @@ const studentSchema = new mongoose.Schema({
         required: false
     },
     examTotalFee: {
-        type: Number,
+        type: String,
         required: false
     },
     examPendingFee: {
-        type: Number,
+        type: String,
         required: false
     },
     examPaymentStatus: {
