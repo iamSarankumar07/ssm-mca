@@ -49,8 +49,8 @@ exports.newStudent = async (req, res) => {
   student.paymentStatus = "Pending";
   student.tutionDueDate = "";
 
-  student.examTotalFee = 0;
-  student.examPendingFee = 0;
+  student.examTotalFee = "0";
+  student.examPendingFee = "0";
   student.examPaymentStatus = "Pending";
   student.examDueDate = "";
 
