@@ -171,7 +171,14 @@ exports.studentList = async (req, res) => {
       (student) => student.year === "II"
     );
 
-    res.render("studentList", { firstYearStudents, secondYearStudents });
+    let sortedFirstYear = firstYearStudents.sort((a, b) => {
+      return a.registerNumber - b.registerNumber;
+    })
+    let sortedSecondYear = secondYearStudents.sort((a, b) => {
+      return a.registerNumber - b.registerNumber;
+    })
+
+    res.render("studentList", { sortedFirstYear, sortedSecondYear });
   } catch (err) {
     console.error(err);
     res.send("Error", err);
@@ -217,9 +224,13 @@ exports.alumniList = async (req, res) => {
         query.name = { $regex: new RegExp(searchName, "i") };
       }
 
-      const students = await Student.find(query);
+      let students = await Student.find(query);
       let gradYears = await Student.distinct("graduationYear", { isDelete: false, isAlumni: true });
       gradYears.unshift("All");
+
+      students = students.sort((a,b) => {
+        return b.graduationYear - a.graduationYear
+      })
 
       res.render("alumniList", { students, filterYear, gradYears, searchName });
     }
@@ -259,13 +270,21 @@ exports.alumniStatus = async (req, res) => {
 
 exports.studentFeeList = async (req, res) => {
   try {
-    const allStudents = await Student.find({ isDelete: false, isAlumni: false });
-    const firstYearStudents = allStudents.filter(
+    let allStudents = await Student.find({ isDelete: false, isAlumni: false });
+    let firstYearStudents = allStudents.filter(
       (student) => student.year === "I"
     );
-    const secondYearStudents = allStudents.filter(
+    let secondYearStudents = allStudents.filter(
       (student) => student.year === "II"
     );
+
+    firstYearStudents = firstYearStudents.sort((a,b) => {
+      return a.registerNumber - b.registerNumber;
+    })
+
+    secondYearStudents = secondYearStudents.sort((a,b) => {
+      return a.registerNumber - b.registerNumber;
+    })
 
     res.render("studentFeeList", { firstYearStudents, secondYearStudents });
   } catch (err) {
@@ -276,13 +295,21 @@ exports.studentFeeList = async (req, res) => {
 
 exports.examFeeList = async (req, res) => {
   try {
-    const allStudents = await Student.find({ isDelete: false, isAlumni: false });
-    const firstYearStudents = allStudents.filter(
+    let allStudents = await Student.find({ isDelete: false, isAlumni: false });
+    let firstYearStudents = allStudents.filter(
       (student) => student.year === "I"
     );
-    const secondYearStudents = allStudents.filter(
+    let secondYearStudents = allStudents.filter(
       (student) => student.year === "II"
     );
+
+    firstYearStudents = firstYearStudents.sort((a,b) => {
+      return a.registerNumber - b.registerNumber;
+    })
+
+    secondYearStudents = secondYearStudents.sort((a,b) => {
+      return a.registerNumber - b.registerNumber;
+    })
 
     res.render("examFeeList", { firstYearStudents, secondYearStudents });
   } catch (err) {
