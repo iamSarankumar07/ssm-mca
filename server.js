@@ -3,6 +3,7 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const path = require("path");
+const hbs = require("hbs");
 const app = express();
 require("./config/mongo");
 
@@ -15,8 +16,11 @@ const viewPath = path.join(__dirname, "view");
 app.set("views", viewPath);
 
 app.use(express.static("images"));
-
 app.use(bodyParser.json());
+
+hbs.registerHelper('eq', function(v1, v2) {
+  return v1 === v2;
+});
 
 app.get("/", (req, res) => {
   res.render("main");

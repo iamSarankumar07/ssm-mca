@@ -9,6 +9,7 @@ const Subject = require("../models/subjectModel");
 const Contact = require("../models/contactModel");
 const Image = require("../models/imageModel");
 const puppeteer = require('puppeteer');
+const hbs = require("hbs");
 const app = express();
 const { verify } = require("jsonwebtoken");
 app.use(express.static(path.join(__dirname, "../Images")));
@@ -22,6 +23,10 @@ app.use(cookieParser());
 app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
+
+hbs.registerHelper('eq', function(v1, v2) {
+  return v1 === v2;
+});
 
 exports.dashboard = async (req, res) => {
     const accessToken = req.cookies["access-token"];
