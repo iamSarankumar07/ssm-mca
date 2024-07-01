@@ -139,7 +139,9 @@
                 <td>{{name}}</td>
                 <td class="td">Rs.{{totalFee}}</td>
                 <td class="td">Rs.{{pendingFee}}</td>
-                <td class="td">{{paymentStatus}}</td>
+                <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
+                    {{paymentStatus}}
+                </td>
                 <td class="td" style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
             </tr>
             {{/each}}
@@ -174,7 +176,9 @@
                 <td>{{name}}</td>
                 <td class="td">Rs.{{totalFee}}</td>
                 <td class="td">Rs.{{pendingFee}}</td>
-                <td class="td">{{paymentStatus}}</td>
+                <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
+                    {{paymentStatus}}
+                </td>
                 <td style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
             </tr>
             {{/each}}

@@ -109,8 +109,9 @@
 
         <label for="paymentStatus">Payment Status:</label></td>
         <select id="paymentStatus" name="paymentStatus" value="{{fee.paymentStatus}}" required>
-            <option value="">Select Status</option>
+            <option value="{{fee.paymentStatus}}">{{fee.paymentStatus}}</option>
             <option value="Paid">Paid</option>
+            <option value="Partial">Partial</option>
             <option value="Pending">Pending</option>
         </select>
 

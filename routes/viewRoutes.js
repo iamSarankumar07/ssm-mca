@@ -4,6 +4,7 @@ const viewController = require("../controller/viewController");
 // const studentController = require("../controller/studentController");
 const cookieParser = require("cookie-parser");
 const authFile = require("../middleware/auth");
+const hbs = require("hbs");
 const app = express();
 
 app.use(cookieParser());
@@ -11,6 +12,10 @@ app.use(cookieParser());
 app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
+
+hbs.registerHelper('eq', function(v1, v2) {
+  return v1 === v2;
+});
 
 app.use(express.static("images"));
 

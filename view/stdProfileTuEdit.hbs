@@ -129,8 +129,9 @@
                             <td><label for="newTuStatus">Payment Status:</label></td>
                             <td>
                                 <select id="newTuStatus" name="newTuStatus" value="{{student.paymentStatus}}" required>
-                                    <option value="">Select Status</option>
+                                    <option value="{{student.paymentStatus}}">{{student.paymentStatus}}</option>
                                     <option value="Paid">Paid</option>
+                                    <option value="Partial">Partial</option>
                                     <option value="Pending">Pending</option>
                                 </select>
                             </td>

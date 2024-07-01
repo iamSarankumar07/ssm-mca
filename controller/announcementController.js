@@ -664,9 +664,9 @@ exports.sendPaymentAlert = async (req, res) => {
     let pendingFee;
     if (type === "Tuition") {
       if (year === "I") {
-        students = await Student.find({ year: "I", paymentStatus: "Pending", isDelete: false }, "name email tutionDueDate pendingFee");
+        students = await Student.find({ year: "I", paymentStatus: "Pending", paymentStatus: "Partial", isDelete: false }, "name email tutionDueDate pendingFee");
       } else if (year === "II") {
-        students = await Student.find({ year: "II", paymentStatus: "Pending", isDelete: false }, "name email tutionDueDate pendingFee");
+        students = await Student.find({ year: "II", paymentStatus: "Pending", paymentStatus: "Partial", isDelete: false }, "name email tutionDueDate pendingFee");
       } else {
         return res.send(
           '<script>alert("Invalid Year"); window.location.href = "/ssm/mca/paymentAlert";</script>'
@@ -674,9 +674,9 @@ exports.sendPaymentAlert = async (req, res) => {
       }
     } else if (type === "Exam") {
       if (year === "I") {
-        students = await Student.find({ year: "I", examPaymentStatus: "Pending", isDelete: false }, "name email examDueDate examPendingFee");
+        students = await Student.find({ year: "I", examPaymentStatus: "Pending", examPaymentStatus: "Partial", isDelete: false }, "name email examDueDate examPendingFee");
       } else if (year === "II") {
-        students = await Student.find({ year: "II", examPaymentStatus: "Pending", isDelete: false }, "name email examDueDate examPendingFee");
+        students = await Student.find({ year: "II", examPaymentStatus: "Pending", examPaymentStatus: "Partial", isDelete: false }, "name email examDueDate examPendingFee");
       } else {
         return res.send(
           '<script>alert("Invalid Year"); window.location.href = "/ssm/mca/paymentAlert";</script>'
