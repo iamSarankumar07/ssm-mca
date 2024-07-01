@@ -1041,20 +1041,19 @@ exports.requestChangeTu = async (req, res) => {
   let { newTuPending, registerNumber, newTuStatus } = req.body;
 
   try {
-    let studentData = await Student.findOne({regiterNumber: registerNumber})
-      // let studentData = await Student.findOneAndUpdate(
-      //     { registerNumber: registerNumber },
-      //     {
-      //         $set: {
-      //             tuEditRequest: {
-      //                 newTuPending,
-      //                 newTuStatus,
-      //                 status: 'requested'
-      //             }
-      //         }
-      //     },
-      //     { new: true }
-      // );
+      let studentData = await Student.findOneAndUpdate(
+          { registerNumber: registerNumber },
+          {
+              $set: {
+                  tuEditRequest: {
+                      newTuPending,
+                      newTuStatus,
+                      status: 'requested'
+                  }
+              }
+          },
+          { new: true }
+      );
 
       if (studentData) {
         return res.send(
