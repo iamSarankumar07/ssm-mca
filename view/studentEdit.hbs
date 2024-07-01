@@ -120,7 +120,7 @@
                 <td><label for="gender">Gender :</label></td>
                 <td>
                     <select id="gender" name="gender" value="{{student.gender}}" required>
-                        <option value="">Select Gender</option>
+                        <option value="{{student.gender}}">{{student.gender}}</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
@@ -134,7 +134,7 @@
                 <td><label for="year">Year :</label></td>
                 <td>
                     <select id="year" name="year" value="{{student.year}}" required>
-                        <option value="">Select Year</option>
+                        <option value="{{student.year}}">MCA-{{student.year}}</option>
                         <option value="I">MCA-I</option>
                         <option value="II">MCA-II</option>
                     </select>
