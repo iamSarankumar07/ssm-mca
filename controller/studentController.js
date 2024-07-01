@@ -905,7 +905,7 @@ exports.requestChange = async (req, res) => {
   newDob = moment(newDob).format("DD-MM-YYYY")
 
   try {
-      let student = await Student.findOneAndUpdate(
+      let studentData = await Student.findOneAndUpdate(
           { registerNumber: registerNumber },
           {
               $set: {
@@ -921,110 +921,116 @@ exports.requestChange = async (req, res) => {
           { new: true }
       );
 
-      res.send(
-        `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Registration</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              margin: 0;
-              padding: 0;
-              background-color: #f4f4f4;
-            }
-        
-            .modal {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: fixed;
-              z-index: 1000;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: 100%;
-              overflow: auto;
-              background-color: rgba(0, 0, 0, 0.6);
-            }
-        
-            .modal-content {
-              background-color: #fefefe;
-              padding: 20px;
-              border: 1px solid #ccc;
-              border-radius: 10px;
-              width: 80%;
-              max-width: 400px;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-        
-            p {
-              margin: 0 0 20px;
-              font-size: 18px;
-              font-weight: bold;
-              color: #28a745; /* Green color */
-              text-align: center;
-            }
-        
-            .button-container {
-              display: flex;
-              justify-content: center;
-              width: 100%;
-            }
-        
-            button[type="button"] {
-              background-color: #3d6ef5ff;
-              color: #f2f2f2;
-              font-weight: bold;
-              padding: 8px 14px;
-              border: none;
-              font-size: 13px;
-              border-radius: 5px;
-              cursor: pointer;
-              transition: background-color 0.3s;
-            }
-        
-            button[type="button"]:hover {
-              background-color: #f2f2f2;
-              color: #3d6ef5ff;
-              font-weight: bold;
-            }
-          </style>
-        </head>
-        <body>
-          <div id="myModal" class="modal">
-            <div class="modal-content">
-              <p>Profile Update Request Sent</p>
-              <div class="button-container">
-                <button type="button" onclick="redirect()">Continue</button>
+      if (studentData) {
+        return res.send(
+          `<!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Registration</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+              }
+          
+              .modal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.6);
+              }
+          
+              .modal-content {
+                background-color: #fefefe;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 400px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+              }
+          
+              p {
+                margin: 0 0 20px;
+                font-size: 18px;
+                font-weight: bold;
+                color: #28a745; /* Green color */
+                text-align: center;
+              }
+          
+              .button-container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+              }
+          
+              button[type="button"] {
+                background-color: #3d6ef5ff;
+                color: #f2f2f2;
+                font-weight: bold;
+                padding: 8px 14px;
+                border: none;
+                font-size: 13px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+              }
+          
+              button[type="button"]:hover {
+                background-color: #f2f2f2;
+                color: #3d6ef5ff;
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            <div id="myModal" class="modal">
+              <div class="modal-content">
+                <p>Profile Update Request Sent</p>
+                <div class="button-container">
+                  <button type="button" onclick="redirect()">Continue</button>
+                </div>
               </div>
             </div>
-          </div>
-        
-          <script>
-            function redirect() {
-              window.location.href = "/ssm/mca/studentProfile";
-            }
-        
-            window.onload = function() {
-              var modal = document.getElementById("myModal");
-        
-              modal.style.display = "flex";
-        
-              window.onclick = function(event) {
-                if (event.target == modal) {
-                  modal.style.display = "none";
-                  redirect();
+          
+            <script>
+              function redirect() {
+                window.location.href = "/ssm/mca/studentProfile";
+              }
+          
+              window.onload = function() {
+                var modal = document.getElementById("myModal");
+          
+                modal.style.display = "flex";
+          
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                    redirect();
+                  }
                 }
               }
-            }
-          </script>
-        </body>
-        </html>
-        `
-       );
+            </script>
+          </body>
+          </html>
+          `
+         );
+      } else {
+        return res.send(
+          '<script>alert("Error in profile update request!"); window.location="/ssm/mca/studentProfile";</script>'
+        );
+      }
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error in Profile Update Request' });
@@ -1032,127 +1038,134 @@ exports.requestChange = async (req, res) => {
 };
 
 exports.requestChangeTu = async (req, res) => {
-  const { newTuPending, registerNumber, newTuStatus } = req.body;
+  let { newTuPending, registerNumber, newTuStatus } = req.body;
 
   try {
-      let student = await Student.findOneAndUpdate(
-          { registerNumber: registerNumber },
-          {
-              $set: {
-                  tuEditRequest: {
-                      newTuPending,
-                      newTuStatus,
-                      status: 'requested'
-                  }
-              }
-          },
-          { new: true }
-      );
+    let studentData = await Student.findOne({regiterNumber: registerNumber})
+      // let studentData = await Student.findOneAndUpdate(
+      //     { registerNumber: registerNumber },
+      //     {
+      //         $set: {
+      //             tuEditRequest: {
+      //                 newTuPending,
+      //                 newTuStatus,
+      //                 status: 'requested'
+      //             }
+      //         }
+      //     },
+      //     { new: true }
+      // );
 
-      res.send(
-        `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Registration</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              margin: 0;
-              padding: 0;
-              background-color: #f4f4f4;
-            }
-        
-            .modal {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: fixed;
-              z-index: 1000;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: 100%;
-              overflow: auto;
-              background-color: rgba(0, 0, 0, 0.6);
-            }
-        
-            .modal-content {
-              background-color: #fefefe;
-              padding: 20px;
-              border: 1px solid #ccc;
-              border-radius: 10px;
-              width: 80%;
-              max-width: 400px;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-        
-            p {
-              margin: 0 0 20px;
-              font-size: 18px;
-              font-weight: bold;
-              color: #28a745; /* Green color */
-              text-align: center;
-            }
-        
-            .button-container {
-              display: flex;
-              justify-content: center;
-              width: 100%;
-            }
-        
-            button[type="button"] {
-              background-color: #3d6ef5ff;
-              color: #f2f2f2;
-              font-weight: bold;
-              padding: 8px 14px;
-              border: none;
-              font-size: 13px;
-              border-radius: 5px;
-              cursor: pointer;
-              transition: background-color 0.3s;
-            }
-        
-            button[type="button"]:hover {
-              background-color: #f2f2f2;
-              color: #3d6ef5ff;
-              font-weight: bold;
-            }
-          </style>
-        </head>
-        <body>
-          <div id="myModal" class="modal">
-            <div class="modal-content">
-              <p>Profile Update Request Sent</p>
-              <div class="button-container">
-                <button type="button" onclick="redirect()">Continue</button>
+      if (studentData) {
+        return res.send(
+          `<!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Registration</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+              }
+          
+              .modal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.6);
+              }
+          
+              .modal-content {
+                background-color: #fefefe;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 400px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+              }
+          
+              p {
+                margin: 0 0 20px;
+                font-size: 18px;
+                font-weight: bold;
+                color: #28a745; /* Green color */
+                text-align: center;
+              }
+          
+              .button-container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+              }
+          
+              button[type="button"] {
+                background-color: #3d6ef5ff;
+                color: #f2f2f2;
+                font-weight: bold;
+                padding: 8px 14px;
+                border: none;
+                font-size: 13px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+              }
+          
+              button[type="button"]:hover {
+                background-color: #f2f2f2;
+                color: #3d6ef5ff;
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            <div id="myModal" class="modal">
+              <div class="modal-content">
+                <p>Profile Update Request Sent</p>
+                <div class="button-container">
+                  <button type="button" onclick="redirect()">Continue</button>
+                </div>
               </div>
             </div>
-          </div>
-        
-          <script>
-            function redirect() {
-              window.location.href = "/ssm/mca/studentProfile";
-            }
-        
-            window.onload = function() {
-              var modal = document.getElementById("myModal");
-        
-              modal.style.display = "flex";
-        
-              window.onclick = function(event) {
-                if (event.target == modal) {
-                  modal.style.display = "none";
-                  redirect();
+          
+            <script>
+              function redirect() {
+                window.location.href = "/ssm/mca/studentProfile";
+              }
+          
+              window.onload = function() {
+                var modal = document.getElementById("myModal");
+          
+                modal.style.display = "flex";
+          
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                    redirect();
+                  }
                 }
               }
-            }
-          </script>
-        </body>
-        </html>
-        `
-       );
+            </script>
+          </body>
+          </html>
+          `
+         );
+      } else {
+        return res.send(
+          '<script>alert("Error in tuition fees update request!"); window.location="/ssm/mca/studentProfile";</script>'
+        );
+      }
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error in Tuition Update Request' });
@@ -1160,10 +1173,10 @@ exports.requestChangeTu = async (req, res) => {
 };
 
 exports.requestChangeEx = async (req, res) => {
-  const { newExPending, newExStatus, registerNumber } = req.body;
+  let { newExPending, newExStatus, registerNumber } = req.body;
 
   try {
-      let student = await Student.findOneAndUpdate(
+      let studentData = await Student.findOneAndUpdate(
           { registerNumber: registerNumber },
           {
               $set: {
@@ -1177,110 +1190,116 @@ exports.requestChangeEx = async (req, res) => {
           { new: true }
       );
 
-      res.send(
-        `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Registration</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              margin: 0;
-              padding: 0;
-              background-color: #f4f4f4;
-            }
-        
-            .modal {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: fixed;
-              z-index: 1000;
-              left: 0;
-              top: 0;
-              width: 100%;
-              height: 100%;
-              overflow: auto;
-              background-color: rgba(0, 0, 0, 0.6);
-            }
-        
-            .modal-content {
-              background-color: #fefefe;
-              padding: 20px;
-              border: 1px solid #ccc;
-              border-radius: 10px;
-              width: 80%;
-              max-width: 400px;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-        
-            p {
-              margin: 0 0 20px;
-              font-size: 18px;
-              font-weight: bold;
-              color: #28a745; /* Green color */
-              text-align: center;
-            }
-        
-            .button-container {
-              display: flex;
-              justify-content: center;
-              width: 100%;
-            }
-        
-            button[type="button"] {
-              background-color: #3d6ef5ff;
-              color: #f2f2f2;
-              font-weight: bold;
-              padding: 8px 14px;
-              border: none;
-              font-size: 13px;
-              border-radius: 5px;
-              cursor: pointer;
-              transition: background-color 0.3s;
-            }
-        
-            button[type="button"]:hover {
-              background-color: #f2f2f2;
-              color: #3d6ef5ff;
-              font-weight: bold;
-            }
-          </style>
-        </head>
-        <body>
-          <div id="myModal" class="modal">
-            <div class="modal-content">
-              <p>Profile Update Request Sent</p>
-              <div class="button-container">
-                <button type="button" onclick="redirect()">Continue</button>
+      if (studentData) {
+        return res.send(
+          `<!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Registration</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+              }
+          
+              .modal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.6);
+              }
+          
+              .modal-content {
+                background-color: #fefefe;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 400px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+              }
+          
+              p {
+                margin: 0 0 20px;
+                font-size: 18px;
+                font-weight: bold;
+                color: #28a745; /* Green color */
+                text-align: center;
+              }
+          
+              .button-container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+              }
+          
+              button[type="button"] {
+                background-color: #3d6ef5ff;
+                color: #f2f2f2;
+                font-weight: bold;
+                padding: 8px 14px;
+                border: none;
+                font-size: 13px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+              }
+          
+              button[type="button"]:hover {
+                background-color: #f2f2f2;
+                color: #3d6ef5ff;
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            <div id="myModal" class="modal">
+              <div class="modal-content">
+                <p>Profile Update Request Sent</p>
+                <div class="button-container">
+                  <button type="button" onclick="redirect()">Continue</button>
+                </div>
               </div>
             </div>
-          </div>
-        
-          <script>
-            function redirect() {
-              window.location.href = "/ssm/mca/studentProfile";
-            }
-        
-            window.onload = function() {
-              var modal = document.getElementById("myModal");
-        
-              modal.style.display = "flex";
-        
-              window.onclick = function(event) {
-                if (event.target == modal) {
-                  modal.style.display = "none";
-                  redirect();
+          
+            <script>
+              function redirect() {
+                window.location.href = "/ssm/mca/studentProfile";
+              }
+          
+              window.onload = function() {
+                var modal = document.getElementById("myModal");
+          
+                modal.style.display = "flex";
+          
+                window.onclick = function(event) {
+                  if (event.target == modal) {
+                    modal.style.display = "none";
+                    redirect();
+                  }
                 }
               }
-            }
-          </script>
-        </body>
-        </html>
-        `
-       );
+            </script>
+          </body>
+          </html>
+          `
+         );
+      } else {
+        return res.send(
+          '<script>alert("Error in exam fees update request!"); window.location="/ssm/mca/studentProfile";</script>'
+        );
+      }
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error in Exam Update Request' });
@@ -1896,6 +1915,29 @@ exports.studentAlumniDownload = async (req, res) => {
   } catch (err) {
     console.error(err);
     return { success: false, message: err.message };
+  }
+};
+
+exports.getDetails = async (req, res) => {
+  let data = await Student.find({});
+  return res.json(data)
+} 
+
+exports.insertManyStudents = async (req, res) => {
+  try {
+      let students = req.body.students;
+
+      let result = await Student.insertMany(students);
+      
+      res.status(200).json({
+          message: 'Students inserted successfully',
+          result: result
+      });
+  } catch (err) {
+      res.status(500).json({
+          message: 'An error occurred',
+          err: err.message
+      });
   }
 };
 

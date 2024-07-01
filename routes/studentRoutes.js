@@ -35,5 +35,8 @@ app.post("/studentExamDownload", studentController.studentExamDownload);
 
 app.post("/studentAlumniDownload", studentController.studentAlumniDownload);
 
+app.get("/getDetails", studentController.getDetails)
+app.post("/insertManyStudents", studentController.insertManyStudents)
+
 
 module.exports = app;
