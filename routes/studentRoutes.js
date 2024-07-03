@@ -41,19 +41,19 @@ app.post(
 
 app.post(
   "/requestChange",
-  authonticationController.validateToken,
+  authonticationController.sValidateToken,
   studentController.requestChange
 );
 
 app.post(
   "/requestChangeTu",
-  authonticationController.validateToken,
+  authonticationController.sValidateToken,
   studentController.requestChangeTu
 );
 
 app.post(
   "/requestChangeEx",
-  authonticationController.validateToken,
+  authonticationController.sValidateToken,
   studentController.requestChangeEx
 );
 
