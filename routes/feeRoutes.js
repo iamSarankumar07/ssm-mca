@@ -1,17 +1,29 @@
 const express = require("express");
-const authFile = require('../middleware/auth')
+const authonticationController = require("../middleware/auth");
 const app = express();
 
 const feeController = require("../controller/feeController");
 
-// app.post("/feeRegister", authFile.validateToken, feeController.newFee);
+// app.post("/feeRegister", authonticationController.validateToken, feeController.newFee);
 
-app.post("/updateFee/:userId", authFile.validateToken, feeController.updateFee);
+app.post(
+  "/updateFee/:userId",
+  authonticationController.validateToken,
+  feeController.updateFee
+);
 
-app.post("/updateExamFee/:userId", authFile.validateToken, feeController.updateExamFee);
+app.post(
+  "/updateExamFee/:userId",
+  authonticationController.validateToken,
+  feeController.updateExamFee
+);
 
-app.post('/updateDueDatesForAll', authFile.validateToken, feeController.updateDueDatesForAll);
+app.post(
+  "/updateDueDatesForAll",
+  authonticationController.validateToken,
+  feeController.updateDueDatesForAll
+);
 
-// app.get("/deleteFee/:userId", authFile.validateToken, feeController.deleteFee);
+// app.get("/deleteFee/:userId", authonticationController.validateToken, feeController.deleteFee);
 
 module.exports = app;

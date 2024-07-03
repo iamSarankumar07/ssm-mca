@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 
 router.use(cookieParser());
 
@@ -12,6 +12,5 @@ router.use(require("./announcementRoutes"));
 router.use(require("./feeRoutes"));
 router.use(require("./loginRoutes"));
 router.use(require("./subjectRoutes"));
-
 
 module.exports = router;
