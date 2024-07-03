@@ -34,6 +34,10 @@ app.get("/studentHome", (req, res) => {
 
 app.use("/ssm/mca", require("./routes/index"));
 
+app.use((req, res) => {
+  res.status(404).render("404");
+});
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`PORT CONNECTED TO ${PORT}...`);
