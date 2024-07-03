@@ -2,14 +2,30 @@ const express = require("express");
 const app = express();
 const studentController = require("../controller/announcementController");
 const announcementController = require("../controller/announcementController");
-const authFile = require("../middleware/auth");
+const authonticationController = require("../middleware/auth");
 
-app.get("/sendMail", authFile.validateToken, studentController.sendMail);
+app.get(
+  "/sendMail",
+  authonticationController.validateToken,
+  studentController.sendMail
+);
 
-app.post("/sendMailById", authFile.validateToken, announcementController.sendEmailByRegNum);
+app.post(
+  "/sendMailById",
+  authonticationController.validateToken,
+  announcementController.sendEmailByRegNum
+);
 
-app.post("/commonAnnouncement", authFile.validateToken, announcementController.commonMail);
+app.post(
+  "/commonAnnouncement",
+  authonticationController.validateToken,
+  announcementController.commonMail
+);
 
-app.post("/paymentAlert", authFile.validateToken, announcementController.sendPaymentAlert);
+app.post(
+  "/paymentAlert",
+  authonticationController.validateToken,
+  announcementController.sendPaymentAlert
+);
 
 module.exports = app;

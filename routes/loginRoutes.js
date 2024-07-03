@@ -11,37 +11,34 @@ app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
 
-app.get('/login', (req, res)=>{
-    res.render('login')
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
 app.get("/forgotPassword", (req, res) => {
-    res.render("forgotPassword");
-})
-
-app.get('/studentLogin', (req, res)=>{
-    res.render('studentLogin')
+  res.render("forgotPassword");
 });
 
-app.get('/signup', (req, res)=>{
-    res.render('signup')
+app.get("/studentLogin", (req, res) => {
+  res.render("studentLogin");
 });
 
-app.post('/signup', loginController.signup);
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
 
-app.post('/login', loginController.login);
+app.post("/signup", loginController.signup);
 
-app.post("/forgotPassword", loginController.forgotPassword)
+app.post("/login", loginController.login);
 
-app.post('/forgotOtp', loginController.forgotOtp);
+app.post("/forgotPassword", loginController.forgotPassword);
 
-app.post('/studentLogin', studentController.login);
+app.post("/forgotOtp", loginController.forgotOtp);
 
-app.post('/otp', loginController.otp);
+app.post("/studentLogin", studentController.login);
 
-app.get('/logout', authFile.logout);
+app.post("/otp", loginController.otp);
 
-
-
+app.get("/logout", authFile.logout);
 
 module.exports = app;

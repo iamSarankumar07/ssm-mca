@@ -1,8 +1,7 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const contactController = require('../controller/contactController')
+const contactController = require("../controller/contactController");
 
-app.post('/userContact', contactController.contact)
-
+app.post("/userContact", contactController.contact);
 
 module.exports = app;
