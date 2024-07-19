@@ -374,7 +374,7 @@ exports.getStudentDetails = async (req, res) => {
 
     if (!student) {
       return res.send(
-        '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/studentLogin";</script>'
+        '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 

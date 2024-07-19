@@ -23,7 +23,7 @@ exports.signup = async (req, res) => {
     const existingUser = await Admin.findOne({ email });
     if (existingUser) {
       return res.send(
-        '<script>alert("Email already registered!"); window.location.href = "/ssm/mca/login";</script>'
+        '<script>alert("Email already registered!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 
@@ -138,7 +138,7 @@ exports.signup = async (req, res) => {
       }
     });
 
-    res.redirect('/ssm/mca/login')
+    res.redirect('/ssm/mca/signin')
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -149,7 +149,7 @@ exports.login = async (req, res) => {
     const user = await Admin.findOne({ email: req.body.email });
     if (!user) {
       return res.send(
-        '<script>alert("User Not Found!"); window.location.href = "/ssm/mca/login";</script>'
+        '<script>alert("User Not Found!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
     const isPasswordMatch = await bcrypt.compare(
@@ -158,7 +158,7 @@ exports.login = async (req, res) => {
     );
     if (!isPasswordMatch) {
       return res.send(
-        '<script>alert("Wrong Password"); window.location.href = "/ssm/mca/login";</script>'
+        '<script>alert("Wrong Password"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 
@@ -286,7 +286,7 @@ exports.login = async (req, res) => {
       if (err) {
         console.log("Error sending OTP email:", err);
         return res.send(
-          '<script>alert("Error sending OTP"); window.location.href = "/ssm/mca/login";</script>'
+          '<script>alert("Error sending OTP"); window.location.href = "/ssm/mca/signin";</script>'
         );
       }
       console.log("OTP sent successfully");
@@ -295,7 +295,7 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.log("Error in userLogin:", err);
     return res.send(
-      '<script>alert("Login Failed! - Internal Server Error"); window.location.href = "/ssm/mca/login";</script>'
+      '<script>alert("Login Failed! - Internal Server Error"); window.location.href = "/ssm/mca/signin";</script>'
     );
   }
 };
@@ -309,7 +309,7 @@ exports.otp = async (req, res) => {
     if (!user) {
       console.log("User not found");
       return res.send(
-        '<script>alert("Incorrect OTP or OTP Expired!"); window.location.href = "/ssm/mca/login";</script>'
+        '<script>alert("Incorrect OTP or OTP Expired!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 
@@ -455,7 +455,7 @@ exports.forgotPassword = async (req, res) => {
       if (err) {
         console.log("Error sending OTP email:", err);
         return res.send(
-          '<script>alert("Error sending OTP"); window.location.href = "/ssm/mca/login";</script>'
+          '<script>alert("Error sending OTP"); window.location.href = "/ssm/mca/signin";</script>'
         );
       }
       console.log("OTP sent successfully");
@@ -464,7 +464,7 @@ exports.forgotPassword = async (req, res) => {
   } catch (err) {
     console.log("Error in forgot password:", err);
     return res.send(
-      '<script>alert("forgot password failed! - Internal Server Error"); window.location.href = "/ssm/mca/login";</script>'
+      '<script>alert("forgot password failed! - Internal Server Error"); window.location.href = "/ssm/mca/signin";</script>'
     );
   }
 }
@@ -577,7 +577,7 @@ exports.forgotOtp = async (req, res) => {
       
         <script>
           function redirect() {
-            window.location.href = "/ssm/mca/login";
+            window.location.href = "/ssm/mca/signin";
           }
       
           window.onload = function() {

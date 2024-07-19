@@ -199,6 +199,10 @@ app.get(
   viewController.gallery
 );
 
+app.get("/student/forgotPassword", (req, res) => {
+  res.send("<h1>Under Development</h1>")
+})
+
 // app.get('/downloadFirstYrTuFeePDF', viewController.downloadFirstYrTuFeePDF);
 
 // app.get('/downloadSecondYrTuFeePDF', viewController.downloadSecondYrTuFeePDF);

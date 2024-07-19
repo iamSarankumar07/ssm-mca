@@ -289,7 +289,7 @@ exports.updateDueDatesForAll = async (req, res) => {
       filter = { year: year === "first" ? "I" : "II" };
     } else {
       return res.send(
-        '<script>alert("Please Select Year"); window.location.href = "/ssm/mca/studentLogin";</script>'
+        '<script>alert("Please Select Year"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 

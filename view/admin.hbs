@@ -190,6 +190,12 @@
                 <td>Alumni List</td>
                 <td><button type="button" onclick="alumniList()">Details</button></td>
             </tr>
+            <tr>
+                <td>Staff Register</td>
+                <td><button type="button" onclick="staffReg()">Move</button></td>
+                <td>Staff List</td>
+                <td><button type="button" onclick="staffList()">Details</button></td>
+            </tr>
             {{!-- <tr>
                 <td>Received Contact Messages</td>
                 <td><button type="button" onclick="messages()">Messages</button></td>
@@ -262,6 +268,12 @@
         };
         function subjectList() {
         window.location.href = '/ssm/mca/subjectList';
+        };
+        function staffReg() {
+        window.location.href = '/ssm/mca/signup';
+        };
+        function staffList() {
+        window.location.href = '/ssm/mca/staffList';
         };
         {{!-- function upload() {
         window.location.href = '/ssm/mca/upload';
