@@ -6,140 +6,181 @@
     <title>Login</title>
     <link rel="icon" href="https://i.postimg.cc/x1RfJjWH/user-1.png">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-        * {
-            font-family: "Poppins", sans-serif;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #3d6ef5ff;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+* {
+    font-family: "Poppins", sans-serif;
+}
 
-        .form-wrapper {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            width: 300px;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #3d6ef5ff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-        }
+.form-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+}
 
-        h1 {
-            text-align: center;
-            color: #3d6ef5ff;
-        }
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
 
-        a {
-            text-align: center;
-            font-weight: bold;
-            text-decoration: none;
-            color: #472ddb;
-        }
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
 
-        a:hover {
-            color: #1459da;
-        }
+h1 {
+    text-align: center;
+    color: #3d6ef5ff;
+}
 
-        p {
-            text-align: center;
-            margin-top: 10px;
-            color: #333;
-        }
+a {
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    color: #472ddb;
+}
 
-        .btn {
-            padding: 8px 15px;
-            color: #f2f2f2;
-            width: 100%;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            font-size: 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: .4s;
-        }
+a:hover {
+    color: #1459da;
+}
 
-        .btn:hover {
-            background: #f2f2f2;
-            color: #3d6ef5ff;
-        }
+p {
+    text-align: center;
+    margin-top: 10px;
+    color: #333;
+}
 
-        .showPassCode {
-            display: flex;
-            align-items: center;
-            margin: 5px 0px;
-        }
+.btn {
+    padding: 8px 15px;
+    color: #f2f2f2;
+    width: 100%;
+    border: 2px solid #3d6ef5ff;
+    background: #3d6ef5ff;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .4s;
+}
 
-        #showAdminPassword {
-            width: min-content;
-        }
+.btn:hover {
+    background: #f2f2f2;
+    color: #3d6ef5ff;
+}
 
-        #showStudentPassword {
-            width: min-content;
-        }
+.showPassCode {
+    display: flex;
+    align-items: center;
+    margin: 5px 0px;
+}
 
-        .box {
-            margin-right: 10px;
-        }
+#showAdminPassword {
+    width: min-content;
+}
 
-        .txt {
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #1459da;
-        }
+#showStudentPassword {
+    width: min-content;
+}
 
-        .signup-link, .forgot-link {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            text-align: center;
-        }
+.box {
+    margin-right: 10px;
+}
 
-        .home {
-            text-align: center;
-            margin-top: 20px;
-        }
-		
-		@media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-                padding: 20px;
-            }
+.txt {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #1459da;
+}
 
-            .form-wrapper {
-                width: 100%;
-                max-width: none;
-                margin-bottom: 20px;
-            }
-		}
+.signup-link, .forgot-link {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.home {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+    .container {
+        padding: 20px;
+    }
+
+    .form-wrapper {
+        width: 90%;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .form-wrapper {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .form-wrapper {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
     </style>
 </head>
 <body>
