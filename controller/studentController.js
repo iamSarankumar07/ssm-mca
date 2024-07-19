@@ -296,13 +296,13 @@ exports.login = async (req, res) => {
 
     if (!student) {
       return res.send(
-        '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/studentLogin";</script>'
+        '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
     const passwordMatch = await bcrypt.compare(password, student.password);
     if (!passwordMatch) {
       return res.send(
-        '<script>alert("Wrong Password!"); window.location.href = "/ssm/mca/studentLogin";</script>'
+        '<script>alert("Wrong Password!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
     const accessToken = await authFile.sToken(student);
@@ -314,7 +314,7 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.error("Error logging in:", err);
     return res.send(
-      '<script>alert("Login Failed! - Internal Server Error"); window.location.href = "/ssm/mca/studentLogin";</script>'
+      '<script>alert("Login Failed! - Internal Server Error"); window.location.href = "/ssm/mca/signin";</script>'
     );
   }
 };

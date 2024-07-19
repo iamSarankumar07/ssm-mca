@@ -15,6 +15,10 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
+app.get("/signin", (req, res) => {
+  res.render("signin");
+})
+
 app.get("/forgotPassword", (req, res) => {
   res.render("forgotPassword");
 });

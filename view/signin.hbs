@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" href="https://i.postimg.cc/x1RfJjWH/user-1.png">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            font-family: "Poppins", sans-serif;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3d6ef5ff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-wrapper {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #3d6ef5ff;
+        }
+
+        a {
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            color: #472ddb;
+        }
+
+        a:hover {
+            color: #1459da;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            color: #f2f2f2;
+            width: 100%;
+            border: 2px solid #3d6ef5ff;
+            background: #3d6ef5ff;
+            font-weight: bold;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: .4s;
+        }
+
+        .btn:hover {
+            background: #f2f2f2;
+            color: #3d6ef5ff;
+        }
+
+        .showPassCode {
+            display: flex;
+            align-items: center;
+            margin: 5px 0px;
+        }
+
+        #showAdminPassword {
+            width: min-content;
+        }
+
+        #showStudentPassword {
+            width: min-content;
+        }
+
+        .box {
+            margin-right: 10px;
+        }
+
+        .txt {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #1459da;
+        }
+
+        .signup-link, .forgot-link {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .home {
+            text-align: center;
+            margin-top: 20px;
+        }
+		
+		@media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .form-wrapper {
+                width: 100%;
+                max-width: none;
+                margin-bottom: 20px;
+            }
+		}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <h1>Admin Login</h1>
+            <form action="/ssm/mca/login" method="post">
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" autocomplete="off" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="adminPassword" name="password" aria-label="Password" required>
+
+                <div class="showPassCode">
+                    <input class="box" type="checkbox" id="showAdminPassword" name="showAdminPassword">
+                    <label class="txt" for="showAdminPassword"> Show Password</label>
+                </div>
+
+                <button type="submit" class="btn">Login</button>
+
+                <div class="forgot-link">
+                    Forgot your password? <a href="/ssm/mca/forgotPassword">Reset it</a>
+                </div>
+                {{!-- <div class="signup-link">
+                    Don't have an account? <a href="/ssm/mca/signup">Sign up</a>
+                </div> --}}
+                <div class="home">
+                    <a href="/">Home</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-wrapper">
+            <h1>Student Login</h1>
+            <form action="/ssm/mca/studentLogin" method="post">
+                <label for="userName">Register Number</label>
+                <input type="text" id="userName" name="studentId" autocomplete="off" required>
+
+                <label for="password">Date of Birth</label>
+                <input type="password" id="studentPassword" name="password" required placeholder="DD-MM-YYYY">
+
+                <div class="showPassCode">
+                    <input class="box" type="checkbox" id="showStudentPassword" name="showStudentPassword">
+                    <label class="txt" for="showStudentPassword"> Show Password</label>
+                </div>
+
+                <button type="submit" class="btn">Login</button>
+                <div class="forgot-link">
+                    Forgot your password? <a href="/ssm/mca/student/forgotPassword">Reset it</a>
+                </div>
+
+                <div class="home">
+                    <a href="/">Home</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+
+    const showPasswordCheckboxesAdmin = document.querySelectorAll('#showAdminPassword');
+    const passwordFieldsAdmin = document.querySelectorAll('#adminPassword');
+
+    showPasswordCheckboxesAdmin.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+
+            const passwordField = document.getElementById('adminPassword');
+            passwordField.type = this.checked ? 'text' : 'password';
+        });
+    });
+
+
+    const showPasswordCheckboxesStudent = document.querySelectorAll('#showStudentPassword');
+    const passwordFieldsStudent = document.querySelectorAll('#studentPassword');
+
+    showPasswordCheckboxesStudent.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+
+            const passwordField = document.getElementById('studentPassword');
+            passwordField.type = this.checked ? 'text' : 'password';
+        });
+    });
+</script>
+</body>
+</html>
