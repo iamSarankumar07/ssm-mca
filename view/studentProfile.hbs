@@ -4,6 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Profile</title>
+<script>
+    function addressUpdate() {
+        window.location.href = '/ssm/mca/studentAddressUpdate/{{student._id}}';
+    };
+
+    function hideUpdateButton() {
+        var updateButtonRow = document.getElementById("hideButton");
+        var hideTd = document.getElementById("hideTd");
+            if ({{ student.addressUpdate }}) {
+                updateButtonRow.style.display = "none";
+            } else {
+                hideTd.style.display = "none";
+            }
+    }
+    window.onload = function() {
+        hideUpdateButton();
+    };
+</script>
 <style>
      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
       * {
@@ -446,23 +464,5 @@ a {
         </div>
 </div>
 
-<script>
-    function addressUpdate() {
-        window.location.href = '/ssm/mca/studentAddressUpdate/{{student._id}}';
-    };
-
-    function hideUpdateButton() {
-        var updateButtonRow = document.getElementById("hideButton");
-        var hideTd = document.getElementById("hideTd");
-            if ({{ student.addressUpdate }}) {
-                updateButtonRow.style.display = "none";
-            } else {
-                hideTd.style.display = "none";
-            }
-    }
-    window.onload = function() {
-        hideUpdateButton();
-    };
-</script>
 </body>
 </html>
