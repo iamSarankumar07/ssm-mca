@@ -96,6 +96,10 @@ const studentSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    forgotOtp: {
+        type: String,
+        default: false,
+    },
     editRequest: {
         newName: String,
         newEmail: String,

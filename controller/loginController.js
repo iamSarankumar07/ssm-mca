@@ -290,8 +290,8 @@ exports.login = async (req, res) => {
         );
       }
       console.log("OTP sent successfully");
-      res.render("otp", { user: user });
     });
+    res.render("otp", { user: user });
   } catch (err) {
     console.log("Error in userLogin:", err);
     return res.send(
@@ -459,8 +459,8 @@ exports.forgotPassword = async (req, res) => {
         );
       }
       console.log("OTP sent successfully");
-      res.render("forgotOtp", { user: user });
     });
+    res.render("forgotOtp", { user: user });
   } catch (err) {
     console.log("Error in forgot password:", err);
     return res.send(

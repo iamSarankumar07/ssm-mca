@@ -34,6 +34,10 @@ const Loginschema = new mongoose.Schema({
         type: String,
         required: false
     },
+    isDelete: {
+        type: Boolean,
+        default: false
+    },
     createdAt: {
         type: Date,
         immutable: true,

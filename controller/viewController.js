@@ -190,6 +190,7 @@ exports.studentList = async (req, res) => {
   }
 };
 
+
 exports.studentEdit = async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -205,7 +206,7 @@ exports.alumniList = async (req, res) => {
   try {
     let filterYear = req.query.year || null;
     let searchName = req.query.name || "";
-
+    
     if (req.query.download) {
       req.body.isPdf = true;
       let response = await studentController.studentAlumniDownload(req, res);
@@ -224,11 +225,11 @@ exports.alumniList = async (req, res) => {
       if (filterYear && filterYear !== "All") {
         query.graduationYear = filterYear;
       }
-
+      
       if (searchName) {
         query.name = { $regex: new RegExp(searchName, "i") };
       }
-
+      
       let students = await Student.find(query);
       let gradYears = await Student.distinct("graduationYear", { isDelete: false, isAlumni: true });
       gradYears.unshift("All");
@@ -236,12 +237,23 @@ exports.alumniList = async (req, res) => {
       students = students.sort((a,b) => {
         return b.graduationYear - a.graduationYear
       })
-
+      
       res.render("alumniList", { students, filterYear, gradYears, searchName });
     }
   } catch (err) {
     console.error(err);
     res.status(500).send({ success: false, message: err.message });
+  }
+};
+
+exports.staffList = async (req, res) => {
+  try {
+    const staffData = await Admin.find({ });
+
+    res.render("staffList", { staffData });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
   }
 };
 

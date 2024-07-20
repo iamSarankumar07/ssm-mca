@@ -118,6 +118,12 @@ app.get(
 );
 
 app.get(
+  "/staffList",
+  authonticationController.validateToken,
+  viewController.staffList
+);
+
+app.get(
   "/studentEdit/:userId",
   authonticationController.validateToken,
   viewController.studentEdit
@@ -200,7 +206,7 @@ app.get(
 );
 
 app.get("/student/forgotPassword", (req, res) => {
-  res.send("<h1>Under Development</h1>")
+  res.render("studentForgotPassword")
 })
 
 // app.get('/downloadFirstYrTuFeePDF', viewController.downloadFirstYrTuFeePDF);

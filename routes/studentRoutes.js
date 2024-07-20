@@ -2,11 +2,26 @@ const express = require("express");
 const app = express();
 const authonticationController = require("../middleware/auth");
 const studentController = require("../controller/studentController");
+const path = require("path");
+
+app.set("view engine", "hbs");
+const viewPath = path.join(__dirname, "../view");
+app.set("views", viewPath);
 
 app.post(
   "/studentRegister",
   authonticationController.validateToken,
   studentController.newStudent
+);
+
+app.post(
+  "/student/forgotPassword",
+  studentController.studentForgotPassword
+);
+
+app.post(
+  "/student/forgotOtp",
+  studentController.studentForgotOtp
 );
 
 app.post(
