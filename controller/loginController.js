@@ -23,7 +23,7 @@ exports.signup = async (req, res) => {
     const existingUser = await Admin.findOne({ email });
     if (existingUser) {
       return res.send(
-        '<script>alert("Email already registered!"); window.location.href = "/ssm/mca/signin";</script>'
+        '<script>alert("Email already registered!"); window.location.href = "/ssm/mca/signup";</script>'
       );
     }
 
@@ -138,9 +138,11 @@ exports.signup = async (req, res) => {
       }
     });
 
-    res.redirect('/ssm/mca/signin')
+    return res.render('signupSucces')
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.send(
+      '<script>alert("Error in account creation!"); window.location.href = "/ssm/mca/signup";</script>'
+    );
   }
 };
 
