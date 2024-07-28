@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const pdf = require("html-pdf");
 const moment = require("moment");
+const countModel = require("../models/countModel")
 
 exports.newStudent = async (req, res) => {
   const body = req.body;
@@ -54,8 +55,19 @@ exports.newStudent = async (req, res) => {
   student.examPaymentStatus = "Pending";
   student.examDueDate = "";
 
-  const studentId = student.registerNumber;
-  student.studentId = studentId;
+  let studentCount = await countModel.findOne({name: "studentCount"})
+  let count = studentCount.count;
+  let date = Date.now()
+  let prefix = moment(date).format("YY")
+  let center = "MCA";
+  let totalCount = count + 1; // Math.floor(Math.random() * 10000);
+  let studentId = `${prefix}${center}${totalCount}`;
+
+  await countModel.findByIdAndUpdate(studentCount._id.toString(),{ 
+    $set: { count: totalCount },
+  });
+
+  student.studentId = studentId.toString();
 
   const password = student.dob.toString();
   console.log(
@@ -306,7 +318,7 @@ exports.login = async (req, res) => {
       );
     }
     const accessToken = await authFile.sToken(student);
-    res.cookie("access-token", accessToken, {
+    res.cookie("access-token-student", accessToken, {
       maxAge: 60 * 60 * 1000,
     });
 
@@ -647,6 +659,7 @@ exports.updateStudent = async (req, res) => {
 
     await Student.findByIdAndUpdate(userId, {
       name: body.name,
+      studentId: body.studentId,
       registerNumber: body.registerNumber,
       gender: body.gender,
       password: hashedPassword,
@@ -1991,8 +2004,12 @@ exports.studentDownload = async (req, res) => {
       Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
     ]);
 
+    let sortedList = studentsData.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+
     let templateData = {
-      studentsData: studentsData,
+      studentsData: sortedList,
       maleRecords: maleRecords,
       femaleRecords: femaleRecords,
       totalRecords: totalRecords
@@ -2039,8 +2056,12 @@ exports.studentTuitionDownload = async (req, res) => {
       Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
     ]);
 
+    let sortedList = studentsData.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+
     let templateData = {
-      studentsData: studentsData,
+      studentsData: sortedList,
       paidRecords: paidRecords,
       pendingRecords: pendingRecords,
       totalRecords: totalRecords,
@@ -2088,8 +2109,12 @@ exports.studentExamDownload = async (req, res) => {
       Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
     ]);
 
+    let sortedList = studentsData.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+
     let templateData = {
-      studentsData: studentsData,
+      studentsData: sortedList,
       paidRecords: paidRecords,
       pendingRecords: pendingRecords,
       totalRecords: totalRecords,
@@ -2143,11 +2168,12 @@ exports.studentAlumniDownload = async (req, res) => {
       Student.countDocuments(query)
     ]);
 
-    studentsData.sort((a, b) => {
-      return b.graduationYear - a.graduationYear
+    let orderedData = studentsData.sort((a, b) => {
+      if (b.graduationYear === a.graduationYear) {
+        return a.name.localeCompare(b.name);
+      }
+      return b.graduationYear - a.graduationYear;
     });
-
-    let orderedData = studentsData;
 
     let templateData = {
       studentsData: orderedData,
@@ -2178,7 +2204,7 @@ exports.studentAlumniDownload = async (req, res) => {
 
       return { success: true, buffer: pdfBuffer };
     } else {
-      return { success: false, message: "isPdf flag is required to download PDF" };
+      return { success: false, message: "isPdf is required for download PDF" };
     }
   } catch (err) {
     console.error(err);

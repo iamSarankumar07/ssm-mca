@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Create Account</title>
     <link rel="icon" href="https://i.postimg.cc/VvbTw5Wt/add-friend.png">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
@@ -38,7 +38,7 @@
         input, select {
             width: 100%;
             padding: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             box-sizing: border-box;
         }
 
@@ -63,6 +63,7 @@
         h1 {
             text-align: center;
             color: #3d6ef5ff;
+            margin-top: 0px;
         }
 
         a {
@@ -85,6 +86,7 @@
             text-decoration: none;
             color: #333;
             font-size: 15px;
+            margin-bottom: 0px;
         }
         .showPassCode{
             display: flex;
@@ -113,10 +115,20 @@
     <form action="/ssm/mca/signup" method="post">
         <h1>Create Account</h1>
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="" autocomplete="off" required oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')">
+        <input type="text" id="name" name="name" placeholder="" autocomplete="off" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'true');" required>
+        <input type="email" id="email" name="email" placeholder="" autocomplete="off" oninput="this.value = this.value.replace(/\s/g, '')" required>
+
+        <label for="phone">Phone:</label>
+        <input type="phone" id="phone" name="phone" required>
+
+        <label for="gender">Gender:</label></td>
+        <select id="gender" name="gender" required>
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" aria-label="Password" aria-label="Password" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');" onblur="this.setAttribute('readonly', 'true');" required>
@@ -144,6 +156,13 @@
         const passwordFieldType = this.checked ? 'text' : 'password';
         passwordField.type = passwordFieldType;
         confirmPasswordField.type = passwordFieldType;
+    });
+
+    document.getElementById("phone").addEventListener("input", function() {
+    this.value = this.value.replace(/\D/g, '');
+    if (this.value.length > 10) {
+        this.value = this.value.slice(0, 10);
+    }
     });
 </script>
 

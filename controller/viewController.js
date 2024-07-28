@@ -48,7 +48,7 @@ exports.dashboard = async (req, res) => {
 
 exports.reviewRequest = async (req, res) => {
     try {
-        const students = await Student.find({ 'editRequest.status': 'requested' });
+        const students = await Student.find({ 'editRequest.status': 'requested', isDelete: false, isAlumni: false });
         res.render('requestReview', { students });
     } catch (err) {
         console.log(err.message, err);
@@ -58,7 +58,7 @@ exports.reviewRequest = async (req, res) => {
 
 exports.reviewRequestTu = async (req, res) => {
     try {
-        const students = await Student.find({ 'tuEditRequest.status': 'requested' });
+        const students = await Student.find({ 'tuEditRequest.status': 'requested', isDelete: false, isAlumni: false });
         res.render('tuRequestReview', { students });
     } catch (err) {
         console.log(err.message, err);
@@ -68,7 +68,7 @@ exports.reviewRequestTu = async (req, res) => {
 
 exports.reviewRequestEx = async (req, res) => {
     try {
-        const students = await Student.find({ 'exEditRequest.status': 'requested' });
+        const students = await Student.find({ 'exEditRequest.status': 'requested', isDelete: false, isAlumni: false });
         res.render('exRequestReview', { students });
     } catch (err) {
         console.log(err.message, err);
@@ -177,11 +177,12 @@ exports.studentList = async (req, res) => {
     );
 
     let sortedFirstYear = firstYearStudents.sort((a, b) => {
-      return a.registerNumber - b.registerNumber;
-    })
+      return a.name.localeCompare(b.name);
+    });
+    
     let sortedSecondYear = secondYearStudents.sort((a, b) => {
-      return a.registerNumber - b.registerNumber;
-    })
+      return a.name.localeCompare(b.name);
+    });
 
     res.render("studentList", { sortedFirstYear, sortedSecondYear });
   } catch (err) {
@@ -202,10 +203,22 @@ exports.studentEdit = async (req, res) => {
   }
 };
 
+exports.staffEdit = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await Admin.findById(userId);
+    res.render("staffEdit", { user });
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
+  }
+};
+
 exports.alumniList = async (req, res) => {
   try {
     let filterYear = req.query.year || null;
     let searchName = req.query.name || "";
+    let searchId = req.query.studentId || "";
     
     if (req.query.download) {
       req.body.isPdf = true;
@@ -229,14 +242,21 @@ exports.alumniList = async (req, res) => {
       if (searchName) {
         query.name = { $regex: new RegExp(searchName, "i") };
       }
+
+      if (searchId) {
+        query.studentId = { $regex: new RegExp(searchId, "i") };
+      }
       
       let students = await Student.find(query);
       let gradYears = await Student.distinct("graduationYear", { isDelete: false, isAlumni: true });
       gradYears.unshift("All");
 
-      students = students.sort((a,b) => {
-        return b.graduationYear - a.graduationYear
-      })
+      students = students.sort((a, b) => {
+        if (b.graduationYear === a.graduationYear) {
+          return a.name.localeCompare(b.name);
+        }
+        return b.graduationYear - a.graduationYear;
+      });
       
       res.render("alumniList", { students, filterYear, gradYears, searchName });
     }
@@ -248,7 +268,7 @@ exports.alumniList = async (req, res) => {
 
 exports.staffList = async (req, res) => {
   try {
-    const staffData = await Admin.find({ });
+    const staffData = await Admin.find({ isDelete: false });
 
     res.render("staffList", { staffData });
   } catch (err) {
@@ -295,13 +315,13 @@ exports.studentFeeList = async (req, res) => {
       (student) => student.year === "II"
     );
 
-    firstYearStudents = firstYearStudents.sort((a,b) => {
-      return a.registerNumber - b.registerNumber;
-    })
-
-    secondYearStudents = secondYearStudents.sort((a,b) => {
-      return a.registerNumber - b.registerNumber;
-    })
+    firstYearStudents = firstYearStudents.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+    
+    secondYearStudents = secondYearStudents.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
 
     res.render("studentFeeList", { firstYearStudents, secondYearStudents });
   } catch (err) {
@@ -320,13 +340,13 @@ exports.examFeeList = async (req, res) => {
       (student) => student.year === "II"
     );
 
-    firstYearStudents = firstYearStudents.sort((a,b) => {
-      return a.registerNumber - b.registerNumber;
-    })
-
-    secondYearStudents = secondYearStudents.sort((a,b) => {
-      return a.registerNumber - b.registerNumber;
-    })
+    firstYearStudents = firstYearStudents.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+    
+    secondYearStudents = secondYearStudents.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
 
     res.render("examFeeList", { firstYearStudents, secondYearStudents });
   } catch (err) {
@@ -368,7 +388,7 @@ exports.gallery = async (req, res) => {
 };
 
 exports.getStudentDetails = async (req, res) => {
-  const accessToken = req.cookies["access-token"];
+  const accessToken = req.cookies["access-token-student"];
   try {
     const decodedToken = await verify(
       accessToken,

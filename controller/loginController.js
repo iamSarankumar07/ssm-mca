@@ -5,13 +5,15 @@ const nodemailer = require("nodemailer");
 const authFile = require("../middleware/auth");
 const path = require("path");
 const app = express();
+const countModel = require("../models/countModel")
+const moment = require("moment");
 
 app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
 
 exports.signup = async (req, res) => {
-  const { name, email, password, confirmPassword } = req.body;
+  let { name, email, phone, gender, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
     return res.send(
@@ -20,24 +22,36 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const existingUser = await Admin.findOne({ email });
+    let existingUser = await Admin.findOne({ email, isDelete: false });
     if (existingUser) {
       return res.send(
         '<script>alert("Email already registered!"); window.location.href = "/ssm/mca/signup";</script>'
       );
     }
 
-    const user = new Admin({ name, email, password });
+    let staffCount = await countModel.findOne({name: "staffCount"})
+    let count = staffCount.count;
+    let date = Date.now()
+    let prefix = moment(date).format("YY")
+    let center = "MCAS";
+    let totalCount = count + 1; // Math.floor(Math.random() * 1000);
+    let staffId = `${prefix}${center}${totalCount}`;
 
-    const pwd = user.password;
+    await countModel.findByIdAndUpdate(staffCount._id.toString(), {
+      $set: { count: totalCount },
+    });
 
-    const saltRounds = 12;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    let user = new Admin({ staffId, name, email, phone, gender, password });
+
+    let pwd = user.password;
+
+    let saltRounds = 12;
+    let hashedPassword = await bcrypt.hash(password, saltRounds);
     user.password = hashedPassword;
 
     await user.save();
 
-    const transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: 'verifyuserofficial@gmail.com',
@@ -45,7 +59,7 @@ exports.signup = async (req, res) => {
       },
     });
 
-    const mailOptions = {
+    let mailOptions = {
       from: 'verifyuserofficial@gmail.com',
       to: user.email,
       subject: 'Registration Successful.',
@@ -148,16 +162,26 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const user = await Admin.findOne({ email: req.body.email });
+    let user = await Admin.findOne({
+      $and: [
+        {
+          $or: [{ email: req.body.email }, { staffId: req.body.email }],
+        },
+        { isDelete: false },
+      ],
+    });
+
     if (!user) {
       return res.send(
         '<script>alert("User Not Found!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
-    const isPasswordMatch = await bcrypt.compare(
+
+    let isPasswordMatch = await bcrypt.compare(
       req.body.password,
       user.password
     );
+
     if (!isPasswordMatch) {
       return res.send(
         '<script>alert("Wrong Password"); window.location.href = "/ssm/mca/signin";</script>'
@@ -335,7 +359,14 @@ exports.otp = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
   try {
-    const user = await Admin.findOne({ email: req.body.email });
+    let user = await Admin.findOne({
+      $and: [
+        {
+          $or: [{ email: req.body.email }, { staffId: req.body.email }],
+        },
+        { isDelete: false },
+      ],
+    });
     if (!user) {
       return res.send(
         '<script>alert("User Not Found!"); window.location.href = "/ssm/mca/forgotPassword";</script>'
@@ -475,7 +506,7 @@ exports.forgotOtp = async (req, res) => {
   let { otp, password, confirmPassword } = req.body;
 
   try {
-    let user = await Admin.findOne({ forgotOtp: otp });
+    let user = await Admin.findOne({ forgotOtp: otp, isDelete: false });
 
     if (!user) {
       console.log("Incorrect OTP");
@@ -604,5 +635,139 @@ exports.forgotOtp = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+exports.staffEdit = async (req, res) => {
+  try {
+    let body = req.body;
+    let userId = req.params.userId;
+
+    await Admin.findByIdAndUpdate(userId, {
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      gender: body.gender,
+    });
+
+    // res.redirect("/ssm/mca/studentList");
+    res.send(
+      `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registration</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+          }
+      
+          .modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+          }
+      
+          .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+      
+          p {
+            margin: 0 0 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745; /* Green color */
+            text-align: center;
+          }
+      
+          .button-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+          }
+      
+          button[type="button"] {
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px 14px;
+            border: none;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+      
+          button[type="button"]:hover {
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <p>Staff Details Updated Successfully!</p>
+            <div class="button-container">
+              <button type="button" onclick="redirect()">Continue</button>
+            </div>
+          </div>
+        </div>
+      
+        <script>
+          function redirect() {
+            window.location.href = "/ssm/mca/staffList";
+          }
+      
+          window.onload = function() {
+            var modal = document.getElementById("myModal");
+      
+            modal.style.display = "flex";
+      
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+                redirect();
+              }
+            }
+          }
+        </script>
+      </body>
+      </html>
+      `
+     );
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
+  }
+};
+
+exports.staffDelete = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await Admin.findByIdAndUpdate(userId, { isDelete: true });
+    res.redirect("/ssm/mca/staffList");
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
+  }
+}
 
 module.exports = exports;

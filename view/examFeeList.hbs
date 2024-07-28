@@ -8,8 +8,11 @@
     <style>
          @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
       * {
-      font-family: "Poppins", sans-serif;
-    }
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
@@ -18,14 +21,12 @@
         }
 
         .container {
-            width: 80%;
-            max-width: 1200px;
-            margin: 20px auto; 
+            width: 100%;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            overflow: auto; 
+            overflow: auto;  
         }
 
         h1 {
@@ -51,7 +52,7 @@
         th, td {
             border: 1px solid #dee2e6;
             {{!-- text-align: center; --}}
-            padding: 12px;
+            padding: 10px;
         }
 
         .td {
@@ -108,16 +109,16 @@
         }
         .back-button {
     position: absolute;
-    top: 48px;
-    left: 12%; 
+    top: 26px;
+    left: 2%; 
     text-decoration: none;
 }
 
 .back-button img {
-    width: 40px;
-    height: 40px;
-    margin-left: -8px;
-    margin-bottom: 5px;
+    width: 45px;
+    height: 45px;
+    margin-right: 16px;
+    margin-bottom: 30px;
     vertical-align: middle;
 }
         
@@ -135,6 +136,7 @@
         <thead>
         <tr>
             <th>Name</th>
+            <th>Student ID</th>
             <th>Total Fee</th>
             <th>Pending Fee</th>
             <th>Payment Status</th>
@@ -145,6 +147,7 @@
     {{#each firstYearStudents}}
         <tr>
             <td>{{name}}</td>
+            <td class="td">{{studentId}}</td>
             <td class="td">Rs.{{examTotalFee}}</td>
             <td class="td">Rs.{{examPendingFee}}</td>
             <td class="td" style="color: {{#if (eq examPaymentStatus "Paid")}}green{{else if (eq examPaymentStatus "Partial")}}orange{{else}}red{{/if}};">
@@ -252,6 +255,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Student ID</th>
                             <th>Total Fee</th>
                             <th>Pending Fee</th>
                             <th>Payment Status</th>
@@ -261,6 +265,7 @@
                 {{#each firstYearStudents}}
                         <tr>
                             <td>{{name}}</td>
+                            <td class="td">{{studentId}}</td>
                             <td class="td">Rs.{{examTotalFee}}</td>
                             <td class="td">Rs.{{examPendingFee}}</td>
                             <td class="td">{{examPaymentStatus}}</td>
@@ -324,6 +329,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Student ID</th>
                             <th>Total Fee</th>
                             <th>Pending Fee</th>
                             <th>Payment Status</th>
@@ -333,6 +339,7 @@
                 {{#each secondYearStudents}}
                         <tr>
                             <td>{{name}}</td>
+                            <td class="td">{{studentId}}</td>
                             <td class="td">Rs.{{examTotalFee}}</td>
                             <td class="td">Rs.{{examPendingFee}}</td>
                             <td class="td">{{examPaymentStatus}}</td>

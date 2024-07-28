@@ -88,8 +88,8 @@
 <body>
     <form id="emailForm" action="/ssm/mca/sendMailById" method="post">
         <h1>Send Mail to Student</h1>
-        <label for="registerNumber">Register Number:</label>
-        <input type="text" id="registerNumber" name="registerNumber" required>
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" name="studentId" oninput="this.value = this.value.replace(/\s/g, '').toUpperCase()" required>
 
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
@@ -111,9 +111,6 @@ function goBack() {
   window.history.back();
   window.location.href = '/ssm/mca/dashboard';
 };
-        document.getElementById("registerNumber").addEventListener("input", function() {
-        this.value = this.value.replace(/\D/g, '');
-        });
 
 </script>
 </body>

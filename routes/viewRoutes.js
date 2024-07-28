@@ -129,6 +129,12 @@ app.get(
   viewController.studentEdit
 );
 
+app.get(
+  "/staffEdit/:userId",
+  authonticationController.validateToken,
+  viewController.staffEdit
+);
+
 // app.get('/studentList/firstYear', viewController.firstYearStudentList);
 
 // app.get('/studentList/secondYear', viewController.secondYearStudentList);

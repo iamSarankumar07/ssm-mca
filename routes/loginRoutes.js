@@ -4,7 +4,9 @@ const path = require("path");
 const loginController = require("../controller/loginController");
 const studentController = require("../controller/studentController");
 const authFile = require("../middleware/auth");
+const authonticationController = require("../middleware/auth")
 const app = express();
+
 app.use(cookieParser());
 
 app.set("view engine", "hbs");
@@ -35,6 +37,16 @@ app.post("/signup", loginController.signup);
 
 app.post("/login", loginController.login);
 
+app.post("/staffEdit/:userId",
+  authonticationController.validateToken,
+  loginController.staffEdit
+);
+
+app.get("/staffDelete/:userId",
+  authonticationController.validateToken,
+  loginController.staffDelete
+);
+
 app.post("/forgotPassword", loginController.forgotPassword);
 
 app.post("/forgotOtp", loginController.forgotOtp);
@@ -44,5 +56,7 @@ app.post("/studentLogin", studentController.login);
 app.post("/otp", loginController.otp);
 
 app.get("/logout", authFile.logout);
+
+app.get("/slogout", authFile.slogout);
 
 module.exports = app;

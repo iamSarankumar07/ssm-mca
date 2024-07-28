@@ -188,8 +188,8 @@ p {
         <div class="form-wrapper">
             <h1>Admin Login</h1>
             <form action="/ssm/mca/login" method="post">
-                <label for="email">Email :</label>
-                <input type="email" id="email" name="email" autocomplete="off" required>
+                <label for="email">Email or Staff ID:</label>
+                <input type="text" id="email" name="email" autocomplete="off" required>
 
                 <label for="password">Password:</label>
                 <input type="password" id="adminPassword" name="password" aria-label="Password" required>
@@ -216,10 +216,10 @@ p {
         <div class="form-wrapper">
             <h1>Student Login</h1>
             <form action="/ssm/mca/studentLogin" method="post">
-                <label for="userName">Register Number</label>
+                <label for="userName">Student ID:</label>
                 <input type="text" id="userName" name="studentId" autocomplete="off" required>
 
-                <label for="password">Date of Birth</label>
+                <label for="password">Date of Birth:</label>
                 <input type="password" id="studentPassword" name="password" required placeholder="DD-MM-YYYY">
 
                 <div class="showPassCode">
