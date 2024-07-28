@@ -120,13 +120,20 @@
     <form id="emailForm" action="/ssm/mca/commonAnnouncement" method="post">
         <h1>Common Announcement</h1>
 
-        <label for="title">To:</label>
-        <select id="year" name="year" required>
+        <label for="year">To:</label>
+        <select id="type" name="type" required onchange="toggleGraduationYear()">
             <option value="">Select</option>
             <option value="first">MCA-I</option>
             <option value="second">MCA-II</option>
-            <option value="all">ALL</option>
+            <option value="mca">MCA I & II</option>
+            <option value="alumni">Alumni</option>
+            <option value="alumniAll">Alumni All</option>
         </select>
+
+        <div id="graduationYearDiv" style="display:none;">
+            <label for="graduationYear">Graduation Year:</label>
+            <input type="text" id="graduationYear" name="graduationYear" pattern="\d{4}" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g, '').slice(0,4)" />
+        </div>
 
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
@@ -139,12 +146,22 @@
 
         <div class="button-container">
             <button type="button" onclick="goBack()">Back</button>
-            <button type="submit" id="firstYrMail" >Send</button>
+            <button type="submit" id="firstYrMail">Send</button>
         </div>
     </form>
     <script>
         function goBack() {
             window.location.href = '/ssm/mca/dashboard';
+        }
+
+        function toggleGraduationYear() {
+            var yearSelect = document.getElementById('type');
+            var graduationYearDiv = document.getElementById('graduationYearDiv');
+            if (yearSelect.value === 'alumni') {
+                graduationYearDiv.style.display = 'block';
+            } else {
+                graduationYearDiv.style.display = 'none';
+            }
         }
     </script>
 </body>

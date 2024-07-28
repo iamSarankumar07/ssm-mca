@@ -2,22 +2,25 @@ const mongoose = require('mongoose');
 
 const Loginschema = new mongoose.Schema({
 
-    userName: {
+    staffId: {
         type: String,
-        required:false
+        required: false
     },
     name: {
         type:String,
-        required: true
+        required: false
     },
     email: {
         type: String,
-        lowercase: true,
-        required: true
+        required: false
+    },
+    phone: {
+        type: String,
+        required: false
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     gender: {
         type: String,

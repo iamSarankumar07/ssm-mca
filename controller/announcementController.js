@@ -90,9 +90,9 @@ exports.sendMail = async (req, res) => {
 
 exports.sendEmailByRegNum = async (req, res) => {
   try {
-    const { registerNumber, title, subject, message } = req.body;
+    const { studentId, title, subject, message } = req.body;
 
-    const student = await Student.findOne({ registerNumber, isDelete: false });
+    const student = await Student.findOne({ studentId, isDelete: false, isAlumni: false });
 
     if (!student) {
       return res.send(
@@ -294,18 +294,22 @@ exports.sendEmailByRegNum = async (req, res) => {
 
 exports.commonMail = async (req, res) => {
   try {
-    const { title, subject, message, year } = req.body;
+    const { title, subject, message, type, graduationYear } = req.body;
     let students = [];
     
-    if (year === "first") {
+    if (type === "first") {
       students = await Student.find({ year: "I", isDelete: false }, "email");
-    } else if (year === "second") {
+    } else if (type === "second") {
       students = await Student.find({ year: "II", isDelete: false }, "email");
-    } else if (year === "all") {
+    } else if (type === "mca") {
       students = await Student.find({isDelete: false, isAlumni: false}, "email");
-    } else {
+    } else if (type === "alumni"){
+      students = await Student.find({graduationYear: graduationYear, isDelete: false, isAlumni: true}, "email");
+    }else if (type === "alumniAll"){
+      students = await Student.find({isDelete: false, isAlumni: true}, "email");
+    }else {
       return res.send(
-        '<script>alert("Invalid Year Selection"); window.location.href = "/ssm/mca/commonAnnouncement";</script>'
+        '<script>alert("Invalid Selection"); window.location.href = "/ssm/mca/commonAnnouncement";</script>'
       );
     }
 

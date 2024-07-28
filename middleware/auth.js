@@ -32,7 +32,7 @@ exports.validateToken = async (req, res, next) => {
 };
 
 exports.sValidateToken = async (req, res, next) => {
-  const accessToken = req.cookies["access-token"];
+  const accessToken = req.cookies["access-token-student"];
   if (!accessToken) return res.redirect("/ssm/mca/sessionExpired");
 
   try {
@@ -48,6 +48,11 @@ exports.sValidateToken = async (req, res, next) => {
 
 exports.logout = (req, res) => {
   res.clearCookie("access-token");
+  res.redirect("/");
+};
+
+exports.slogout = (req, res) => {
+  res.clearCookie("access-token-student");
   res.redirect("/");
 };
 

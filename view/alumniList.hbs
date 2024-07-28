@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCA Student List</title>
+    <title>MCA Alumni List</title>
     <link rel="icon" href="https://your-favicon-url.png"> 
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
@@ -72,30 +72,27 @@
         }
 
         .search-container, .filter-container, .download-container {
-            width: 45%;
             margin-top: 10px;
             margin-bottom: 10px;
-            text-align: center;
-            display: inline-block;
         }
 
         .search-container {
             text-align: left; 
-            float: left; 
+            flex: 1; 
         }
 
-        .filter-container {
+        .filter-container, .download-container {
             text-align: right; 
-            float: right; 
+            flex: 1; 
         }
 
-        .filter-container label, .search-container label {
+        .filter-container label, .search-container label, .download-container label {
             font-size: 16px;
             font-weight: bold;
             margin-right: 10px;
         }
 
-        .filter-container select, .search-container input[type="text"] {
+        .filter-container select, .search-container input[type="text"], .download-container select {
             padding: 8px;
             font-size: 16px;
             border-radius: 5px;
@@ -106,7 +103,8 @@
         }
 
         .filter-container select:hover, .filter-container select:focus, 
-        .search-container input[type="text"]:hover, .search-container input[type="text"]:focus {
+        .search-container input[type="text"]:hover, .search-container input[type="text"]:focus,
+        .download-container select:hover, .download-container select:focus {
             border-color: #3d6ef5ff;
         }
 
@@ -153,7 +151,18 @@
         label {
             color: #3d6ef5ff;
         }
-       
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .left-section, .right-section {
+            display: flex;
+            flex-direction: column;
+        }
+
     </style>
 </head>
 <body>
@@ -162,34 +171,45 @@
     <a href="/ssm/mca/dashboard" class="back-button">
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
-    <div class="search-container">
-        <label for="searchName">Search by Name :</label>
-        <input type="text" id="searchName" name="searchName" placeholder="Enter name">
-        <button onclick="applySearch()">Search</button>
-    </div>
-    <div class="filter-container">
-        <label for="gradYear">Filter by Graduation Year :</label>
-        <select id="gradYear" name="gradYear" onchange="applyFilter(this.value)">
-            <option value="">Select</option>
-            {{#each gradYears}}
-                <option value="{{this}}">{{this}}</option>
-            {{/each}}
-        </select>
-    </div>
-    <div class="filter-container">
-        <label for="gradYear">Download :</label>
-        <select id="gradYear" name="gradYear" onchange="downloadAPICall(this.value)">
-            <option value="">Select</option>
-            {{#each gradYears}}
-                <option value="{{this}}">{{this}}</option>
-            {{/each}}
-        </select>
+    <div class="top-section">
+        <div class="left-section">
+            <div class="search-container">
+                <label for="searchName">Std Name &#8205; :&#8205;</label>
+                <input type="text" id="searchName" name="searchName" placeholder="Enter name">
+                <button onclick="applySearch()">Search</button>
+            </div>
+            <div class="search-container" style="clear: both;">
+                <label for="searchId">Student ID :</label>
+                <input type="text" id="searchId" name="searchId" placeholder="Enter Student ID">
+                <button onclick="applyIdSearch()">Search</button>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="filter-container">
+                <label for="gradYear">Filter by Graduation Year :</label>
+                <select id="gradYear" name="gradYear" onchange="applyFilter(this.value)">
+                    <option value="">Select</option>
+                    {{#each gradYears}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="filter-container">
+                <label for="gradYear">Download :</label>
+                <select id="gradYear" name="gradYear" onchange="downloadAPICall(this.value)">
+                    <option value="">Select</option>
+                    {{#each gradYears}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
     </div>
     <table>
         <thead>
         <tr>
             <th>Name</th>
-            <th>Register Number</th>
+            <th>Student ID</th>
             <th>Gender</th>
             <th>Date Of Birth</th>
             <th>Phone</th>
@@ -201,7 +221,7 @@
         {{#each students}}
         <tr>
             <td>{{name}}</td>
-            <td class="td">{{registerNumber}}</td>
+            <td class="td">{{studentId}}</td>
             <td class="td">{{gender}}</td>
             <td class="td">{{dob}}</td>
             <td class="td">+91 {{phone}}</td>
@@ -220,29 +240,46 @@
 <script>
     function applyFilter(year) {
         document.getElementById('searchName').value = '';
+        document.getElementById('searchId').value = '';
 
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.delete('name');
+        urlParams.delete('studentId');
         urlParams.set('year', year);
         window.location.href = window.location.pathname + '?' + urlParams.toString();
     }
     
     function applySearch() {
         const searchName = document.getElementById('searchName').value.trim();
+        document.getElementById('searchId').value = '';
+        
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.delete('year');
+        urlParams.delete('studentId');
         urlParams.set('name', searchName);
+        window.location.href = window.location.pathname + '?' + urlParams.toString();
+    }
+
+    function applyIdSearch() {
+        const searchId = document.getElementById('searchId').value.trim();
+        document.getElementById('searchName').value = '';
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('year');
+        urlParams.delete('name');
+        urlParams.set('studentId', searchId);
         window.location.href = window.location.pathname + '?' + urlParams.toString();
     }
 
     function downloadAPICall(year) {
         document.getElementById('searchName').value = '';
+        document.getElementById('searchId').value = '';
 
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.delete('name');
+        urlParams.delete('studentId');
         urlParams.set('year', year);
-        urlParams.set('download', true);
-        window.location.href = window.location.pathname + '?' + urlParams.toString();
+        window.location.href = '/ssm/mca/api/download?' + urlParams.toString();
     }
 </script>
 </body>
