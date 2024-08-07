@@ -249,6 +249,18 @@
         window.location.href = window.location.pathname + '?' + urlParams.toString();
     }
     
+    function downloadAPICall(year) {
+        document.getElementById('searchName').value = '';
+        document.getElementById('searchId').value = '';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('name');
+        urlParams.delete('studentId');
+        urlParams.set('year', year);
+        urlParams.set('download', true);
+        window.location.href = window.location.pathname + '?' + urlParams.toString();
+    }
+
     function applySearch() {
         const searchName = document.getElementById('searchName').value.trim();
         document.getElementById('searchId').value = '';
@@ -271,16 +283,6 @@
         window.location.href = window.location.pathname + '?' + urlParams.toString();
     }
 
-    function downloadAPICall(year) {
-        document.getElementById('searchName').value = '';
-        document.getElementById('searchId').value = '';
-
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.delete('name');
-        urlParams.delete('studentId');
-        urlParams.set('year', year);
-        window.location.href = '/ssm/mca/api/download?' + urlParams.toString();
-    }
 </script>
 </body>
 </html>
