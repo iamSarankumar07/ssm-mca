@@ -183,10 +183,11 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     let user = await Admin.findOne({
-      $and: [
-        {
-          $or: [{ email: req.body.email }, { staffId: req.body.email }],
-        }      ],
+      $or: [
+        { email: req.body.email },
+        { staffId: req.body.email }
+      ],
+      isDelete: false
     });
     
     if (!user) {
@@ -802,7 +803,7 @@ exports.staffEdit = async (req, res) => {
 exports.staffDelete = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await Admin.findByIdAndUpdate(userId, { isDelete: true });
+    const user = await Admin.findByIdAndUpdate(userId, { isDelete: true, isActive: false });
     res.redirect("/ssm/mca/staffList");
   } catch (err) {
     console.error(err);
