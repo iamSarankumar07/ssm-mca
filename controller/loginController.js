@@ -183,10 +183,11 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     let user = await Admin.findOne({
-      $and: [
-        {
-          $or: [{ email: req.body.email }, { staffId: req.body.email }],
-        }      ],
+      $or: [
+        { email: req.body.email },
+        { staffId: req.body.email }
+      ],
+      isDelete: false
     });
     
     if (!user) {
