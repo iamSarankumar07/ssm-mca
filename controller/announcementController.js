@@ -1,6 +1,7 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 const Student = require("../models/studentModel");
+const Admin = require("../models/adminModel");
 
 exports.sendMail = async (req, res) => {
   try {
