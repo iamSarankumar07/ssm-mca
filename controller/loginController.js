@@ -151,7 +151,7 @@ exports.signup = async (req, res) => {
           </ul>
           <p><span class="highlight">Please note: This password was randomly generated. For security reasons, we highly recommend resetting your password upon your first login.</span></p>
           <p>You can reset your password by visiting the following link:</p>
-          <p><a href="https://ssm-mca.onrender.com/ssm/mca/signin" target="_blank">Reset Your Password</a></p>
+          <p><a href="https://ssm-mca.onrender.com/ssm/mca/forgotPassword" target="_blank">Reset Your Password</a></p>
           <p>If you have any questions or need further assistance, please feel free to <a href="mailto:verifyuserofficial@gmail.com">contact us</a>.</p>
           <p>Best regards,<br>Saran Kumar</p>
           <div class="footer">
