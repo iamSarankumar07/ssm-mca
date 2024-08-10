@@ -13,16 +13,16 @@ const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
 
 exports.signup = async (req, res) => {
-  let { name, email, phone, gender, password, confirmPassword } = req.body;
+  let { name, email, phone, gender, /* password, confirmPassword */ } = req.body;
 
-  if (password !== confirmPassword) {
+/*   if (password !== confirmPassword) {
     return res.send(
       '<script>alert("Passwords do not match!"); window.location.href = "/ssm/mca/signup";</script>'
     );
-  }
+  } */
 
   try {
-    let existingUser = await Admin.findOne({ email, isDelete: false });
+    let existingUser = await Admin.findOne({ email, isActive: true, isDelete: false });
     if (existingUser) {
       return res.send(
         '<script>alert("Email already registered!"); window.location.href = "/ssm/mca/signup";</script>'
@@ -41,13 +41,17 @@ exports.signup = async (req, res) => {
       $set: { count: totalCount },
     });
 
-    let user = new Admin({ staffId, name, email, phone, gender, password });
+    let user = new Admin({ staffId, name, email, phone, gender, /* password */ });
 
-    let pwd = user.password;
+    let randomPassword = Math.random().toString(36).substring(2, 8);
+
+    let pwd = randomPassword.toUpperCase();
 
     let saltRounds = 12;
-    let hashedPassword = await bcrypt.hash(password, saltRounds);
+    let hashedPassword = await bcrypt.hash(pwd, saltRounds);
     user.password = hashedPassword;
+
+    user.status = "Active";
 
     await user.save();
 
@@ -63,85 +67,100 @@ exports.signup = async (req, res) => {
       from: 'verifyuserofficial@gmail.com',
       to: user.email,
       subject: 'Registration Successful.',
-      html: `
-    <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <title>Welcome to Our Community!</title>
-    <style>
-      body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 16px;
-        line-height: 1.6;
-        color: #333;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        max-width: 600px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      }
-      h1 {
-        font-size: 36px;
-        color: #007bff; 
-        margin-bottom: 20px;
-        text-align: center;
-        text-transform: uppercase;
-      }
-      p {
-        margin-bottom: 15px;
-        text-align: justify;
-      }
-      ul {
-        margin-bottom: 15px;
-        padding-left: 20px;
-      }
-      li {
-        margin-bottom: 5px;
-      }
-      a {
-        color: #007bff;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      .footer {
-        font-size: 14px;
-        color: #999;
-        margin-top: 20px;
-        text-align: center;
-      }
-      .highlight {
-        background-color: #eaf6ff;
-        padding: 5px 10px;
-        border-radius: 5px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Welcome to Our Community! 🎉</h1>
-      <p>Dear ${user.name},</p>
-      <p>We are thrilled to welcome you to our community! Your account has been successfully created 🚀.</p>
-      <p>Here are your login details:</p>
-      <ul>
-        <li><strong>Email : </strong> ${user.email}</li>
-        <li><strong>Password : </strong> ${pwd}</li>
-      </ul>
-      <p>If you have any questions or need further assistance, please feel free to <a href="mailto:verifyuserofficial@gmail.com" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
-      <p>Best regards,<br>Saran Kumar.</p>
-      <div class="footer">
-        This is an automated message. Please do not reply to this email.
-      </div>
-    </div>
-  </body>
-  </html>
-  `,
+        html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <title>Account Setup Confirmation</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+          }
+          .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+          h1 {
+            font-size: 28px;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+          }
+          p {
+            margin-bottom: 15px;
+            text-align: justify;
+          }
+          ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+          }
+          li {
+            margin-bottom: 5px;
+          }
+          a {
+            color: #007bff;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          .footer {
+            font-size: 14px;
+            color: #999;
+            margin-top: 20px;
+            text-align: center;
+          }
+          .highlight {
+            background-color: #eaf6ff;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+          }
+          @media (max-width: 600px) {
+            h1 {
+              font-size: 24px;
+            }
+            .container {
+              padding: 15px;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Account Setup Confirmation</h1>
+          <p>Dear ${user.name},</p>
+          <p>Your account has been successfully created 🚀. We are pleased to have you on board.</p>
+          <p>Here are your login details:</p>
+          <ul>
+            <li><strong>Login ID:</strong> ${staffId}</li>
+            <li><strong>Password:</strong> ${pwd}</li>
+          </ul>
+          <p><span class="highlight">Please note: This password was randomly generated. For security reasons, we highly recommend resetting your password upon your first login.</span></p>
+          <p>You can reset your password by visiting the following link:</p>
+          <p><a href="https://ssm-mca.onrender.com/ssm/mca/signin" target="_blank">Reset Your Password</a></p>
+          <p>If you have any questions or need further assistance, please feel free to <a href="mailto:verifyuserofficial@gmail.com">contact us</a>.</p>
+          <p>Best regards,<br>Saran Kumar</p>
+          <div class="footer">
+            This is an automated message. Please do not reply to this email.
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
     };
 
     transporter.sendMail(mailOptions, (err, info) => {
@@ -154,6 +173,7 @@ exports.signup = async (req, res) => {
 
     return res.render('signupSucces')
   } catch (error) {
+    console.log(error);
     return res.send(
       '<script>alert("Error in account creation!"); window.location.href = "/ssm/mca/signup";</script>'
     );
@@ -166,14 +186,20 @@ exports.login = async (req, res) => {
       $and: [
         {
           $or: [{ email: req.body.email }, { staffId: req.body.email }],
-        },
-        { isDelete: false },
-      ],
+        }      ],
     });
-
+    
     if (!user) {
       return res.send(
         '<script>alert("User Not Found!"); window.location.href = "/ssm/mca/signin";</script>'
+      );
+    }
+
+    let status = user.isActive;
+
+    if (!status) {
+      return res.send(
+        '<script>alert("User Disabled! Please Contact iamsarankumar@outlook.in"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 
@@ -641,11 +667,25 @@ exports.staffEdit = async (req, res) => {
     let body = req.body;
     let userId = req.params.userId;
 
+    let isActive, status;
+
+    if(body.status === "active") {
+      isActive = true;
+      status = "Active";
+    }
+
+    if(body.status === "disable") {
+      isActive = false;
+      status = "Disabled";
+    }
+
     await Admin.findByIdAndUpdate(userId, {
       name: body.name,
       email: body.email,
       phone: body.phone,
-      gender: body.gender,
+      status: status,
+      isActive: isActive
+      // gender: body.gender,
     });
 
     // res.redirect("/ssm/mca/studentList");
@@ -755,7 +795,7 @@ exports.staffEdit = async (req, res) => {
      );
   } catch (err) {
     console.error(err);
-    res.send("Error");
+    res.send("Error in staff edit");
   }
 };
 
