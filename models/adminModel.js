@@ -26,6 +26,10 @@ const Loginschema = new mongoose.Schema({
         type: String,
         required: false
     },
+    status: {
+        type: String,
+        required: false
+    },
     token: {
         type: String
     },
@@ -40,6 +44,10 @@ const Loginschema = new mongoose.Schema({
     isDelete: {
         type: Boolean,
         default: false
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     },
     createdAt: {
         type: Date,

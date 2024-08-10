@@ -110,6 +110,12 @@
             margin-bottom: 30px;
             vertical-align: middle;
         }
+
+        .icon-img {
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -143,8 +149,16 @@
             <td class="td">{{dob}}</td>
             <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
-            <td class="td" style="font-weight: bold;"><a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">Edit</a></td>
-            <td class="td" style="font-weight: bold;"><a style="color: red;" href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a></td>
+            <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">
+                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
+                </a>
+            </td>
+            <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">
+                    <img src="https://i.postimg.cc/J0VN5spQ/remove-1.png" alt="Delete" class="icon-img">
+                </a>
+            </td>
         </tr>
         {{/each}}
         </tbody>
@@ -183,8 +197,16 @@
             <td class="td">{{dob}}</td>
             <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
-            <td class="td" style="font-weight: bold;"><a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">Edit</a></td>
-            <td class="td" style="font-weight: bold;"><a style="color: red;" href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">Delete</a></td>
+            <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">
+                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
+                </a>
+            </td>
+            <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">
+                    <img src="https://i.postimg.cc/J0VN5spQ/remove-1.png" alt="Delete" class="icon-img">
+                </a>
+            </td>
         </tr>
         {{/each}}
         </tbody>

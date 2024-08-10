@@ -307,7 +307,10 @@ exports.commonMail = async (req, res) => {
       students = await Student.find({graduationYear: graduationYear, isDelete: false, isAlumni: true}, "email");
     }else if (type === "alumniAll"){
       students = await Student.find({isDelete: false, isAlumni: true}, "email");
-    }else {
+    }else if (type === "staff"){
+      students = await Admin.find({isDelete: false, isActive: true}, "email");
+    }
+    else {
       return res.send(
         '<script>alert("Invalid Selection"); window.location.href = "/ssm/mca/commonAnnouncement";</script>'
       );

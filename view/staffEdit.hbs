@@ -117,14 +117,21 @@
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="{{user.name}}" placeholder="" autocomplete="off" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
 
-        <label for="staffId">Staff ID:</label>
-        <input type="text" id="staffId" name="staffId" value="{{user.staffId}}" readonly required>
+        {{!-- <label for="staffId">Staff ID:</label>
+        <input type="text" id="staffId" name="staffId" value="{{user.staffId}}" readonly required> --}}
         
         <label for="email">Email:</label></td>
         <input type="email" id="email" name="email" value="{{user.email}}" required>
         
         <label for="phone">Phone:</label>
         <input type="phone" id="phone" name="phone" value="{{user.phone}}" required>
+
+        <label for="status">Status:</label></td>
+        <select id="status" name="status" value="{{user.status}}" required>
+            <option value="{{user.status}}">{{user.status}}</option>
+            <option value="active">Enable</option>
+            <option value="disable">Disable</option>
+        </select>
 
         <label for="gender">Gender:</label></td>
         <select id="gender" name="gender" value="{{user.gender}}" required>

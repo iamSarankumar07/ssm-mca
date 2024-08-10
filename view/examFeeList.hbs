@@ -121,6 +121,12 @@
     margin-bottom: 30px;
     vertical-align: middle;
 }
+
+.icon-img {
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+        }
         
     </style>
 </head>
@@ -153,7 +159,11 @@
             <td class="td" style="color: {{#if (eq examPaymentStatus "Paid")}}green{{else if (eq examPaymentStatus "Partial")}}orange{{else}}red{{/if}};">
                 {{examPaymentStatus}}
             </td>
-            <td class="td" style="font-weight: bold;"><a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">
+                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
+                </a>
+            </td>
         </tr>
         {{/each}}
         </tbody>
@@ -188,7 +198,11 @@
             <td class="td" style="color: {{#if (eq examPaymentStatus "Paid")}}green{{else if (eq examPaymentStatus "Partial")}}orange{{else}}red{{/if}};">
                 {{examPaymentStatus}}
             </td>
-            <td class="td" style="font-weight: bold;"><a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+            <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/examFeeEdit/{{_id}}" class="edit-icon">
+                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
+                </a>
+            </td>
         </tr>
         {{/each}}
         </tbody>

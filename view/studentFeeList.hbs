@@ -114,6 +114,11 @@
     margin-bottom: 30px;
     vertical-align: middle;
 }
+.icon-img {
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -145,7 +150,11 @@
                 <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
                     {{paymentStatus}}
                 </td>
-                <td class="td" style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+                <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">
+                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
+                </a>
+            </td>
             </tr>
             {{/each}}
             </tbody>
@@ -182,7 +191,11 @@
                 <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
                     {{paymentStatus}}
                 </td>
-                <td class="td" style="font-weight: bold;"><a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">Edit</a></td>
+                <td class="td" style="font-weight: bold;">
+                <a href="/ssm/mca/feeEdit/{{_id}}" class="edit-icon">
+                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
+                </a>
+            </td>
             </tr>
             {{/each}}
             </tbody>
