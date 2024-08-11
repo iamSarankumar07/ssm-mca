@@ -390,7 +390,7 @@ exports.commonMail = async (req, res) => {
         </head>
         <body>
         <div class="container">
-        <p>Dear ${type === "staff" ? "Faculty" : "Students"},</p>
+        <p>Dear ${type === "staff" ? "Faculty" : type === "alumni" || "alumniAll" ? "Alumni Students" : "Students"},</p>
         <h1>${title}</h1>
     <p>${message}</p> 
     <p>Have a Great Day 😊...</p>
