@@ -34,13 +34,28 @@ const moment = require("moment");
 exports.updateFee = async (req, res) => {
   try {
     const body = req.body;
-    const userId = req.params.userId;
+    const studentId = req.params.userId;
+    let status;
 
-    await StudentFee.findByIdAndUpdate(userId, {
-        name: body.name,
+    let studentData = await StudentFee.findById(studentId);
+
+    let totalFeeTu = Number(studentData.totalFee);
+    let currentPendingFee = Number(studentData.totalFee) - Number(body.paidFeeTu);
+    let pendingFee = currentPendingFee.toString();
+
+    if (totalFeeTu == body.paidFeeTu) {
+      status = "Paid";
+    } else if (Number(body.paidFeeTu) === 0 || Number(studentData.paidFeeTu) === 0) {
+        status = "Pending";
+    } else {
+        status = "Partial";
+    }
+
+    await StudentFee.findByIdAndUpdate(studentId, {
         totalFee: body.totalFee,
-        pendingFee: body.pendingFee,
-        paymentStatus: body.paymentStatus
+        paidFeeTu: body.paidFeeTu,
+        pendingFee: pendingFee,
+        paymentStatus: status
     });
 
     // res.redirect("/ssm/mca/feeList");
@@ -156,13 +171,28 @@ exports.updateFee = async (req, res) => {
 exports.updateExamFee = async (req, res) => {
   try {
     const body = req.body;
-    const userId = req.params.userId;
+    const studentId = req.params.userId;
+    let status;
 
-    await StudentFee.findByIdAndUpdate(userId, {
-        name: body.name,
+    let studentData = await StudentFee.findById(studentId);
+
+    let totalFeeEx = Number(studentData.examTotalFee);
+    let currentPendingFee = Number(studentData.examTotalFee) - Number(body.paidFeeEx);
+    let pendingFee = currentPendingFee.toString();
+
+    if (totalFeeEx == body.paidFeeEx) {
+      status = "Paid";
+    } else if (Number(body.paidFeeEx) === 0 || Number(studentData.paidFeeEx) === 0) {
+        status = "Pending";
+    } else {
+        status = "Partial";
+    }
+
+    await StudentFee.findByIdAndUpdate(studentId, {
         examTotalFee: body.examTotalFee,
-        examPendingFee: body.examPendingFee,
-        examPaymentStatus: body.examPaymentStatus
+        paidFeeEx: body.paidFeeEx,
+        examPendingFee: pendingFee,
+        examPaymentStatus: status
     });
 
     // res.redirect("/ssm/mca/examFeeList");
