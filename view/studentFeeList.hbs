@@ -132,6 +132,7 @@
         <table>
             <thead>
             <tr>
+                <th>S.No</th>
                 <th>Name</th>
                 <th>Student ID</th>
                 <th>Total Fee</th>
@@ -143,6 +144,7 @@
             <tbody>
             {{#each firstYearStudents}}
             <tr>
+                <td class="td">{{inc @index}}</td>
                 <td>{{name}}</td>
                 <td class="td">{{studentId}}</td>
                 <td class="td">Rs.{{totalFee}}</td>
@@ -175,6 +177,7 @@
         <table>
             <thead>
             <tr>
+                <th>S.No</th>
                 <th>Name</th>
                 <th>Total Fee</th>
                 <th>Pending Fee</th>
@@ -185,6 +188,7 @@
             <tbody>
             {{#each secondYearStudents}}
             <tr>
+                <td class="td">{{inc @index}}</td>
                 <td>{{name}}</td>
                 <td class="td">Rs.{{totalFee}}</td>
                 <td class="td">Rs.{{pendingFee}}</td>
@@ -261,6 +265,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>S.No</th>
                             <th>Name</th>
                             <th>Student ID</th>
                             <th>Total Fee</th>
@@ -271,6 +276,7 @@
                     <tbody>
                         {{#each firstYearStudents}}
                         <tr>
+                            <td class="td">{{inc @index}}</td>
                             <td>{{name}}</td>
                             <td class="td">{{studentId}}</td>
                             <td class="td">Rs.{{totalFee}}</td>
@@ -334,6 +340,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>S.No</th>
                             <th>Name</th>
                             <th>Student ID</th>
                             <th>Total Fee</th>
@@ -344,6 +351,7 @@
                     <tbody>
                         {{#each secondYearStudents}}
                         <tr>
+                            <td class="td">{{inc @index}}</td>
                             <td>{{name}}</td>
                             <td class="td">{{studentId}}</td>
                             <td class="td">Rs.{{totalFee}}</td>

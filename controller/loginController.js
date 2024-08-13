@@ -377,7 +377,7 @@ exports.otp = async (req, res) => {
       maxAge: 60 * 60 * 1000,
     });
 
-    res.redirect("/home");
+    res.redirect("/ssm/mca/dashboard");
   } catch (error) {
     console.error("Error in OTP verification:", error);
     res.send("Internal Server Error");

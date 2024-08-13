@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <style>
-         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            font-family: "Poppins", sans-serif;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
@@ -68,28 +69,27 @@
             font-weight: bold;
         }
 
-        .btnn {
-    padding: 10px 20px;
-    color: #fff;
-    border: 2px solid #3d6ef5ff;
-    background: #3d6ef5ff;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.4s, color 0.4s;
-    position: absolute;
-    top: 15px;
-    left: 0;
-    margin: 10px;
-    margin-left: 10%; 
-}
+        .logout-btn {
+            padding: 7px 14px;
+            color: #fff;
+            border: 2.5px solid rgb(212, 29, 29);
+            background: rgb(212, 29, 29);
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.4s, color 0.4s;
+            position: absolute;
+            top: 15px;
+            right: 10%;
+        }
 
-.btnn:hover {
-    background: #fff;
-    color: #3d6ef5ff;
-}
+        .logout-btn:hover {
+            background: #fff;
+            color: rgb(212, 29, 29);
+        }
+
         a {
             text-decoration: none;
         }
@@ -98,18 +98,10 @@
             text-align: center;
             font-weight: bold;
         }
-        .goback {
-    position: absolute;
-    top: 30px;
-    width: 45px;
-    height: 45px;
-    left: 10%;
-}
     </style>
 </head>
 <body>
-    {{!-- <a href="/home" class="btnn"> Back<i class="uil uil-image"></i></a> --}}
-    <a href="/home"><img src="https://i.postimg.cc/mD67M56k/back-button.png" alt="Go Back" class="goback"></a>
+    <a href="/ssm/mca/logout" class="logout-btn" onclick="return confirm('Are you sure want to log out ?')">Logout</a>
 
     <h1>Welcome! <span style="color: #3d6ef5ff;">{{user.name}}</span></h1>
 
@@ -133,13 +125,6 @@
                 <td><button type="button" onclick="examFeeList()">Details</button></td>
                 <td><button type="button" onclick="updateDue()">Update</button></td>
             </tr>
-            {{!-- <tr>
-                <td>Student Fee Register</td>
-                <div class="button-container">
-                    <td><button type="button" onclick="feeRegister()">Register</button></td>
-                    <td><button type="button" onclick="feeList()">List</button></td>
-                </div>
-            </tr> --}}
         </tbody>
     </table>
     <hr>
@@ -151,7 +136,6 @@
                 <th>Title</th>
                 <th>Action</th>
             </tr>
-            
         </thead>
         <tbody>
             <tr>
@@ -196,92 +180,67 @@
                 <td>Staff List</td>
                 <td><button type="button" onclick="staffList()">Details</button></td>
             </tr>
-            {{!-- <tr>
-                <td>Received Contact Messages</td>
-                <td><button type="button" onclick="messages()">Messages</button></td>
-                <td>Send Everyone</td>
-                <td><button type="button" id="sendMail">Send Everyone</button></td>
-            </tr> --}}
-            {{!-- </tr>
-                <td>Upload Image</td>
-                <td><button type="button" onclick="upload()">Image Upload</button></td>
-                <td>Gallery</td>
-                <td><button type="button" onclick="gallery()">Gallery</button></td>
-            </tr> --}}
         </tbody>
     </table>
 
     <script>
-        document.getElementById('sendMail').addEventListener('click', async function() {
-            let response = await fetch('/ssm/mca/sendMail');
-        });
-        document.getElementById('sendMail').addEventListener('click', async function() {
-            alert('Mail sent successfully!');
-        });
         function register() {
-        window.location.href = '/ssm/mca/register';
+            window.location.href = '/ssm/mca/register';
         };
         function paymentAlert() {
-        window.location.href = '/ssm/mca/paymentAlert';
+            window.location.href = '/ssm/mca/paymentAlert';
         };
         function studentList() {
-        window.location.href = '/ssm/mca/studentList';
+            window.location.href = '/ssm/mca/studentList';
         };
         function feeList() {
-        window.location.href = '/ssm/mca/feeList';
+            window.location.href = '/ssm/mca/feeList';
         };
         function examFeeList() {
-        window.location.href = '/ssm/mca/examFeeList';
+            window.location.href = '/ssm/mca/examFeeList';
         };
         function moveStudents() {
-        window.location.href = '/ssm/mca/moveStudentsPage';
+            window.location.href = '/ssm/mca/moveStudentsPage';
         };
         function alumniList() {
-        window.location.href = '/ssm/mca/alumniList';
+            window.location.href = '/ssm/mca/alumniList';
         };
         function updateDue() {
-        window.location.href = '/ssm/mca/updateDueDatesForAll';
+            window.location.href = '/ssm/mca/updateDueDatesForAll';
         };
         function messages() {
-        window.location.href = '/ssm/mca/messages';
+            window.location.href = '/ssm/mca/messages';
         };
         function announcement() {
-        window.location.href = '/ssm/mca/announcement';
+            window.location.href = '/ssm/mca/announcement';
         };
         function commonAnnouncement() {
-        window.location.href = '/ssm/mca/commonAnnouncement';
+            window.location.href = '/ssm/mca/commonAnnouncement';
         };
         function addressUpdateReq() {
-        window.location.href = '/ssm/mca/addressUpdateReq';
+            window.location.href = '/ssm/mca/addressUpdateReq';
         };
         function updateReq() {
-        window.location.href = '/ssm/mca/reviewRequest';
+            window.location.href = '/ssm/mca/reviewRequest';
         };
         function updateReqTu() {
-        window.location.href = '/ssm/mca/reviewRequestTu';
+            window.location.href = '/ssm/mca/reviewRequestTu';
         };
         function updateReqEx() {
-        window.location.href = '/ssm/mca/reviewRequestEx';
+            window.location.href = '/ssm/mca/reviewRequestEx';
         };
         function subject() {
-        window.location.href = '/ssm/mca/subject';
+            window.location.href = '/ssm/mca/subject';
         };
         function subjectList() {
-        window.location.href = '/ssm/mca/subjectList';
+            window.location.href = '/ssm/mca/subjectList';
         };
         function staffReg() {
-        window.location.href = '/ssm/mca/signup';
+            window.location.href = '/ssm/mca/signup';
         };
         function staffList() {
-        window.location.href = '/ssm/mca/staffList';
+            window.location.href = '/ssm/mca/staffList';
         };
-        {{!-- function upload() {
-        window.location.href = '/ssm/mca/upload';
-        };
-        function gallery() {
-        window.location.href = '/ssm/mca/gallery';
-        }; --}}
-
     </script>
 </body>
 </html>

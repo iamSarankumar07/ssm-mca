@@ -12,11 +12,11 @@
     function hideUpdateButton() {
         var updateButtonRow = document.getElementById("hideButton");
         var hideTd = document.getElementById("hideTd");
-            if ({{ student.addressUpdate }}) {
-                updateButtonRow.style.display = "none";
-            } else {
-                hideTd.style.display = "none";
-            }
+        if ({{ student.addressUpdate }}) {
+            updateButtonRow.style.display = "none";
+        } else {
+            hideTd.style.display = "none";
+        }
     }
     window.onload = function() {
         hideUpdateButton();
@@ -37,6 +37,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    position: relative;
 }
 h1 {
     text-align: center;
@@ -45,6 +46,30 @@ h1 {
     border-radius: 5px;
     padding: 7px;
     margin: 0; 
+}
+.logout-button {
+    position: absolute;
+    top: 32px;
+    right: 30px;
+}
+h1 {
+    padding-right: 120px;
+}
+.logout-button button {
+    background-color: rgb(212, 29, 29) !important;
+    color: #fff;
+    font-weight: bold;
+    border: 2.5px solid rgb(212, 29, 29) !important;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button button:hover {
+    background-color: rgb(212, 29, 29) !important;
+    color: #fff !important;
 }
 .dashboard {
     display: grid;
@@ -104,6 +129,10 @@ h1 {
     background-color: #f0f0f0;
     border: 1px solid #ccc;
 }
+.details.study-details {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
 .details table {
     width: 100%;
     border-collapse: collapse;
@@ -119,93 +148,6 @@ h1 {
 .details strong {
     font-weight: bold;
     color: #333;
-}
-.back-button {
-    position: absolute;
-    top: 27.5px;
-    left: 11.5%; 
-    text-decoration: none;
-}
-.back-button img {
-    width: 45px;
-    height: 45px;
-    margin-right: 5px;
-    margin-bottom: 10px;
-    vertical-align: middle;
-}
-.job-opportunities ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    padding-left: 0;
-}
-.job-opportunities li {
-    margin-bottom: 10px;
-}
-.skills-needed {
-    margin-top: 10px;
-}
-.skills-needed ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    padding-left: 0;
-}
-.skills-needed li {
-    margin-bottom: 5px;
-}
-h3 {
-    text-align: center;
-}
-.job-opportunities {
-    margin-top: 20px;
-}
-.job-opportunities h3 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #3d6ef5ff;
-}
-.job-opportunities h4 {
-    font-size: 18px;
-    text-align: center;
-    margin-bottom: 10px;
-    color: #333; 
-}
-.job-opportunities p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 10px;
-}
-.job-opportunities ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-.job-opportunities li {
-    margin-bottom: 20px;
-    padding-left: 20px;
-    position: relative;
-}
-.job-opportunities li:before {
-    content: "\2022";
-    position: absolute;
-    left: 0;
-    color: #3d6ef5ff;
-}
-.job-opportunities li strong {
-    font-weight: bold;
-    color: #333;
-}
-.job-opportunities li ul {
-    list-style-type: none;
-    padding-left: 20px;
-}
-.job-opportunities li ul li {
-    margin-bottom: 5px;
-}
-h3 {
-    color: #3d6ef5ff;
-}
-a {
-    text-decoration: none;
 }
 .text {
     text-align: center;
@@ -226,78 +168,76 @@ a {
     height: 35px;
     vertical-align: middle;
 }
-
- button[type="button"] {
-            background-color: #3d6ef5ff;
-            color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px 14px;
-            border: none;
-            font-size: 13px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button[type="button"]:hover {
-            background-color: #f2f2f2;
-            color: #3d6ef5ff;
-            font-weight: bold;
-        }
-
+button[type="button"] {
+    background-color: #3d6ef5ff;
+    color: #f2f2f2;
+    font-weight: bold;
+    padding: 8px 14px;
+    border: none;
+    font-size: 13px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button[type="button"]:hover {
+    background-color: #f2f2f2;
+    color: #3d6ef5ff;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
 <div class="container">
-        <h1>Profile</h1>
+    <div class="logout-button">
+        <a href="/ssm/mca/slogout"onclick="return confirm('Are you sure want to log out ?')">
+            <button type="button">Logout</button>
+        </a>
+    </div>
+    <h1>Profile</h1>
     <div class="dashboard">
-    <a href="/studentHome" class="back-button">
-        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
-    </a>
         <div class="card">
             <h3 style="text-align: center;">Student Details <a href="/ssm/mca/studentProfileEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
             <div class="details student-details">
-    <table>
-        <tr>
-            <td><strong>Name:</strong></td>
-            <td class="sd">{{ student.name }}</td>
-        </tr>
-        <tr>
-            <td><strong>Student ID:</strong></td>
-            <td class="sd">{{ student.studentId }}</td>
-        </tr>
-        <tr>
-            <td><strong>Register Number:</strong></td>
-            <td class="sd">{{ student.registerNumber }}</td>
-        </tr>
-        <tr>
-            <td><strong>Gender:</strong></td>
-            <td class="sd">{{ student.gender }}</td>
-        </tr>
-        <tr>
-            <td><strong>DOB:</strong></td>
-            <td class="sd">{{ student.dob }}</td>
-        </tr>
-        <tr>
-            <td><strong>Branch:</strong></td>
-            <td class="sd">MCA - {{ student.year }}</td>
-        </tr>
-        <tr>
-            <td><strong>Phone:</strong></td>
-            <td class="sd">+91 {{ student.phone }}</td>
-        </tr>
-        <tr>
-            <td><strong>Email:</strong></td>
-            <td class="sd">{{ student.email }}</td>
-        </tr>
-        <tr>
-            <td><strong>Address:</strong></td>
-            <td id="hideButton"><button type="button" onclick="addressUpdate()">Update Address</button></td>
-            <td id="hideTd" class="sd">{{ student.address.address }}, {{ student.address.city }}, {{ student.address.state }}, {{ student.address.pinCode }}, {{ student.address.country }}.</td>
-        </tr>
-    </table>
-</div>
-
+                <table>
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td class="sd">{{ student.name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Student ID:</strong></td>
+                        <td class="sd">{{ student.studentId }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Register Number:</strong></td>
+                        <td class="sd">{{ student.registerNumber }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gender:</strong></td>
+                        <td class="sd">{{ student.gender }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DOB:</strong></td>
+                        <td class="sd">{{ student.dob }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Branch:</strong></td>
+                        <td class="sd">MCA - {{ student.year }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phone:</strong></td>
+                        <td class="sd">+91 {{ student.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email:</strong></td>
+                        <td class="sd">{{ student.email }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address:</strong></td>
+                        <td id="hideButton"><button type="button" onclick="addressUpdate()">Update Address</button></td>
+                        <td id="hideTd" class="sd">{{ student.address.address }}, {{ student.address.city }}, {{ student.address.state }}, {{ student.address.pinCode }}, {{ student.address.country }}.</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <div class="card">
             <h3>Tution Fees Details <a href="/ssm/mca/studentProfileTuEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
@@ -322,15 +262,15 @@ a {
                 </table>
             </div>
             <h3>Exam Fees Details <a href="/ssm/mca/studentProfileExEdit/{{student._id}}" class="edit-button"><img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit"></a></h3>
-            <div class="details fees-details">
+            <div class="details  fees-details">
                 <table>
                     <tr>
                         <td><strong>Total Amount:</strong></td>
-                        <td class="sd">Rs.{{student.examTotalFee}}</td>
+                        <td class="sd">Rs. {{student.examTotalFee}}</td>
                     </tr>
                     <tr>
                         <td><strong>Amount Due:</strong></td>
-                        <td class="sd">Rs.{{student.examPendingFee}}</td>
+                        <td class="sd">Rs. {{student.examPendingFee}}</td>
                     </tr>
                     <tr>
                         <td><strong>Payment Status:</strong></td>
@@ -343,130 +283,30 @@ a {
                 </table>
             </div>
         </div>
-        <div class="card">
-            <h4 class="material">Study Materials for MCA - {{student.year}}</h4>
-            <p class="text">(Click Below  to Download Study Materials.)</p>
-            <div class="details fees-details">
+        </div>
+    </div>
+    <div class="container">
+        <div class="cardd">
+            <h3 class="text">Study Materials</h3>
+            <div class="details study-details">
                 <table>
-                    {{#each subject}}
                     <tr>
-                        <td><strong>{{code}}</strong></td>
-                        <td style="font-weight: bold;"><a href="{{link}}" style="color: #3d6ef5ff;" target="_blank">{{title}}</a></td>
+                        <th>S.No</th>
+                        <th>Subject Code</th>
+                        <th>Subject Title</th>
+                        <th>Link</th>
                     </tr>
+                    {{#each subject}}
+                        <tr>
+                            <td>{{inc @index}}</td>
+                            <td>{{code}}</td>
+                            <td>{{title}}</td>
+                            <td><a href="{{link}}" target="_blank" style="font-weight: bold; text-decoration: none; color:blue">Download</a></td>
+                        </tr>
                     {{/each}}
                 </table>
             </div>
-        </div>
+</div>
     </div>
-    <br>
-        <div class="cardd">
-            <h3 style="text-align: center; padding-bottom: 20px; color: #fff; font-size: 30px; background-color: #3d6ef5ff; padding-top: 18px; border-radius:5px;">JOB OPPORTUNITIES</h3>
-            <h4 style="text-align: center;">Transform Your Master of Computer Application into a Rewarding Career</h4>
-                <p style="text-align: center;">Explore various career paths after completing Master of Computer Application (MCA) and the skills needed for each:</p>
-            <div class="details job-opportunities">
-    <ul>
-        <li>
-            <strong style="color: #3d6ef5ff;">Software Developer/Engineer:</strong>
-            <p>Developing, testing, and maintaining software applications for various platforms and purposes.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Programming languages (Java, C++, Python)</li>
-                <li>Problem-solving</li>
-                <li>Software development lifecycle</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">System Analyst:</strong>
-            <p>Analyzing user requirements, designing system specifications, and overseeing the development of IT systems.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>System analysis</li>
-                <li>Project management</li>
-                <li>Communication</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">Database Administrator:</strong>
-            <p>Managing and maintaining databases to ensure their security, integrity, and performance.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Database management (SQL, Oracle)</li>
-                <li>Data analysis</li>
-                <li>Troubleshooting</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">Network Administrator:</strong>
-            <p>Configuring and managing network infrastructure, including servers, routers, and switches.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Networking protocols</li>
-                <li>Security</li>
-                <li>Troubleshooting</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">Web Developer:</strong>
-            <p>Creating and maintaining websites and web applications using programming languages like HTML, CSS, and JavaScript.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>HTML, CSS, JavaScript</li>
-                <li>Web development frameworks (React, Angular)</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">Quality Assurance Analyst:</strong>
-            <p>Testing software applications to ensure they meet quality standards and identifying and fixing defects.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Testing methodologies</li>
-                <li>Quality assurance processes</li>
-                <li>Problem-solving</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">IT Consultant:</strong>
-            <p>Providing expert advice on IT solutions to businesses and organizations to help them improve efficiency and effectiveness.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Business analysis</li>
-                <li>Technical expertise</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">Project Manager:</strong>
-            <p>Planning, executing, and managing IT projects to ensure they are completed on time and within budget.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Project planning</li>
-                <li>Team management</li>
-                <li>Risk management</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">Technical Writer:</strong>
-            <p>Creating documentation for software applications, including user manuals, technical guides, and FAQs.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Technical writing</li>
-                <li>Documentation tools (MS Word, Adobe Framemaker)</li>
-            </ul>
-        </li>
-        <li>
-            <strong style="color: #3d6ef5ff;">Cyber Security Analyst:</strong>
-            <p>Protecting computer systems and networks from cyber threats by implementing security measures and monitoring for security breaches.</p>
-            <p><strong>Skills:</strong></p>
-            <ul>
-                <li>Cybersecurity tools</li>
-                <li>Network security</li>
-                <li>Threat analysis</li>
-            </ul>
-        </li>
-    </ul>
-</div>
-
-        </div>
-</div>
-
 </body>
 </html>

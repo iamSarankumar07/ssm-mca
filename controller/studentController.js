@@ -322,7 +322,7 @@ exports.login = async (req, res) => {
       maxAge: 60 * 60 * 1000,
     });
 
-    res.redirect("/studentHome");
+    res.redirect("/ssm/mca/studentProfile");
   } catch (err) {
     console.error("Error logging in:", err);
     return res.send(
@@ -616,10 +616,10 @@ exports.moveStudents = async (req, res) => {
   const graduationYear = req.body.graduationYear;
   const type = req.body.type;
   try {
-    if (type === "alumni"){
+    if (type === "alumni") {
       const query = { year: selectedYear };
-      const result = await Student.updateMany(query, { 
-        $set: { 
+      const result = await Student.updateMany(query, {
+        $set: {
           isAlumni: true,
           graduationYear: graduationYear,
           year: null,
@@ -630,13 +630,24 @@ exports.moveStudents = async (req, res) => {
           examPendingFee: null,
           totalFee: null,
           pendingFee: null,
-          password: null
-        } 
+          password: null,
+        },
       });
       res.redirect("/ssm/mca/alumniList");
     } else {
       const query = { year: selectedYear };
-      const result = await Student.updateMany(query, { $set: { year: type } });
+      const result = await Student.updateMany(query, {
+        $set: {
+          year: type,
+          tutionDueDate: null,
+          examDueDate: null,
+          examPaymentStatus: null,
+          examTotalFee: null,
+          examPendingFee: null,
+          totalFee: null,
+          pendingFee: null,
+        },
+      });
       res.redirect("/ssm/mca/studentList");
     }
     
@@ -789,7 +800,7 @@ exports.updateStudent = async (req, res) => {
 exports.sendAddressUpdateReq = async (req, res) => {
   let data = req.body;
   let selectedYear = data.year;
-  let registerNumber = data.registerNumber;
+  let studentId = data.studentId;
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -890,8 +901,8 @@ exports.sendAddressUpdateReq = async (req, res) => {
   };
 
   try {
-    if (registerNumber) {
-      let query = { registerNumber: registerNumber };
+    if (studentId) {
+      let query = { studentId: studentId };
       const result = await Student.findOneAndUpdate(query, {
         $set: {
           addressUpdate: false,
@@ -1183,12 +1194,12 @@ exports.addressUpdate = async (req, res) => {
 };
 
 exports.requestChange = async (req, res) => {
-  let { newName, newEmail, registerNumber, newDob, newPhone } = req.body;
+  let { newName, newEmail, studentId, newDob, newPhone } = req.body;
   newDob = moment(newDob).format("DD-MM-YYYY")
 
   try {
       let studentData = await Student.findOneAndUpdate(
-          { registerNumber: registerNumber },
+          { studentId: studentId },
           {
               $set: {
                   editRequest: {
@@ -1320,18 +1331,28 @@ exports.requestChange = async (req, res) => {
 };
 
 exports.requestChangeTu = async (req, res) => {
-  let { newTuPending, registerNumber, newTuStatus } = req.body;
+  let { studentId, txnIdTu, paidDateTu, paidAmountTu } = req.body;
+  paidDateTu = moment(paidDateTu).format("DD-MM-YYYY");
+
+  let studentData = await Student.findOne({studentId : studentId});
+  let totalFee = studentData.totalFee;
+  let newTuStatus = totalFee === paidAmountTu ? "Paid" : "Partial";
+  let newTuPendingFee = totalFee - paidAmountTu;
+  let newTuPending = newTuPendingFee.toString()
 
   try {
       let studentData = await Student.findOneAndUpdate(
-          { registerNumber: registerNumber },
+          { studentId: studentId },
           {
               $set: {
                   tuEditRequest: {
                       newTuPending,
                       newTuStatus,
-                      status: 'requested'
-                  }
+                      status: 'requested',
+                      txnIdTu: txnIdTu,
+                      paidDateTu: paidDateTu,
+                      paidAmountTu: paidAmountTu
+                  },
               }
           },
           { new: true }
@@ -1454,18 +1475,28 @@ exports.requestChangeTu = async (req, res) => {
 };
 
 exports.requestChangeEx = async (req, res) => {
-  let { newExPending, newExStatus, registerNumber } = req.body;
+  let { paidAmountEx, studentId, txnIdEx, paidDateEx } = req.body;
+  paidDateEx = moment(paidDateEx).format("DD-MM-YYYY");
+
+  let studentData = await Student.findOne({studentId : studentId});
+  let totalFee = studentData.examTotalFee;
+  let newExStatus = totalFee === paidAmountEx ? "Paid" : "Partial";
+  let newTuPendingFee = totalFee - paidAmountEx;
+  let newExPending = newTuPendingFee.toString()
 
   try {
       let studentData = await Student.findOneAndUpdate(
-          { registerNumber: registerNumber },
+          { studentId: studentId },
           {
               $set: {
                   exEditRequest: {
                       newExPending,
                       newExStatus,
-                      status: 'requested'
-                  }
+                      status: 'requested',
+                      txnIdEx: txnIdEx,
+                      paidDateEx: paidDateEx,
+                      paidAmountEx: paidAmountEx
+                  },
               }
           },
           { new: true }
@@ -1730,7 +1761,7 @@ exports.approveAndReject = async (req, res) => {
 
 exports.approveAndRejectTu = async (req, res) => {
   let data = req.body;
-  let registerNumber = data.registerNumber
+  let studentId = data.studentId
   let action = data.action;
   let status;
   let statusRes;
@@ -1744,7 +1775,7 @@ exports.approveAndRejectTu = async (req, res) => {
 
   try {
     if (status === "Approved"){
-      student = await Student.findOne({registerNumber: registerNumber});
+      student = await Student.findOne({studentId: studentId});
 
       if (student.tuEditRequest && student.tuEditRequest.status === 'requested') {
           student.pendingFee = student.tuEditRequest.newTuPending;
@@ -1754,7 +1785,7 @@ exports.approveAndRejectTu = async (req, res) => {
         };
         statusRes = "Approved";
     } else if (status === "Rejected"){
-      student = await Student.findOne({registerNumber: registerNumber});
+      student = await Student.findOne({studentId: studentId});
 
       if (student.tuEditRequest && student.tuEditRequest.status === 'requested') {
           student.tuEditRequest = null;
@@ -1863,7 +1894,7 @@ exports.approveAndRejectTu = async (req, res) => {
 
 exports.approveAndRejectEx = async (req, res) => {
   let data = req.body;
-  let registerNumber = data.registerNumber
+  let studentId = data.studentId
   let action = data.action;
   let status;
   let statusRes;
@@ -1877,7 +1908,7 @@ exports.approveAndRejectEx = async (req, res) => {
 
   try {
     if (status === "Approved"){
-      student = await Student.findOne({registerNumber: registerNumber});
+      student = await Student.findOne({studentId: studentId});
 
       if (student.exEditRequest && student.exEditRequest.status === 'requested') {
         student.examPendingFee = student.exEditRequest.newExPending;
@@ -1887,7 +1918,7 @@ exports.approveAndRejectEx = async (req, res) => {
         };
         statusRes = "Approved";
     } else if (status === "Rejected"){
-      student = await Student.findOne({registerNumber: registerNumber});
+      student = await Student.findOne({studentId: studentId});
 
       if (student.exEditRequest && student.exEditRequest.status === 'requested') {
           student.exEditRequest = null;

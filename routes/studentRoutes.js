@@ -14,6 +14,8 @@ app.post(
   studentController.newStudent
 );
 
+app.post("/studentLogin", studentController.login);
+
 app.post(
   "/student/forgotPassword",
   studentController.studentForgotPassword

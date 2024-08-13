@@ -401,7 +401,7 @@ exports.getStudentDetails = async (req, res) => {
     let subject;
 
     if (student) {
-      subject = await Subject.find({ year: student.year });
+      subject = await Subject.find({ year: student.year, isDelete: false });
     }
 
     if (!student) {

@@ -110,12 +110,18 @@ const studentSchema = new mongoose.Schema({
     tuEditRequest: {
         newTuPending: String,
         newTuStatus: String,
-        status: String
+        status: String,
+        txnIdTu: String,
+        paidAmountTu: String,
+        paidDateTu: String,
     },
     exEditRequest: {
         newExPending: String,
         newExStatus: String,
-        status: String
+        status: String,
+        txnIdEx: String,
+        paidAmountEx: String,
+        paidDateEx: String,
     },
     createdAt: {
         type: Date,
