@@ -51,6 +51,8 @@ exports.newStudent = async (req, res) => {
   student.tutionDueDate = "";
 
   student.examTotalFee = "0";
+  student.paidFeeTu = "0";
+  student.paidFeeEx = "0";
   student.examPendingFee = "0";
   student.examPaymentStatus = "Pending";
   student.examDueDate = "";
@@ -1777,8 +1779,17 @@ exports.approveAndRejectTu = async (req, res) => {
     if (status === "Approved"){
       student = await Student.findOne({studentId: studentId});
 
+      let totalFee = Number(student.totalFee);
+      let pendingFee = Number(student.pendingFee);
+      let totalPaidFee = Number(totalFee) - Number(pendingFee);
+      let currentTotalFee = Number(totalPaidFee) + Number(student.tuEditRequest.paidAmountTu);
+      let currentPendingFee = totalFee - currentTotalFee;
+      let paidFeeTu = currentTotalFee.toString();
+      let tuPendingFee = currentPendingFee.toString();
+
       if (student.tuEditRequest && student.tuEditRequest.status === 'requested') {
-          student.pendingFee = student.tuEditRequest.newTuPending;
+          student.pendingFee = tuPendingFee;
+          student.paidFeeTu = paidFeeTu;
           student.paymentStatus = student.tuEditRequest.newTuStatus;
           student.tuEditRequest = null;
           await student.save();
@@ -1910,8 +1921,18 @@ exports.approveAndRejectEx = async (req, res) => {
     if (status === "Approved"){
       student = await Student.findOne({studentId: studentId});
 
+      let totalFee = Number(student.examTotalFee);
+      let pendingFee = Number(student.examPendingFee);
+      let totalPaidFee = Number(totalFee) - Number(pendingFee);
+      let currentTotalFee = Number(totalPaidFee) + Number(student.exEditRequest.paidAmountEx);
+      let currentPendingFee = totalFee - currentTotalFee;
+      let paidFeeEx = currentTotalFee.toString();
+      let examPendingFee = currentPendingFee.toString();
+
+
       if (student.exEditRequest && student.exEditRequest.status === 'requested') {
-        student.examPendingFee = student.exEditRequest.newExPending;
+        student.examPendingFee = examPendingFee;
+        student.paidFeeEx = paidFeeEx;
         student.examPaymentStatus = student.exEditRequest.newExStatus;
         student.exEditRequest = null;
         await student.save();

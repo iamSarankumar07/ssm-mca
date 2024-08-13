@@ -18,10 +18,10 @@
         }
 
         .container {
-            width: 80%;
-            max-width: 1200px;
-            margin: 20px auto; 
-            padding: 20px;
+            width: 100%;
+            max-width: 90%;
+            margin: 10px auto; 
+            padding: 10px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
@@ -59,14 +59,14 @@
 
         .back-button {
             position: absolute;
-            top: 48px;
-            left: 12%; 
+            top: 26px;
+            left: 6%; 
             text-decoration: none;
         }
 
         .back-button img {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             margin-right: 5px;
             vertical-align: middle;
         }
@@ -127,7 +127,8 @@
 
         .btn-container {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            margin-bottom: 20px;
         }
 
         .btn {
@@ -208,6 +209,7 @@
     <table>
         <thead>
         <tr>
+            <th>S.No</th>
             <th>Name</th>
             <th>Student ID</th>
             <th>Gender</th>
@@ -220,11 +222,12 @@
         <tbody>
         {{#each students}}
         <tr>
+            <td class="td">{{inc @index}}</td>
             <td>{{name}}</td>
             <td class="td">{{studentId}}</td>
             <td class="td">{{gender}}</td>
             <td class="td">{{dob}}</td>
-            <td class="td">+91 {{phone}}</td>
+            <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
             <td class="td">{{graduationYear}}</td>
         </tr>

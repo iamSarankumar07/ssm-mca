@@ -56,11 +56,19 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    paidFeeTu: {
+        type: String,
+        required: false
+    },
     paymentStatus: {
         type: String,
         required: false
     },
     examTotalFee: {
+        type: String,
+        required: false
+    },
+    paidFeeEx: {
         type: String,
         required: false
     },

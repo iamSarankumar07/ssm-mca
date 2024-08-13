@@ -145,6 +145,7 @@
             <th>Name</th>
             <th>Student ID</th>
             <th>Total Fee</th>
+            <th>Paid Fee</th>
             <th>Pending Fee</th>
             <th>Payment Status</th>
             <th>Edit</th>
@@ -157,6 +158,7 @@
             <td>{{name}}</td>
             <td class="td">{{studentId}}</td>
             <td class="td">Rs.{{examTotalFee}}</td>
+            <td class="td">Rs.{{paidFeeEx}}</td>
             <td class="td">Rs.{{examPendingFee}}</td>
             <td class="td" style="color: {{#if (eq examPaymentStatus "Paid")}}green{{else if (eq examPaymentStatus "Partial")}}orange{{else}}red{{/if}};">
                 {{examPaymentStatus}}
@@ -187,6 +189,7 @@
             <th>S.No</th>
             <th>Name</th>
             <th>Total Fee</th>
+            <th>Paid Fee</th>
             <th>Pending Fee</th>
             <th>Payment Status</th>
             <th>Edit</th>
@@ -198,6 +201,7 @@
             <td class="td">{{inc @index}}</td>
             <td>{{name}}</td>
             <td class="td">Rs.{{examTotalFee}}</td>
+            <td class="td">Rs.{{paidFeeEx}}</td>
             <td class="td">Rs.{{examPendingFee}}</td>
             <td class="td" style="color: {{#if (eq examPaymentStatus "Paid")}}green{{else if (eq examPaymentStatus "Partial")}}orange{{else}}red{{/if}};">
                 {{examPaymentStatus}}
