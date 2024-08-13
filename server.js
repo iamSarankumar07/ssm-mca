@@ -22,6 +22,10 @@ hbs.registerHelper('eq', function(v1, v2) {
   return v1 === v2;
 });
 
+hbs.registerHelper('inc', function(value, options) {
+  return parseInt(value) + 1;
+});
+
 app.get("/", (req, res) => {
   res.render("main");
 });

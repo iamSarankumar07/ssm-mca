@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Fee Update Request</title>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Poppins", sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -22,17 +20,30 @@
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
             color: #fff;
-            background-color: #3d6ef5ff;
+            background-color: #3d6ef5;
             border-radius: 10px;
-            padding: 10px;
-            margin-top: 1px;
-            margin-bottom: 20px; 
+            padding: 15px;
+            margin-bottom: 30px;
+            margin-top: 0px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h1 img {
+            position: absolute;
+            left: 15px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
         }
 
         .student {
@@ -40,59 +51,62 @@
             border-radius: 10px;
             padding: 20px;
             background-color: #f9f9f9;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
         }
 
         .details-section {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
         .details-section .details {
-            flex: 0 0 48%;
+            flex: 1;
+            min-width: 250px;
         }
 
-        .details-section .details h3 {
+        .details h3 {
             color: #3d6ef5;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
-        .details-section .details table {
+        .details table {
             width: 100%;
+            border-collapse: collapse;
         }
 
-        .details-section .details td {
+        .details td {
             padding: 8px;
             border-bottom: 1px solid #ddd;
         }
 
-        .details-section .details td:first-child {
+        .details td:first-child {
             font-weight: bold;
-            width: 40%;
+            width: 50%;
         }
 
-        .details-section .details td:last-child {
-            width: 60%;
+        .details td:last-child {
+            color: #3d6ef5;
+            font-weight: bold;
+            text-align: right;
         }
 
         .form-actions {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             margin-top: 20px;
         }
 
         input[type="submit"] {
             border: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             cursor: pointer;
             border-radius: 5px;
-            margin: 0 10px;
+            font-size: 16px;
             transition: background-color 0.3s;
-        }
-
-        input[type="submit"]:hover {
-            filter: brightness(0.9);
         }
 
         .approve-btn {
@@ -100,91 +114,100 @@
             color: white;
         }
 
+        .approve-btn:hover {
+            background-color: #45a049;
+        }
+
         .reject-btn {
-            background-color: #f44336; 
+            background-color: #f44336;
             color: white;
+        }
+
+        .reject-btn:hover {
+            background-color: #e53935;
         }
 
         .btn-container {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .btn {
-            padding: 8px 14px;
+            padding: 10px 20px;
             color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
+            border: 2px solid #3d6ef5;
+            background-color: #3d6ef5;
             font-weight: bold;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 14px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.4s, color 0.4s;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .btn:hover {
-            background: #fff;
-            color: #3d6ef5ff;
+            background-color: #fff;
+            color: #3d6ef5;
         }
 
-        .dd {
-            color: #3d6ef5ff;
-            font-weight: bold;
-        }
-
-        a {
-            text-decoration: none;
-        }
-        .details h3 {
+        .transaction-info {
+            margin-top: 20px;
+            font-size: 14px;
             text-align: center;
         }
+
+        .transaction-info p {
+            margin: 5px 0;
+        }
+
+        .transaction-info .dd {
+            color: #3d6ef5;
+            font-weight: bold;
+        }
         .back-button {
-            position: absolute;
-            top: 10.5%;
-            right: 72.5%;
             text-decoration: none;
+            position: absolute;
+            top: 14px;
+            left: 5px;
         }
 
         .back-button img {
-            width: 45px;
-            height: 45px;
-            margin-top: 5px;
-            margin-left: 10px;
+            width: 50px;
+            height: 50px;
             vertical-align: middle;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Student Exam Fee Change Request</h1>
-        <a href="/ssm/mca/dashboard" class="back-button">
-            <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
-        </a>
+        <h1>
+            <a href="/ssm/mca/dashboard" class="back-button">
+                <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
+            </a>
+            Student Exam Fee Change Request
+        </h1>
         
         {{#each students}}
         <div class="student">
-            <p style="text-align: center;"><strong>Student ID : </strong> <span class="dd">{{studentId}}</span></p>
-            <p style="text-align: center; margin-top: -15px"><strong>Branch : </strong> <span class="dd">MCA - {{year}}</span></p>
             <div class="details-section">
                 <div class="details">
                     <h3>Current Exam Fee Details</h3>
                     <table>
                         <tr>
                             <td>Name</td>
-                            <td class="dd">{{name}}</td>
+                            <td>{{name}} ({{year}})</td>
                         </tr>
                         <tr>
                             <td>Total Fee</td>
-                            <td class="dd">{{examTotalFee}}</td>
+                            <td>Rs.{{examTotalFee}}</td>
                         </tr>
                         <tr>
                             <td>Pending Fee</td>
-                            <td class="dd">{{examPendingFee}}</td>
+                            <td>Rs.{{examPendingFee}}</td>
                         </tr>
                         <tr>
                             <td>Payment Status</td>
-                            <td class="dd">{{examPaymentStatus}}</td>
+                            <td>{{examPaymentStatus}}</td>
                         </tr>
                     </table>
                 </div>
@@ -193,30 +216,35 @@
                     <table>
                         <tr>
                             <td>Name</td>
-                            <td class="dd">{{name}}</td>
+                            <td>{{name}} ({{year}})</td>
                         </tr>
                         <tr>
                             <td>Total Fee</td>
-                            <td class="dd">{{examTotalFee}}</td>
+                            <td>Rs. {{examTotalFee}}</td>
                         </tr>
                         <tr>
-                            <td>New Phone</td>
-                            <td class="dd">{{exEditRequest.newExPending}}</td>
+                            <td>Pending Fee</td>
+                            <td class="dd">Rs. {{exEditRequest.newExPending}}</td>
                         </tr>
                         <tr>
-                            <td><label for="paymentStatus">Payment Status:</label></td>
-                            <td class="dd">{{exEditRequest.newExStatus}}</td>
+                            <td>Payment Status</td>
+                            <td>{{exEditRequest.newExStatus}}</td>
                         </tr>
                     </table>
                 </div>
             </div>
+            <div class="transaction-info">
+                <p><strong>Amount Paid:</strong> <span class="dd">Rs.{{exEditRequest.paidAmountEx}}</span></p>
+                <p><strong>Transaction Ref ID:</strong> <span class="dd">{{exEditRequest.txnIdEx}}</span></p>
+                <p><strong>Paid Date:</strong> <span class="dd">{{exEditRequest.paidDateEx}}</span></p>
+            </div>
             <div class="form-actions">
                 <form action="/ssm/mca/approveAndRejectEx" method="POST">
-                    <input type="hidden" name="registerNumber" value="{{registerNumber}}">
+                    <input type="hidden" name="studentId" value="{{studentId}}">
                     <input type="submit" name="action" value="Reject" class="reject-btn">
                 </form>
                 <form action="/ssm/mca/approveAndRejectEx" method="POST">
-                    <input type="hidden" name="registerNumber" value="{{registerNumber}}">
+                    <input type="hidden" name="studentId" value="{{studentId}}">
                     <input type="submit" name="action" value="Approve" class="approve-btn">
                 </form>
             </div>
@@ -224,7 +252,7 @@
         {{/each}}
 
         <div class="btn-container">
-            <a class="btn" href="/ssm/mca/dashboard">< Go back!</a>
+            <a class="btn" href="/ssm/mca/dashboard">&lt; Go back!</a>
         </div>
     </div>
 </body>

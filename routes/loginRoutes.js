@@ -51,8 +51,6 @@ app.post("/forgotPassword", loginController.forgotPassword);
 
 app.post("/forgotOtp", loginController.forgotOtp);
 
-app.post("/studentLogin", studentController.login);
-
 app.post("/otp", loginController.otp);
 
 app.get("/logout", authFile.logout);

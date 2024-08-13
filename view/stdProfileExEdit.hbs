@@ -8,9 +8,9 @@
 
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
+        * {
+            font-family: "Poppins", sans-serif;
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -68,6 +68,7 @@
         .button-container {
             display: flex;
             justify-content: space-between;
+            margin-top: 10px;
             width: 100%;
         }
 
@@ -92,61 +93,64 @@
             color: #3d6ef5ff;
             font-weight: bold;
         }
+        
         h2 {
             color: #3d6ef5ff;
             text-align: center;
             margin-bottom: 20px;
         }
 
+        .hidden {
+            display: none;
+        }
     </style>
+
 </head>
 <body>
 
     <table>
-    <tr>
-        <td>
-            <form action="/ssm/mca/requestChangeEx" method="post">
-            <h2>Exam Fee Update Request</h2>
-        <table>
-            <tr>
-                <td><label for="newName">Name :</label></td>
-                <td><input type="text" id="newName" name="newName" value="{{student.name}}" readonly></td>
-            </tr>
-            <tr>
-                <td><label for="registerNumber">Reg Number :</label></td>
-                <td><input type="text" id="registerNumber" name="registerNumber" value="{{student.registerNumber}}" readonly></td>
-            </tr>
-            <tr>
-                <td><label for="totalFee">Total Fee:</label></td>
-                <td><input type="text" id="totalFee" name="totalFee" value="{{student.examTotalFee}}" readonly /></td>
-            </tr>
-            <tr>
-                <td><label for="newExPending">Pending Fee:</label></td>
-                <td><input type="text" id="newExPending" name="newExPending" value="{{student.examPendingFee}}" required /></td>
-            </tr>
-            <tr>
-                <td><label for="newExStatus">Payment Status:</label></td>
-                <td><select id="newExStatus" name="newExStatus" value="{{student.examPaymentStatus}}" required>
-                        <option value="{{student.examPaymentStatus}}">{{student.examPaymentStatus}}</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Partial">Partial</option>
-                        <option value="Pending">Pending</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="newPhone">Due Date :</label></td>
-                <td><input type="phone" id="newPhone" name="newPhone" value="{{student.examDueDate}}" readonly></td>
-            </tr>
-        </table>
-                <div class="button-container">
-                    <button type="button" onclick="history.back()">Back</button>
-                    <button type="submit" >Request</button>
-                </div>
-
-    </form>
-</table>
-
+        <tr>
+            <td>
+                <form action="/ssm/mca/requestChangeEx" method="post">
+                    <h2>Exam Fee Update Request</h2>
+                    <table>
+                        <tr>
+                            <td><label for="newName">Name :</label></td>
+                            <td><input type="text" id="newName" name="newName" value="{{student.name}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label for="studentId">Student ID:</label></td>
+                            <td><input type="text" id="studentId" name="studentId" value="{{student.studentId}}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td><label for="totalFee">Total Fee:</label></td>
+                            <td><input type="text" id="totalFee" name="totalFee" value="{{student.examTotalFee}}" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="examPendingFee">Pending Fee:</label></td>
+                            <td><input type="text" id="examPendingFee" name="examPendingFee" value="{{student.examPendingFee}}" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="paidAmountEx">Amount Paid:</label></td>
+                            <td><input type="text" id="paidAmountEx" name="paidAmountEx" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="txnIdEx">Transaction Ref ID:</label></td>
+                            <td><input type="text" id="txnIdEx" name="txnIdEx" required/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="paidDateEx">Paid Date:</label></td>
+                            <td><input type="date" id="paidDateEx" name="paidDateEx" required/></td>
+                        </tr>
+                    </table>
+                    <div class="button-container">
+                        <button type="button" onclick="history.back()">Back</button>
+                        <button type="submit">Request</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
 
 </body>
 </html>

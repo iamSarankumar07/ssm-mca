@@ -128,6 +128,7 @@
     <table>
         <thead>
         <tr>
+            <th>S.No</th>
             <th>Name</th>
             <th>Student ID</th>
             <th>Register Number</th>
@@ -142,6 +143,7 @@
         <tbody>
         {{#each sortedFirstYear}}
         <tr>
+            <td class="td">{{inc @index}}</td>
             <td>{{name}}</td>
             <td class="td">{{studentId}}</td>
             <td class="td">{{registerNumber}}</td>
@@ -176,6 +178,7 @@
     <table>
         <thead>
         <tr>
+            <th>S.No</th>
             <th>Name</th>
             <th>Student ID</th>
             <th>Register Number</th>
@@ -190,6 +193,7 @@
         <tbody>
         {{#each sortedSecondYear}}
         <tr>
+            <td class="td">{{inc @index}}</td>
             <td>{{name}}</td>
             <td class="td">{{studentId}}</td>
             <td class="td">{{registerNumber}}</td>
