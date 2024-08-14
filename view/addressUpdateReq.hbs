@@ -82,8 +82,8 @@
             <option value="toYear">To Year</option>
         </select>
 
-        <label for="registerNumber" id="registerNumberLabel" style="display: none;">Student ID:</label>
-        <input type="text" id="registerNumber" name="studentId" style="display: none;">
+        <label for="studentId" id="studentIdLabel" style="display: none;">Student ID:</label>
+        <input type="text" id="studentId" name="studentId" style="display: none;">
 
         <label for="year" id="yearLabel" style="display: none;">Select Year:</label>
         <select id="year" name="year" style="display: none;">
@@ -101,31 +101,31 @@
     <script>
         function showInputs() {
             var selectedOption = document.getElementById("selectOption").value;
-            var registerNumberLabel = document.getElementById("registerNumberLabel");
-            var registerNumberInput = document.getElementById("registerNumber");
+            var studentIdLabel = document.getElementById("studentIdLabel");
+            var studentIdInput = document.getElementById("studentId");
             var yearLabel = document.getElementById("yearLabel");
             var yearSelect = document.getElementById("year");
 
             if (selectedOption === "toStudent") {
-                registerNumberLabel.style.display = "block";
-                registerNumberInput.style.display = "block";
+                studentIdLabel.style.display = "block";
+                studentIdInput.style.display = "block";
                 yearLabel.style.display = "none";
                 yearSelect.style.display = "none";
             } else if (selectedOption === "toYear") {
-                registerNumberLabel.style.display = "none";
-                registerNumberInput.style.display = "none";
+                studentIdLabel.style.display = "none";
+                studentIdInput.style.display = "none";
                 yearLabel.style.display = "block";
                 yearSelect.style.display = "block";
             } else {
-                registerNumberLabel.style.display = "none";
-                registerNumberInput.style.display = "none";
+                studentIdLabel.style.display = "none";
+                studentIdInput.style.display = "none";
                 yearLabel.style.display = "none";
                 yearSelect.style.display = "none";
             }
         }
 
-        document.getElementById("registerNumber").addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, '');
+        document.getElementById("studentId").addEventListener("input", function() {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
         });
     </script>
 </body>
