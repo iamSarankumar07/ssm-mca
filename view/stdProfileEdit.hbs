@@ -8,9 +8,9 @@
 
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
+        * {
+            font-family: "Poppins", sans-serif;
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -22,18 +22,19 @@
             height: 100vh;
         }
 
-        form {
+        .form-container {
             max-width: 400px;
             margin: 20px auto;
             background-color: #fff;
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
+        h2 {
             color: #3d6ef5ff;
             text-align: center;
+            margin-bottom: 20px;
         }
 
         label {
@@ -52,7 +53,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        
+
         a {
             display: block;
             margin-top: 20px;
@@ -67,13 +68,14 @@
 
         .button-container {
             display: flex;
+            margin-top: 20px;
             justify-content: space-between;
             width: 100%;
         }
 
         button[type="submit"],
         button[type="button"] {
-            width: 30%;
+            width: 45%;
             background-color: #3d6ef5ff;
             color: #f2f2f2;
             font-weight: bold;
@@ -90,53 +92,36 @@
         button[type="button"]:hover {
             background-color: #f2f2f2;
             color: #3d6ef5ff;
-            font-weight: bold;
         }
-        h2 {
-            color: #3d6ef5ff;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
     </style>
 </head>
 <body>
+    <div class="form-container">
+        <form action="/ssm/mca/requestChange" method="post">
+            <div class="form-content">
+                <h2>Profile Update Request</h2>
 
-    <table>
-    <tr>
-        <td>
-            <form action="/ssm/mca/requestChange" method="post">
-            <h2>Profile Update Request</h2>
-        <table>
-            <tr>
-                <td><label for="newName">Name :</label></td>
-                <td><input type="text" id="newName" name="newName" value="{{student.name}}" required></td>
-            </tr>
-            <tr>
-                <td><label for="studentId">Student ID:</label></td>
-                <td><input type="text" id="studentId" name="studentId" value="{{student.studentId}}" readonly required></td>
-            </tr>
-            <tr>
-                <td><label for="newDob">Date of Birth :</label></td>
-                <td><input type="date" id="newDob" name="newDob" value="{{student.dob}}" placeholder="DD/MM/YYYY" required></td>
-            </tr>
-            <tr>
-                <td><label for="newPhone">Phone :</label></td>
-                <td><input type="phone" id="newPhone" name="newPhone" value="{{student.phone}}" required></td>
-            </tr>
-            <tr>
-                <td><label for="newEmail">Email :</label></td>
-                <td><input type="email" id="newEmail" name="newEmail" value="{{student.email}}" required></td>
-            </tr>
-        </table>
+                <label for="newName">Name :</label>
+                <input type="text" id="newName" name="newName" value="{{student.name}}" required>
+
+                <label for="studentId">Student ID:</label>
+                <input type="text" id="studentId" name="studentId" value="{{student.studentId}}" readonly required>
+
+                <label for="newDob">Date of Birth :</label>
+                <input type="date" id="newDob" name="newDob" value="{{student.dob}}" placeholder="DD/MM/YYYY" required>
+
+                <label for="newPhone">Phone :</label>
+                <input type="phone" id="newPhone" name="newPhone" value="{{student.phone}}" required>
+
+                <label for="newEmail">Email :</label>
+                <input type="email" id="newEmail" name="newEmail" value="{{student.email}}" required>
+
                 <div class="button-container">
                     <button type="button" onclick="history.back()">Back</button>
-                    <button type="submit" >Request</button>
+                    <button type="submit">Request</button>
                 </div>
-
-    </form>
-</table>
-
-
+            </div>
+        </form>
+    </div>
 </body>
 </html>

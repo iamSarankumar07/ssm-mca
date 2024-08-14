@@ -6,186 +6,193 @@
     <title>Login</title>
     <link rel="icon" href="https://i.postimg.cc/x1RfJjWH/user-1.png">
     <style>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        /* Your existing styles */
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
-* {
-    font-family: "Poppins", sans-serif;
-}
+        * {
+            font-family: "Poppins", sans-serif;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #3d6ef5ff;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 30px;
+            border-radius: 10px;
+        }
 
-.form-wrapper {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 300px;
-}
+        .form-wrapper {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
 
-input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 16px;
-    box-sizing: border-box;
-}
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
 
-h1 {
-    text-align: center;
-    color: #3d6ef5ff;
-}
+        h1 {
+            text-align: center;
+            color: #3d6ef5ff;
+        }
 
-a {
-    text-align: center;
-    font-weight: bold;
-    text-decoration: none;
-    color: #472ddb;
-}
+        a {
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            color: #472ddb;
+        }
 
-a:hover {
-    color: #1459da;
-}
+        a:hover {
+            color: #1459da;
+        }
 
-p {
-    text-align: center;
-    margin-top: 10px;
-    color: #333;
-}
+        p {
+            text-align: center;
+            margin-top: 10px;
+            color: #333;
+        }
 
-.btn {
-    padding: 8px 15px;
-    color: #f2f2f2;
-    width: 100%;
-    border: 2px solid #3d6ef5ff;
-    background: #3d6ef5ff;
-    font-weight: bold;
-    font-size: 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: .4s;
-}
+        .btn {
+            padding: 8px 15px;
+            color: #f2f2f2;
+            width: 100%;
+            border: 2px solid #3d6ef5ff;
+            background: #3d6ef5ff;
+            font-weight: bold;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: .4s;
+        }
 
-.btn:hover {
-    background: #f2f2f2;
-    color: #3d6ef5ff;
-}
+        .btn:hover {
+            background: #f2f2f2;
+            color: #3d6ef5ff;
+        }
 
-.showPassCode {
-    display: flex;
-    align-items: center;
-    margin: 5px 0px;
-}
+        .showPassCode {
+            display: flex;
+            align-items: center;
+            margin: 5px 0px;
+        }
 
-#showAdminPassword {
-    width: min-content;
-}
+        #showAdminPassword, #showStudentPassword {
+            width: min-content;
+        }
 
-#showStudentPassword {
-    width: min-content;
-}
+        .box {
+            margin-right: 10px;
+        }
 
-.box {
-    margin-right: 10px;
-}
+        .txt {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #1459da;
+        }
 
-.txt {
-    margin-bottom: 12px;
-    font-size: 14px;
-    color: #1459da;
-}
+        .signup-link, .forgot-link {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
 
-.signup-link, .forgot-link {
-    margin-top: 10px;
-    font-size: 0.9rem;
-    text-align: center;
-}
+        .home {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-.home {
-    text-align: center;
-    margin-top: 20px;
-}
+        .switch-login {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #472ddb;
+        }
 
-/* Media Queries */
-@media (max-width: 1200px) {
-    .container {
-        padding: 20px;
-    }
+        .switch-login:hover {
+            color: #1459da;
+        }
 
-    .form-wrapper {
-        width: 90%;
-    }
-}
+        /* Media Queries */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 20px;
+            }
 
-@media (max-width: 992px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
-}
+            .form-wrapper {
+                width: 90%;
+            }
+        }
 
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px;
-    }
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
 
-    .form-wrapper {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 20px;
-    }
-}
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                padding: 15px;
+            }
 
-@media (max-width: 576px) {
-    body {
-        font-size: 14px;
-    }
+            .form-wrapper {
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+        }
 
-    .container {
-        padding: 10px;
-    }
+        @media (max-width: 576px) {
+            body {
+                font-size: 14px;
+            }
 
-    .form-wrapper {
-        padding: 15px;
-        width: 100%;
-    }
+            .container {
+                padding: 10px;
+            }
 
-    .btn {
-        font-size: 14px;
-        padding: 10px;
-    }
-}
+            .form-wrapper {
+                padding: 15px;
+                width: 100%;
+            }
 
+            .btn {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="form-wrapper">
+        <div class="form-wrapper" id="staffLoginForm">
             <h1>Staff Login</h1>
             <form action="/ssm/mca/login" method="post">
                 <label for="email">Email or Staff ID:</label>
@@ -204,16 +211,16 @@ p {
                 <div class="forgot-link">
                     Forgot your password? <a href="/ssm/mca/forgotPassword">Reset it</a>
                 </div>
-                {{!-- <div class="signup-link">
-                    Don't have an account? <a href="/ssm/mca/signup">Sign up</a>
-                </div> --}}
+
+                <div class="switch-login" id="switchToStudent">Login as a Student</div>
+
                 <div class="home">
                     <a href="/">Home</a>
                 </div>
             </form>
         </div>
 
-        <div class="form-wrapper">
+        <div class="form-wrapper" id="studentLoginForm" style="display: none;">
             <h1>Student Login</h1>
             <form action="/ssm/mca/studentLogin" method="post">
                 <label for="userName">Student ID:</label>
@@ -231,6 +238,8 @@ p {
                 <div class="forgot-link">
                     Forgot your password? <a href="/ssm/mca/student/forgotPassword">Reset it</a>
                 </div>
+                
+                <div class="switch-login" id="switchToStaff">Login as Staff</div>
 
                 <div class="home">
                     <a href="/">Home</a>
@@ -238,30 +247,36 @@ p {
             </form>
         </div>
     </div>
+
     <script>
+        const staffLoginForm = document.getElementById('staffLoginForm');
+        const studentLoginForm = document.getElementById('studentLoginForm');
+        const switchToStudent = document.getElementById('switchToStudent');
+        const switchToStaff = document.getElementById('switchToStaff');
 
-    const showPasswordCheckboxesAdmin = document.querySelectorAll('#showAdminPassword');
-    const passwordFieldsAdmin = document.querySelectorAll('#adminPassword');
-
-    showPasswordCheckboxesAdmin.forEach((checkbox) => {
-        checkbox.addEventListener('change', function() {
-
-            const passwordField = document.getElementById('adminPassword');
-            passwordField.type = this.checked ? 'text' : 'password';
+        switchToStudent.addEventListener('click', () => {
+            staffLoginForm.style.display = 'none';
+            studentLoginForm.style.display = 'block';
         });
-    });
 
-
-    const showPasswordCheckboxesStudent = document.querySelectorAll('#showStudentPassword');
-    const passwordFieldsStudent = document.querySelectorAll('#studentPassword');
-
-    showPasswordCheckboxesStudent.forEach((checkbox) => {
-        checkbox.addEventListener('change', function() {
-
-            const passwordField = document.getElementById('studentPassword');
-            passwordField.type = this.checked ? 'text' : 'password';
+        switchToStaff.addEventListener('click', () => {
+            studentLoginForm.style.display = 'none';
+            staffLoginForm.style.display = 'block';
         });
-    });
-</script>
+
+        const showPasswordCheckboxAdmin = document.getElementById('showAdminPassword');
+        const passwordFieldAdmin = document.getElementById('adminPassword');
+        
+        showPasswordCheckboxAdmin.addEventListener('change', function() {
+            passwordFieldAdmin.type = this.checked ? 'text' : 'password';
+        });
+
+        const showPasswordCheckboxStudent = document.getElementById('showStudentPassword');
+        const passwordFieldStudent = document.getElementById('studentPassword');
+
+        showPasswordCheckboxStudent.addEventListener('change', function() {
+            passwordFieldStudent.type = this.checked ? 'text' : 'password';
+        });
+    </script>
 </body>
 </html>
