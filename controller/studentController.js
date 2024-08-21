@@ -336,11 +336,11 @@ exports.login = async (req, res) => {
 exports.studentForgotPassword = async (req, res) => {
   let body = req.body;
   try {
-    let studentId = body.registerNumber;
+    let studentId = body.studentId;
     let studentData = await Student.findOne({ studentId: studentId, isDelete: false, isAlumni: false });
     if (!studentData) {
       return res.send(
-        '<script>alert("student not found! - please check your register number"); window.location.href = "/ssm/mca/student/forgotPassword";</script>'
+        '<script>alert("student not found! - please check your Student ID"); window.location.href = "/ssm/mca/student/forgotPassword";</script>'
       );
     }
 
