@@ -1337,9 +1337,11 @@ exports.requestChangeTu = async (req, res) => {
   paidDateTu = moment(paidDateTu).format("DD-MM-YYYY");
 
   let studentData = await Student.findOne({studentId : studentId});
-  let totalFee = studentData.totalFee;
-  let newTuStatus = totalFee === paidAmountTu ? "Paid" : "Partial";
-  let newTuPendingFee = totalFee - paidAmountTu;
+  let currentPaid = Number(studentData.paidFeeTu) + Number(paidAmountTu);
+  let totalFee = Number(studentData.totalFee);
+  let newTuPendingFee = Number(studentData.pendingFee) - Number(paidAmountTu);
+  let newTuStatus = totalFee === currentPaid ? "Paid" : "Partial";
+  // let newTuPendingFee = currentPaid - paidAmountTu;
   let newTuPending = newTuPendingFee.toString()
 
   try {
@@ -1481,9 +1483,11 @@ exports.requestChangeEx = async (req, res) => {
   paidDateEx = moment(paidDateEx).format("DD-MM-YYYY");
 
   let studentData = await Student.findOne({studentId : studentId});
-  let totalFee = studentData.examTotalFee;
-  let newExStatus = totalFee === paidAmountEx ? "Paid" : "Partial";
-  let newTuPendingFee = totalFee - paidAmountEx;
+  let currentPaid = Number(studentData.paidFeeEx) + Number(paidAmountEx);
+  let totalFee = Number(studentData.examTotalFee);
+  let newTuPendingFee = Number(studentData.examPendingFee) - Number(paidAmountEx);
+  let newExStatus = totalFee === currentPaid ? "Paid" : "Partial";
+  // let newTuPendingFee = totalFee - paidAmountEx;
   let newExPending = newTuPendingFee.toString()
 
   try {
