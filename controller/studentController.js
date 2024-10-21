@@ -57,9 +57,9 @@ exports.newStudent = async (req, res) => {
   student.examPaymentStatus = "Pending";
   student.examDueDate = "";
 
-  let studentCount = await countModel.findOne({name: "studentCount"})
+  let studentCount = await countModel.findOne({name: "studentCount"});
   let count = studentCount.count;
-  let date = Date.now()
+  let date = Date.now();
   let prefix = moment(date).format("YY")
   let center = "MCA";
   let totalCount = count + 1; // Math.floor(Math.random() * 10000);
