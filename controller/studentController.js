@@ -2121,7 +2121,7 @@ exports.studentTuitionDownload = async (req, res) => {
       paidRecords: paidRecords,
       pendingRecords: pendingRecords,
       totalRecords: totalRecords,
-      dueDate: studentsData[0].tutionDueDate
+      dueDate: studentsData[0]?.tutionDueDate
     };
 
     let dbTemplate = await TemplateModel.findOne({ name: "TUITION_FEE_PDF" });
@@ -2174,7 +2174,7 @@ exports.studentExamDownload = async (req, res) => {
       paidRecords: paidRecords,
       pendingRecords: pendingRecords,
       totalRecords: totalRecords,
-      dueDate: studentsData[0].examDueDate
+      dueDate: studentsData[0]?.examDueDate
     };
 
     let dbTemplate = await TemplateModel.findOne({ name: "EXAM_FEE_PDF" });
