@@ -139,7 +139,7 @@ app.get(
 
 // app.get('/studentList/secondYear', viewController.secondYearStudentList);
 
-app.get("/upload", (req, res) => {
+app.get("/imageUpload", (req, res) => {
   res.render("imageUpload");
 });
 app.get(

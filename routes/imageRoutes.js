@@ -1,8 +1,13 @@
 const express = require("express");
 const app = express();
 const imageController = require('../controller/imageController');
-const upload = require('../middleware/upload');
+const multer = require('multer');
 
-app.post("/upload", upload.single('image'), imageController.uploadImage);
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+app.post("/uploadImage", upload.single("image"), imageController.uploadImage);
+app.get("/getImageFromFireBase", imageController.getImagesFromFireBase);
+app.get("/getImageFromDB", imageController.getImagesFromDB);
 
 module.exports = app;

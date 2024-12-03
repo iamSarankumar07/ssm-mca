@@ -180,6 +180,12 @@
                 <td>Staff List</td>
                 <td><button type="button" onclick="staffList()">Details</button></td>
             </tr>
+            <tr>
+                <td>Image Upload</td>
+                <td><button type="button" onclick="imageIpload()">Upload</button></td>
+                <td>Image Gallery</td>
+                <td><button type="button" onclick="imageGallery()">View Gallery</button></td>
+            </tr>
         </tbody>
     </table>
 
@@ -240,6 +246,12 @@
         };
         function staffList() {
             window.location.href = '/ssm/mca/staffList';
+        };
+        function imageIpload() {
+            window.location.href = '/ssm/mca/imageUpload';
+        };
+        function imageGallery() {
+            window.location.href = '/ssm/mca/gallery';
         };
     </script>
 </body>
