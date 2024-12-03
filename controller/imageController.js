@@ -4,7 +4,7 @@ const Image = require("../models/imageModel");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: "facerecognition-a3449.appspot.com",
+  storageBucket: "gs://college-656fa.appspot.com",
 });
 
 const bucket = admin.storage().bucket();
