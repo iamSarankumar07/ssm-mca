@@ -3,228 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Update Request</title>
+    <title>Student Profile Update Request</title>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            line-height: 1.5;
+        }
+
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
 
-        h1 {
-            text-align: center;
-            color: #fff;
-            background-color: #3d6ef5ff;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 1px;
-            margin-bottom: 20px; 
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
         }
 
-        .student {
-            border: 2px solid #3d6ef5;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            margin-bottom: 20px;
-        }
-
-        .details-section {
+        .card-header {
+            background-color: #2563eb;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            align-items: center;
         }
 
-        .details-section .details {
-            flex: 0 0 48%;
+        .card-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
-        .details-section .details h3 {
-            color: #3d6ef5;
-            margin-bottom: 10px;
+        .back-link {
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
         }
 
-        .details-section .details table {
+        .back-link:hover {
+            text-decoration: none;
+        }
+
+        .back-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .student-info {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .student-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .student-id, .student-branch {
+            font-weight: 600;
+        }
+
+        .student-id span, .student-branch span {
+            color: #2563eb;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .details-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .details-section h3 {
+            font-size: 1.25rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .details-table {
             width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
         }
 
-        .details-section .details td {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
+        .details-table td {
+            padding: 0.5rem;
         }
 
-        .details-section .details td:first-child {
-            font-weight: bold;
-            width: 40%;
+        .details-table td:first-child {
+            font-weight: 500;
+            color: #4b5563;
         }
 
-        .details-section .details td:last-child {
-            width: 60%;
+        .details-table td:last-child {
+            font-weight: 600;
+            color: #2563eb;
         }
 
-        .form-actions {
+        .actions {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
-        }
-
-        input[type="submit"] {
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 0 10px;
-            transition: background-color 0.3s;
-        }
-
-        input[type="submit"]:hover {
-            filter: brightness(0.9);
-        }
-
-        .approve-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .reject-btn {
-            background-color: #f44336; 
-            color: white;
-        }
-
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         .btn {
-            padding: 8px 14px;
-            color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.4s, color 0.4s;
+            transition: background-color 0.2s;
         }
 
-        .btn:hover {
-            background: #fff;
-            color: #3d6ef5ff;
+        .btn-reject {
+            background-color: #ef4444;
+            color: #ffffff;
         }
 
-        .dd {
-            color: #3d6ef5ff;
-            font-weight: bold;
+        .btn-reject:hover {
+            background-color: #dc2626;
         }
 
-        a {
-            text-decoration: none;
+        .btn-approve {
+            background-color: #10b981;
+            color: #ffffff;
         }
-        .details h3 {
+
+        .btn-approve:hover {
+            background-color: #059669;
+        }
+
+        .card-footer {
+            background-color: #f9fafb;
+            padding: 1rem 1.5rem;
             text-align: center;
         }
-        .back-button {
-            position: absolute;
-            top: 10.5%;
-            right: 72.5%;
+
+        .btn-back {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #e0e7ff;
+            color: #2563eb;
             text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s;
         }
 
-        .back-button img {
-            width: 45px;
-            height: 45px;
-            margin-top: 5px;
-            margin-left: 10px;
-            vertical-align: middle;
+        .btn-back:hover {
+            background-color: #c7d2fe;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Student Profile Update Request</h1>
-        <a href="/ssm/mca/dashboard" class="back-button">
-            <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
-        </a>
-        
+        <div class="card">
+            <div class="card-header">
+                <h1>Student Profile Update Request</h1>
+                <a href="/ssm/mca/dashboard" class="back-link">
+                    <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back
+                </a>
+            </div>
+
         {{#each students}}
-        <div class="student">
-            <p style="text-align: center;"><strong>Student ID : </strong> <span class="dd">{{studentId}}</span></p>
-            <p style="text-align: center; margin-top: -15px"><strong>Branch : </strong> <span class="dd">MCA - {{year}}</span></p>
-            <div class="details-section">
-                <div class="details">
-                    <h3>Current Student Details</h3>
-                    <table>
-                        <tr>
-                            <td>Name</td>
-                            <td class="dd">{{name}}</td>
-                        </tr>
-                        <tr>
-                            <td>DOB</td>
-                            <td class="dd">{{dob}}</td>
-                        </tr>
-                        <tr>
-                            <td>Phone</td>
-                            <td class="dd">{{phone}}</td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td class="dd">{{email}}</td>
-                        </tr>
-                    </table>
+            <div class="student-info">
+                <div class="student-header">
+                    <p class="student-id">Student ID: <span>{{studentId}}</span></p>
+                    <p class="student-branch">Branch: <span>MCA - {{year}}</span></p>
                 </div>
-                <div class="details">
-                    <h3>To Update</h3>
-                    <table>
-                        <tr>
-                            <td>Name</td>
-                            <td class="dd">{{editRequest.newName}}</td>
-                        </tr>
-                        <tr>
-                            <td>DOB</td>
-                            <td class="dd">{{editRequest.newDob}}</td>
-                        </tr>
-                        <tr>
-                            <td>Phone</td>
-                            <td class="dd">{{editRequest.newPhone}}</td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td class="dd">{{editRequest.newEmail}}</td>
-                        </tr>
-                    </table>
+                <div class="details-grid">
+                    <div class="details-section">
+                        <h3>Current Student Details</h3>
+                        <table class="details-table">
+                            <tr>
+                                <td>Name</td>
+                                <td>{{name}}</td>
+                            </tr>
+                            <tr>
+                                <td>DOB</td>
+                                <td>{{dob}}</td>
+                            </tr>
+                            <tr>
+                                <td>Phone</td>
+                                <td>{{phone}}</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>{{email}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="details-section">
+                        <h3>To Update</h3>
+                        <table class="details-table">
+                            <tr>
+                                <td>Name</td>
+                                <td>{{editRequest.newName}}</td>
+                            </tr>
+                            <tr>
+                                <td>DOB</td>
+                                <td>{{editRequest.newDob}}</td>
+                            </tr>
+                            <tr>
+                                <td>Phone</td>
+                                <td>{{editRequest.newPhone}}</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>{{editRequest.newEmail}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="actions">
+                    <form action="/ssm/mca/approveAndReject" method="POST">
+                        <input type="hidden" name="registerNumber" value="{{registerNumber}}">
+                        <button type="submit" name="action" value="Reject" class="btn btn-reject">Reject</button>
+                    </form>
+                    <form action="/ssm/mca/approveAndReject" method="POST">
+                        <input type="hidden" name="registerNumber" value="{{registerNumber}}">
+                        <button type="submit" name="action" value="Approve" class="btn btn-approve">Approve</button>
+                    </form>
                 </div>
             </div>
-            <div class="form-actions">
-                <form action="/ssm/mca/approveAndReject" method="POST">
-                    <input type="hidden" name="registerNumber" value="{{registerNumber}}">
-                    <input type="submit" name="action" value="Reject" class="reject-btn">
-                </form>
-                <form action="/ssm/mca/approveAndReject" method="POST">
-                    <input type="hidden" name="registerNumber" value="{{registerNumber}}">
-                    <input type="submit" name="action" value="Approve" class="approve-btn">
-                </form>
-            </div>
-        </div>
         {{/each}}
 
-        <div class="btn-container">
-            <a class="btn" href="/ssm/mca/dashboard">< Go back!</a>
+            <div class="card-footer">
+                <a href="/ssm/mca/dashboard" class="btn-back">← Go back</a>
+            </div>
         </div>
     </div>
 </body>

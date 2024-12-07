@@ -1,78 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery</title>
-  <style>
-  
-    h1 {
-      text-align: center;
-      font-size: 2em;     
-      margin-bottom: 1em;  
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #333;
+        }
 
-    div {
-      margin: 1em;    
-      border: 1px solid #ccc;  
-      padding: 1em;      
-      text-align: center;  
-    }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
 
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #3d6ef5ff;
+            font-size: 2.5rem;
+        }
 
-    img {
-      max-width: 100%;    
-      height: auto;      
-      margin-bottom: 0.5em;  
-    }
+        /* Gallery Styles */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
 
-    
-    h2 {
-      font-size: 1.2em; 
-      margin-bottom: 0.25em;  
-    }
+        .gallery-item {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    p {
-      font-size: 0.9em; 
-    }
-    .btn{
-    padding: 10px 18px;
-    background: #efefef;
-    border: none;
-    font-weight: bold;
-    border: 2.5px solid #3d6ef5ff;
-    border-radius: 10px;
-    color: black;
-    cursor: pointer;
-    transition: .4s;
-}
-.btn>i{
-    margin-left: 10px;
-}
-.btn:hover{
-    background: #3d6ef5ff;
-    font-weight: bold;
-    color:#efefef
-}
-a{
-  text-decoration: none;
-}
-  </style>
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .gallery-item-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-content {
+            padding: 15px;
+            text-align: center; /* Centers text horizontally */
+        }
+
+        .gallery-item h2 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-align: center; /* Ensures proper horizontal alignment */
+        }
+
+        .gallery-item p {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            text-align: center; /* Ensures proper horizontal alignment */
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox:target {
+            display: flex;
+        }
+
+        .lightbox-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 70vh;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            text-decoration: none;
+            z-index: 1000; 
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.8);
+            color: #000;
+        }
+
+        .lightbox-text {
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: block;
+            margin: 30px auto;
+            width: 200px;
+            padding: 10px;
+            text-align: center;
+            background: #3d6ef5ff;
+            color: #fff;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #f2f2f2;
+            color: #3d6ef5ff;
+            font-weight: bold;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Images</h1>
-
-  {{#each images}}
-    <div>
-      <img src="{{ imageUrl }}" alt="{{ title }}" width="250">  
-      <h2>{{ title }}</h2>
-      <p>{{ description }}</p>
+    <div class="container">
+        <h1>Image Gallery</h1>
+        <div class="gallery">
+            {{#each images}}
+            <div class="gallery-item">
+                <a href="#lightbox-{{ @index }}">
+                    <div class="gallery-item-image">
+                        <img src="{{ imageUrl }}" alt="{{ title }}" loading="lazy">
+                    </div>
+                    <div class="gallery-item-content">
+                        <h2>{{ title }}</h2>
+                        <p>{{ description }}</p>
+                    </div>
+                </a>
+            </div>
+            {{/each}}
+        </div>
+        {{#each images}}
+        <div id="lightbox-{{ @index }}" class="lightbox">
+            <div class="lightbox-content">
+                <a href="#" class="lightbox-close" aria-label="Close">&times;</a>
+                <img src="{{ imageUrl }}" alt="{{ title }}">
+                <div class="lightbox-text">
+                    <h2>{{ title }}</h2>
+                    <p>{{ description }}</p>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+        <a href="/ssm/mca/dashboard" class="back-button">Back</a>
     </div>
-  {{/each}}
-  <br><br>
-  <center>
-  <a href="/ssm/mca/dashboard" class="btn">Back<i class="uil uil-image"></i></a><br>
-  </center>
 </body>
 </html>

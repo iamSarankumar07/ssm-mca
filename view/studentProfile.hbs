@@ -1,6 +1,523 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --background-color: #f3f4f6;
+            --card-background: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background-color: var(--text-secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .profile-role {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .details-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .detail-item dt {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .detail-item dd {
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 1rem 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .fee-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .fee-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .fee-value {
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--background-color);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 0.875rem;
+        }
+
+        .table-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .table-link:hover {
+            text-decoration: underline;
+        }
+        .card h3 {
+            margin-top: 0;
+            display: flex;
+            font-size: 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card img {
+            width: 35px;
+            height: 35px;
+            vertical-align: middle;
+        }
+        button[type="button"] {
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            font-weight: bold;
+            padding: 8px 14px;
+            border: none;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="button"]:hover {
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Student Profile</h1>
+            <button class="btn btn-danger" onclick="handleLogout()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span style="margin-left: 0.5rem;">Logout</span>
+            </button>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Student Details</h2>
+                    <a href="/ssm/mca/studentProfileEdit/{{student._id}}" class="edit-button">
+                    <img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit">
+                    </a>
+                </div>
+                <div class="card-content">
+                    {{!-- <div class="profile-header">
+                        <div class="avatar">hj</div>
+                        <div>
+                            <h3 class="profile-name">{{ student.name }}</h3>
+                            <p class="profile-role">MCA - {{ student.year }} Year</p>
+                        </div>
+                    </div> --}}
+                    <div class="profile-header">
+                        <div class="avatar">
+                            <img id="avatar-img" alt="Student Avatar" />
+                        </div>
+                        <div>
+                            <h3 class="profile-name">{{ student.name }}</h3>
+                            <p class="profile-role">MCA - {{ student.year }} Year</p>
+                        </div>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <dt>Student ID</dt>
+                            <dd>{{ student.studentId }}</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>Register Number</dt>
+                            <dd>{{ student.registerNumber }}</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>Gender</dt>
+                            <dd>{{ student.gender }}</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>Date of Birth</dt>
+                            <dd>{{ student.dob }}</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>Phone</dt>
+                            <dd>+91 {{ student.phone }}</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>Email</dt>
+                            <dd>{{ student.email }}</dd>
+                        </div>
+                        <div class="detail-item">
+                            <dt>Address</dt>
+                            <dd id="hideButton"><button type="button" onclick="addressUpdate()">Update Address</button></dd>
+                            <dd id="hideTd">{{ student.address.address }}, {{ student.address.city }}, {{ student.address.state }}, {{ student.address.pinCode }}, {{ student.address.country }}.</dd>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Fees Details</h2>
+                </div>
+                <div class="card-content">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('tuition')">Tuition</div>
+                        <div class="tab" onclick="switchTab('exam')">Exam</div>
+                    </div>
+                    
+                    <div id="tuitionFees" class="tab-content active">
+                        <h3>
+                            Tuition Fees Details 
+                            <a href="/ssm/mca/studentProfileTuEdit/{{student._id}}" class="edit-button">
+                                <img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit">
+                            </a>
+                        </h3>
+                        <br>
+                        <div class="fee-item">
+                            <span class="fee-label">Total Amount</span>
+                            <span class="fee-value">Rs. {{student.totalFee}}</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Amount Due</span>
+                            <span class="fee-value">Rs. {{student.pendingFee}}</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Payment Status</span>
+                            <span class="fee-value">{{student.paymentStatus}}</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Due Date</span>
+                            <span class="fee-value">{{student.tutionDueDate}}</span>
+                        </div>
+                    </div>
+                    
+                    <div id="examFees" class="tab-content">
+                        <h3>
+                            Exam Fees Details 
+                            <a href="/ssm/mca/studentProfileExEdit/{{student._id}}" class="edit-button">
+                                <img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Profile Edit">
+                            </a>
+                        </h3>
+                        <br>
+                        <div class="fee-item">
+                            <span class="fee-label">Total Amount</span>
+                            <span class="fee-value">Rs. {{student.examTotalFee}}</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Amount Due</span>
+                            <span class="fee-value">Rs. {{student.examPendingFee}}</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Payment Status</span>
+                            <span class="fee-value">{{student.examPaymentStatus}}</span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Due Date</span>
+                            <span class="fee-value">{{student.examDueDate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem;">
+            <div class="card-header">
+                <h2 class="card-title">Study Materials</h2>
+            </div>
+            <div class="card-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Subject Code</th>
+                            <th>Subject Title</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each subject}}
+                        <tr>
+                            <td>{{inc @index}}</td>
+                            <td>{{code}}</td>
+                            <td>{{title}}</td>
+                            <td><a href="{{link}}" class="table-link">Download</a></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                window.location.href = '/ssm/mca/slogout';
+            }
+        }
+
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            document.querySelector(`.tab:nth-child(${tabName === 'tuition' ? '1' : '2'})`).classList.add('active');
+            document.getElementById(`${tabName}Fees`).classList.add('active');
+        }
+
+        function addressUpdate() {
+        window.location.href = '/ssm/mca/studentAddressUpdate/{{student._id}}';
+    }
+
+    function hideUpdateButton() {
+        var updateButtonRow = document.getElementById("hideButton");
+        var hideTd = document.getElementById("hideTd");
+        if ({{ student.addressUpdate }}) {
+            updateButtonRow.style.display = "none";
+        } else {
+            hideTd.style.display = "none";
+        }
+    }
+    window.onload = function() {
+        hideUpdateButton();
+
+        const avatarImg = document.getElementById('avatar-img');
+        const avatarContainer = avatarImg.parentElement;
+        const studentGender = "{{ student.gender }}";
+
+        if (studentGender === 'Male') {
+            avatarImg.src = 'https://i.ibb.co/6JxYzd3/man.png';
+        } else if (studentGender === 'Female') {
+            avatarImg.src = 'https://i.ibb.co/Bfrp572/woman.png';
+        } else {
+            avatarImg.src = '';
+        }
+
+        avatarContainer.style.width = '4rem';
+        avatarContainer.style.height = '4rem';
+        avatarContainer.style.borderRadius = '50%';
+        avatarContainer.style.overflow = 'hidden';
+        avatarContainer.style.display = 'flex';
+        avatarContainer.style.alignItems = 'center';
+        avatarContainer.style.justifyContent = 'center';
+        avatarContainer.style.backgroundColor = 'var(--primary-color)';
+        avatarContainer.style.border = '3px solid var(--text-primary)';
+
+        avatarImg.style.width = '100%';
+        avatarImg.style.height = '100%';
+        avatarImg.style.objectFit = 'cover';
+        avatarImg.style.borderRadius = '50%';
+    };
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+{{!-- <!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Profile</title>
@@ -309,4 +826,4 @@ button[type="button"]:hover {
 </div>
     </div>
 </body>
-</html>
+</html> --}}
