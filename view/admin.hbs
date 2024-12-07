@@ -7,6 +7,405 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h1 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #34495e;
+            text-transform: uppercase;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: block;
+            padding: 12px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, padding-left 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+            padding-left: 30px;
+        }
+
+        .sidebar a.active-tab {
+            background-color: #3498db;
+            padding-left: 30px;
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #f2f2f2;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            color: #34495e;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .card button {
+            background-color: #3d6ef5ff;
+            color: #f2f2f2;
+            border: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .card button:hover {
+            font-weight: bold;
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+        }
+
+        .content-section {
+            display: none; 
+        }
+
+        .content-section.active {
+            display: block; 
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header h1 {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h1>Admin Dashboard</h1>
+            <nav>
+                <ul>
+                    <li><a href="#students" onclick="showSection('students')">Students</a></li>
+                    <li><a href="#fees" onclick="showSection('fees')">Fees</a></li>
+                    <li><a href="#alerts" onclick="showSection('alerts')">Alerts</a></li>
+                    <li><a href="#announcements" onclick="showSection('announcements')">Announcements</a></li>
+                    <li><a href="#materials" onclick="showSection('materials')">Study Materials</a></li>
+                    <li><a href="#staff" onclick="showSection('staff')">Staff</a></li>
+                    <li><a href="#gallery" onclick="showSection('gallery')">Image Gallery</a></li>
+                    <li><a href="#alumni" onclick="showSection('alumni')">Alumni</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="header">
+                <h1>Welcome, <span style="color: #3d6ef5ff;">{{user.name}}</span>!</h1>
+                <button class="logout-btn" onclick="return confirmLogout()">Logout</button>
+            </header>
+
+            <!-- Students Section -->
+            <div id="students" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Student Management</h2>
+                        <button onclick="window.location.href='/ssm/mca/register'">Register</button>
+                    </div>
+                    <div class="card">
+                        <h2>Student Details</h2>
+                        <button onclick="window.location.href='/ssm/mca/studentList'">View</button>
+                    </div>
+                    <div class="card">
+                        <h2>Student Profile Update Request</h2>
+                        <button onclick="window.location.href='/ssm/mca/reviewRequest'">View</button>
+                    </div>
+                    <div class="card">
+                        <h2>Address Update Request</h2>
+                        <button onclick="window.location.href='/ssm/mca/addressUpdateReq'">Send</button>
+                    </div>
+                    <div class="card">
+                        <h2>Move Students</h2>
+                        <button onclick="window.location.href='/ssm/mca/moveStudentsPage'">Move</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fees Section -->
+            <div id="fees" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Tuition Fees</h2>
+                        <button onclick="window.location.href='/ssm/mca/feeList'">View</button>
+                    </div>
+                    <div class="card">
+                        <h2>Exam Fees</h2>
+                        <button onclick="window.location.href='/ssm/mca/examFeeList'">View</button>
+                    </div>
+                    <div class="card">
+                        <h2>Update Due Date</h2>
+                        <button onclick="window.location.href='/ssm/mca/examFeeList'">Update</button>
+                    </div>
+                    <div class="card">
+                        <h2>Tuition Fee Update Request</h2>
+                        <button onclick="window.location.href='/ssm/mca/reviewRequestTu'">View</button>
+                    </div>
+                    <div class="card">
+                        <h2>Exam Fee Update Request</h2>
+                        <button onclick="window.location.href='/ssm/mca/reviewRequestEx'">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts Section -->
+            <div id="alerts" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Payment Alerts</h2>
+                        <button onclick="window.location.href='/ssm/mca/paymentAlert'">Send Alerts</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Announcements Section -->
+            <div id="announcements" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Student Announcement</h2>
+                        <button onclick="window.location.href='/ssm/mca/announcement'">Send</button>
+                    </div>
+                    <div class="card">
+                        <h2>Common Announcement</h2>
+                        <button onclick="window.location.href='/ssm/mca/commonAnnouncement'">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Materials Section -->
+            <div id="materials" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Upload Materials</h2>
+                        <button onclick="window.location.href='/ssm/mca/subject'">Upload</button>
+                    </div>
+                    <div class="card">
+                        <h2>View Materials</h2>
+                        <button onclick="window.location.href='/ssm/mca/subjectList'">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Section -->
+            <div id="staff" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Create Account</h2>
+                        <button onclick="window.location.href='/ssm/mca/signup'">Create</button>
+                    </div>
+                    <div class="card">
+                        <h2>Staff Management</h2>
+                        <button onclick="window.location.href='/ssm/mca/staffList'">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div id="gallery" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Upload Image</h2>
+                        <button onclick="window.location.href='/ssm/mca/imageUpload'">Upload</button>
+                    </div>
+                    <div class="card">
+                        <h2>View Images</h2>
+                        <button onclick="window.location.href='/ssm/mca/gallery'">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="alumni" class="content-section">
+                <div class="grid">
+                    <div class="card">
+                        <h2>Alumni List</h2>
+                        <button onclick="window.location.href='/ssm/mca/alumniList'">View</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active-tab');
+            });
+
+            const activeLink = document.querySelector(`.sidebar a[href="#${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active-tab');
+            }
+
+            localStorage.setItem('activeTab', sectionId);
+        }
+
+        function confirmLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem('activeTab');
+                
+                window.location.href = '/ssm/mca/logout';
+                return true;
+            }
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lastActiveTab = localStorage.getItem('activeTab') || 'students';
+            showSection(lastActiveTab);
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
             font-family: "Poppins", sans-serif;
         }
 
@@ -255,4 +654,4 @@
         };
     </script>
 </body>
-</html>
+</html> --}}
