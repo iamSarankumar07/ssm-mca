@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const Image = require("../models/imageModel");
 const cloudinary = require('cloudinary').v2;
+const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
 admin.initializeApp({
@@ -20,6 +21,8 @@ admin.initializeApp({
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 });
 
+const bucket = admin.storage().bucket();
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -27,9 +30,12 @@ cloudinary.config({
   secure: true,
 });
 
-const bucket = admin.storage().bucket();
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
 
-exports.uploadImage = async (req, res) => {
+exports.uploadImageFireBase = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
@@ -378,6 +384,153 @@ exports.getAllImagesFromCloudinary = async (req, res) => {
   } catch (error) {
     console.error("Unexpected Error:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.uploadImageSupabase = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+
+    let fileName = req?.body?.title ?? req.file.originalname;
+    let description = req?.body?.description ?? "";
+
+    const { data, error } = await supabase.storage
+      .from('images')
+      .upload(fileName, req.file.buffer, {
+        contentType: req.file.mimetype,
+        cacheControl: '3600',
+      });
+
+    if (error) {
+      console.error("Supabase Upload Error:", error);
+      return res.status(500).send("Error uploading file to Supabase.");
+    }
+
+    const { publicUrl } = supabase.storage.from('images').getPublicUrl(data.path);
+
+    const image = new Image({
+      title: fileName,
+      description: description,
+      imageUrl: publicUrl,
+    });
+
+    try {
+      const imageDBdata = await image.save();
+      console.log("Image saved successfully to DB:", imageDBdata);
+
+      return res.send(
+        `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Image Upload</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              background-color: #f4f4f4;
+            }
+
+            .modal {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: fixed;
+              z-index: 1000;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              overflow: auto;
+              background-color: rgba(0, 0, 0, 0.6);
+            }
+
+            .modal-content {
+              background-color: #fefefe;
+              padding: 20px;
+              border: 1px solid #ccc;
+              border-radius: 10px;
+              width: 80%;
+              max-width: 400px;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            p {
+              margin: 0 0 20px;
+              font-size: 18px;
+              font-weight: bold;
+              color: #28a745; /* Green color */
+              text-align: center;
+            }
+
+            .button-container {
+              display: flex;
+              justify-content: center;
+              width: 100%;
+            }
+
+            button[type="button"] {
+              background-color: #3d6ef5ff;
+              color: #f2f2f2;
+              font-weight: bold;
+              padding: 8px 14px;
+              border: none;
+              font-size: 13px;
+              border-radius: 5px;
+              cursor: pointer;
+              transition: background-color 0.3s;
+            }
+
+            button[type="button"]:hover {
+              background-color: #f2f2f2;
+              color: #3d6ef5ff;
+              font-weight: bold;
+            }
+          </style>
+        </head>
+        <body>
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <p>Image successfully uploaded...</p>
+              <div class="button-container">
+                <button type="button" onclick="redirect()">Continue</button>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            function redirect() {
+              window.location.href = "/ssm/mca/imageUpload";
+            }
+
+            window.onload = function() {
+              var modal = document.getElementById("myModal");
+
+              modal.style.display = "flex";
+
+              window.onclick = function(event) {
+                if (event.target == modal) {
+                  modal.style.display = "none";
+                  redirect();
+                }
+              }
+            }
+          </script>
+        </body>
+        </html>
+        `
+      );
+    } catch (err) {
+      console.error("Error saving to DB:", err);
+      return res.status(500).send("Error saving image data to database.");
+    }
+  } catch (error) {
+    console.error("Unexpected Error:", error);
+    res.status(500).send("Internal server error.");
   }
 };
 
