@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Student = require("../models/studentModel");
 const studentController = require("../controller/studentController")
 const Subject = require("../models/subjectModel");
+const admissionModel = require("../models/admissionModel");
 const Contact = require("../models/contactModel");
 const Image = require("../models/imageModel");
 const puppeteer = require('puppeteer');
@@ -158,7 +159,7 @@ exports.moveStudents = async (req, res) => {
 
 exports.message = async (req, res) => {
   try {
-    const messages = await Contact.find();
+    const messages = await Contact.find().sort({ createdAt: -1 });
     res.render("message", { messages });
   } catch (err) {
     console.log(err);
@@ -379,8 +380,20 @@ exports.feeEdit = async (req, res) => {
 
 exports.gallery = async (req, res) => {
   try {
-    const images = await Image.find({});
-    res.render("gallery", { images });
+    const apiUrl = "/ssm/mca/dashboard";
+    const images = await Image.find({}).sort({ createdAt: -1 });
+    res.render("gallery", { images, apiUrl });
+  } catch (err) {
+    console.log(err);
+    res.send(err.message);
+  }
+};
+
+exports.homeGallery = async (req, res) => {
+  try {
+    const apiUrl = "/";
+    const images = await Image.find({}).sort({ createdAt: -1 });
+    res.render("gallery", { images, apiUrl });
   } catch (err) {
     console.log(err);
     res.send(err.message);
@@ -1005,5 +1018,19 @@ exports.getStudentDetails = async (req, res) => {
   }
 }; */
 
+exports.admissionForm = async (req, res) => {
+  res.render("admissionForm");
+};
+
+exports.admissionFormList = async (req, res) => {
+  try {
+    let applications = await admissionModel.find({ isDelete: false}).sort({ refNo: -1 });
+
+    res.render("admissionFormList", { applications });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
 
 module.exports = exports;

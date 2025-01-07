@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 const pdf = require("html-pdf");
 const moment = require("moment");
 const countModel = require("../models/countModel")
+const admissionModel = require("../models/admissionModel")
 
 exports.newStudent = async (req, res) => {
   const body = req.body;
@@ -75,7 +76,7 @@ exports.newStudent = async (req, res) => {
   console.log(
     `Name : ${student.name} \nUsername: ${studentId} \nPassword : ${password}`
   );
-  const saltRounds = 10;
+  const saltRounds = 12;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   student.password = hashedPassword;
@@ -2108,7 +2109,7 @@ exports.studentTuitionDownload = async (req, res) => {
     let [studentsData, paidRecords, pendingRecords, totalRecords] = await Promise.all([
       Student.find({ isDelete: false, isAlumni: false, year: data.year }),
       Student.find({ isDelete: false, isAlumni: false, year: data.year, paymentStatus: "Paid" }).countDocuments(),
-      Student.find({ isDelete: false, isAlumni: false, year: data.year, paymentStatus: "Pending" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, paymentStatus: { $in: ["Pending", "Partial"] } }).countDocuments(),
       Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
     ]);
 
@@ -2161,7 +2162,7 @@ exports.studentExamDownload = async (req, res) => {
     let [studentsData, paidRecords, pendingRecords, totalRecords] = await Promise.all([
       Student.find({ isDelete: false, isAlumni: false, year: data.year }),
       Student.find({ isDelete: false, isAlumni: false, year: data.year, examPaymentStatus: "Paid" }).countDocuments(),
-      Student.find({ isDelete: false, isAlumni: false, year: data.year, examPaymentStatus: "Pending" }).countDocuments(),
+      Student.find({ isDelete: false, isAlumni: false, year: data.year, examPaymentStatus: { $in: ["Pending", "Partial"] } }).countDocuments(),
       Student.find({ isDelete: false, isAlumni: false, year: data.year }).countDocuments()
     ]);
 
@@ -2288,6 +2289,272 @@ exports.insertManyStudents = async (req, res) => {
           message: 'An error occurred',
           err: err.message
       });
+  }
+};
+
+exports.admissionApply = async (req, res) => {
+  try {
+    const body = req.body;
+    let existingEmail = await admissionModel.findOne({ email: body.email });
+    if (existingEmail) {
+      return res.send(
+        '<script>alert("Email already registered!"); window.location.href = "/";</script>'
+      );
+    }
+
+    let existingPhone = await admissionModel.findOne({ email: body.phone });
+
+    if (existingPhone) {
+      return res.send(
+        '<script>alert("Phone number already registered!"); window.location.href = "/";</script>'
+      );
+    }
+
+    body.dob = moment(body.dob).format("DD-MM-YYYY");
+
+    const admission = new admissionModel({
+      name: body.name,
+      fatherName: body.fatherName,
+      gender: body.gender,
+      dob: body.dob,
+      phone: body.phone,
+      email: body.email,
+      address: body.address,
+      program: body.program,
+      previousQualification: body.previousQualification,
+      tenthMarks: body.tenthMarks,
+      twelfthMarks: body.twelfthMarks,
+      ugPercentage: body.ugPercentage ? body.ugPercentage : 0,
+      emergencyContact: body.emergencyContact,
+      emergencyPhone: body.emergencyPhone,
+    });
+
+    let admissionRefNoCount = await countModel.findOne({
+      name: "admissionRefNo",
+    });
+    let count = admissionRefNoCount.count;
+    let date = Date.now();
+    let prefix = moment(date).format("YY");
+    let center = "SSMREF";
+    let totalCount = count + 1;
+    let refNo = `${prefix}${center}${totalCount}`;
+
+    await countModel.findByIdAndUpdate(admissionRefNoCount._id.toString(), {
+      $set: { count: totalCount },
+    });
+
+    admission.appliedDate = moment(date).format("DD-MM-YYYY");
+    admission.refNo = refNo.toString();
+
+    let admissionData = await admission.save();
+
+    if (admissionData) {
+      const transPorter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "verifyuserofficial@gmail.com",
+          pass: "wsdv megz vecp wzen",
+        },
+      });
+
+      const mailOptions = {
+        from: "verifyuserofficial@gmail.com",
+        to: admission.email,
+        subject: "Application Received",
+        html: `
+          <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <title>Application Received - SSM College of Engineering</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+          }
+          .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+          h1 {
+            font-size: 28px;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+          }
+          p {
+            margin-bottom: 15px;
+            text-align: justify;
+          }
+          a {
+            color: #007bff;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          .footer {
+            font-size: 14px;
+            color: #999;
+            margin-top: 20px;
+            text-align: center;
+          }
+          .highlight {
+            background-color: #eaf6ff;
+            padding: 5px 10px;
+            border-radius: 5px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Application Received 🎓</h1>
+          <p>Dear ${admission.name},</p>
+          <p>Thank you for applying to <strong>SSM College of Engineering</strong>! We have successfully received your application for admission.</p>
+          <p>Your application is currently under review, and our admissions team will reach out to you shortly with the next steps. Here are your application details for reference:</p>
+          <ul>
+            <li><strong>Application ID:</strong> ${refNo}</li>
+            <li><strong>Program Applied:</strong> ${admission.program}</li>
+            <li><strong>Submission Date:</strong> ${admission.appliedDate}</li>
+          </ul>
+          <p>If you have any questions or need further assistance, feel free to <a href="mailto:iam@sarankumar@outlook.in">contact us</a> or visit our <a href="https://ssm-mca.onrender.com/">admissions portal</a>.</p>
+          <p>We are excited to have you as a prospective member of our community and wish you the best of luck!</p>
+          <p>Warm regards,<br>Admissions Office<br><strong>SSM College of Engineering</strong></p>
+          <div class="footer">
+            This is an automated message. Please do not reply directly to this email.
+          </div>
+        </div>
+      </body>
+      </html>
+  `,
+      };
+
+      transPorter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log(err, "Email Sent Failed...");
+        } else {
+          console.log("Email Sent Successfully....");
+        }
+      });
+    }
+    res.send(
+      `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Registration</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+    
+        .modal {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+    
+        .modal-content {
+          background-color: #fefefe;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          width: 80%;
+          max-width: 400px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        p {
+          margin: 0 0 20px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #28a745; /* Green color */
+          text-align: center;
+        }
+    
+        .button-container {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+    
+        button[type="button"] {
+          background-color: #3d6ef5ff;
+          color: #f2f2f2;
+          font-weight: bold;
+          padding: 8px 14px;
+          border: none;
+          font-size: 13px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+    
+        button[type="button"]:hover {
+          background-color: #f2f2f2;
+          color: #3d6ef5ff;
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <p>Admission application submited successfully!</p>
+          <div class="button-container">
+            <button type="button" onclick="redirect()">Continue</button>
+          </div>
+        </div>
+      </div>
+    
+      <script>
+        function redirect() {
+          window.location.href = "/";
+        }
+    
+        window.onload = function() {
+          var modal = document.getElementById("myModal");
+    
+          modal.style.display = "flex";
+    
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+              redirect();
+            }
+          }
+        }
+      </script>
+    </body>
+    </html>
+    
+    `
+    );
+  } catch (err) {
+    console.log("error in newAdmission : " + err);
+    return res.send(
+      '<script>alert("Admission aplication Failed! due to Internal Server Error"); window.location.href = "/";</script>'
+    );
   }
 };
 

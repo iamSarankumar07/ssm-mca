@@ -200,7 +200,7 @@ exports.login = async (req, res) => {
 
     if (!status) {
       return res.send(
-        '<script>alert("User Disabled! Please Contact iamsarankumar@outlook.in"); window.location.href = "/ssm/mca/signin";</script>'
+        '<script>alert("User Disabled! Please Contact SSM COLLEGE OF ENGINEERING"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 
@@ -211,7 +211,7 @@ exports.login = async (req, res) => {
 
     if (!isPasswordMatch) {
       return res.send(
-        '<script>alert("Wrong Password"); window.location.href = "/ssm/mca/signin";</script>'
+        '<script>alert("Wrong Password!"); window.location.href = "/ssm/mca/signin";</script>'
       );
     }
 

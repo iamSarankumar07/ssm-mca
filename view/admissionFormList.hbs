@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applications List</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    body {
+      font-family: "Poppins", sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .back-button {
+      background-color: #3d6ef5ff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      position: absolute;
+      left: 0;
+    }
+    .back-button:hover {
+      background-color: #f2f2f2;
+      transition: background-color 0.3s;
+      color: #3d6ef5ff;
+    }
+    h1 {
+      color: #2c3e50;
+      font-size: 32px;
+      margin: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #e0e0e0;
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      text-align: center;
+      color: #2c3e50;
+    }
+    .btn {
+      padding: 8px 12px;
+      margin: 2px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .btn-view {
+      background-color: #3d6ef5ff;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .btn-view:hover {
+      background-color: #f2f2f2;
+      color: #3d6ef5ff;
+      transition: background-color 0.3s;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+      background-color: #ffffff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .modal-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .modal-close {
+      float: right;
+      color: #aaa;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .modal-close:hover,
+    .modal-close:focus {
+      color: #000;
+      text-decoration: none;
+    }
+  </style>
+  <script>
+    function searchByRefNo() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toUpperCase();
+      const table = document.getElementById('applicationsTable');
+      const rows = table.getElementsByTagName('tr');
+
+      for (let i = 0; i < rows.length; i++) {
+        const td = rows[i].getElementsByTagName('td')[0]; // First column (Application ID)
+        if (td) {
+          const textValue = td.textContent || td.innerText;
+          if (textValue.toUpperCase().indexOf(filter) > -1) {
+            rows[i].style.display = '';
+          } else {
+            rows[i].style.display = 'none';
+          }
+        }
+      }
+    }
+
+    function showDetails(applicationId) {
+      var modal = document.getElementById("modal-" + applicationId);
+      modal.style.display = "block";
+    }
+
+    function closeDetails(applicationId) {
+      var modal = document.getElementById("modal-" + applicationId);
+      modal.style.display = "none";
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="javascript:history.back()" class="back-button">&larr; Back</a>
+      <h1>Applications Received</h1>
+    </div>
+
+    <!-- Search Bar -->
+    <div style="margin-bottom: 20px; text-align: center;">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by application ID"
+        onkeyup="searchByRefNo()"
+        style="padding: 10px; width: 300px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Application ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Program Applied</th>
+          <th>Applied Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="applicationsTable">
+        {{#each applications}}
+        <tr>
+          <td data-label="Application ID" style="text-align: center;">{{refNo}}</td>
+          <td data-label="Name">{{name}}</td>
+          <td data-label="Name">{{email}}</td>
+          <td data-label="Name">{{phone}}</td>
+          <td data-label="Program" style="text-align: center;">{{program}}</td>
+          <td data-label="Applied Date" style="text-align: center;">{{appliedDate}}</td>
+          <td data-label="Actions" style="text-align: center;">
+            <button class="btn btn-view" onclick="showDetails('{{refNo}}')">View</button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    {{#each applications}}
+    <!-- Modal Structure -->
+    <div id="modal-{{refNo}}" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeDetails('{{refNo}}')">&times;</span>
+        <div class="modal-header">Application Details</div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>{{name}}</td>
+          </tr>
+          <tr>
+            <th>Father's Name</th>
+            <td>{{fatherName}}</td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td>{{gender}}</td>
+          </tr>
+          <tr>
+            <th>Date of Birth</th>
+            <td>{{dob}}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>{{phone}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{email}}</td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td>{{address}}</td>
+          </tr>
+          <tr>
+            <th>Previous Qualification</th>
+            <td>{{previousQualification}}</td>
+          </tr>
+          <tr>
+            <th>Program Applied</th>
+            <td>{{program}}</td>
+          </tr>
+          <tr>
+            <th>10th Marks</th>
+            <td>{{tenthMarks}}</td>
+          </tr>
+          <tr>
+            <th>12th Marks</th>
+            <td>{{twelfthMarks}}</td>
+          </tr>
+          <tr>
+            <th>Undergraduate Percentage</th>
+            <td>{{ugPercentage}}%</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact</th>
+            <td>{{emergencyContact}}</td>
+          </tr>
+          <tr>
+            <th>Emergency Phone</th>
+            <td>{{emergencyPhone}}</td>
+          </tr>
+          <tr>
+            <th>Applied Date</th>
+            <td>{{appliedDate}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</body>
+</html>

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
         * {
             margin: 0;
             padding: 0;
@@ -27,6 +30,9 @@
         }
 
         .sidebar {
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
             width: 250px;
             background-color: #2c3e50;
             color: #ecf0f1;
@@ -73,6 +79,7 @@
         }
 
         .main-content {
+            margin-left: 250px;
             flex: 1;
             padding: 30px;
             overflow-y: auto;
@@ -96,21 +103,21 @@
         }
 
         .logout-btn {
-            background-color: #e74c3c;
+            background-color: #3d6ef5ff;
             color: #fff;
             border: none;
             padding: 10px 20px;
-            font-weight: bold;
             border-radius: 6px;
             font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         .logout-btn:hover {
+            font-weight: 500;
             background-color: #f2f2f2;
-            color: #e74c3c;
-            font-weight: bold;
+            color: #3d6ef5ff;
         }
 
         .grid {
@@ -120,49 +127,38 @@
         }
 
         .card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
             text-align: center;
-            transition: transform 0.3s ease;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            text-decoration: none;
+            color: inherit;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
 
         .card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transform: translateY(-5px);
+            background-color: #f1f1f1;
         }
 
         .card h2 {
-            font-size: 1.4rem;
-            color: #34495e;
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+
+        .card i {
             margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .card button {
-            background-color: #3d6ef5ff;
-            color: #f2f2f2;
-            border: none;
-            font-weight: bold;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .card button:hover {
-            font-weight: bold;
-            background-color: #f2f2f2;
-            color: #3d6ef5ff;
         }
 
         .content-section {
-            display: none; 
+            display: none;
         }
 
         .content-section.active {
-            display: block; 
+            display: block;
         }
 
         @media (max-width: 768px) {
@@ -171,8 +167,13 @@
             }
 
             .sidebar {
+                position: relative;
                 width: 100%;
-                padding: 15px;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
             }
 
             .header {
@@ -186,6 +187,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="dashboard">
         <aside class="sidebar">
@@ -200,141 +202,158 @@
                     <li><a href="#staff" onclick="showSection('staff')">Staff</a></li>
                     <li><a href="#gallery" onclick="showSection('gallery')">Image Gallery</a></li>
                     <li><a href="#alumni" onclick="showSection('alumni')">Alumni</a></li>
+                    <li><a href="#admission" onclick="showSection('admission')">Admissions & Contact messages</a></li>
                 </ul>
             </nav>
         </aside>
         <main class="main-content">
             <header class="header">
                 <h1>Welcome, <span style="color: #3d6ef5ff;">{{user.name}}</span>!</h1>
-                <button class="logout-btn" onclick="return confirmLogout()">Logout</button>
+                <button class="logout-btn" onclick="return confirmLogout()">Logout!</button>
             </header>
 
             <!-- Students Section -->
             <div id="students" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/register" class="card">
+                        <i class="fas fa-user-plus fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Student Management</h2>
-                        <button onclick="window.location.href='/ssm/mca/register'">Register</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/studentList" class="card">
+                        <i class="fas fa-users fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Student Details</h2>
-                        <button onclick="window.location.href='/ssm/mca/studentList'">View</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/reviewRequest" class="card">
+                        <i class="fas fa-user-edit fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Student Profile Update Request</h2>
-                        <button onclick="window.location.href='/ssm/mca/reviewRequest'">View</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/addressUpdateReq" class="card">
+                        <i class="fas fa-map-marker-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Address Update Request</h2>
-                        <button onclick="window.location.href='/ssm/mca/addressUpdateReq'">Send</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/moveStudentsPage" class="card">
+                        <i class="fas fa-exchange-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Move Students</h2>
-                        <button onclick="window.location.href='/ssm/mca/moveStudentsPage'">Move</button>
-                    </div>
+                    </a>
                 </div>
             </div>
 
             <!-- Fees Section -->
             <div id="fees" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/feeList" class="card">
+                        <i class="fas fa-money-bill-wave fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Tuition Fees</h2>
-                        <button onclick="window.location.href='/ssm/mca/feeList'">View</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/examFeeList" class="card">
+                        <i class="fas fa-file-invoice-dollar fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Exam Fees</h2>
-                        <button onclick="window.location.href='/ssm/mca/examFeeList'">View</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/updateDueDatesForAll" class="card">
+                        <i class="fas fa-calendar-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Update Due Date</h2>
-                        <button onclick="window.location.href='/ssm/mca/examFeeList'">Update</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/reviewRequestTu" class="card">
+                        <i class="fas fa-edit fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Tuition Fee Update Request</h2>
-                        <button onclick="window.location.href='/ssm/mca/reviewRequestTu'">View</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/reviewRequestEx" class="card">
+                        <i class="fas fa-file-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Exam Fee Update Request</h2>
-                        <button onclick="window.location.href='/ssm/mca/reviewRequestEx'">View</button>
-                    </div>
+                    </a>
                 </div>
             </div>
 
             <!-- Alerts Section -->
             <div id="alerts" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/paymentAlert" class="card">
+                        <i class="fas fa-bell fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Payment Alerts</h2>
-                        <button onclick="window.location.href='/ssm/mca/paymentAlert'">Send Alerts</button>
-                    </div>
+                    </a>
                 </div>
             </div>
 
             <!-- Announcements Section -->
             <div id="announcements" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/announcement" class="card">
+                        <i class="fas fa-bullhorn fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Student Announcement</h2>
-                        <button onclick="window.location.href='/ssm/mca/announcement'">Send</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/commonAnnouncement" class="card">
+                        <i class="fas fa-volume-up fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Common Announcement</h2>
-                        <button onclick="window.location.href='/ssm/mca/commonAnnouncement'">Send</button>
-                    </div>
+                    </a>
                 </div>
             </div>
 
             <!-- Study Materials Section -->
             <div id="materials" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/subject" class="card">
+                        <i class="fas fa-upload fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Upload Materials</h2>
-                        <button onclick="window.location.href='/ssm/mca/subject'">Upload</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/subjectList" class="card">
+                        <i class="fas fa-book-open fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>View Materials</h2>
-                        <button onclick="window.location.href='/ssm/mca/subjectList'">View</button>
-                    </div>
+                    </a>
                 </div>
             </div>
 
             <!-- Staff Section -->
             <div id="staff" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/signup" class="card">
+                        <i class="fas fa-user-plus fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Create Account</h2>
-                        <button onclick="window.location.href='/ssm/mca/signup'">Create</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/staffList" class="card">
+                        <i class="fas fa-user-cog fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Staff Management</h2>
-                        <button onclick="window.location.href='/ssm/mca/staffList'">View</button>
-                    </div>
+                    </a>
                 </div>
             </div>
 
             <!-- Gallery Section -->
             <div id="gallery" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/imageUpload" class="card">
+                        <i class="fas fa-image fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Upload Image</h2>
-                        <button onclick="window.location.href='/ssm/mca/imageUpload'">Upload</button>
-                    </div>
-                    <div class="card">
+                    </a>
+                    <a href="/ssm/mca/gallery" class="card">
+                        <i class="fas fa-photo-video fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>View Images</h2>
-                        <button onclick="window.location.href='/ssm/mca/gallery'">View</button>
-                    </div>
+                    </a>
                 </div>
             </div>
 
+            <!-- Alumni Section -->
             <div id="alumni" class="content-section">
                 <div class="grid">
-                    <div class="card">
+                    <a href="/ssm/mca/alumniList" class="card">
+                        <i class="fas fa-user-graduate fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Alumni List</h2>
-                        <button onclick="window.location.href='/ssm/mca/alumniList'">View</button>
-                    </div>
+                    </a>
                 </div>
             </div>
+
+            <!-- Admission Section -->
+            <div id="admission" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/admissionFormList" class="card">
+                        <i class="fas fa-file-signature fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Admission Applications</h2>
+                    </a>
+                    <a href="/ssm/mca/messages" class="card">
+                        <i class="fas fa-envelope fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Received Contact Messages</h2>
+                    </a>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -366,7 +385,7 @@
         function confirmLogout() {
             if (confirm('Are you sure you want to log out?')) {
                 localStorage.removeItem('activeTab');
-                
+
                 window.location.href = '/ssm/mca/logout';
                 return true;
             }
@@ -379,6 +398,7 @@
         });
     </script>
 </body>
+
 </html>
 
 

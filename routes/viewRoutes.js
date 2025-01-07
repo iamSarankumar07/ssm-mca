@@ -207,8 +207,14 @@ app.get(
 
 app.get(
   "/gallery",
-  authonticationController.validateToken,
+  // authonticationController.validateToken,
   viewController.gallery
+);
+
+app.get(
+  "/home/gallery",
+  // authonticationController.validateToken,
+  viewController.homeGallery
 );
 
 app.get("/student/forgotPassword", (req, res) => {
@@ -227,6 +233,18 @@ app.post(
   "/alumniStatus",
   authonticationController.validateToken,
   viewController.alumniStatus
+);
+
+app.get(
+  "/admissionForm",
+  // authonticationController.validateToken,
+  viewController.admissionForm
+);
+
+app.get(
+  "/admissionFormList",
+  authonticationController.validateToken,
+  viewController.admissionFormList
 );
 
 module.exports = app;
