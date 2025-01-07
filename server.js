@@ -26,12 +26,18 @@ hbs.registerHelper('inc', function(value, options) {
   return parseInt(value) + 1;
 });
 
+// app.get("/", (req, res) => {
+//   res.render("main");
+// });
+
 app.get("/", (req, res) => {
-  res.render("main");
+  res.render("newHome");
 });
+
 app.get("/home", (req, res) => {
   res.render("home");
 });
+
 app.get("/studentHome", (req, res) => {
   res.render("studentHome");
 });

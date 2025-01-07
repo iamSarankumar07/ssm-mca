@@ -905,4 +905,15 @@ exports.sendPaymentAlert = async (req, res) => {
   }
 };
 
+exports.admissionForm = async (req, res) => {
+  try {
+    
+  } catch (err) {
+    console.log(err, err.message);
+    return res.send(
+      '<script>alert("Application sumit failed.."); window.location.href = "/";</script>'
+    );
+  }
+}
+
 module.exports = exports;

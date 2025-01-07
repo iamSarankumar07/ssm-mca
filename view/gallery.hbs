@@ -77,20 +77,20 @@
 
         .gallery-item-content {
             padding: 15px;
-            text-align: center; /* Centers text horizontally */
+            text-align: center;
         }
 
         .gallery-item h2 {
             font-size: 1.2em;
             color: #2c3e50;
             margin-bottom: 10px;
-            text-align: center; /* Ensures proper horizontal alignment */
+            text-align: center;
         }
 
         .gallery-item p {
             font-size: 0.9em;
             color: #7f8c8d;
-            text-align: center; /* Ensures proper horizontal alignment */
+            text-align: center;
         }
 
         .lightbox {
@@ -230,7 +230,21 @@
             </div>
         </div>
         {{/each}}
-        <a href="/ssm/mca/dashboard" class="back-button">Back</a>
+        <a href="#" class="back-button" onclick="redirectToLastApi()">Back</a>
     </div>
+
+    <script>
+        function redirectToLastApi() {
+            const apiUrl = "{{apiUrl}}"; 
+            sessionStorage.setItem('lastApiUrl', apiUrl);
+
+            const lastApiUrl = sessionStorage.getItem('lastApiUrl');
+            if (lastApiUrl) {
+            window.location.href = lastApiUrl;
+            } else {
+            window.location.href = '/';
+            }
+        }
+    </script>
 </body>
 </html>

@@ -124,4 +124,10 @@ app.post(
   studentController.insertManyStudents
 );
 
+app.post(
+  "/admissionApply",
+  // authonticationController.validateToken,
+  studentController.admissionApply
+);
+
 module.exports = app;
