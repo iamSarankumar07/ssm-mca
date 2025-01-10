@@ -14,6 +14,7 @@ const hbs = require("hbs");
 const app = express();
 const { verify } = require("jsonwebtoken");
 app.use(express.static(path.join(__dirname, "../Images")));
+const moment = require("moment");
 
 app.use(express.static("Images"));
 
@@ -381,7 +382,7 @@ exports.feeEdit = async (req, res) => {
 exports.gallery = async (req, res) => {
   try {
     const apiUrl = "/ssm/mca/dashboard";
-    const images = await Image.find({}).sort({ createdAt: -1 });
+    const images = await Image.find({ isDelete: false}).sort({ createdAt: -1 });
     res.render("gallery", { images, apiUrl });
   } catch (err) {
     console.log(err);
@@ -392,11 +393,37 @@ exports.gallery = async (req, res) => {
 exports.homeGallery = async (req, res) => {
   try {
     const apiUrl = "/";
-    const images = await Image.find({}).sort({ createdAt: -1 });
+    const images = await Image.find({ isDelete: false}).sort({ createdAt: -1 });
     res.render("gallery", { images, apiUrl });
   } catch (err) {
     console.log(err);
     res.send(err.message);
+  }
+};
+
+exports.imagesList = async (req, res) => {
+  try {
+    let imageData = await Image.find({ isDelete: false}).sort({ createdAt: -1 });
+    let formatedData = imageData.map((data) => {
+      return {
+        ...data.toObject(),
+        createdAt: moment(data.createdAt).format('DD-MM-YYYY')
+      };
+    })
+    res.render("imageList", { formatedData });
+  } catch (err) {
+    res.send(err.message);
+  }
+}
+
+exports.imageEdit = async (req, res) => {
+  try {
+    const imageId = req.params.imageId;
+    const imageData = await Image.findById(imageId);
+    res.render("imageEdit", { imageData });
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
   }
 };
 
