@@ -116,6 +116,15 @@
             height: 25px;
             vertical-align: middle;
         }
+        .view-link {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .view-link:hover .icon-img {
+            transform: scale(1.2);
+            filter: brightness(1.5);
+        }
     </style>
 </head>
 <body>
@@ -152,12 +161,12 @@
             <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
             <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">
+                <a href="/ssm/mca/studentEdit/{{_id}}" class="view-link">
                     <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
                 </a>
             </td>
             <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">
+                <a href="/ssm/mca/studentDelete/{{_id}}" class="view-link" onclick="return confirm('Are You Sure You Want To Delete ?')">
                     <img src="https://i.postimg.cc/J0VN5spQ/remove-1.png" alt="Delete" class="icon-img">
                 </a>
             </td>
@@ -202,12 +211,12 @@
             <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
             <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/studentEdit/{{_id}}" class="edit-icon">
+                <a href="/ssm/mca/studentEdit/{{_id}}" class="view-link">
                     <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
                 </a>
             </td>
             <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/studentDelete/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')">
+                <a href="/ssm/mca/studentDelete/{{_id}}" class="view-link" onclick="return confirm('Are You Sure You Want To Delete ?')">
                     <img src="https://i.postimg.cc/J0VN5spQ/remove-1.png" alt="Delete" class="icon-img">
                 </a>
             </td>

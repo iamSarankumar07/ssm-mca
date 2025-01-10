@@ -217,6 +217,18 @@ app.get(
   viewController.homeGallery
 );
 
+app.get(
+  "/imageList",
+  // authonticationController.validateToken,
+  viewController.imagesList
+);
+
+app.get(
+  "/imageEdit/:imageId",
+  authonticationController.validateToken,
+  viewController.imageEdit
+);
+
 app.get("/student/forgotPassword", (req, res) => {
   res.render("studentForgotPassword")
 })

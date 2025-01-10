@@ -48,4 +48,22 @@ app.get(
   imageController.getImagesFromDB
 );
 
+app.post("/imageEdit/fireBase/:imageId",
+  upload.single("image"),
+  authonticationController.validateToken,
+  imageController.imageEditFirebase
+);
+
+app.post("/imageEdit/Cloudinary/:imageId",
+  upload.single("image"),
+  authonticationController.validateToken,
+  imageController.imageEditCloudinary
+);
+
+app.get(
+  "/imageDelete/:imageId",
+  authonticationController.validateToken,
+  imageController.imageDelete
+)
+
 module.exports = app;

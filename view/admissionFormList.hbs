@@ -126,6 +126,20 @@
       color: #000;
       text-decoration: none;
     }
+    .icon-img {
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+        }
+    .view-link {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .view-link:hover .icon-img {
+            transform: scale(1.2);
+            filter: brightness(1.5);
+        }
   </style>
   <script>
     function searchByRefNo() {
@@ -185,7 +199,7 @@
           <th>Phone</th>
           <th>Program Applied</th>
           <th>Applied Date</th>
-          <th>Actions</th>
+          <th>View</th>
         </tr>
       </thead>
       <tbody id="applicationsTable">
@@ -197,9 +211,11 @@
           <td data-label="Name">{{phone}}</td>
           <td data-label="Program" style="text-align: center;">{{program}}</td>
           <td data-label="Applied Date" style="text-align: center;">{{appliedDate}}</td>
-          <td data-label="Actions" style="text-align: center;">
-            <button class="btn btn-view" onclick="showDetails('{{refNo}}')">View</button>
-          </td>
+          <td data-label="Actions" style="text-align: center;" class="view-link">
+            <button class="btn btn-view" onclick="showDetails('{{refNo}}')" style="border: none; background: none; cursor: pointer;">
+                <img src="https://i.postimg.cc/XYNnzjf1/vision-1.png" alt="View" class="icon-img" style="width: 25px; height: 25px;">
+            </button>
+        </td>
         </tr>
         {{/each}}
       </tbody>
