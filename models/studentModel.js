@@ -44,6 +44,42 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    parentName: {
+        type: String,
+        required: false,
+    },
+    parentPhone: {
+        type: String,
+        required: false,
+    },
+    previousInstitution: {
+        type: String,
+        required: false,
+    },
+    emergencyContact: {
+        type: String,
+        required: false,
+    },
+    emergencyPhone: {
+        type: String,
+        required: false,
+    },
+    bloodGroup: {
+        type: String,
+        required: false,
+    },
+    nationality: {
+        type: String,
+        required: false,
+    },
+    admissionDate: {
+        type: String,
+        required: false,
+    },
+    hostelRequired: {
+        type: String,
+        required: false,
+    },
     password: {
         type: String,
         required: false,

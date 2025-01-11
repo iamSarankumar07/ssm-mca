@@ -11,6 +11,7 @@ const admissionModel = require("../models/admissionModel")
 exports.newStudent = async (req, res) => {
   const body = req.body;
   body.dob = moment(body.dob).format('DD-MM-YYYY');
+  body.admissionDate = moment(body.admissionDate).format('DD-MM-YYYY');
 
   const existingStudent = await Student.findOne({
     registerNumber: body.registerNumber, isDelete: false
@@ -38,7 +39,23 @@ exports.newStudent = async (req, res) => {
     phone: body.phone,
     email: body.email,
     totalFee: body.totalFee,
+    address:{
+      address: body.address,
+      city: body.city,
+      state: body.state,
+      pinCode: body.pinCode,
+      country: body.country
+    },
     pendingFee: body.pendingFee,
+    parentName: body.parentName,
+    parentPhone: body.parentPhone,
+    previousInstitution: body.previousInstitution,
+    emergencyContact: body.emergencyContact,
+    emergencyPhone: body.emergencyPhone,
+    bloodGroup: body.bloodGroup,
+    nationality: body.nationality,
+    admissionDate: body.admissionDate,
+    hostelRequired: body.hostelRequired,
     paymentStatus: body.paymentStatus,
     examTotalFee: body.examTotalFee,
     examPendingFee: body.examPendingFee,
@@ -664,7 +681,7 @@ exports.updateStudent = async (req, res) => {
   try {
     let body = req.body;
     let userId = req.params.userId;
-    body.dob = moment(body.dob).format("DD-MM-YYYY")
+    body.dob = moment(body.dob, 'DD-MM-YYYY').format('DD-MM-YYYY');
     let password = body.dob;
 
 
@@ -682,6 +699,21 @@ exports.updateStudent = async (req, res) => {
       phone: body.phone,
       email: body.email,
       totalFee: body.totalFee,
+      address:{
+        address: body.address,
+        city: body.city,
+        state: body.state,
+        pinCode: body.pinCode,
+        country: body.country
+      },
+      parentName: body.parentName,
+      parentPhone: body.parentPhone,
+      previousInstitution: body.previousInstitution,
+      emergencyContact: body.emergencyContact,
+      emergencyPhone: body.emergencyPhone,
+      bloodGroup: body.bloodGroup,
+      nationality: body.nationality,
+      hostelRequired: body.hostelRequired,
       pendingFee: body.pendingFee,
       paymentStatus: body.paymentStatus,
       examTotalFee: body.examTotalFee,

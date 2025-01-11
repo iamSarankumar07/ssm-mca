@@ -125,7 +125,67 @@
             transform: scale(1.2);
             filter: brightness(1.5);
         }
+        .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: left;
+  color: #2c3e50;
+}
+    .modal-content {
+  background-color: #ffffff;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 100vh;
+  overflow-y: auto; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+    .modal-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .modal-close {
+  float: right;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: -10px;
+  margin-top: -10px;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #000;
+  text-decoration: none;
+}
     </style>
+    <script>
+    function showDetails(studentId) {
+      var modal = document.getElementById("modal-" + studentId);
+      modal.style.display = "block";
+    }
+
+    function closeDetails(studentId) {
+      var modal = document.getElementById("modal-" + studentId);
+      modal.style.display = "none";
+    }
+  </script>
 </head>
 <body>
 <div class="container">
@@ -145,6 +205,7 @@
             <th>Date Of Birth</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>View</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -160,6 +221,16 @@
             <td class="td">{{dob}}</td>
             <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
+            <td data-label="Actions" style="text-align: center;" class="view-link">
+                <img
+                    src="https://i.postimg.cc/XYNnzjf1/vision-1.png"
+                    alt="View"
+                    class="icon-img"
+                    style="width: 25px; height: 25px; cursor: pointer;"
+                    onclick="showDetails('{{studentId}}')"
+                />
+            </td>
+            </td>
             <td class="td" style="font-weight: bold;">
                 <a href="/ssm/mca/studentEdit/{{_id}}" class="view-link">
                     <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
@@ -195,6 +266,7 @@
             <th>Date Of Birth</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>View</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -210,6 +282,15 @@
             <td class="td">{{dob}}</td>
             <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
+            <td data-label="Actions" style="text-align: center;" class="view-link">
+                <img
+                    src="https://i.postimg.cc/XYNnzjf1/vision-1.png"
+                    alt="View"
+                    class="icon-img"
+                    style="width: 25px; height: 25px; cursor: pointer;"
+                    onclick="showDetails('{{studentId}}')"
+                />
+            </td>
             <td class="td" style="font-weight: bold;">
                 <a href="/ssm/mca/studentEdit/{{_id}}" class="view-link">
                     <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
@@ -232,6 +313,160 @@
             <button type="submit" class="btn">Download</button>
         </div>
     </form>
+
+    {{#each sortedFirstYear}}
+    <!-- Modal Structure -->
+    <div id="modal-{{studentId}}" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeDetails('{{studentId}}')">&times;</span>
+        <div class="modal-header">Student Details</div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>{{name}}</td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td>{{gender}}</td>
+          </tr>
+          <tr>
+            <th>Date of Birth</th>
+            <td>{{dob}}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>{{phone}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{email}}</td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td>{{address.address}}, {{address.city}}, {{address.state}} - {{address.pinCode}}, {{address.country}}</td>
+          </tr>
+          <tr>
+            <th>Parent Name</th>
+            <td>{{parentName}}</td>
+          </tr>
+          <tr>
+            <th>Parent Phone</th>
+            <td>{{parentPhone}}</td>
+          </tr>
+          <tr>
+            <th>Previous Institution</th>
+            <td>{{previousInstitution}}</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact Name</th>
+            <td>{{emergencyContact}}</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact Phone</th>
+            <td>{{emergencyPhone}}</td>
+          </tr>
+          <tr>
+            <th>Total Fees</th>
+            <td>Rs.{{totalFee}}</td>
+          </tr>
+          <tr>
+            <th>Blood Group</th>
+            <td>{{bloodGroup}}</td>
+          </tr>
+          <tr>
+            <th>Nationality</th>
+            <td>{{nationality}}</td>
+          </tr>
+          <tr>
+            <th>Hostel Required</th>
+            <td>{{hostelRequired}}</td>
+          </tr>
+          <tr>
+            <th>Admission Date</th>
+            <td>{{admissionDate}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+    {{#each sortedSecondYear}}
+    <!-- Modal Structure -->
+    <div id="modal-{{studentId}}" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeDetails('{{studentId}}')">&times;</span>
+        <div class="modal-header">Student Details</div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>{{name}}</td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td>{{gender}}</td>
+          </tr>
+          <tr>
+            <th>Date of Birth</th>
+            <td>{{dob}}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>{{phone}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{email}}</td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td>{{address.address}}, {{address.city}}, {{address.state}} - {{address.pinCode}}, {{address.country}}</td>
+          </tr>
+          <tr>
+            <th>Parent Name</th>
+            <td>{{parentName}}</td>
+          </tr>
+          <tr>
+            <th>Parent Phone</th>
+            <td>{{parentPhone}}</td>
+          </tr>
+          <tr>
+            <th>Previous Institution</th>
+            <td>{{previousInstitution}}</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact Name</th>
+            <td>{{emergencyContact}}</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact Phone</th>
+            <td>{{emergencyPhone}}</td>
+          </tr>
+          <tr>
+            <th>Total Fees</th>
+            <td>Rs.{{totalFee}}</td>
+          </tr>
+          <tr>
+            <th>Blood Group</th>
+            <td>{{bloodGroup}}</td>
+          </tr>
+          <tr>
+            <th>Nationality</th>
+            <td>{{nationality}}</td>
+          </tr>
+          <tr>
+            <th>Hostel Required</th>
+            <td>{{hostelRequired}}</td>
+          </tr>
+          <tr>
+            <th>Admission Date</th>
+            <td>{{admissionDate}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {{/each}}
+  </div>
 
     <br><br>
 
