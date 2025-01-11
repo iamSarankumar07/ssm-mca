@@ -54,7 +54,7 @@ app.post("/imageEdit/fireBase/:imageId",
   imageController.imageEditFirebase
 );
 
-app.post("/imageEdit/Cloudinary/:imageId",
+app.post("/imageEdit/cloudinary/:imageId",
   upload.single("image"),
   authonticationController.validateToken,
   imageController.imageEditCloudinary

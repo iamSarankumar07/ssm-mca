@@ -667,7 +667,7 @@ exports.imageEditFirebase = async (req, res) => {
             
               <script>
                 function redirect() {
-                  window.location.href = "/ssm/mca/imageUpload";
+                  window.location.href = "/ssm/mca/imageList";
                 }
             
                 window.onload = function() {
@@ -928,7 +928,7 @@ exports.imageEditCloudinary = async (req, res) => {
             
               <script>
                 function redirect() {
-                  window.location.href = "/ssm/mca/imageUpload";
+                  window.location.href = "/ssm/mca/imageList";
                 }
             
                 window.onload = function() {
