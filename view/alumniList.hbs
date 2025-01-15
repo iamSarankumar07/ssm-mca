@@ -6,183 +6,430 @@
     <title>MCA Alumni List</title>
     <link rel="icon" href="https://your-favicon-url.png"> 
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-        * {
-            font-family: "Poppins", sans-serif;
-        }
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    
+      * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
         }
-
-        .container {
+    
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+      }
+    
+      .container {
             width: 100%;
-            max-width: 90%;
-            margin: 10px auto; 
-            padding: 10px;
+            padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            overflow: auto; 
+            overflow: auto;
         }
-
-        h1 {
+    
+      h1 {
             text-align: center;
             color: #fff;
             background-color: #3d6ef5ff;
             border-radius: 5px;
-            padding: 5px;
-            margin: 0; 
+            padding: 10px;
+            font-size: 24px;
+            margin: 0;
         }
-
-        table {
+    
+      table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 20px auto;
+            font-size: 15px;
         }
-
-        th, td {
-            border: 1px solid #dee2e6;
-            padding: 12px;
-        }
-
-        .td {
-            text-align: center;
-        }
-
-        th {
-            background-color: #3d6ef5ff;
-            color: #fff;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 26px;
-            left: 6%; 
-            text-decoration: none;
-        }
-
-        .back-button img {
-            width: 45px;
-            height: 45px;
-            margin-right: 5px;
-            vertical-align: middle;
-        }
-
-        .search-container, .filter-container, .download-container {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .search-container {
-            text-align: left; 
-            flex: 1; 
-        }
-
-        .filter-container, .download-container {
-            text-align: right; 
-            flex: 1; 
-        }
-
-        .filter-container label, .search-container label, .download-container label {
-            font-size: 16px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .filter-container select, .search-container input[type="text"], .download-container select {
+    
+      th,td {
             padding: 8px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 200px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .filter-container select:hover, .filter-container select:focus, 
-        .search-container input[type="text"]:hover, .search-container input[type="text"]:focus,
-        .download-container select:hover, .download-container select:focus {
-            border-color: #3d6ef5ff;
-        }
-
-        .search-container button {
-            padding: 8px 14px;
-            font-size: 14px;
-            color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.4s, color 0.4s;
-        }
-
-        .search-container button:hover {
-            background: #fff;
-            color: #3d6ef5ff;
-        }
-
-        .btn-container {
             text-align: center;
-            margin-top: 30px;
-            margin-bottom: 20px;
+            border: 1px solid #ddd;
         }
-
+    
+      .td {
+        text-align: center;
+      }
+    
+      th {
+        background-color: #3d6ef5ff;
+        color: #fff;
+      }
+    
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    
+      .back-button {
+        position: absolute;
+        top: 3.5%;
+        left: 2%;
+        text-decoration: none;
+      }
+    
+      .back-button img {
+        width: 45px;
+        height: 45px;
+        margin-right: 16px;
+        margin-bottom: 30px;
+        vertical-align: middle;
+        transition: width 0.3s ease, height 0.3s ease;
+      }
+    
+      .search-container,
+      .filter-container,
+      .download-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    
+      .search-container {
+        text-align: left;
+        flex: 1;
+      }
+    
+      .filter-container,
+      .download-container {
+        text-align: right;
+        flex: 1;
+      }
+    
+      .filter-container label,
+      .search-container label,
+      .download-container label {
+        font-size: 16px;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+    
+      .filter-container select,
+      .search-container input[type="text"],
+      .download-container select {
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 200px;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+    
+      .filter-container select:hover,
+      .filter-container select:focus,
+      .search-container input[type="text"]:hover,
+      .search-container input[type="text"]:focus,
+      .download-container select:hover,
+      .download-container select:focus {
+        border-color: #3d6ef5ff;
+      }
+    
+      .search-container button {
+        padding: 8px 14px;
+        font-size: 14px;
+        color: #fff;
+        border: 2px solid #3d6ef5ff;
+        background: #3d6ef5ff;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.4s, color 0.4s;
+      }
+    
+      .search-container button:hover {
+        background: #fff;
+        color: #3d6ef5ff;
+      }
+    
+      .btn-container {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 20px;
+      }
+    
+      .btn {
+        padding: 8px 14px;
+        color: #fff;
+        border: 2px solid #3d6ef5ff;
+        background: #3d6ef5ff;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.4s, color 0.4s;
+      }
+    
+      .btn:hover {
+        background: #fff;
+        color: #3d6ef5ff;
+      }
+    
+      label {
+        color: #3d6ef5ff;
+      }
+    
+      .top-section {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+    
+      .left-section,
+      .right-section {
+        display: flex;
+        flex-direction: column;
+      }
+    
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    
+      .modal table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        text-align: left;
+        color: #2c3e50;
+      }
+    
+      .modal-content {
+        background-color: #ffffff;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 600px;
+        max-height: 95vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+    
+      .modal-header {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+    
+      .modal-close {
+        float: right;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: -10px;
+        margin-top: -10px;
+      }
+    
+      .modal-close:hover,
+      .modal-close:focus {
+        color: #000;
+        text-decoration: none;
+      }
+      .search-wrapper {
+        display: inline-flex; 
+        align-items: center;
+        gap: 10px; 
+    }
+    
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 20px;
+          padding: 10px;
+        }
+    
+        h2 {
+          font-size: 18px;
+          margin: 10px;
+        }
+    
+        table {
+          font-size: 14px;
+        }
+    
+        th,
+        td {
+          padding: 8px;
+          font-size: 12px;
+        }
+    
+        input[type="text"] {
+          width: 100%;
+          max-width: none;
+        }
+    
         .btn {
-            padding: 8px 14px;
-            color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.4s, color 0.4s;
+          width: 100%;
+          font-size: 12px;
+          padding: 10px 0;
         }
-
-        .btn:hover {
-            background: #fff;
-            color: #3d6ef5ff;
+    
+        .icon-img {
+          width: 20px;
+          height: 20px;
         }
-
-        label {
-            color: #3d6ef5ff;
+    
+        .back-button {
+          position: absolute;
+          top: 3.6%;
+          left: 4%;
+          text-decoration: none;
         }
-
+    
+        .back-button img {
+          width: 40px;
+          height: 40px;
+          margin-right: 16px;
+          margin-bottom: 30px;
+          vertical-align: middle;
+          transition: width 0.3s ease, height 0.3s ease;
+        }
         .top-section {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
+        flex-direction: column;
+        gap: 20px;
+    }
 
-        .left-section, .right-section {
-            display: flex;
-            flex-direction: column;
-        }
+    .search-container,
+    .filter-container {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 
+    .search-container label,
+    .filter-container label {
+        font-size: 16px;
+    }
+
+    .search-container input[type="text"],
+    .filter-container select {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .search-container button {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+    .search-wrapper {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    .search-wrapper input[type="text"],
+    .search-wrapper button {
+        width: 100%;
+    }
+      }
+    
+      @media (max-width: 480px) {
+        table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+    
+        th,
+        td {
+          font-size: 10px;
+          padding: 6px;
+        }
+    
+        h1,
+        h2 {
+          font-size: 16px;
+        }
+    
+        .back-button {
+          position: absolute;
+          top: 3.5%;
+          left: 7%;
+          text-decoration: none;
+        }
+    
+        .back-button img {
+          width: 35px;
+          height: 35px;
+          margin-right: 16px;
+          margin-bottom: 30px;
+          vertical-align: middle;
+          transition: width 0.3s ease, height 0.3s ease;
+        }
+        .top-section {
+        gap: 10px;
+    }
+
+    .search-container label,
+    .filter-container label {
+        font-size: 14px;
+    }
+
+    .search-container input[type="text"],
+    .filter-container select {
+        font-size: 14px; 
+    }
+
+    .search-container button {
+        font-size: 12px;
+        padding: 8px 0;
+    }
+    .search-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .search-wrapper input[type="text"],
+    .search-wrapper button {
+        width: 100%; 
+        font-size: 14px;
+    }
+
+    .search-container label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+      }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>MCA ALUMNI LIST</h1>
-    <a href="/ssm/mca/dashboard" class="back-button">
+    <a href="/ssm/mca/dashboard#alumni" class="back-button">
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
     <div class="top-section">
         <div class="left-section">
             <div class="search-container">
                 <label for="searchName">Std Name &#8205; :&#8205;</label>
-                <input type="text" id="searchName" name="searchName" placeholder="Enter name">
-                <button onclick="applySearch()">Search</button>
+                <div class="search-wrapper">
+                  <input type="text" id="searchName" name="searchName" placeholder="Enter name">
+                  <button onclick="applySearch()">Search</button>
+                </div>
             </div>
             <div class="search-container" style="clear: both;">
                 <label for="searchId">Student ID :</label>
-                <input type="text" id="searchId" name="searchId" placeholder="Enter Student ID">
-                <button onclick="applyIdSearch()">Search</button>
+                <div class="search-wrapper">
+                  <input type="text" id="searchId" name="searchId" placeholder="Enter Student ID">
+                  <button onclick="applyIdSearch()">Search</button>
+                </div>
             </div>
         </div>
         <div class="right-section">
@@ -217,6 +464,7 @@
             <th>Phone</th>
             <th>Email</th>
             <th>Graduation Year</th>
+            <th>Details</th>
         </tr>
         </thead>
         <tbody>
@@ -230,14 +478,137 @@
             <td class="td">{{phone}}</td>
             <td class="td">{{email}}</td>
             <td class="td">{{graduationYear}}</td>
+            <td data-label="Actions" style="text-align: center;" class="view-link">
+                <img
+                    src="https://i.postimg.cc/XYNnzjf1/vision-1.png"
+                    alt="View"
+                    class="icon-img"
+                    style="width: 25px; height: 25px; cursor: pointer;"
+                    onclick="showDetails('{{studentId}}')"
+                />
+            </td>
         </tr>
         {{/each}}
         </tbody>
     </table>
 
     <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard">&lt; Go back!</a>
+        <a class="btn" href="/ssm/mca/dashboard#alumni">&lt; Go back!</a>
     </div>
+
+    {{#each students}}
+    <!-- Modal Structure -->
+    <div id="modal-{{studentId}}" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeDetails('{{studentId}}')">&times;</span>
+        <div class="modal-header">Student Details</div>
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>{{name}}</td>
+          </tr>
+          <tr>
+            <th>Student ID</th>
+            <td>{{studentId}}</td>
+          </tr>
+          <tr>
+            <th>Register Number</th>
+            <td>{{registerNumber}}</td>
+          </tr>
+          <tr>
+            <th>Date of Birth</th>
+            <td>{{dob}}</td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td>{{gender}}</td>
+          </tr>
+          <tr>
+            <th>Graduation Year</th>
+            <td>{{graduationYear}}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{email}}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>{{phone}}</td>
+          </tr>
+          <tr>
+            <th>Aadhaar Number</th>
+            <td>{{aadhaarNum}}</td>
+          </tr>
+          <tr>
+            <th>Address</th>
+            <td>{{address.address}}, {{address.city}}, {{address.state}} - {{address.pinCode}}, {{address.country}}</td>
+          </tr>
+          <tr>
+            <th>Parent Name</th>
+            <td>{{parentName}}</td>
+          </tr>
+          <tr>
+            <th>Parent Phone</th>
+            <td>{{parentPhone}}</td>
+          </tr>
+          <tr>
+            <th>Parental Income</th>
+            <td>{{parentalIncome}}</td>
+          </tr>
+          <tr>
+            <th>Previous Institution</th>
+            <td>{{previousInstitution}}</td>
+          </tr>
+          <tr>
+            <th>Previous Marks (Percentage)</th>
+            <td>{{previousMarks}}%</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact Name</th>
+            <td>{{emergencyContact}}</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact Relationship:</th>
+            <td>{{emergencyContactRelationship}}</td>
+          </tr>
+          <tr>
+            <th>Emergency Contact Phone</th>
+            <td>{{emergencyPhone}}</td>
+          </tr>
+          <tr>
+            <th>Religion</th>
+            <td>{{religion}}</td>
+          </tr>
+          <tr>
+            <th>Blood Group</th>
+            <td>{{bloodGroup}}</td>
+          </tr>
+          <tr>
+            <th>Nationality</th>
+            <td>{{nationality}}</td>
+          </tr>
+          <tr>
+            <th>Scholarship</th>
+            <td>{{scholarship}}</td>
+          </tr>
+          <tr>
+            <th>Transportation</th>
+            <td>{{transportation}}</td>
+          </tr>
+          <tr>
+            <th>Hostel Required</th>
+            <td>{{hostelRequired}}</td>
+          </tr>
+          <tr>
+            <th>Admission Date</th>
+            <td>{{admissionDate}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
 </div>
 
 <script>
@@ -284,6 +655,16 @@
         urlParams.delete('name');
         urlParams.set('studentId', searchId);
         window.location.href = window.location.pathname + '?' + urlParams.toString();
+    }
+
+    function showDetails(studentId) {
+      var modal = document.getElementById("modal-" + studentId);
+      modal.style.display = "block";
+    }
+
+    function closeDetails(studentId) {
+      var modal = document.getElementById("modal-" + studentId);
+      modal.style.display = "none";
     }
 
 </script>
