@@ -6,78 +6,89 @@
     <title>Fee Information</title>
     <link rel="icon" href="https://your-favicon-url.png">
     <style>
-         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+    
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: "Poppins", sans-serif;
         }
+    
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
         }
-
+    
         .container {
             width: 100%;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            overflow: auto;  
+            overflow: auto;
         }
-
+    
         h1 {
             text-align: center;
             color: #fff;
             background-color: #3d6ef5ff;
             border-radius: 5px;
-            padding: 5px;
-            margin: 0; 
+            padding: 10px;
+            font-size: 24px;
+            margin: 0;
         }
-
+    
         h2 {
             color: #3d6ef5ff;
             margin-top: 20px;
         }
-
+    
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 20px auto;
+            font-size: 15px;
         }
-
-        th, td {
-            border: 1px solid #dee2e6;
-            padding: 10px;
+    
+        th,td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
         }
-
+    
         .td {
             text-align: center;
         }
-
+    
         th {
             background-color: #3d6ef5ff;
             color: #fff;
         }
-
-        .edit-icon, .delete-icon {
+    
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    
+        .edit-icon,
+        .delete-icon {
             text-decoration: none;
             color: #3d6ef5ff;
             transition: color 0.3s;
         }
-
-        .edit-icon:hover, .delete-icon:hover {
+    
+        .edit-icon:hover,
+        .delete-icon:hover {
             color: #0056b3;
         }
-
+    
         .btn-container {
             text-align: center;
             margin-top: 20px;
         }
-
+    
         .btn {
             padding: 8px 14px;
             color: #fff;
@@ -90,60 +101,178 @@
             cursor: pointer;
             transition: background 0.4s, color 0.4s;
         }
-
+    
         .btn:hover {
             background: #fff;
             color: #3d6ef5ff;
         }
-
-        .table-container {
-            margin: 0 auto; 
-            width: 80%; 
-        }
+    
         .back-button {
-    position: absolute;
-    top: 26px;
-    left: 2%; 
-    text-decoration: none;
-}
-
-.back-button img {
-    width: 45px;
-    height: 45px;
-    margin-right: 16px;
-    margin-bottom: 30px;
-    vertical-align: middle;
-}
-.icon-img {
+            position: absolute;
+            top: 3.5%;
+            left: 2%;
+            text-decoration: none;
+        }
+    
+        .back-button img {
+            width: 45px;
+            height: 45px;
+            margin-right: 16px;
+            margin-bottom: 30px;
+            vertical-align: middle;
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+    
+        .icon-img {
             width: 25px;
             height: 25px;
             vertical-align: middle;
         }
+    
         .view-link {
             text-decoration: none;
             cursor: pointer;
         }
-
+    
         .view-link:hover .icon-img {
             transform: scale(1.2);
             filter: brightness(1.5);
+        }
+    
+        .responsive-search-bar {
+            padding: 6px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 20px;
+                padding: 10px;
+            }
+    
+            h2 {
+                font-size: 18px;
+                margin: 10px;
+            }
+    
+            table {
+                font-size: 14px;
+            }
+    
+            th,
+            td {
+                padding: 8px;
+                font-size: 12px;
+            }
+    
+            input[type="text"] {
+                width: 100%;
+                max-width: none;
+            }
+    
+            .btn {
+                width: 100%;
+                font-size: 12px;
+                padding: 10px 0;
+            }
+    
+            .icon-img {
+                width: 20px;
+                height: 20px;
+            }
+    
+            .responsive-search-bar {
+                max-width: 250px;
+                font-size: 13px;
+            }
+    
+            .back-button {
+                position: absolute;
+                top: 3.6%;
+                left: 4%;
+                text-decoration: none;
+            }
+    
+            .back-button img {
+                width: 40px;
+                height: 40px;
+                margin-right: 16px;
+                margin-bottom: 30px;
+                vertical-align: middle;
+                transition: width 0.3s ease, height 0.3s ease;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+    
+            th,
+            td {
+                font-size: 10px;
+                padding: 6px;
+            }
+    
+            h1,
+            h2 {
+                font-size: 16px;
+            }
+    
+            .responsive-search-bar {
+                max-width: 200px;
+                font-size: 12px;
+            }
+    
+            .back-button {
+                position: absolute;
+                top: 3.5%;
+                left: 7%;
+                text-decoration: none;
+            }
+    
+            .back-button img {
+                width: 35px;
+                height: 35px;
+                margin-right: 16px;
+                margin-bottom: 30px;
+                vertical-align: middle;
+                transition: width 0.3s ease, height 0.3s ease;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>TUITION FEES DETAILS</h1>
-    <a href="/ssm/mca/dashboard" class="back-button">
+    <a href="/ssm/mca/dashboard#fees" class="back-button">
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
     <div class="table-container">
         <h2>MCA - I</h2>
+        <div style="margin-bottom: 20px; text-align: center;">
+      <input
+        type="text"
+        id="searchInput1"
+        placeholder="Search by Student Name"
+        onkeyup="searchByRefNo('searchInput1', 'table1')"
+        class="responsive-search-bar"
+      />
+    </div>
         <table>
             <thead>
             <tr>
                 <th>S.No</th>
                 <th>Name</th>
                 <th>Student ID</th>
+                <th>Gender</th>
                 <th>Total Fee</th>
                 <th>Paid Fee</th>
                 <th>Pending Fee</th>
@@ -151,12 +280,13 @@
                 <th>Edit</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table1">
             {{#each firstYearStudents}}
             <tr>
                 <td class="td">{{inc @index}}</td>
                 <td>{{name}}</td>
                 <td class="td">{{studentId}}</td>
+                <td class="td">{{gender}}</td>
                 <td class="td">Rs.{{totalFee}}</td>
                 <td class="td">Rs.{{paidFeeTu}}</td>
                 <td class="td">Rs.{{pendingFee}}</td>
@@ -180,17 +310,30 @@
                 <input type="hidden" name="isPdf" value="true">
                 <button type="submit" class="btn">Download</button>
             </form>
+            <div class="btn-container">
+                <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
+            </div>
         </div>
     </div>
 
     <div class="table-container">
         <h2>MCA - II</h2>
+            <div style="margin-bottom: 20px; text-align: center;">
+      <input
+        type="text"
+        id="searchInput2"
+        placeholder="Search by Student Name"
+        onkeyup="searchByRefNo('searchInput2', 'table2')"
+        class="responsive-search-bar"
+      />
+    </div>
         <table>
             <thead>
             <tr>
                 <th>S.No</th>
                 <th>Name</th>
                 <th>Student ID</th>
+                <th>Gender</th>
                 <th>Total Fee</th>
                 <th>Paid Fee</th>
                 <th>Pending Fee</th>
@@ -198,12 +341,13 @@
                 <th>Edit</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table2">
             {{#each secondYearStudents}}
             <tr>
                 <td class="td">{{inc @index}}</td>
                 <td>{{name}}</td>
                 <td class="td">{{studentId}}</td>
+                <td class="td">{{gender}}</td>
                 <td class="td">Rs.{{totalFee}}</td>
                 <td class="td">Rs.{{paidFeeTu}}</td>
                 <td class="td">Rs.{{pendingFee}}</td>
@@ -229,7 +373,7 @@
         </div>
     </div>
     <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard">< Go back!</a>
+        <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
     </div>
 </div>
 
@@ -385,6 +529,26 @@
         printWindow.document.close();
         printWindow.print();
     }
+
+    function searchByRefNo(searchInput, tableId) {
+        const input = document.getElementById(searchInput);
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById(tableId);
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+          const td = rows[i].getElementsByTagName('td')[1]; 
+          if (td) {
+            const textValue = td.textContent || td.innerText;
+            if (textValue.toUpperCase().indexOf(filter) > -1) {
+              rows[i].style.display = '';
+            } else {
+              rows[i].style.display = 'none';
+            }
+          }
+        }
+      }
+
 </script>
 
 

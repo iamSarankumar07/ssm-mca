@@ -68,6 +68,9 @@
       text-align: center;
       color: #2c3e50;
     }
+    tr:hover {
+          background-color: #f1f1f1;
+      }
     .btn {
       padding: 8px 12px;
       margin: 2px;
@@ -107,9 +110,9 @@
   border-radius: 8px;
   width: 80%;
   max-width: 600px;
-  height: auto; /* Ensures it adapts to content */
-  max-height: 100vh; /* Limits height to 90% of the viewport */
-  overflow-y: auto; /* Adds vertical scrolling if content exceeds max height */
+  height: auto; 
+  max-height: 98vh;
+  overflow-y: auto; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -188,7 +191,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <a href="javascript:history.back()" class="back-button">&larr; Back</a>
+      <a href="/ssm/mca/dashboard#admission" class="back-button">&larr; Back</a>
       <h1>Applications Received</h1>
     </div>
 
@@ -212,7 +215,7 @@
           <th>Phone</th>
           <th>Program Applied</th>
           <th>Applied Date</th>
-          <th>View</th>
+          <th>Details</th>
         </tr>
       </thead>
       <tbody id="applicationsTable">

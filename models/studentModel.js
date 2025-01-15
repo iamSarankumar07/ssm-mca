@@ -9,6 +9,10 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    aadhaarNum: {
+        type: String,
+        required: false,
+    },
     gender: {
         type: String,
         required: false,
@@ -48,6 +52,10 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    parentalIncome: {
+        type: String,
+        required: false,
+    },
     parentPhone: {
         type: String,
         required: false,
@@ -56,11 +64,27 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    bridgeCourse: {
+        type: String,
+        required: false,
+    },
+    previousMarks: {
+        type: String,
+        required: false,
+    },
     emergencyContact: {
         type: String,
         required: false,
     },
+    emergencyContactRelationship: {
+        type: String,
+        required: false,
+    },
     emergencyPhone: {
+        type: String,
+        required: false,
+    },
+    religion: {
         type: String,
         required: false,
     },
@@ -69,6 +93,14 @@ const studentSchema = new mongoose.Schema({
         required: false,
     },
     nationality: {
+        type: String,
+        required: false,
+    },
+    scholarship: {
+        type: String,
+        required: false,
+    },
+    transportation: {
         type: String,
         required: false,
     },
