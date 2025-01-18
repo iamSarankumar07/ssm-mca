@@ -5,8 +5,9 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const pdf = require("html-pdf");
 const moment = require("moment");
-const countModel = require("../models/countModel")
-const admissionModel = require("../models/admissionModel")
+const countModel = require("../models/countModel");
+const admissionModel = require("../models/admissionModel");
+const {bucket} = require("../middleware/adminCredentials");
 
 exports.newStudent = async (req, res) => {
   const body = req.body;
@@ -29,6 +30,112 @@ exports.newStudent = async (req, res) => {
       '<script>alert("Email already exists!"); window.location="/ssm/mca/register";</script>'
     );
   }
+
+  res.send(
+    `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Registration</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+    
+        .modal {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+    
+        .modal-content {
+          background-color: #fefefe;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          width: 80%;
+          max-width: 400px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        p {
+          margin: 0 0 20px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #28a745; /* Green color */
+          text-align: center;
+        }
+    
+        .button-container {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+    
+        button[type="button"] {
+          background-color: #3d6ef5ff;
+          color: #f2f2f2;
+          font-weight: bold;
+          padding: 8px 14px;
+          border: none;
+          font-size: 13px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+    
+        button[type="button"]:hover {
+          background-color: #f2f2f2;
+          color: #3d6ef5ff;
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <p>Registration Successful!</p>
+          <div class="button-container">
+            <button type="button" onclick="redirect()">Continue</button>
+          </div>
+        </div>
+      </div>
+    
+      <script>
+        function redirect() {
+          window.location.href = "/ssm/mca/register";
+        }
+    
+        window.onload = function() {
+          var modal = document.getElementById("myModal");
+    
+          modal.style.display = "flex";
+    
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+              redirect();
+            }
+          }
+        }
+      </script>
+    </body>
+    </html>
+    
+    `
+   );
 
   const student = new Student({
     name: body.name,
@@ -212,111 +319,6 @@ exports.newStudent = async (req, res) => {
     });
 
     // res.redirect("/ssm/mca/register");
-    res.send(
-     `<!DOCTYPE html>
-     <html lang="en">
-     <head>
-       <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <title>Registration</title>
-       <style>
-         body {
-           font-family: Arial, sans-serif;
-           margin: 0;
-           padding: 0;
-           background-color: #f4f4f4;
-         }
-     
-         .modal {
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           position: fixed;
-           z-index: 1000;
-           left: 0;
-           top: 0;
-           width: 100%;
-           height: 100%;
-           overflow: auto;
-           background-color: rgba(0, 0, 0, 0.6);
-         }
-     
-         .modal-content {
-           background-color: #fefefe;
-           padding: 20px;
-           border: 1px solid #ccc;
-           border-radius: 10px;
-           width: 80%;
-           max-width: 400px;
-           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-         }
-     
-         p {
-           margin: 0 0 20px;
-           font-size: 18px;
-           font-weight: bold;
-           color: #28a745; /* Green color */
-           text-align: center;
-         }
-     
-         .button-container {
-           display: flex;
-           justify-content: center;
-           width: 100%;
-         }
-     
-         button[type="button"] {
-           background-color: #3d6ef5ff;
-           color: #f2f2f2;
-           font-weight: bold;
-           padding: 8px 14px;
-           border: none;
-           font-size: 13px;
-           border-radius: 5px;
-           cursor: pointer;
-           transition: background-color 0.3s;
-         }
-     
-         button[type="button"]:hover {
-           background-color: #f2f2f2;
-           color: #3d6ef5ff;
-           font-weight: bold;
-         }
-       </style>
-     </head>
-     <body>
-       <div id="myModal" class="modal">
-         <div class="modal-content">
-           <p>Registration Successful!</p>
-           <div class="button-container">
-             <button type="button" onclick="redirect()">Continue</button>
-           </div>
-         </div>
-       </div>
-     
-       <script>
-         function redirect() {
-           window.location.href = "/ssm/mca/register";
-         }
-     
-         window.onload = function() {
-           var modal = document.getElementById("myModal");
-     
-           modal.style.display = "flex";
-     
-           window.onclick = function(event) {
-             if (event.target == modal) {
-               modal.style.display = "none";
-               redirect();
-             }
-           }
-         }
-       </script>
-     </body>
-     </html>
-     
-     `
-    );
   } catch (err) {
     return res.send(
       '<script>alert("Registration Failed! - Internal Server Error"); window.location.href = "/ssm/mca/register";</script>'
@@ -696,48 +698,6 @@ exports.updateStudent = async (req, res) => {
     let saltRounds = 12;
     let hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    await Student.findByIdAndUpdate(userId, {
-      name: body.name,
-      studentId: body.studentId,
-      registerNumber: body.registerNumber,
-      gender: body.gender,
-      password: hashedPassword,
-      aadhaarNum: body.aadhaarNum,
-      dob: body.dob,
-      year: body.year,
-      phone: body.phone,
-      email: body.email,
-      totalFee: body.totalFee,
-      address:{
-        address: body.address,
-        city: body.city,
-        state: body.state,
-        pinCode: body.pinCode,
-        country: body.country
-      },
-      parentName: body.parentName,
-      parentPhone: body.parentPhone,
-      parentalIncome: body.parentalIncome,
-      previousInstitution: body.previousInstitution,
-      previousMarks: body.previousMarks,
-      bridgeCourse: body.bridgeCourse,
-      emergencyContact: body.emergencyContact,
-      emergencyContactRelationship: body.emergencyContactRelationship,
-      emergencyPhone: body.emergencyPhone,
-      bloodGroup: body.bloodGroup,
-      nationality: body.nationality,
-      religion: body.religion,
-      hostelRequired: body.hostelRequired,
-      pendingFee: body.pendingFee,
-      transportation: body.transportation,
-      scholarship: body.scholarship,
-      paymentStatus: body.paymentStatus,
-      examTotalFee: body.examTotalFee,
-      examPendingFee: body.examPendingFee,
-      examPaymentStatus: body.examPaymentStatus,
-    });
-
-    // res.redirect("/ssm/mca/studentList");
     res.send(
       `<!DOCTYPE html>
       <html lang="en">
@@ -842,6 +802,49 @@ exports.updateStudent = async (req, res) => {
       </html>
       `
      );
+
+    await Student.findByIdAndUpdate(userId, {
+      name: body.name,
+      studentId: body.studentId,
+      registerNumber: body.registerNumber,
+      gender: body.gender,
+      password: hashedPassword,
+      aadhaarNum: body.aadhaarNum,
+      dob: body.dob,
+      year: body.year,
+      phone: body.phone,
+      email: body.email,
+      totalFee: body.totalFee,
+      address:{
+        address: body.address,
+        city: body.city,
+        state: body.state,
+        pinCode: body.pinCode,
+        country: body.country
+      },
+      parentName: body.parentName,
+      parentPhone: body.parentPhone,
+      parentalIncome: body.parentalIncome,
+      previousInstitution: body.previousInstitution,
+      previousMarks: body.previousMarks,
+      bridgeCourse: body.bridgeCourse,
+      emergencyContact: body.emergencyContact,
+      emergencyContactRelationship: body.emergencyContactRelationship,
+      emergencyPhone: body.emergencyPhone,
+      bloodGroup: body.bloodGroup,
+      nationality: body.nationality,
+      religion: body.religion,
+      hostelRequired: body.hostelRequired,
+      pendingFee: body.pendingFee,
+      transportation: body.transportation,
+      scholarship: body.scholarship,
+      paymentStatus: body.paymentStatus,
+      examTotalFee: body.examTotalFee,
+      examPendingFee: body.examPendingFee,
+      examPaymentStatus: body.examPaymentStatus,
+    });
+
+    // res.redirect("/ssm/mca/studentList");
   } catch (err) {
     console.error(err);
     res.send("Error");
@@ -1248,6 +1251,111 @@ exports.requestChange = async (req, res) => {
   let { newName, newEmail, studentId, newDob, newPhone } = req.body;
   newDob = moment(newDob).format("DD-MM-YYYY")
 
+  res.send(
+    `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Registration</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+    
+        .modal {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+    
+        .modal-content {
+          background-color: #fefefe;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          width: 80%;
+          max-width: 400px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        p {
+          margin: 0 0 20px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #28a745; /* Green color */
+          text-align: center;
+        }
+    
+        .button-container {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+    
+        button[type="button"] {
+          background-color: #3d6ef5ff;
+          color: #f2f2f2;
+          font-weight: bold;
+          padding: 8px 14px;
+          border: none;
+          font-size: 13px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+    
+        button[type="button"]:hover {
+          background-color: #f2f2f2;
+          color: #3d6ef5ff;
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <p>Profile Update Request Sent</p>
+          <div class="button-container">
+            <button type="button" onclick="redirect()">Continue</button>
+          </div>
+        </div>
+      </div>
+    
+      <script>
+        function redirect() {
+          window.location.href = "/ssm/mca/studentProfile";
+        }
+    
+        window.onload = function() {
+          var modal = document.getElementById("myModal");
+    
+          modal.style.display = "flex";
+    
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+              redirect();
+            }
+          }
+        }
+      </script>
+    </body>
+    </html>
+    `
+   );
+
   try {
       let studentData = await Student.findOneAndUpdate(
           { studentId: studentId },
@@ -1265,116 +1373,6 @@ exports.requestChange = async (req, res) => {
           { new: true }
       );
 
-      if (studentData) {
-        return res.send(
-          `<!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Registration</title>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-              }
-          
-              .modal {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.6);
-              }
-          
-              .modal-content {
-                background-color: #fefefe;
-                padding: 20px;
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                width: 80%;
-                max-width: 400px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              }
-          
-              p {
-                margin: 0 0 20px;
-                font-size: 18px;
-                font-weight: bold;
-                color: #28a745; /* Green color */
-                text-align: center;
-              }
-          
-              .button-container {
-                display: flex;
-                justify-content: center;
-                width: 100%;
-              }
-          
-              button[type="button"] {
-                background-color: #3d6ef5ff;
-                color: #f2f2f2;
-                font-weight: bold;
-                padding: 8px 14px;
-                border: none;
-                font-size: 13px;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-              }
-          
-              button[type="button"]:hover {
-                background-color: #f2f2f2;
-                color: #3d6ef5ff;
-                font-weight: bold;
-              }
-            </style>
-          </head>
-          <body>
-            <div id="myModal" class="modal">
-              <div class="modal-content">
-                <p>Profile Update Request Sent</p>
-                <div class="button-container">
-                  <button type="button" onclick="redirect()">Continue</button>
-                </div>
-              </div>
-            </div>
-          
-            <script>
-              function redirect() {
-                window.location.href = "/ssm/mca/studentProfile";
-              }
-          
-              window.onload = function() {
-                var modal = document.getElementById("myModal");
-          
-                modal.style.display = "flex";
-          
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                    redirect();
-                  }
-                }
-              }
-            </script>
-          </body>
-          </html>
-          `
-         );
-      } else {
-        return res.send(
-          '<script>alert("Error in profile update request!"); window.location="/ssm/mca/studentProfile";</script>'
-        );
-      }
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error in Profile Update Request' });
@@ -1383,7 +1381,119 @@ exports.requestChange = async (req, res) => {
 
 exports.requestChangeTu = async (req, res) => {
   let { studentId, txnIdTu, paidDateTu, paidAmountTu } = req.body;
+
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  res.send(
+    `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Registration</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+    
+        .modal {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+    
+        .modal-content {
+          background-color: #fefefe;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          width: 80%;
+          max-width: 400px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        p {
+          margin: 0 0 20px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #28a745; /* Green color */
+          text-align: center;
+        }
+    
+        .button-container {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+    
+        button[type="button"] {
+          background-color: #3d6ef5ff;
+          color: #f2f2f2;
+          font-weight: bold;
+          padding: 8px 14px;
+          border: none;
+          font-size: 13px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+    
+        button[type="button"]:hover {
+          background-color: #f2f2f2;
+          color: #3d6ef5ff;
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <p>Tuition Fees Update Request Sent</p>
+          <div class="button-container">
+            <button type="button" onclick="redirect()">Continue</button>
+          </div>
+        </div>
+      </div>
+    
+      <script>
+        function redirect() {
+          window.location.href = "/ssm/mca/studentProfile";
+        }
+    
+        window.onload = function() {
+          var modal = document.getElementById("myModal");
+    
+          modal.style.display = "flex";
+    
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+              redirect();
+            }
+          }
+        }
+      </script>
+    </body>
+    </html>
+    `
+   );
+
   paidDateTu = moment(paidDateTu).format("DD-MM-YYYY");
+
+  let fileName = req.file.originalname;
 
   let studentData = await Student.findOne({studentId : studentId});
   let currentPaid = Number(studentData.paidFeeTu) + Number(paidAmountTu);
@@ -1391,7 +1501,34 @@ exports.requestChangeTu = async (req, res) => {
   let newTuPendingFee = Number(studentData.pendingFee) - Number(paidAmountTu);
   let newTuStatus = totalFee === currentPaid ? "Paid" : "Partial";
   // let newTuPendingFee = currentPaid - paidAmountTu;
-  let newTuPending = newTuPendingFee.toString()
+  let newTuPending = newTuPendingFee.toString();
+  let payMode = req.body.payMode;
+
+  const blob = bucket.file(`payment/${fileName}`);
+  const blobStream = blob.createWriteStream({
+    metadata: {
+      contentType: req.file.mimetype,
+    },
+  });
+
+  let imageUrl = await new Promise((resolve, reject) => {
+    blobStream.on("error", (err) => {
+      console.log("Error during upload:", err);
+      reject("Error uploading file.");
+    });
+
+    blobStream.on("finish", async () => {
+      try {
+        await blob.makePublic();
+        resolve(blob.publicUrl());
+      } catch (err) {
+        console.log("Error in uploadImage:", err);
+        reject("Error making file public.");
+      }
+    });
+
+    blobStream.end(req.file.buffer);
+  });
 
   try {
       let studentData = await Student.findOneAndUpdate(
@@ -1404,123 +1541,14 @@ exports.requestChangeTu = async (req, res) => {
                       status: 'requested',
                       txnIdTu: txnIdTu,
                       paidDateTu: paidDateTu,
-                      paidAmountTu: paidAmountTu
+                      paidAmountTu: paidAmountTu,
+                      payMode: payMode,
+                      imageUrl: imageUrl
                   },
               }
           },
           { new: true }
       );
-
-      if (studentData) {
-        return res.send(
-          `<!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Registration</title>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-              }
-          
-              .modal {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.6);
-              }
-          
-              .modal-content {
-                background-color: #fefefe;
-                padding: 20px;
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                width: 80%;
-                max-width: 400px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              }
-          
-              p {
-                margin: 0 0 20px;
-                font-size: 18px;
-                font-weight: bold;
-                color: #28a745; /* Green color */
-                text-align: center;
-              }
-          
-              .button-container {
-                display: flex;
-                justify-content: center;
-                width: 100%;
-              }
-          
-              button[type="button"] {
-                background-color: #3d6ef5ff;
-                color: #f2f2f2;
-                font-weight: bold;
-                padding: 8px 14px;
-                border: none;
-                font-size: 13px;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-              }
-          
-              button[type="button"]:hover {
-                background-color: #f2f2f2;
-                color: #3d6ef5ff;
-                font-weight: bold;
-              }
-            </style>
-          </head>
-          <body>
-            <div id="myModal" class="modal">
-              <div class="modal-content">
-                <p>Profile Update Request Sent</p>
-                <div class="button-container">
-                  <button type="button" onclick="redirect()">Continue</button>
-                </div>
-              </div>
-            </div>
-          
-            <script>
-              function redirect() {
-                window.location.href = "/ssm/mca/studentProfile";
-              }
-          
-              window.onload = function() {
-                var modal = document.getElementById("myModal");
-          
-                modal.style.display = "flex";
-          
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                    redirect();
-                  }
-                }
-              }
-            </script>
-          </body>
-          </html>
-          `
-         );
-      } else {
-        return res.send(
-          '<script>alert("Error in tuition fees update request!"); window.location="/ssm/mca/studentProfile";</script>'
-        );
-      }
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error in Tuition Update Request' });
@@ -1531,13 +1559,152 @@ exports.requestChangeEx = async (req, res) => {
   let { paidAmountEx, studentId, txnIdEx, paidDateEx } = req.body;
   paidDateEx = moment(paidDateEx).format("DD-MM-YYYY");
 
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  res.send(
+    `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Registration</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+    
+        .modal {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+    
+        .modal-content {
+          background-color: #fefefe;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          width: 80%;
+          max-width: 400px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        p {
+          margin: 0 0 20px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #28a745; /* Green color */
+          text-align: center;
+        }
+    
+        .button-container {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+    
+        button[type="button"] {
+          background-color: #3d6ef5ff;
+          color: #f2f2f2;
+          font-weight: bold;
+          padding: 8px 14px;
+          border: none;
+          font-size: 13px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+    
+        button[type="button"]:hover {
+          background-color: #f2f2f2;
+          color: #3d6ef5ff;
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <p>Exam Fees Update Request Sent</p>
+          <div class="button-container">
+            <button type="button" onclick="redirect()">Continue</button>
+          </div>
+        </div>
+      </div>
+    
+      <script>
+        function redirect() {
+          window.location.href = "/ssm/mca/studentProfile";
+        }
+    
+        window.onload = function() {
+          var modal = document.getElementById("myModal");
+    
+          modal.style.display = "flex";
+    
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+              redirect();
+            }
+          }
+        }
+      </script>
+    </body>
+    </html>
+    `
+   );
+
+  let fileName = req.file.originalname;
+
   let studentData = await Student.findOne({studentId : studentId});
   let currentPaid = Number(studentData.paidFeeEx) + Number(paidAmountEx);
   let totalFee = Number(studentData.examTotalFee);
   let newTuPendingFee = Number(studentData.examPendingFee) - Number(paidAmountEx);
   let newExStatus = totalFee === currentPaid ? "Paid" : "Partial";
   // let newTuPendingFee = totalFee - paidAmountEx;
-  let newExPending = newTuPendingFee.toString()
+  let newExPending = newTuPendingFee.toString();
+  let newTuPending = newTuPendingFee.toString();
+  let payMode = req.body.payMode;
+
+  const blob = bucket.file(`payment/${fileName}`);
+  const blobStream = blob.createWriteStream({
+    metadata: {
+      contentType: req.file.mimetype,
+    },
+  });
+
+  let imageUrl = await new Promise((resolve, reject) => {
+    blobStream.on("error", (err) => {
+      console.log("Error during upload:", err);
+      reject("Error uploading file.");
+    });
+
+    blobStream.on("finish", async () => {
+      try {
+        await blob.makePublic();
+        resolve(blob.publicUrl());
+      } catch (err) {
+        console.log("Error in uploadImage:", err);
+        reject("Error making file public.");
+      }
+    });
+
+    blobStream.end(req.file.buffer);
+  });
 
   try {
       let studentData = await Student.findOneAndUpdate(
@@ -1550,123 +1717,14 @@ exports.requestChangeEx = async (req, res) => {
                       status: 'requested',
                       txnIdEx: txnIdEx,
                       paidDateEx: paidDateEx,
-                      paidAmountEx: paidAmountEx
+                      paidAmountEx: paidAmountEx,
+                      payMode: payMode,
+                      imageUrl: imageUrl
                   },
               }
           },
           { new: true }
       );
-
-      if (studentData) {
-        return res.send(
-          `<!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Registration</title>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-              }
-          
-              .modal {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.6);
-              }
-          
-              .modal-content {
-                background-color: #fefefe;
-                padding: 20px;
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                width: 80%;
-                max-width: 400px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              }
-          
-              p {
-                margin: 0 0 20px;
-                font-size: 18px;
-                font-weight: bold;
-                color: #28a745; /* Green color */
-                text-align: center;
-              }
-          
-              .button-container {
-                display: flex;
-                justify-content: center;
-                width: 100%;
-              }
-          
-              button[type="button"] {
-                background-color: #3d6ef5ff;
-                color: #f2f2f2;
-                font-weight: bold;
-                padding: 8px 14px;
-                border: none;
-                font-size: 13px;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-              }
-          
-              button[type="button"]:hover {
-                background-color: #f2f2f2;
-                color: #3d6ef5ff;
-                font-weight: bold;
-              }
-            </style>
-          </head>
-          <body>
-            <div id="myModal" class="modal">
-              <div class="modal-content">
-                <p>Profile Update Request Sent</p>
-                <div class="button-container">
-                  <button type="button" onclick="redirect()">Continue</button>
-                </div>
-              </div>
-            </div>
-          
-            <script>
-              function redirect() {
-                window.location.href = "/ssm/mca/studentProfile";
-              }
-          
-              window.onload = function() {
-                var modal = document.getElementById("myModal");
-          
-                modal.style.display = "flex";
-          
-                window.onclick = function(event) {
-                  if (event.target == modal) {
-                    modal.style.display = "none";
-                    redirect();
-                  }
-                }
-              }
-            </script>
-          </body>
-          </html>
-          `
-         );
-      } else {
-        return res.send(
-          '<script>alert("Error in exam fees update request!"); window.location="/ssm/mca/studentProfile";</script>'
-        );
-      }
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error in Exam Update Request' });
@@ -1821,6 +1879,7 @@ exports.approveAndRejectTu = async (req, res) => {
   let status;
   let statusRes;
   let student;
+  let rejectReason = data?.rejectReason || "";
 
   if (action === "Approve") {
     status = "Approved"
@@ -1928,8 +1987,11 @@ exports.approveAndRejectTu = async (req, res) => {
               <div class="status">
                   <p>Dear ${student.name},</p>
                   <p>Your Tuition Fee Update Request has been ${statusRes}.</p>
+                  ${statusRes === "Rejected" ? `
+                    <p><strong>Reason for rejection:</strong> ${rejectReason}</p>
+                ` : ''}
                   <p>If you have any questions or need further assistance, please feel free to <a href="mailto:saran@outlook.in" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
-                  <p>Best regards,<br>Sarankumar</p>
+                  <p>Best regards,<br>SSM COLLEGE OF ENGINEERING</p>
               </div>
               <div class="footer">
                   This is an automated message. Please do not reply to this email.
@@ -1963,6 +2025,7 @@ exports.approveAndRejectEx = async (req, res) => {
   let status;
   let statusRes;
   let student;
+  let rejectReason = data?.rejectReason || "";
 
   if (action === "Approve") {
     status = "Approved"
@@ -2071,8 +2134,11 @@ exports.approveAndRejectEx = async (req, res) => {
               <div class="status">
                   <p>Dear ${student.name},</p>
                   <p>Your Exam Fee Update Request has been ${statusRes}.</p>
+                  ${statusRes === "Rejected" ? `
+                    <p><strong>Reason for rejection:</strong> ${rejectReason}</p>
+                ` : ''}
                   <p>If you have any questions or need further assistance, please feel free to <a href="mailto:saran@outlook.in" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
-                  <p>Best regards,<br>Sarankumar</p>
+                  <p>Best regards,<br>SSM COLLEGE OF ENGINEERING</p>
               </div>
               <div class="footer">
                   This is an automated message. Please do not reply to this email.

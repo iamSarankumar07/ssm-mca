@@ -3,6 +3,10 @@ const app = express();
 const authonticationController = require("../middleware/auth");
 const studentController = require("../controller/studentController");
 const path = require("path");
+const multer = require("multer");
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
@@ -64,12 +68,14 @@ app.post(
 
 app.post(
   "/requestChangeTu",
+  upload.single("image"),
   authonticationController.sValidateToken,
   studentController.requestChangeTu
 );
 
 app.post(
   "/requestChangeEx",
+  upload.single("image"),
   authonticationController.sValidateToken,
   studentController.requestChangeEx
 );
