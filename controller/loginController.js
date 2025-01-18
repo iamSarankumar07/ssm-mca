@@ -338,9 +338,9 @@ exports.login = async (req, res) => {
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {
         console.log("Error sending OTP email:", err);
-        return res.send(
-          '<script>alert("Error sending OTP"); window.location.href = "/ssm/mca/signin";</script>'
-        );
+        // return res.send(
+        //   '<script>alert("Error sending OTP"); window.location.href = "/ssm/mca/signin";</script>'
+        // );
       }
       console.log("OTP sent successfully");
     });
