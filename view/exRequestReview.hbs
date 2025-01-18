@@ -3,127 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Profile Update Request</title>
+    <title>Exam Fee Update Request</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #1f2937;
-            line-height: 1.5;
+        .main-container {
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            background-color: #3d6ef5ff;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 3.5%;
+            left: 2%;
+            text-decoration: none;
+        }
+    
+        .back-button img {
+            width: 45px;
+            height: 45px;
+            margin-right: 16px;
+            margin-bottom: 30px;
+            vertical-align: middle;
+            transition: width 0.3s ease, height 0.3s ease;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
         }
 
         .card {
             background-color: #ffffff;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            max-width: 500px;
+            margin: 1rem 0;
             overflow: hidden;
         }
 
         .card-header {
             background-color: #2563eb;
-            color: #ffffff;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-header h1 {
-            font-size: 1.5rem;
+            color: white;
+            border-radius: 5px;
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.25rem;
             font-weight: 600;
         }
 
-        .back-link {
-            color: #ffffff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .back-link:hover {
-            text-decoration: none;
-        }
-
-        .back-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            margin-right: 0.5rem;
-        }
-
-        .student-info {
+        .card-body {
             padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
         }
 
-        .student-header {
-            text-align: center;
+        .details-section {
             margin-bottom: 1rem;
-        }
-
-        .student-id, .student-branch {
-            font-weight: 600;
-        }
-
-        .student-id span, .student-branch span {
-            color: #2563eb;
-        }
-
-        .details-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        .transaction-info {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.95rem;
-        }
-
-        .transaction-info p {
-            margin: 0.5rem 0;
-        }
-
-        .transaction-info .dd {
-            font-weight: 600;
-            color: #2563eb;
-        }
-
-        @media (min-width: 640px) {
-            .details-grid {
-                grid-template-columns: 1fr 1fr;
-            }
         }
 
         .details-section h3 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             color: #1f2937;
             margin-bottom: 1rem;
-            text-align: center;
+            font-weight: 600;
         }
 
         .details-table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 0.5rem;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
         }
 
         .details-table td {
-            padding: 0.5rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .details-table tr {
+            line-height: 1; 
         }
 
         .details-table td:first-child {
@@ -133,28 +122,45 @@
 
         .details-table td:last-child {
             font-weight: 600;
-            color: #2563eb;
+            color: #1d4ed8;
+        }
+
+        .transaction-info {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .btn-show-proof {
+            background-color: #1d4ed8;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-show-proof:hover {
+            background-color: #1e40af;
         }
 
         .actions {
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-top: 1.5rem;
         }
 
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 0.25rem;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
 
         .btn-reject {
             background-color: #ef4444;
-            color: #ffffff;
+            color: white;
         }
 
         .btn-reject:hover {
@@ -163,61 +169,173 @@
 
         .btn-approve {
             background-color: #10b981;
-            color: #ffffff;
+            color: white;
         }
 
         .btn-approve:hover {
             background-color: #059669;
         }
 
-        .card-footer {
-            background-color: #f9fafb;
-            padding: 1rem 1.5rem;
+        footer {
+            background-color: #e5e7eb;
+            color: #6b7280;
             text-align: center;
+            padding: 1rem;
+            font-size: 0.875rem;
         }
 
-        .btn-back {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: #e0e7ff;
-            color: #2563eb;
-            text-decoration: none;
-            border-radius: 0.25rem;
-            transition: background-color 0.2s;
+       .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 500px;
+        text-align: left;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-content p {
+        font-size: 1rem;
+        color: #6b7280;
+        margin-bottom: 1rem;
+    }
+
+    /* Input Styles */
+    textarea {
+        width: 100%;
+        border: 1px solid #d1d5db;
+        border-radius: 0.25rem;
+        padding: 0.75rem;
+        font-size: 1rem;
+        color: #374151;
+        resize: none;
+        margin-bottom: 1rem;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Button Styles */
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
+
+    .btn-primary {
+        background-color: #10b981;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .btn-primary:hover {
+        background-color: #059669;
+    }
+
+    .btn-secondary {
+        background-color: #e5e7eb;
+        color: #374151;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .btn-secondary:hover {
+        background-color: #d1d5db;
+    }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 20px;
+                padding: 10px;
+            }
+    
+            .back-button {
+                position: absolute;
+                top: 3.6%;
+                left: 4%;
+                text-decoration: none;
+            }
+    
+            .back-button img {
+                width: 40px;
+                height: 40px;
+                margin-right: 16px;
+                margin-bottom: 30px;
+                vertical-align: middle;
+                transition: width 0.3s ease, height 0.3s ease;
+            }
+        }
+    
+        @media (max-width: 480px) {
+    
+            h1 {
+                font-size: 16px;
+            }
+    
+            .back-button {
+                position: absolute;
+                top: 3.5%;
+                left: 7%;
+                text-decoration: none;
+            }
+    
+            .back-button img {
+                width: 35px;
+                height: 35px;
+                margin-right: 16px;
+                margin-bottom: 30px;
+                vertical-align: middle;
+                transition: width 0.3s ease, height 0.3s ease;
+            }
         }
 
-        .btn-back:hover {
-            background-color: #c7d2fe;
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h1>Exam Fee Update Request</h1>
-                <a href="/ssm/mca/dashboard#fees" class="back-link">
-                    <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back
-                </a>
-            </div>
+    <div class="main-container">
+        <h1>Exam Fees Update Request</h1>
+    <a href="/ssm/mca/dashboard#fees" class="back-button">
+        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
+    </a>
 
+    <div class="container">
         {{#each students}}
-            <div class="student-info">
-                <div class="student-header">
-                    <p class="student-id">Student ID: <span>{{studentId}}</span></p>
-                    <p class="student-branch">Branch: <span>MCA - {{year}}</span></p>
-                </div>
-                <div class="details-grid">
-                    <div class="details-section">
-                        <h3>Current Exam Fee Details</h3>
+        <div class="card">
+            <div class="card-header">{{name}} ({{studentId}}) - MCA - {{year}}</div>
+            <div class="card-body">
+
+                <div class="details-section">
+                    <h3>Fee Details</h3>
                     <table class="details-table">
-                        <tr>
-                            <td>Name</td>
-                            <td>{{name}}</td>
-                        </tr>
                         <tr>
                             <td>Total Fee</td>
                             <td>Rs. {{examTotalFee}}</td>
@@ -227,55 +345,106 @@
                             <td>Rs. {{examPendingFee}}</td>
                         </tr>
                         <tr>
-                            <td>Payment Status</td>
-                            <td>{{examPaymentStatus}}</td>
+                            <td>Paid Amount</td>
+                            <td>Rs. {{exEditRequest.paidAmountEx}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Mode</td>
+                            <td>{{exEditRequest.payMode}}</td>
+                        </tr>
+                        <tr>
+                            <td>Transaction Ref ID</td>
+                            <td>{{exEditRequest.txnIdEx}}</td>
+                        </tr>
+                        <tr>
+                            <td>Paid Date</td>
+                            <td>{{exEditRequest.paidDateEx}}</td>
                         </tr>
                     </table>
-                    </div>
-                    <div class="details-section">
-                        <h3>To Update</h3>
-                        <table class="details-table">
-                        <tr>
-                            <td>Name</td>
-                            <td>{{name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Total Fee</td>
-                            <td>Rs. {{examTotalFee}}</td>
-                        </tr>
-                        <tr>
-                            <td>Pending Fee</td>
-                            <td>Rs. {{exEditRequest.newExPending}}</td>
-                        </tr>
-                        <tr>
-                            <td>Payment Status</td>
-                            <td>{{exEditRequest.newExStatus}}</td>
-                        </tr>
-                    </table>
-                    </div>
                 </div>
-                <div class="transaction-info">
-                    <p><strong>Amount Paid:</strong> <span class="dd">Rs.{{exEditRequest.paidAmountEx}}</span></p>
-                    <p><strong>Transaction Ref ID:</strong> <span class="dd">{{exEditRequest.txnIdEx}}</span></p>
-                    <p><strong>Paid Date:</strong> <span class="dd">{{exEditRequest.paidDateEx}}</span></p>
-                </div>
-                <div class="actions">
-                <form action="/ssm/mca/approveAndRejectEx" method="POST">
-                    <input type="hidden" name="studentId" value="{{studentId}}">
-                    <input type="submit" name="action" value="Reject" class="btn btn-reject">
-                </form>
-                <form action="/ssm/mca/approveAndRejectEx" method="POST">
-                    <input type="hidden" name="studentId" value="{{studentId}}">
-                    <input type="submit" name="action" value="Approve" class="btn btn-approve">
-                </form>
-                </div>
-            </div>
-        {{/each}}
 
-            <div class="card-footer">
-                <a href="/ssm/mca/dashboard#fees" class="btn-back">← Go back</a>
+                {{!-- <div class="transaction-info">
+                    <button class="btn-show-proof" onclick="showModal('{{tuEditRequest.imageUrl}}')">Show Payment Proof</button>
+                </div> --}}
+
+                <div class="transaction-info">
+                    <button onclick="viewPaymentProof('{{exEditRequest.imageUrl}}')" class="btn-show-proof">View Payment Proof</button>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-reject" onclick="openRejectModal('{{studentId}}')">Reject</button>
+                    <form action="/ssm/mca/approveAndRejectEx" method="POST">
+                        <input type="hidden" name="studentId" value="{{studentId}}">
+                        <input type="submit" name="action" value="Approve" class="btn btn-approve">
+                    </form>
+                </div>
             </div>
         </div>
+        {{/each}}
     </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="payment-proof-modal" class="modal">
+        <div class="modal-content">
+            <img id="proof-image" src="" alt="Payment Proof">
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div id="reject-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color:#1d4ed8;">Reject Request</h2>
+            <p>Please provide the reason for rejecting this request:</p>
+            <form id="reject-form" action="/ssm/mca/approveAndRejectEx" method="POST">
+                <input type="hidden" name="studentId" id="reject-studentId" value="">
+                <input type="hidden" name="action" id="reject-action" value="">
+                <textarea 
+                    name="rejectReason" 
+                    id="reject-reason" 
+                    rows="5" 
+                    placeholder="Enter rejection reason here..." 
+                    required
+                ></textarea>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeRejectModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showModal(imageUrl) {
+            const modal = document.getElementById('payment-proof-modal');
+            const image = document.getElementById('proof-image');
+            image.src = imageUrl;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('payment-proof-modal');
+            modal.style.display = 'none';
+        }
+
+        function viewPaymentProof(url) {
+            window.open(url, '_blank');
+        }
+
+        function openRejectModal(studentId) {
+            const modal = document.getElementById('reject-modal');
+            const studentIdInput = document.getElementById('reject-studentId');
+            const rejectAction = document.getElementById('reject-action');
+            studentIdInput.value = studentId;
+            rejectAction.value = 'Reject'; 
+            modal.style.display = 'flex';
+        }
+
+        function closeRejectModal() {
+            const modal = document.getElementById('reject-modal');
+            modal.style.display = 'none'; 
+        }
+    </script>
 </body>
 </html>

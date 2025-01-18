@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Student</title>
+    <title>Exam Fee Update Request</title>
     <link rel="icon" href="https://i.postimg.cc/kGVvWqPn/edit-user-1.png">
 
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: "Poppins", sans-serif;
         }
         body {
@@ -52,7 +55,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        
+
         a {
             display: block;
             margin-top: 20px;
@@ -93,7 +96,7 @@
             color: #3d6ef5ff;
             font-weight: bold;
         }
-        
+
         h2 {
             color: #3d6ef5ff;
             text-align: center;
@@ -103,6 +106,38 @@
         .hidden {
             display: none;
         }
+
+        .file-label {
+    padding: 8px 0;
+    color: #fff;
+    display: block;
+    text-align: center;
+    width: 100%;
+    border: 2px solid #3d6ef5ff;
+    background: #3d6ef5ff;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.file-label:hover {
+    background: #f2f2f2;
+    color: #3d6ef5ff;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-name {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+
     </style>
 
 </head>
@@ -111,24 +146,18 @@
     <table>
         <tr>
             <td>
-                <form action="/ssm/mca/requestChangeEx" method="post">
+                <form id="feeUpdateForm" action="/ssm/mca/requestChangeEx" method="post" enctype="multipart/form-data">
                     <h2>Exam Fee Update Request</h2>
                     <table>
-                        <tr>
-                            <td><label for="newName">Name :</label></td>
-                            <td><input type="text" id="newName" name="newName" value="{{student.name}}" readonly></td>
-                        </tr>
-                        <tr>
-                            <td><label for="studentId">Student ID:</label></td>
-                            <td><input type="text" id="studentId" name="studentId" value="{{student.studentId}}" readonly></td>
-                        </tr>
+                            <input type="hidden" id="studentId" name="studentId" value="{{student.studentId}}">
+                            <input type="hidden" id="name" name="name" value="{{student.name}}">
                         <tr>
                             <td><label for="totalFee">Total Fee:</label></td>
                             <td><input type="text" id="totalFee" name="totalFee" value="{{student.examTotalFee}}" readonly /></td>
                         </tr>
                         <tr>
-                            <td><label for="examPendingFee">Pending Fee:</label></td>
-                            <td><input type="text" id="examPendingFee" name="examPendingFee" value="{{student.examPendingFee}}" readonly /></td>
+                            <td><label for="pendingFee">Pending Fee:</label></td>
+                            <td><input type="text" id="pendingFee" name="pendingFee" value="{{student.examPendingFee}}" readonly /></td>
                         </tr>
                         <tr>
                             <td><label for="paidAmountEx">Amount Paid:</label></td>
@@ -139,8 +168,31 @@
                             <td><input type="text" id="txnIdEx" name="txnIdEx" required/></td>
                         </tr>
                         <tr>
+                            <td><label for="payMode">Payment mode:</label></td>
+                            <td><select id="payMode" name="payMode" required>
+                                    <option value="" disabled selected>Select payment mode</option>
+                                    <option value="GPay">GPay</option>
+                                    <option value="PhonePe">PhonePe</option>
+                                    <option value="Paytm">Paytm</option>
+                                    <option value="Net Banking">Net Banking</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="Credit Card">Credit Card</option>
+                                    <option value="Debit Card">Debit Card</option>
+                                    <option value="Cash Deposit">Cash Deposit</option>
+                                    <option value="Other">Other</option>
+                                </select></td>
+                        </tr>
+                        <tr>
                             <td><label for="paidDateEx">Paid Date:</label></td>
                             <td><input type="date" id="paidDateEx" name="paidDateEx" required/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="image">Upload Payment Screenshot:</label></td>
+                            <td>
+                                <label for="image" class="file-label">Choose Image</label>
+                                <input class="file-input" type="file" id="image" name="image" accept="image/*" required>
+                                <div class="file-name" id="file-name"></div>
+                            </td>
                         </tr>
                     </table>
                     <div class="button-container">
@@ -151,6 +203,20 @@
             </td>
         </tr>
     </table>
+
+    <script>
+    const fileInput = document.getElementById('image');
+    const fileNameDisplay = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', function () {
+        if (this.files && this.files.length > 0) {
+            const file = this.files[0];
+            fileNameDisplay.textContent = file.name;
+        } else {
+            fileNameDisplay.textContent = '';
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -189,7 +189,9 @@ const studentSchema = new mongoose.Schema({
         status: String,
         txnIdTu: String,
         paidAmountTu: String,
+        payMode: String,
         paidDateTu: String,
+        imageUrl: String
     },
     exEditRequest: {
         newExPending: String,
@@ -197,7 +199,9 @@ const studentSchema = new mongoose.Schema({
         status: String,
         txnIdEx: String,
         paidAmountEx: String,
+        payMode: String,
         paidDateEx: String,
+        imageUrl: String
     },
     createdAt: {
         type: Date,
