@@ -378,6 +378,18 @@
                             <span class="fee-label">Due Date</span>
                             <span class="fee-value">{{student.tutionDueDate}}</span>
                         </div>
+                        {{#if student.tuEditRequest.status}}
+                        <div class="fee-item">
+                            <span class="fee-label">Fees update status</span>
+                            <span class="fee-value">
+                                {{#if (eq student.tuEditRequest.status "requested")}}
+                                    Pending
+                                {{else}}
+                                    {{student.tuEditRequest.status}}
+                                {{/if}}
+                            </span>
+                        </div>
+                        {{/if}}
                     </div>
                     
                     <div id="examFees" class="tab-content">
@@ -404,6 +416,18 @@
                             <span class="fee-label">Due Date</span>
                             <span class="fee-value">{{student.examDueDate}}</span>
                         </div>
+                        {{#if student.exEditRequest.status}}
+                        <div class="fee-item">
+                            <span class="fee-label">Fees update status</span>
+                            <span class="fee-value">
+                                {{#if (eq student.exEditRequest.status "requested")}}
+                                    Pending
+                                {{else}}
+                                    {{student.exEditRequest.status}}
+                                {{/if}}
+                            </span>
+                        </div>
+                        {{/if}}
                     </div>
                 </div>
             </div>
