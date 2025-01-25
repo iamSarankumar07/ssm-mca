@@ -10,9 +10,11 @@ exports.contact = async (req, res) => {
         email: req.body.email,
         message: req.body.message
       });
+
+      res.redirect("/");
   
       const savedContact = await contact.save();
-      console.log(savedContact);
+      // console.log(savedContact);
 
       const transPorter = nodemailer.createTransport({
         service:'gmail',
@@ -115,7 +117,6 @@ exports.contact = async (req, res) => {
         </div>
       `
       });
-      res.redirect("/")
     } catch (err) {
       console.log(err);
       res.send('Internal Server Error');

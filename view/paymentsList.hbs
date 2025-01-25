@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCA Student List</title>
+    <link rel="icon" href="https://your-favicon-url.png">
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        h1 {
+            text-align: center;
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+            background-color: #3d6ef5ff;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        h2 {
+            color: #3d6ef5ff;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+           margin: 20px auto;
+            font-size: 15px;
+        }
+
+        th, td {
+          padding: 8px;
+          text-align: center; 
+          border: 1px solid #ddd;
+        }
+
+        .td {
+            text-align: center;
+        }
+
+        th {
+            background-color: #3d6ef5ff;
+            color: #fff;
+        }
+
+        tr:hover {
+          background-color: #f1f1f1;
+      }
+        .edit-icon, .delete-icon {
+            text-decoration: none;
+            color: #3d6ef5ff;
+            transition: color 0.3s;
+        }
+
+        .edit-icon:hover, .delete-icon:hover {
+            color: #0056b3;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            color: #fff;
+            border: 2px solid #3d6ef5ff;
+            background: #3d6ef5ff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        .btn:hover {
+            background: #fff;
+            color: #3d6ef5ff;
+        }
+
+        .back-button {
+        position: absolute;
+        top: 3.5%; 
+        left: 2%;
+        text-decoration: none;
+    }
+
+    .back-button img {
+        width: 45px;
+        height: 45px;
+        margin-right: 16px;
+        margin-bottom: 30px;
+        vertical-align: middle;
+        transition: width 0.3s ease, height 0.3s ease;
+    }
+
+        .icon-img {
+            width: 25px;
+            height: 25px;
+            vertical-align: middle;
+        }
+        .view-link {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .view-link:hover .icon-img {
+            transform: scale(1.2);
+            filter: brightness(1.5);
+        }
+        .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: left;
+  color: #2c3e50;
+}
+    .modal-content {
+  background-color: #ffffff;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 100vh;
+  overflow-y: auto; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+    .modal-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .modal-close {
+  float: right;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: -10px;
+  margin-top: -10px;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #000;
+  text-decoration: none;
+}
+.responsive-search-bar {
+        padding: 6px;
+        margin-top: 10px;
+        width: 100%;
+        max-width: 300px;
+        font-size: 17px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+@media (max-width: 768px) {
+            h1 {
+                font-size: 20px;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 18px;
+                margin: 10px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                max-width: none;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 12px;
+                padding: 10px 0;
+            }
+
+            .icon-img {
+                width: 20px;
+                height: 20px;
+            }
+            .responsive-search-bar {
+            max-width: 250px;
+            font-size: 13px;
+        }
+        .back-button {
+        position: absolute;
+        top: 3.6%; 
+        left: 4%;
+        text-decoration: none;
+    }
+
+    .back-button img {
+        width: 40px;
+        height: 40px;
+        margin-right: 16px;
+        margin-bottom: 30px;
+        vertical-align: middle;
+        transition: width 0.3s ease, height 0.3s ease;
+    }
+        }
+
+        @media (max-width: 480px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            th, td {
+                font-size: 10px;
+                padding: 6px;
+            }
+
+            h1, h2 {
+                font-size: 16px;
+            }
+            .responsive-search-bar {
+            max-width: 200px;
+            font-size: 12px;
+        }
+        .back-button {
+        position: absolute;
+        top: 3.4%; 
+        left: 7%;
+        text-decoration: none;
+    }
+
+    .back-button img {
+        width: 35px;
+        height: 35px;
+        margin-right: 16px;
+        margin-bottom: 30px;
+        vertical-align: middle;
+        transition: width 0.3s ease, height 0.3s ease;
+    }
+        }
+    </style>
+    <script>
+      function searchByRefNo(searchInput, tableId) {
+        const input = document.getElementById(searchInput);
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById(tableId);
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+          const td = rows[i].getElementsByTagName('td')[0]; 
+          if (td) {
+            const textValue = td.textContent || td.innerText;
+            if (textValue.toUpperCase().indexOf(filter) > -1) {
+              rows[i].style.display = '';
+            } else {
+              rows[i].style.display = 'none';
+            }
+          }
+        }
+      }
+
+    function showDetails(txnId) {
+      var modal = document.getElementById("modal-" + txnId);
+      modal.style.display = "block";
+    }
+
+    function closeDetails(txnId) {
+      var modal = document.getElementById("modal-" + txnId);
+      modal.style.display = "none";
+    }
+  </script>
+</head>
+<body>
+<div class="container">
+    <h1>Payment Details</h1>
+    <a href="/ssm/mca/dashboard#fee" class="back-button">
+        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
+    </a>
+
+    <div style="margin-bottom: 20px; text-align: right;">
+      <input
+          type="text"
+          id="searchInput1"
+          placeholder="Search by Transaction ID"
+          onkeyup="searchByRefNo('searchInput1', 'table1')"
+          class="responsive-search-bar"
+      />
+  </div>
+
+    <table>
+        <thead>
+        <tr>
+          <th>Transaction ID</th>
+          <th>Student ID</th>
+          <th>Student Name</th>
+          <th>Year</th>
+          <th>Amount</th>
+          <th>Payment Type</th>
+          <th>Transaction Date</th>
+          <th>Status</th>
+          <th>Receipt</th>
+          <th>Details</th>
+        </tr>
+        </thead>
+        <tbody id="table1">
+        {{#each payments}}
+        <tr>
+          <td data-label="Transaction ID" style="text-align: center;">{{txnId}}</td>
+          <td data-label="Student ID" style="text-align: center;">{{studentId}}</td>
+          <td data-label="Student Name" style="text-align: center;">{{name}}</td>
+          <td data-label="Year" style="text-align: center;">MCA - {{year}}</td>
+          <td data-label="Amount" style="text-align: center;">{{currency}} {{amount}}</td>
+          <td data-label="Payment Type" style="text-align: center;">{{paymentType}}</td>
+          <td data-label="Date" style="text-align: center;">{{txnDate}}</td>
+          <td data-label="Status" style="text-align: center; color: green">{{paymentStatus}}</td>
+          <!-- Use an icon for receipt -->
+          <td data-label="Receipt" style="text-align: center;">
+            <a href="{{receipt_url}}" target="_blank">
+              <img src="https://i.postimg.cc/KYFNYDWr/bill.png" alt="View Receipt" class="icon-img" />
+            </a>
+          </td>
+          <td data-label="Details" style="text-align: center;" class="view-link">
+            <img
+              src="https://i.postimg.cc/XYNnzjf1/vision-1.png"
+              alt="View"
+              class="icon-img"
+              style="width: 25px; height: 25px; cursor: pointer;"
+              onclick="showDetails('{{txnId}}')"
+            />
+          </td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+
+    <div class="btn-container">
+        <a class="btn" href="/ssm/mca/dashboard#fee">< Go back!</a>
+    </div>
+
+    {{#each payments}}
+    <!-- Modal Structure -->
+    <div id="modal-{{txnId}}" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeDetails('{{txnId}}')">&times;</span>
+        <div class="modal-header">Payment Details</div>
+        <table>
+          <tr>
+            <th>Transaction ID</th>
+            <td>{{txnId}}</td>
+          </tr>
+          <tr>
+            <th>Student ID</th>
+            <td>{{studentId}}</td>
+          </tr>
+          <tr>
+            <th>Student Name</th>
+            <td>{{name}}</td>
+          </tr>
+          <tr>
+            <th>Student Email</th>
+            <td>{{email}}</td>
+          </tr>
+          <tr>
+            <th>Year</th>
+            <td>MCA - {{year}}</td>
+          </tr>
+          <tr>
+            <th>Amount</th>
+            <td>{{currency}} {{amount}}</td>
+          </tr>
+          <tr>
+            <th>Currency</th>
+            <td>{{currency}}</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>{{paymentStatus}}</td>
+          </tr>
+          <tr>
+            <th>Payment Type</th>
+            <td>{{paymentType}}</td>
+          </tr>
+          <tr>
+            <th>Payment Mode</th>
+            <td>{{paymentMode}}</td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>{{description}}</td>
+          </tr>
+          <tr>
+            <th>Receipt</th>
+            <td><a href="{{receipt_url}}" style="text-decoration: none;" target="_blank">View Receipt</a></td>
+          </tr>
+          <tr>
+            <th>Transaction Date</th>
+            <td>{{txnDate}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  </div>
+</div>
+    </div>
+</body>
+</html>
