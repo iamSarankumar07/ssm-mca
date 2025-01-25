@@ -195,14 +195,14 @@
             <nav>
                 <ul>
                     <li><a href="#students" onclick="showSection('students')">Students</a></li>
-                    <li><a href="#fees" onclick="showSection('fees')">Fees</a></li>
-                    <li><a href="#alerts" onclick="showSection('alerts')">Alerts</a></li>
+                    <li><a href="#fees" onclick="showSection('fees')">Fees & Payments</a></li>
+                    {{!-- <li><a href="#alerts" onclick="showSection('alerts')">Alerts</a></li> --}}
                     <li><a href="#announcements" onclick="showSection('announcements')">Announcements</a></li>
                     <li><a href="#materials" onclick="showSection('materials')">Study Materials</a></li>
                     <li><a href="#staff" onclick="showSection('staff')">Staff</a></li>
                     <li><a href="#gallery" onclick="showSection('gallery')">Image Gallery</a></li>
                     <li><a href="#alumni" onclick="showSection('alumni')">Alumni</a></li>
-                    <li><a href="#admission" onclick="showSection('admission')">Admissions & Contact messages</a></li>
+                    <li><a href="#admission" onclick="showSection('admission')">Admissions & Support</a></li>
                 </ul>
             </nav>
         </aside>
@@ -262,10 +262,18 @@
                         <i class="fas fa-file-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
                         <h2>Exam Fee Update Request</h2>
                     </a>
+                    <a href="/ssm/mca/paymentsList" class="card">
+                        <i class="fas fa-credit-card-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Payments</h2>
+                    </a>
+                    <a href="/ssm/mca/paymentAlert" class="card">
+                        <i class="fas fa-bell fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Payment Alerts</h2>
+                    </a>
                 </div>
             </div>
 
-            <!-- Alerts Section -->
+           {{!--  <!-- Alerts Section -->
             <div id="alerts" class="content-section">
                 <div class="grid">
                     <a href="/ssm/mca/paymentAlert" class="card">
@@ -273,7 +281,7 @@
                         <h2>Payment Alerts</h2>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Announcements Section -->
             <div id="announcements" class="content-section">

@@ -259,4 +259,28 @@ app.get(
   viewController.admissionFormList
 );
 
+app.get(
+  "/tuitionCreatePayment",
+  authonticationController.sValidateToken,
+  (req, res, next) => {
+    const studentId = req.query.studentId;
+
+    req.body.studentId = studentId;
+    next();
+  },
+  viewController.getTuitionCreatePayment
+);
+
+app.get(
+  "/examCreatePayment",
+  authonticationController.sValidateToken,
+  (req, res, next) => {
+    const studentId = req.query.studentId;
+
+    req.body.studentId = studentId;
+    next();
+  },
+  viewController.getExamCreatePayment
+);
+
 module.exports = app;

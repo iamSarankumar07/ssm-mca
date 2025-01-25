@@ -1060,4 +1060,26 @@ exports.admissionFormList = async (req, res) => {
   }
 };
 
+exports.getTuitionCreatePayment = async (req, res) => {
+  try {
+    let body = req.body;
+    let studentData = await Student.findOne({ studentId: body.studentId });
+    res.render('tuitionPayment', { key: process.env.STRIPE_PUBLISHABLE_KEY, studentData });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
+exports.getExamCreatePayment = async (req, res) => {
+  try {
+    let body = req.body;
+    let studentData = await Student.findOne({ studentId: body.studentId });
+    res.render('examPayment', { key: process.env.STRIPE_PUBLISHABLE_KEY, studentData });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
 module.exports = exports;

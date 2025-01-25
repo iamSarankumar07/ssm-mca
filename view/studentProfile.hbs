@@ -378,6 +378,39 @@
                             <span class="fee-label">Due Date</span>
                             <span class="fee-value">{{student.tutionDueDate}}</span>
                         </div>
+                        {{#if student.tuEditRequest.status}}
+                        <div class="fee-item">
+                            <span class="fee-label">Fees update status</span>
+                            <span class="fee-value">
+                                {{#if (eq student.tuEditRequest.status "requested")}}
+                                    Pending
+                                {{else}}
+                                    {{student.tuEditRequest.status}}
+                                {{/if}}
+                            </span>
+                        </div>
+                        {{/if}}
+                        {{#if (eq student.paymentStatus "Paid") }}
+                        {{else}}
+                        <div class="fee-item">
+                            <span class="fee-label">Pay Tuition fees with Stripe Pay -></span>
+                            <span class="fee-value">
+                            {{#if (eq student.paymentStatus "Paid")}}
+                            {{else}}
+                                <a style="text-decoration: none; color:#3d6ef5ff;" href="/ssm/mca/tuitionCreatePayment?studentId={{student.studentId}}">Pay Now</a>
+                            {{/if}}
+                            </span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Pay Tuition fees with Razor Pay -></span>
+                            <span class="fee-value">
+                            {{#if (eq student.paymentStatus "Paid")}}
+                            {{else}}
+                                <a style="text-decoration: none; color:#3d6ef5ff;" href="/ssm/mca/tuitionCreatePaymentRazor?studentId={{student.studentId}}">Pay Now</a>
+                            {{/if}}
+                            </span>
+                        </div>
+                        {{/if}}
                     </div>
                     
                     <div id="examFees" class="tab-content">
@@ -404,6 +437,39 @@
                             <span class="fee-label">Due Date</span>
                             <span class="fee-value">{{student.examDueDate}}</span>
                         </div>
+                        {{#if student.exEditRequest.status}}
+                        <div class="fee-item">
+                            <span class="fee-label">Fees update status</span>
+                            <span class="fee-value">
+                                {{#if (eq student.exEditRequest.status "requested")}}
+                                    Pending
+                                {{else}}
+                                    {{student.exEditRequest.status}}
+                                {{/if}}
+                            </span>
+                        </div>
+                        {{/if}}
+                        {{#if (eq student.examPaymentStatus "Paid") }}
+                        {{else}}
+                        <div class="fee-item">
+                            <span class="fee-label">Pay Exam fees with Stripe Pay -></span>
+                            <span class="fee-value">
+                            {{#if (eq student.examPaymentStatus "Paid")}}
+                            {{else}}
+                                <a style="text-decoration: none; color:#3d6ef5ff;" href="/ssm/mca/examCreatePayment?studentId={{student.studentId}}">Pay Now</a>
+                            {{/if}}
+                            </span>
+                        </div>
+                        <div class="fee-item">
+                            <span class="fee-label">Pay Exam fees with Razor Pay -></span>
+                            <span class="fee-value">
+                            {{#if (eq student.examPaymentStatus "Paid")}}
+                            {{else}}
+                                <a style="text-decoration: none; color:#3d6ef5ff;" href="/ssm/mca/examCreatePaymentRazor?studentId={{student.studentId}}">Pay Now</a>
+                            {{/if}}
+                            </span>
+                        </div>
+                        {{/if}}
                     </div>
                 </div>
             </div>
