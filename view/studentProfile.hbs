@@ -6,7 +6,7 @@
     <title>Student Profile</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+    
         :root {
             --primary-color: #3b82f6;
             --primary-hover: #2563eb;
@@ -18,38 +18,38 @@
             --text-secondary: #4b5563;
             --border-color: #e5e7eb;
         }
-
+    
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+    
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--background-color);
             color: var(--text-primary);
             line-height: 1.5;
         }
-
+    
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem 1rem;
         }
-
+    
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
-
+    
         h1 {
             font-size: 2rem;
             font-weight: 700;
         }
-
+    
         .btn {
             display: inline-flex;
             align-items: center;
@@ -60,47 +60,47 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
-
+    
         .btn-primary {
             background-color: var(--primary-color);
             color: white;
         }
-
+    
         .btn-primary:hover {
             background-color: var(--primary-hover);
         }
-
+    
         .btn-danger {
             background-color: var(--danger-color);
             color: white;
         }
-
+    
         .btn-danger:hover {
             background-color: var(--danger-hover);
         }
-
+    
         .btn-icon {
             padding: 0.5rem;
         }
-
+    
         .grid {
             display: grid;
             gap: 1.5rem;
         }
-
+    
         @media (min-width: 768px) {
             .grid {
                 grid-template-columns: 2fr 1fr;
             }
         }
-
+    
         .card {
             background-color: var(--card-background);
             border-radius: 0.5rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             overflow: hidden;
         }
-
+    
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -108,22 +108,22 @@
             padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--border-color);
         }
-
+    
         .card-title {
             font-size: 1.25rem;
             font-weight: 600;
         }
-
+    
         .card-content {
             padding: 1.5rem;
         }
-
+    
         .profile-header {
             display: flex;
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
+    
         .avatar {
             width: 3rem;
             height: 3rem;
@@ -137,44 +137,44 @@
             font-weight: 600;
             margin-right: 1rem;
         }
-
+    
         .profile-name {
             font-size: 1.5rem;
             font-weight: 600;
         }
-
+    
         .profile-role {
             color: var(--text-secondary);
             font-size: 0.875rem;
         }
-
+    
         .details-grid {
             display: grid;
             gap: 1rem;
         }
-
+    
         @media (min-width: 640px) {
             .details-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
+    
         .detail-item dt {
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--text-secondary);
         }
-
+    
         .detail-item dd {
             font-size: 1rem;
             margin-top: 0.25rem;
         }
-
+    
         .tabs {
             display: flex;
             border-bottom: 1px solid var(--border-color);
         }
-
+    
         .tab {
             padding: 0.75rem 1rem;
             font-weight: 500;
@@ -182,47 +182,48 @@
             cursor: pointer;
             transition: color 0.2s, border-color 0.2s;
         }
-
+    
         .tab.active {
             color: var(--primary-color);
             border-bottom: 2px solid var(--primary-color);
         }
-
+    
         .tab-content {
             display: none;
             padding: 1rem 0;
         }
-
+    
         .tab-content.active {
             display: block;
         }
-
+    
         .fee-item {
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.5rem;
         }
-
+    
         .fee-label {
             font-size: 0.875rem;
             color: var(--text-secondary);
         }
-
+    
         .fee-value {
             font-weight: 500;
         }
-
+    
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
-        th, td {
+    
+        th,
+        td {
             padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
         }
-
+    
         th {
             background-color: var(--background-color);
             font-weight: 600;
@@ -230,20 +231,21 @@
             font-size: 0.75rem;
             text-transform: uppercase;
         }
-
+    
         td {
             font-size: 0.875rem;
         }
-
+    
         .table-link {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
         }
-
+    
         .table-link:hover {
             text-decoration: underline;
         }
+    
         .card h3 {
             margin-top: 0;
             display: flex;
@@ -251,11 +253,13 @@
             justify-content: space-between;
             align-items: center;
         }
+    
         .card img {
             width: 35px;
             height: 35px;
             vertical-align: middle;
         }
+    
         button[type="button"] {
             background-color: #3d6ef5ff;
             color: #f2f2f2;
@@ -267,10 +271,162 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+    
         button[type="button"]:hover {
             background-color: #f2f2f2;
             color: #3d6ef5ff;
             font-weight: bold;
+        }
+    
+        .pay-button {
+            background-color: #3d6ef5;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .pay-button:hover {
+            background-color: #2c50c1;
+        }
+    
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+    
+        .popup.hidden {
+            display: none;
+        }
+    
+        .popup-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+    
+        .popup-container {
+            position: relative;
+            background: #fff;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: popup-fade-in 0.3s ease;
+        }
+    
+        .popup-header {
+            padding: 8px;
+            background: #3d6ef5;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .popup-header h4 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            flex-grow: 1;
+        }
+    
+        .popup-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.2s ease-in-out;
+        }
+    
+        .popup-close:hover {
+            transform: scale(1.2);
+        }
+    
+        .popup-body {
+            padding: 20px;
+            text-align: center;
+        }
+    
+        .payment-option {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+    
+        .gateway-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .gateway-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+    
+        .gateway-logo {
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    
+        .gateway-logo:hover {
+            opacity: 0.9;
+        }
+    
+        @keyframes popup-fade-in {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+    
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    
+        @media (max-width: 768px) {
+            .popup-container {
+                width: 90%;
+                max-width: 350px;
+            }
+    
+            .gateway-logo {
+                width: 120px;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .popup-header h3 {
+                font-size: 16px;
+            }
+    
+            .gateway-logo {
+                width: 100px;
+            }
         }
     </style>
 </head>
@@ -392,7 +548,7 @@
                         {{/if}}
                         {{#if (eq student.paymentStatus "Paid") }}
                         {{else}}
-                        <div class="fee-item">
+                        {{!-- <div class="fee-item">
                             <span class="fee-label">Pay Tuition fees with StripePay -></span>
                             <span class="fee-value">
                             {{#if (eq student.paymentStatus "Paid")}}
@@ -416,6 +572,15 @@
                             {{#if (eq student.paymentStatus "Paid")}}
                             {{else}}
                                 <a style="text-decoration: none; color:#3d6ef5ff;" href="/ssm/mca/tuitionCreatePaymentPaypal?studentId={{student.studentId}}">Pay Now</a>
+                            {{/if}}
+                            </span>
+                        </div> --}}
+                        <div class="fee-item" style="margin-top: 25px; display: flex; align-items: center;">
+                            <span class="fee-label">Pay Tuition Fees -></span>
+                            <span class="fee-value">
+                            {{#if (eq student.paymentStatus "Paid")}}
+                            {{else}}
+                                <button class="pay-button" onclick="openPaymentPopup('tuition')">Pay</button>
                             {{/if}}
                             </span>
                         </div>
@@ -460,7 +625,7 @@
                         {{/if}}
                         {{#if (eq student.examPaymentStatus "Paid") }}
                         {{else}}
-                        <div class="fee-item">
+                        {{!-- <div class="fee-item">
                             <span class="fee-label">Pay Exam fees with StripePay -></span>
                             <span class="fee-value">
                             {{#if (eq student.examPaymentStatus "Paid")}}
@@ -484,6 +649,15 @@
                             {{#if (eq student.examPaymentStatus "Paid")}}
                             {{else}}
                                 <a style="text-decoration: none; color:#3d6ef5ff;" href="/ssm/mca/examCreatePaymentPaypal?studentId={{student.studentId}}">Pay Now</a>
+                            {{/if}}
+                            </span>
+                        </div> --}}
+                        <div class="fee-item" style="margin-top: 25px; display: flex; align-items: center;">
+                            <span class="fee-label">Pay Exam Fees -></span>
+                            <span class="fee-value">
+                            {{#if (eq student.examPaymentStatus "Paid")}}
+                            {{else}}
+                                <button class="pay-button" onclick="openPaymentPopup('exam')">Pay</button>
                             {{/if}}
                             </span>
                         </div>
@@ -522,6 +696,35 @@
             </div>
         </div>
     </div>
+
+    <!-- Payment Popup -->
+    <div id="paymentPopup" class="popup hidden">
+        <div class="popup-overlay" onclick="closePaymentPopup()"></div>
+        <div class="popup-container">
+            <div class="popup-header">
+                <h4 style="text-align: center;">Select Payment Gateway</h4>
+                <button class="popup-close" onclick="closePaymentPopup()">x</button>
+            </div>
+            <div class="popup-body">
+                <div class="payment-option">
+                    <button class="gateway-button" onclick="selectPaymentGateway('razor')">
+                        <img src="https://i.postimg.cc/XYg2VW0b/razorpay.png" alt="RazorPay" class="gateway-logo" />
+                    </button>
+                </div>
+                <div class="payment-option">
+                    <button class="gateway-button" onclick="selectPaymentGateway('paypal')">
+                        <img src="https://i.postimg.cc/j2V2gG2W/pngwing-com.png" alt="PayPal" class="gateway-logo" />
+                    </button>
+                </div>
+                <div class="payment-option">
+                    <button class="gateway-button" onclick="selectPaymentGateway('stripe')">
+                        <img src="https://i.postimg.cc/bvc2FD5Y/stripepay.png" alt="Stripe" style="width: 80px; height: auto;" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         function handleLogout() {
@@ -584,6 +787,38 @@
         avatarImg.style.objectFit = 'cover';
         avatarImg.style.borderRadius = '50%';
     };
+
+    function openPaymentPopup(type) {
+        const popup = document.getElementById('paymentPopup');
+        popup.classList.remove('hidden');
+
+        popup.setAttribute('data-type', type);
+    }
+
+    function closePaymentPopup() {
+        const popup = document.getElementById('paymentPopup');
+        popup.classList.add('hidden');
+    }
+
+    function selectPaymentGateway(gateway) {
+        const popup = document.getElementById('paymentPopup');
+        const type = popup.getAttribute('data-type');
+        const studentId = '{{student.studentId}}';
+
+        let url = '';
+
+        if (type === 'tuition') {
+            if (gateway === 'stripe') url = `/ssm/mca/tuitionCreatePayment?studentId=${studentId}`;
+            if (gateway === 'razor') url = `/ssm/mca/tuitionCreatePaymentRazor?studentId=${studentId}`;
+            if (gateway === 'paypal') url = `/ssm/mca/tuitionCreatePaymentPaypal?studentId=${studentId}`;
+        } else if (type === 'exam') {
+            if (gateway === 'stripe') url = `/ssm/mca/examCreatePayment?studentId=${studentId}`;
+            if (gateway === 'razor') url = `/ssm/mca/examCreatePaymentRazor?studentId=${studentId}`;
+            if (gateway === 'paypal') url = `/ssm/mca/examCreatePaymentPaypal?studentId=${studentId}`;
+        }
+
+        window.location.href = url;
+    }
 
     </script>
 </body>
