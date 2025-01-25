@@ -364,6 +364,7 @@
     
         .popup-body {
             padding: 20px;
+            margin-top: 10px;
             text-align: center;
         }
     
@@ -387,6 +388,13 @@
     
         .gateway-logo {
             width: 150px;
+            height: auto;
+            border-radius: 10px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .gateway-logo-stripe {
+            width: 80px;
             height: auto;
             border-radius: 10px;
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -417,6 +425,9 @@
             .gateway-logo {
                 width: 120px;
             }
+            .gateway-logo-stripe {
+                width: 60px;
+            }
         }
     
         @media (max-width: 480px) {
@@ -426,6 +437,9 @@
     
             .gateway-logo {
                 width: 100px;
+            }
+            .gateway-logo-stripe {
+                width: 50px;
             }
         }
     </style>
@@ -718,7 +732,7 @@
                 </div>
                 <div class="payment-option">
                     <button class="gateway-button" onclick="selectPaymentGateway('stripe')">
-                        <img src="https://i.postimg.cc/bvc2FD5Y/stripepay.png" alt="Stripe" style="width: 80px; height: auto;" />
+                        <img src="https://i.postimg.cc/bvc2FD5Y/stripepay.png" alt="Stripe" class="gateway-logo-stripe" />
                     </button>
                 </div>
             </div>
