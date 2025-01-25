@@ -13,6 +13,6 @@ router.use(require("./feeRoutes"));
 router.use(require("./loginRoutes"));
 router.use(require("./subjectRoutes"));
 router.use(require("./paymentRoutes"));
-router.use(require("./razorPayRoutes"));
+router.use(require("./advancePaymentRoutes"));
 
 module.exports = router;

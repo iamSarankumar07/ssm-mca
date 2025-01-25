@@ -17,6 +17,7 @@ exports.saveStripePayments = async (reqBody, paymentData) => {
             email: reqBody.email,
             txnDate: reqBody.txnDate,
             year: reqBody.year,
+            paymentGateway: paymentData.paymentGateway
         };
 
         let savedPayment = await new paymentModel(txnData).save();
@@ -38,94 +39,105 @@ exports.saveStripePayments = async (reqBody, paymentData) => {
             <!DOCTYPE html>
             <html lang="en">
             <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Payment Confirmation</title>
+                <!--[if mso]>
+                <noscript>
+                    <xml>
+                        <o:OfficeDocumentSettings>
+                            <o:PixelsPerInch>96</o:PixelsPerInch>
+                        </o:OfficeDocumentSettings>
+                    </xml>
+                </noscript>
+                <![endif]-->
                 <style>
-                    body {
-                        font-family: 'Arial', sans-serif;
-                        font-size: 16px;
-                        line-height: 1.6;
-                        color: #333;
-                        margin: 0;
-                        padding: 0;
-                        background-color: #f9f9f9;
-                    }
-                    .container {
-                        max-width: 600px;
-                        margin: 20px auto;
-                        padding: 20px;
-                        background-color: #ffffff;
-                        border-radius: 10px;
-                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                        text-align: center;
-                    }
-                    h1 {
-                        font-size: 28px;
-                        color: #4CAF50;
-                        margin-bottom: 10px;
-                        text-transform: capitalize;
-                    }
-                    h1 span {
-                        font-size: 32px;
-                    }
-                    p {
-                        margin-bottom: 15px;
-                    }
-                    ul {
-                        list-style: none;
-                        padding: 0;
-                    }
-                    ul li {
-                        margin: 10px 0;
-                        font-size: 16px;
-                        color: #555;
-                    }
-                    .btn {
-                        display: inline-block;
-                        margin: 20px auto;
-                        padding: 12px 20px;
-                        font-size: 16px;
-                        font-weight: bold;
-                        color: #ffffff;
-                        background-color: #4CAF50;
-                        border-radius: 5px;
-                        text-decoration: none;
-                        text-transform: uppercase;
-                        transition: background-color 0.3s;
-                    }
-                    .btn:hover {
-                        background-color: #45a049;
-                    }
-                    .footer {
-                        font-size: 14px;
-                        color: #999;
-                        margin-top: 20px;
-                        text-align: center;
-                    }
-                    .emoji {
-                        font-size: 24px;
+                    @media screen and (max-width: 600px) {
+                        .container {
+                            width: 100% !important;
+                            padding: 20px !important;
+                        }
+                        .details {
+                            padding: 10px !important;
+                        }
+                        .btn {
+                            display: block !important;
+                            width: 100% !important;
+                        }
                     }
                 </style>
             </head>
-            <body>
-                <div class="container">
-                    <h1><span class="emoji">🎉</span> Payment Received <span class="emoji">✔️</span></h1>
-                    <p>Dear <strong>${reqBody.name}</strong>,</p>
-                    <p>We are delighted to inform you that your payment has been successfully processed! <span class="emoji">💳</span></p>
-                    <p><strong>Payment Details:</strong></p>
-                    <ul>
-                        <li>💳 <strong>Transaction ID:</strong> ${reqBody.txnId}</li>
-                        <li>💰 <strong>Amount:</strong> ${paymentData.amount / 100} ${paymentData.currency.toUpperCase()}</li>
-                        <li>📝 <strong>Description:</strong> ${paymentData.description}</li>
-                        <li>📅 <strong>Payment Date:</strong> ${reqBody.txnDate}</li>
-                    </ul>
-                    <p>You can download your payment receipt using the link below:</p>
-                    <a class="btn" href="${paymentData.receipt_url}" style="color: white;" target="_blank">View Receipt</a>
-                    <p>If you have any questions, feel free to reach out to us at <a href="mailto:saran@outlook.in" style="color: #4CAF50;">saran@outlook.in</a>.</p>
-                    <div class="footer">
-                        <p>This is an automated message. Please do not reply to this email.</p>
-                        <p>&copy; ${new Date().getFullYear()} SSM COLLEGE OF ENGINEERING. All rights reserved.</p>
-                    </div>
-                </div>
+            <body style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #f4f4f4;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                    <tr>
+                        <td style="padding: 30px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="text-align: center; padding-bottom: 20px;">
+                                        <h1 style="font-size: 24px; color: #28a745; margin: 0;">Payment Successful ✅</h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 20px;">
+                                        <p style="margin: 0 0 15px 0; color: #34495e;">Dear ${reqBody.name},</p>
+                                        <p style="margin: 0 0 15px 0; color: #34495e;">We are pleased to confirm that your payment has been successfully processed.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <th style="font-weight: bold; color: #2c3e50; text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">Transaction ID:</th>
+                                                <td style="text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">${reqBody.txnId}</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="font-weight: bold; color: #2c3e50; text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">Amount:</th>
+                                                <td style="text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">${paymentData.amount / 100} ${paymentData.currency.toUpperCase()}</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="font-weight: bold; color: #2c3e50; text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">Description:</th>
+                                                <td style="text-align: left; padding: 10px; border-bottom: 1px solid #e0e0e0;">${paymentData.description}</td>
+                                            </tr>
+                                            <tr>
+                                                <th style="font-weight: bold; color: #2c3e50; text-align: left; padding: 10px;">Payment Date:</th>
+                                                <td style="text-align: left; padding: 10px;">${reqBody.txnDate}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 20px; padding-bottom: 20px;">
+                                        <p style="margin: 0 0 15px 0; color: #34495e;">To access your payment receipt, please click the button below:</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 20px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                                            <tr>
+                                                <td style="border-radius: 3px; background: #3d6ef5; text-align: center;">
+                                                    <a href="${paymentData.receipt_url}" style="background: #3d6ef5; border: 15px solid #3d6ef5; padding: 0 10px; color: #ffffff; font-family: sans-serif; font-size: 16px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 3px; font-weight: bold;" target="_blank">
+                                                        View Receipt
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 20px;">
+                                        <p style="margin: 0; color: #34495e;">If you have any questions or concerns regarding this transaction, please don't hesitate to contact our support team at <a href="mailto:iamsarankumar@outlook.in" style="color: #3498db;">iamsarankumar@outlook.in</a>.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top: 1px solid #e0e0e0; padding-top: 20px; font-size: 14px; color: #7f8c8d; text-align: center;">
+                                        <p style="margin: 0 0 10px 0;">This is an automated message. Please do not reply to this email.</p>
+                                        <p style="margin: 0;">&copy; ${new Date().getFullYear()} SSM COLLEGE OF ENGINEERING. All rights reserved.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             </body>
             </html>
             `

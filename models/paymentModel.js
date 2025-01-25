@@ -25,6 +25,10 @@ const paymentsSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    paymentGateway: {
+        type: String,
+        required: false,
+    },
     description: {
         type: String,
         required: false,

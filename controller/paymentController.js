@@ -25,6 +25,7 @@ exports.createPaymentStripe = async (req, res) => {
         });
         if (charge && charge.status === "succeeded") {
             charge.method = "Card";
+            charge.paymentGateway = "StripePay"
             paymentService.saveStripePayments(req.body, charge);
         }
         const formattedAmount = (charge.amount / 100).toFixed(2);
