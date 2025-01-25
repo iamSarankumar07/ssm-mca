@@ -121,7 +121,7 @@
       <input type="hidden" name="year" id="year" value="<%= studentData.year %>">
 
       <label for="amount">Enter Amount (INR):</label>
-      <input type="number" name="amount" id="amount" placeholder="Enter amount" required oninput="validateAmount()" style="-moz-appearance: textfield; -webkit-appearance: none; margin: 0;" />
+      <input type="number" name="amount" id="amount" value="<%= studentData.examPendingFee %>" placeholder="Enter amount" required oninput="validateAmount()" style="-moz-appearance: textfield; -webkit-appearance: none; margin: 0;" />
 
       <button type="button" id="pay-button">Pay with Razorpay</button>
       <input type="hidden" name="stripeToken" id="stripeToken">
