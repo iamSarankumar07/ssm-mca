@@ -73,16 +73,53 @@ app.get(
 );
 
 app.post("/createPaypalPayment", 
-  // authonticationController.sValidateToken,
+  authonticationController.sValidateToken,
   advancePaymentController.createPaypalPayment
 );
 
 app.post("/capturePaypalPayment", 
-  // authonticationController.sValidateToken,
+  authonticationController.sValidateToken,
   advancePaymentController.capturePaypalPayment
 );
 
+app.get(
+  "/tuitionCreatePaymentCashFree",
+  authonticationController.sValidateToken,
+  (req, res, next) => {
+    const studentId = req.query.studentId;
 
+    req.body.studentId = studentId;
+    next();
+  },
+  advancePaymentController.getTuitionCreatePaymentCashFree
+);
 
+app.get(
+  "/examCreatePaymentCashFree",
+  authonticationController.sValidateToken,
+  (req, res, next) => {
+    const studentId = req.query.studentId;
+
+    req.body.studentId = studentId;
+    next();
+  },
+  advancePaymentController.getExamCreatePaymentCashFree
+);
+
+app.post("/createCashfreePayment", 
+  authonticationController.sValidateToken,
+  advancePaymentController.createCashfreePayment
+);
+
+app.get("/getCashfreeStatus", 
+  authonticationController.sValidateToken,
+  advancePaymentController.getCashfreeStatus
+);
+
+app.post("/webhook", (req, res) => {
+  const webhookData = req.body
+  console.log("Received webhook:", webhookData)
+  res.sendStatus(200)
+})
 
 module.exports = app;
