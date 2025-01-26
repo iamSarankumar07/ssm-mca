@@ -223,7 +223,7 @@ const CASHFREE_BASE_URL = process.env.CASHFREE_ENVIRONMENT === "TEST" ? "https:/
 const BASE_URL = process.env.BASE_URL === "UAT" ? "https://ssm-mca.onrender.com" : "http://localhost:9578"
 
 const APP_ID = process.env.CASHFREE_APP_ID
-const SECRET_KEY = process.env.CASHFREE_SECRET_KEY
+const SECRET_KEY = process.env.CASHFREE_SECRET_KEY1+CASHFREE_SECRET_KEY2
 
 exports.createCashfreePayment = async (req, res) => {
   try {
