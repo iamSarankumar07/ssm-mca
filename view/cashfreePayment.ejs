@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Payment Method</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #f8f9fa;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+            --button-hover-color: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .order-details {
+            padding: 20px;
+            background-color: var(--secondary-color);
+        }
+
+        .order-details p {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+
+        .order-details .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .payment-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fff;
+            color: var(--text-color);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .payment-button:hover {
+            background-color: var(--button-hover-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-logo {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+            object-fit: contain;
+        }
+
+        .payment-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .payment-button {
+                padding: 10px;
+            }
+
+            .payment-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .payment-name {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Select Your Payment Method</h1>
+        </div>
+
+        <div class="order-details">
+            <p>Order ID: <%= orderId %></p>
+            <p class="amount"><%= currency %> <%= amount %></p>
+        </div>
+
+        <div class="payment-options">
+            <% if (paymentUrls.web) { %>
+            <a href="<%= paymentUrls.web %>" class="payment-button" onclick="trackPayment('QR Code')">
+                <img src="https://i.postimg.cc/G24mhF2C/qr.png" alt="QR Code" class="payment-logo">
+                <span class="payment-name">Pay With QR Code</span>
+            </a>
+            <% } %>
+
+            <% if (paymentUrls.gpay) { %>
+            <a href="<%= paymentUrls.gpay %>" class="payment-button" onclick="trackPayment('Google Pay')">
+                <img src="https://i.postimg.cc/mkMZ7TCp/gpay.png" alt="Google Pay" class="payment-logo">
+                <span class="payment-name">Google Pay</span>
+            </a>
+            <% } %>
+
+            <% if (paymentUrls.phonepe) { %>
+            <a href="<%= paymentUrls.phonepe %>" class="payment-button" onclick="trackPayment('PhonePe')">
+                <img src="https://i.postimg.cc/RCjNhDKb/phonepe.png" alt="PhonePe" class="payment-logo">
+                <span class="payment-name">PhonePe</span>
+            </a>
+            <% } %>
+
+            <% if (paymentUrls.paytm) { %>
+            <a href="<%= paymentUrls.paytm %>" class="payment-button" onclick="trackPayment('Paytm')">
+                <img src="https://i.postimg.cc/dDPPFd74/paytm.png" alt="Paytm" class="payment-logo">
+                <span class="payment-name">Paytm</span>
+            </a>
+            <% } %>
+
+            <% if (paymentUrls.bhim) { %>
+            <a href="<%= paymentUrls.bhim %>" class="payment-button" onclick="trackPayment('BHIM UPI')">
+                <img src="https://i.postimg.cc/kXKDbvyM/bhim.png" alt="BHIM UPI" class="payment-logo">
+                <span class="payment-name">BHIM UPI</span>
+            </a>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        function trackPayment(method) {
+            console.log(`Payment initiated with ${method}`);
+            // Add analytics or tracking code here if needed
+        }
+    </script>
+</body>
+</html>

@@ -369,7 +369,8 @@
         }
     
         .payment-option {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            margin-top: 5px;
             display: flex;
             justify-content: center;
         }
@@ -399,6 +400,13 @@
             border-radius: 10px;
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
+
+        .gateway-logo-cashfree {
+            width: 140px;
+            height: auto;
+            border-radius: 10px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
     
         .gateway-logo:hover {
             opacity: 0.9;
@@ -421,25 +429,48 @@
                 width: 90%;
                 max-width: 350px;
             }
+
+            .popup-header h4 {
+                font-size: 20px;
+            }
     
             .gateway-logo {
                 width: 120px;
             }
+
+            .gateway-logo-cashfree {
+                width: 110px;
+            }
+
+
             .gateway-logo-stripe {
                 width: 60px;
+            }
+
+            .popup-header {
+                padding: 6px;
             }
         }
     
         @media (max-width: 480px) {
-            .popup-header h3 {
+            .popup-header h4 {
                 font-size: 16px;
             }
     
             .gateway-logo {
                 width: 100px;
             }
+
+            .gateway-logo-cashfree {
+                width: 90px;
+            }
+
             .gateway-logo-stripe {
                 width: 50px;
+            }
+
+            .popup-header {
+                padding: 4px;
             }
         }
     </style>
@@ -721,6 +752,11 @@
             </div>
             <div class="popup-body">
                 <div class="payment-option">
+                    <button class="gateway-button" onclick="selectPaymentGateway('cashfree')">
+                        <img src="https://i.postimg.cc/R04vrL1F/cashfree-payments-logo-freelogovectors-net.png" alt="Cashfree" class="gateway-logo" />
+                    </button>
+                </div>
+                <div class="payment-option">
                     <button class="gateway-button" onclick="selectPaymentGateway('razor')">
                         <img src="https://i.postimg.cc/XYg2VW0b/razorpay.png" alt="RazorPay" class="gateway-logo" />
                     </button>
@@ -825,10 +861,12 @@
             if (gateway === 'stripe') url = `/ssm/mca/tuitionCreatePayment?studentId=${studentId}`;
             if (gateway === 'razor') url = `/ssm/mca/tuitionCreatePaymentRazor?studentId=${studentId}`;
             if (gateway === 'paypal') url = `/ssm/mca/tuitionCreatePaymentPaypal?studentId=${studentId}`;
+            if (gateway === 'cashfree') url = `/ssm/mca/tuitionCreatePaymentCashfree?studentId=${studentId}`;
         } else if (type === 'exam') {
             if (gateway === 'stripe') url = `/ssm/mca/examCreatePayment?studentId=${studentId}`;
             if (gateway === 'razor') url = `/ssm/mca/examCreatePaymentRazor?studentId=${studentId}`;
             if (gateway === 'paypal') url = `/ssm/mca/examCreatePaymentPaypal?studentId=${studentId}`;
+            if (gateway === 'cashfree') url = `/ssm/mca/examCreatePaymentCashfree?studentId=${studentId}`;
         }
 
         window.location.href = url;

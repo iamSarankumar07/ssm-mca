@@ -355,12 +355,12 @@ exports.login = async (req, res) => {
 
 exports.otp = async (req, res) => {
   try {
+    let body = req.body;
     const otp = req.body.otp1 + req.body.otp2 + req.body.otp3 + req.body.otp4 + req.body.otp5 + req.body.otp6;
 
-    const user = await Admin.findOne({ otp });
+    const user = await Admin.findOne({ staffId: body.staffId });
 
-    if (!user) {
-      console.log("User not found");
+    if (!user.otp) {
       return res.send(
         '<script>alert("Incorrect OTP or OTP Expired!"); window.location.href = "/ssm/mca/signin";</script>'
       );

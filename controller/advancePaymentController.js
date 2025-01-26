@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const paymentService = require("../services/paymentService");
 const paypal = require("@paypal/checkout-server-sdk");
 const paypalClient = require("../middleware/paypal");
-
+const axios = require('axios');
 const Razorpay = require('razorpay');
 
 const razorpay = new Razorpay({
@@ -196,5 +196,165 @@ exports.capturePaypalPayment = async (req, res) => {
     res.status(500).send("Error capturing PayPal Payment");
   }
 };
+
+exports.getTuitionCreatePaymentCashFree = async (req, res) => {
+  try {
+    let body = req.body;
+    let studentData = await Student.findOne({ studentId: body.studentId });
+    res.render('tuitionCashFree', { studentData: studentData, clientId: process.env.PAYPAL_CLIENT_ID });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
+exports.getExamCreatePaymentCashFree = async (req, res) => {
+  try {
+    let body = req.body;
+    let studentData = await Student.findOne({ studentId: body.studentId });
+    res.render('examCashFree', { studentData: studentData, clientId: process.env.PAYPAL_CLIENT_ID });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
+const CASHFREE_BASE_URL = process.env.CASHFREE_ENVIRONMENT === "TEST" ? "https://sandbox.cashfree.com/pg" : "https://api.cashfree.com/pg"
+const BASE_URL = process.env.BASE_URL === "UAT" ? "https://ssm-mca.onrender.com" : "http://localhost:9578"
+
+const APP_ID = process.env.CASHFREE_APP_ID
+const SECRET_KEY = process.env.CASHFREE_SECRET_KEY
+
+exports.createCashfreePayment = async (req, res) => {
+  try {
+    let reqBody = req.body;
+    const txnId = "TXN" + Date.now();
+    const txnDate = moment().format("DD-MM-YYYY");
+    const orderData = {
+      order_id: txnId,
+      order_amount: reqBody.amount,
+      order_currency: "INR",
+      order_note: reqBody.description,
+      customer_details: {
+        customer_name: reqBody.name,
+        customer_phone: reqBody.phone,
+        customer_email: reqBody.email,
+        customer_id: reqBody.studentId, 
+      },
+      order_meta: {
+        return_url: `${BASE_URL}/ssm/mca/getCashfreeStatus?order_id=${encodeURIComponent(txnId)}&txnId=${encodeURIComponent(txnId)}&amount=${encodeURIComponent(reqBody.amount)}&name=${encodeURIComponent(reqBody.name)}&txnDate=${encodeURIComponent(txnDate)}&email=${encodeURIComponent(reqBody.email)}&phone=${encodeURIComponent(reqBody.phone)}&description=${encodeURIComponent(reqBody.description)}&studentId=${encodeURIComponent(reqBody.studentId)}&paymentType=${encodeURIComponent(reqBody.paymentType)}&year=${encodeURIComponent(reqBody.year)}`,
+        // notify_url: "http://localhost:9578/ssm/mca/webhook"
+      },
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+      "x-client-id": APP_ID,
+      "x-client-secret": SECRET_KEY,
+      "x-api-version": "2023-08-01",
+    };
+
+    const orderResponse = await axios.post(`${CASHFREE_BASE_URL}/orders`, orderData, { headers });
+
+    if (orderResponse.status === 200) {
+      const { order_id, order_amount, order_currency, payment_session_id } = orderResponse.data;
+
+      const sessionData = {
+        order_id: order_id,
+        order_amount: order_amount,
+        order_currency: order_currency,
+        customer_details: orderData.customer_details,
+        payment_session_id: payment_session_id,
+        payment_method: {
+          upi: {
+            channel: "link",
+            providers: ["gpay", "phonepe", "paytm", "bharatpe", "upi"]
+          }
+        }
+      };
+
+      const sessionResponse = await axios.post(`${CASHFREE_BASE_URL}/orders/sessions`, sessionData, { headers });
+
+      if (sessionResponse.status === 200) {
+        const paymentData = {
+          orderId: orderResponse.data.order_id,
+          amount: orderResponse.data.order_amount,
+          currency: orderResponse.data.order_currency,
+          paymentUrls: sessionResponse.data.data.payload,
+          cfPaymentId: sessionResponse.data.cf_payment_id,
+        }
+
+        res.render("cashfreePayment", paymentData)
+      } else {
+        res.status(500).send("Error creating payment session");
+      }
+    } else {
+      res.status(500).send("Error creating order");
+    }
+  } catch (error) {
+    console.error("Error during payment creation:", error.response?.data || error.message);
+    res.status(500).send("Error creating payment");
+  }
+};
+
+exports.getCashfreeStatus = async (req, res) => {
+  const { order_id, txnId, amount, name, txnDate, email, phone, description, studentId, paymentType, year } = req.query;
+
+  let reqBody = {};
+  reqBody.txnId = txnId;
+  reqBody.amount = amount;
+  reqBody.name = name;
+  reqBody.txnDate = txnDate;
+  reqBody.email = email;
+  reqBody.year = year;
+  reqBody.phone = phone;
+  reqBody.description = description;
+  reqBody.studentId = studentId;
+  reqBody.paymentType = paymentType;
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      "x-client-id": APP_ID,
+      "x-client-secret": SECRET_KEY,
+      "x-api-version": "2023-08-01",
+    }
+
+    const orderResponse = await axios.get(
+      `${CASHFREE_BASE_URL}/orders/${order_id}`, 
+      { headers }
+    );
+
+    const paymentResponse = await axios.get(
+      `${CASHFREE_BASE_URL}/orders/${order_id}/payments`,
+      { headers }
+    );
+
+    let paymentRes = paymentResponse?.data[0] || {};
+
+    if (paymentRes) {
+      let paymentData = {
+        amount: paymentRes.payment_amount * 100,
+        currency: "INR",
+        paymentGateway: "Cashfree",
+        method: "UPI",
+        description: reqBody.description
+      };
+
+      if (paymentRes.payment_status === "SUCCESS") {
+        paymentService.saveStripePayments(reqBody, paymentData);
+      }
+
+      let paymentStatus = paymentRes?.payment_status;
+
+      setTimeout(() => {
+        res.render("cashfreePaymentResponse", { txnId, txnDate, amount, name, email, phone, description, paymentStatus });
+      }, 3000)
+    }
+  } catch (error) {
+    console.error("Error checking payment status:", error.response?.data || error.message)
+    res.status(500).send("Error checking payment status")
+  }
+};
+
 
 module.exports = exports;
