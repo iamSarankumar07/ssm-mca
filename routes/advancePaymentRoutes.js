@@ -112,7 +112,7 @@ app.post("/createCashfreePayment",
 );
 
 app.get("/getCashfreeStatus", 
-  authonticationController.sValidateToken,
+  // authonticationController.sValidateToken,
   advancePaymentController.getCashfreeStatus
 );
 
