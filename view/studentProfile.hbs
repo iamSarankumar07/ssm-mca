@@ -299,178 +299,86 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
-            align-items: center;
             justify-content: center;
-            z-index: 1000;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-    
-        .popup.hidden {
-            display: none;
+
+        .popup.active {
+            opacity: 1;
+            visibility: visible;
         }
-    
-        .popup-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            cursor: pointer;
+
+        .popup-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 80%;
         }
-    
-        .popup-container {
-            position: relative;
-            background: #fff;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            animation: popup-fade-in 0.3s ease;
-        }
-    
+
         .popup-header {
-            padding: 8px;
-            background: #3d6ef5;
-            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .popup-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 0;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .payment-option {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-    
-        .popup-header h4 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 600;
-            text-align: center;
-            flex-grow: 1;
-        }
-    
-        .popup-close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 28px;
-            cursor: pointer;
-            padding: 8px;
-            transition: transform 0.2s ease-in-out;
-        }
-    
-        .popup-close:hover {
-            transform: scale(1.2);
-        }
-    
-        .popup-body {
-            padding: 20px;
-            margin-top: 10px;
-            text-align: center;
-        }
-    
-        .payment-option {
-            margin-bottom: 10px;
-            margin-top: 5px;
-            display: flex;
-            justify-content: center;
-        }
-    
-        .gateway-button {
-            background: none;
-            border: none;
-            cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-    
-        .gateway-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-    
-        .gateway-logo {
-            width: 150px;
-            height: auto;
-            border-radius: 10px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+
+        .payment-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .gateway-logo-stripe {
-            width: 80px;
-            height: auto;
-            border-radius: 10px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+        .payment-option img {
+            max-width: 100%;
+            max-height: 40px;
         }
 
-        .gateway-logo-cashfree {
-            width: 140px;
-            height: auto;
-            border-radius: 10px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+        .payment-option img[src*="stripepay"] {
+            max-height: 90%; 
+            max-width: 90%;
         }
-    
-        .gateway-logo:hover {
-            opacity: 0.9;
-        }
-    
-        @keyframes popup-fade-in {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-    
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-    
-        @media (max-width: 768px) {
-            .popup-container {
-                width: 90%;
-                max-width: 350px;
-            }
 
-            .popup-header h4 {
-                font-size: 20px;
-            }
-    
-            .gateway-logo {
-                width: 120px;
-            }
-
-            .gateway-logo-cashfree {
-                width: 110px;
-            }
-
-
-            .gateway-logo-stripe {
-                width: 60px;
-            }
-
-            .popup-header {
-                padding: 6px;
-            }
-        }
-    
         @media (max-width: 480px) {
-            .popup-header h4 {
-                font-size: 16px;
-            }
-    
-            .gateway-logo {
-                width: 100px;
-            }
-
-            .gateway-logo-cashfree {
-                width: 90px;
-            }
-
-            .gateway-logo-stripe {
-                width: 50px;
-            }
-
-            .popup-header {
-                padding: 4px;
+            .payment-options {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -743,34 +651,25 @@
     </div>
 
     <!-- Payment Popup -->
-    <div id="paymentPopup" class="popup hidden">
-        <div class="popup-overlay" onclick="closePaymentPopup()"></div>
-        <div class="popup-container">
+    <div class="popup" id="paymentPopup">
+        <div class="popup-content">
             <div class="popup-header">
-                <h4 style="text-align: center;">Select Payment Gateway</h4>
-                <button class="popup-close" onclick="closePaymentPopup()">x</button>
+                <h2>Select Payment Gateway</h2>
+                <button class="close-btn" id="closePopup" aria-label="Close">&times;</button>
             </div>
-            <div class="popup-body">
-                <div class="payment-option">
-                    <button class="gateway-button" onclick="selectPaymentGateway('cashfree')">
-                        <img src="https://i.postimg.cc/R04vrL1F/cashfree-payments-logo-freelogovectors-net.png" alt="Cashfree" class="gateway-logo" />
-                    </button>
-                </div>
-                <div class="payment-option">
-                    <button class="gateway-button" onclick="selectPaymentGateway('razor')">
-                        <img src="https://i.postimg.cc/XYg2VW0b/razorpay.png" alt="RazorPay" class="gateway-logo" />
-                    </button>
-                </div>
-                <div class="payment-option">
-                    <button class="gateway-button" onclick="selectPaymentGateway('paypal')">
-                        <img src="https://i.postimg.cc/j2V2gG2W/pngwing-com.png" alt="PayPal" class="gateway-logo" />
-                    </button>
-                </div>
-                <div class="payment-option">
-                    <button class="gateway-button" onclick="selectPaymentGateway('stripe')">
-                        <img src="https://i.postimg.cc/bvc2FD5Y/stripepay.png" alt="Stripe" class="gateway-logo-stripe" />
-                    </button>
-                </div>
+            <div class="payment-options">
+                <button class="payment-option" onclick="selectPaymentGateway('cashfree')">
+                    <img src="https://i.postimg.cc/R04vrL1F/cashfree-payments-logo-freelogovectors-net.png" alt="Cashfree">
+                </button>
+                <button class="payment-option" onclick="selectPaymentGateway('razor')">
+                    <img src="https://i.postimg.cc/XYg2VW0b/razorpay.png" alt="RazorPay">
+                </button>
+                <button class="payment-option" onclick="selectPaymentGateway('paypal')">
+                    <img src="https://i.postimg.cc/j2V2gG2W/pngwing-com.png" alt="PayPal">
+                </button>
+                <button class="payment-option" onclick="selectPaymentGateway('stripe')">
+                    <img src="https://i.postimg.cc/bvc2FD5Y/stripepay.png" width="80px" alt="Stripe">
+                </button>
             </div>
         </div>
     </div>
@@ -839,38 +738,38 @@
     };
 
     function openPaymentPopup(type) {
-        const popup = document.getElementById('paymentPopup');
-        popup.classList.remove('hidden');
-
-        popup.setAttribute('data-type', type);
-    }
-
-    function closePaymentPopup() {
-        const popup = document.getElementById('paymentPopup');
-        popup.classList.add('hidden');
-    }
-
-    function selectPaymentGateway(gateway) {
-        const popup = document.getElementById('paymentPopup');
-        const type = popup.getAttribute('data-type');
-        const studentId = '{{student.studentId}}';
-
-        let url = '';
-
-        if (type === 'tuition') {
-            if (gateway === 'stripe') url = `/ssm/mca/tuitionCreatePayment?studentId=${studentId}`;
-            if (gateway === 'razor') url = `/ssm/mca/tuitionCreatePaymentRazor?studentId=${studentId}`;
-            if (gateway === 'paypal') url = `/ssm/mca/tuitionCreatePaymentPaypal?studentId=${studentId}`;
-            if (gateway === 'cashfree') url = `/ssm/mca/tuitionCreatePaymentCashfree?studentId=${studentId}`;
-        } else if (type === 'exam') {
-            if (gateway === 'stripe') url = `/ssm/mca/examCreatePayment?studentId=${studentId}`;
-            if (gateway === 'razor') url = `/ssm/mca/examCreatePaymentRazor?studentId=${studentId}`;
-            if (gateway === 'paypal') url = `/ssm/mca/examCreatePaymentPaypal?studentId=${studentId}`;
-            if (gateway === 'cashfree') url = `/ssm/mca/examCreatePaymentCashfree?studentId=${studentId}`;
+            const popup = document.getElementById('paymentPopup');
+            popup.setAttribute('data-type', type);  // Set the type of payment (tuition or exam)
+            popup.classList.add('active');
         }
 
-        window.location.href = url;
-    }
+        // Close the popup
+        document.getElementById('closePopup').addEventListener('click', function() {
+            document.getElementById('paymentPopup').classList.remove('active');
+        });
+
+        // Select the payment gateway and redirect to the appropriate URL
+        function selectPaymentGateway(gateway) {
+            const popup = document.getElementById('paymentPopup');
+            const type = popup.getAttribute('data-type');
+            const studentId = '{{student.studentId}}'; // Replace with dynamic student ID
+
+            let url = '';
+
+            if (type === 'tuition') {
+                if (gateway === 'stripe') url = `/ssm/mca/tuitionCreatePayment?studentId=${studentId}`;
+                if (gateway === 'razor') url = `/ssm/mca/tuitionCreatePaymentRazor?studentId=${studentId}`;
+                if (gateway === 'paypal') url = `/ssm/mca/tuitionCreatePaymentPaypal?studentId=${studentId}`;
+                if (gateway === 'cashfree') url = `/ssm/mca/tuitionCreatePaymentCashfree?studentId=${studentId}`;
+            } else if (type === 'exam') {
+                if (gateway === 'stripe') url = `/ssm/mca/examCreatePayment?studentId=${studentId}`;
+                if (gateway === 'razor') url = `/ssm/mca/examCreatePaymentRazor?studentId=${studentId}`;
+                if (gateway === 'paypal') url = `/ssm/mca/examCreatePaymentPaypal?studentId=${studentId}`;
+                if (gateway === 'cashfree') url = `/ssm/mca/examCreatePaymentCashfree?studentId=${studentId}`;
+            }
+
+            window.location.href = url;  // Redirect to the generated URL
+        }
 
     </script>
 </body>
