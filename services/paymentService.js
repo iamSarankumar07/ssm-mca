@@ -20,9 +20,9 @@ exports.saveStripePayments = async (reqBody, paymentData) => {
             paymentGateway: paymentData.paymentGateway
         };
 
-        let paymentData = await paymentModel.findOne({ txnId: reqBody.txnId });
+        let duplicatePayment = await paymentModel.findOne({ txnId: reqBody.txnId });
 
-        if (paymentData) {
+        if (duplicatePayment) {
             return
         } else {
             let savedPayment = await new paymentModel(txnData).save();
