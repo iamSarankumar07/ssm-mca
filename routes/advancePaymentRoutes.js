@@ -120,6 +120,45 @@ app.post("/webhook", (req, res) => {
   const webhookData = req.body
   console.log("Received webhook:", webhookData)
   res.sendStatus(200)
-})
+});
+
+app.get(
+  "/stripeTuitionPaymentEJS",
+  authonticationController.sValidateToken,
+  (req, res, next) => {
+    const studentId = req.query.studentId;
+
+    req.body.studentId = studentId;
+    next();
+  },
+  advancePaymentController.stripeTuitionPaymentEJS
+);
+
+app.get(
+  "/stripeExamPaymentEJS",
+  authonticationController.sValidateToken,
+  (req, res, next) => {
+    const studentId = req.query.studentId;
+
+    req.body.studentId = studentId;
+    next();
+  },
+  advancePaymentController.stripeExamPaymentEJS
+);
+
+app.post("/createStripePaymentEJS", 
+  authonticationController.sValidateToken,
+  advancePaymentController.createStripePaymentEJS
+);
+
+app.post("/stripe/webhook",
+  express.raw({ type: 'application/json' }),
+  advancePaymentController.handleStripeWebhook
+);
+
+app.get("/getStripeStatus", 
+  // authonticationController.sValidateToken,
+  advancePaymentController.stripePaymentResponse
+);
 
 module.exports = app;
