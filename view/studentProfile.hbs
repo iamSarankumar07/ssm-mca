@@ -371,10 +371,10 @@
             max-height: 40px;
         }
 
-        .payment-option img[src*="stripepay"] {
+        {{!-- .payment-option img[src*="stripepay"] {
             max-height: 90%; 
             max-width: 90%;
-        }
+        } --}}
 
         @media (max-width: 480px) {
             .payment-options {
@@ -661,14 +661,14 @@
                 <button class="payment-option" onclick="selectPaymentGateway('cashfree')">
                     <img src="https://i.postimg.cc/R04vrL1F/cashfree-payments-logo-freelogovectors-net.png" alt="Cashfree">
                 </button>
+                <button class="payment-option" onclick="selectPaymentGateway('stripe')">
+                    <img src="https://i.postimg.cc/dt6Wr3NF/stripe.png" alt="Stripe">
+                </button>
                 <button class="payment-option" onclick="selectPaymentGateway('razor')">
                     <img src="https://i.postimg.cc/XYg2VW0b/razorpay.png" alt="RazorPay">
                 </button>
                 <button class="payment-option" onclick="selectPaymentGateway('paypal')">
                     <img src="https://i.postimg.cc/j2V2gG2W/pngwing-com.png" alt="PayPal">
-                </button>
-                <button class="payment-option" onclick="selectPaymentGateway('stripe')">
-                    <img src="https://i.postimg.cc/bvc2FD5Y/stripepay.png" width="80px" alt="Stripe">
                 </button>
             </div>
         </div>
