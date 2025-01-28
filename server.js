@@ -9,7 +9,10 @@ require("./config/mongo");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
+
+app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 
 app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "view");

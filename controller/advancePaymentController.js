@@ -6,6 +6,7 @@ const paypal = require("@paypal/checkout-server-sdk");
 const paypalClient = require("../middleware/paypal");
 const axios = require('axios');
 const Razorpay = require('razorpay');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -353,6 +354,155 @@ exports.getCashfreeStatus = async (req, res) => {
   } catch (error) {
     console.error("Error checking payment status:", error.response?.data || error.message)
     res.status(500).send("Error checking payment status")
+  }
+};
+
+exports.stripeTuitionPaymentEJS = async (req, res) => {
+  try {
+    let body = req.body;
+    let studentData = await Student.findOne({ studentId: body.studentId });
+    res.render('stripeTuitionEjs', { studentData: studentData });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
+exports.stripeExamPaymentEJS = async (req, res) => {
+  try {
+    let body = req.body;
+    let studentData = await Student.findOne({ studentId: body.studentId });
+    res.render('stripeExamEjs', { studentData: studentData });
+  } catch (err) {
+    console.error(err);
+    res.send("Error", err);
+  }
+};
+
+exports.createStripePaymentEJS = async (req, res) => {
+  const { paymentMethod, amount, studentId, name, email, phone, description } = req.body;
+  let reqBody = req.body;
+  let txnId = "TXN" + Date.now();
+  let txnDate = moment().format("DD-MM-YYYY");
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: paymentMethod,
+      mode: 'payment',
+      line_items: [
+        {
+          price_data: {
+            currency: 'inr',
+            product_data: {
+              name: `Tuition Fees for ${name}`,
+              description: description,
+            },
+            unit_amount: parseInt(amount) * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `${req.protocol}://${req.get('host')}/ssm/mca/getStripeStatus?session_id={CHECKOUT_SESSION_ID}&txnId=${encodeURIComponent(txnId)}&amount=${encodeURIComponent(reqBody.amount)}&name=${encodeURIComponent(reqBody.name)}&txnDate=${encodeURIComponent(txnDate)}&email=${encodeURIComponent(reqBody.email)}&phone=${encodeURIComponent(reqBody.phone)}&description=${encodeURIComponent(reqBody.description)}&studentId=${encodeURIComponent(reqBody.studentId)}&paymentType=${encodeURIComponent(reqBody.paymentType)}&year=${encodeURIComponent(reqBody.year)}&status=${encodeURIComponent('success')}`,
+      cancel_url: `${req.protocol}://${req.get('host')}/ssm/mca/getStripeStatus?session_id={CHECKOUT_SESSION_ID}&txnId=${encodeURIComponent(txnId)}&amount=${encodeURIComponent(reqBody.amount)}&name=${encodeURIComponent(reqBody.name)}&txnDate=${encodeURIComponent(txnDate)}&email=${encodeURIComponent(reqBody.email)}&phone=${encodeURIComponent(reqBody.phone)}&description=${encodeURIComponent(reqBody.description)}&studentId=${encodeURIComponent(reqBody.studentId)}&paymentType=${encodeURIComponent(reqBody.paymentType)}&year=${encodeURIComponent(reqBody.year)}&status=${encodeURIComponent('cancel')}`,
+      metadata: {
+        webhook_url: `${req.protocol}://${req.get('host')}/ssm/mca/stripe/webhook`,
+        studentId: studentId,
+        email: email,
+        phone: phone,
+        txnId: txnId,
+        txnDate: txnDate,
+      },
+    });
+
+    res.json({ url: session.url });
+  } catch (error) {
+    console.error('Error creating Stripe payment session:', error);
+    res.status(500).send('Error creating payment session');
+  }
+};
+
+
+      
+
+
+exports.handleStripeWebhook = async (req, res) => {
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const sig = req.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+
+      const dynamicWebhookUrl = session.metadata?.webhook_url;
+
+      console.log(`Payment completed for session ID: ${session.id}`);
+      console.log(`Transaction ID: ${session.metadata.txnId}`);
+      console.log(`Amount Paid: ${(session.amount_total / 100).toFixed(2)} INR`);
+
+      if (dynamicWebhookUrl) {
+        const forwardResponse = await fetch(dynamicWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event }),
+        });
+
+        if (forwardResponse.ok) {
+          console.log(`Webhook successfully forwarded to: ${dynamicWebhookUrl}`);
+        } else {
+          console.error(`Error forwarding webhook: ${forwardResponse.statusText}`);
+        }
+      }
+    }
+
+    res.status(200).send('Webhook handled successfully');
+  } catch (err) {
+    console.error('Error verifying webhook:', err.message);
+    res.status(400).send('Webhook verification failed');
+  }
+};
+
+exports.stripePaymentResponse = async (req, res) => {
+  const { session_id, txnId, amount, name, txnDate, email, phone, description, studentId, paymentType, year, status } = req.query;
+
+  let reqBody = { txnId, amount, name, txnDate, email, phone, description, studentId, paymentType, year };
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+
+    if (session && session.payment_status === 'paid') {
+      const paymentIntentId = session.payment_intent;
+
+      const charges = await stripe.charges.list({
+        payment_intent: paymentIntentId,
+        limit: 1,
+      });
+
+      const receiptUrl = charges.data.length > 0 ? charges.data[0].receipt_url : null;
+
+      const paymentData = {
+        amount: session.amount_total,
+        currency: session.currency.toUpperCase(),
+        paymentGateway: 'Stripe',
+        method: session.payment_method_types[0],
+        description: reqBody.description,
+        receipt_url: receiptUrl,
+      };
+
+      paymentService.saveStripePayments(reqBody, paymentData);
+
+      const formattedAmount = (paymentData.amount / 100).toFixed(2);
+
+      res.render('stripePaymentResponse', { txnId, txnDate, amount: formattedAmount, name, email, phone, description, paymentStatus: status, receiptUrl });
+    } else {
+      res.render('stripePaymentResponse', { txnId, txnDate, amount, name, email, phone, description, paymentStatus: status, receiptUrl: null });
+    }
+  } catch (error) {
+    console.error("Error checking payment status:", error.response?.data || error.message);
+    res.status(500).send("Error checking payment status");
   }
 };
 

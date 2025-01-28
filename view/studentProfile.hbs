@@ -661,7 +661,10 @@
                 <button class="payment-option" onclick="selectPaymentGateway('cashfree')">
                     <img src="https://i.postimg.cc/R04vrL1F/cashfree-payments-logo-freelogovectors-net.png" alt="Cashfree">
                 </button>
-                <button class="payment-option" onclick="selectPaymentGateway('stripe')">
+                {{!-- <button class="payment-option" onclick="selectPaymentGateway('stripe')">
+                    <img src="https://i.postimg.cc/HsX30cd7/Stripe.png" alt="Stripe">
+                </button> --}}
+                <button class="payment-option" onclick="selectPaymentGateway('stripe-ejs')">
                     <img src="https://i.postimg.cc/HsX30cd7/Stripe.png" alt="Stripe">
                 </button>
                 <button class="payment-option" onclick="selectPaymentGateway('razor')">
@@ -738,38 +741,38 @@
     };
 
     function openPaymentPopup(type) {
-            const popup = document.getElementById('paymentPopup');
-            popup.setAttribute('data-type', type);  // Set the type of payment (tuition or exam)
-            popup.classList.add('active');
+        const popup = document.getElementById('paymentPopup');
+        popup.setAttribute('data-type', type); 
+        popup.classList.add('active');
+    }
+
+    document.getElementById('closePopup').addEventListener('click', function() {
+        document.getElementById('paymentPopup').classList.remove('active');
+    });
+
+    function selectPaymentGateway(gateway) {
+        const popup = document.getElementById('paymentPopup');
+        const type = popup.getAttribute('data-type');
+        const studentId = '{{student.studentId}}';
+
+        let url = '';
+
+        if (type === 'tuition') {
+            if (gateway === 'stripe') url = `/ssm/mca/tuitionCreatePayment?studentId=${studentId}`;
+            if (gateway === 'stripe-ejs') url = `/ssm/mca/stripeTuitionPaymentEJS?studentId=${studentId}`;
+            if (gateway === 'razor') url = `/ssm/mca/tuitionCreatePaymentRazor?studentId=${studentId}`;
+            if (gateway === 'paypal') url = `/ssm/mca/tuitionCreatePaymentPaypal?studentId=${studentId}`;
+            if (gateway === 'cashfree') url = `/ssm/mca/tuitionCreatePaymentCashfree?studentId=${studentId}`;
+        } else if (type === 'exam') {
+            if (gateway === 'stripe') url = `/ssm/mca/examCreatePayment?studentId=${studentId}`;
+            if (gateway === 'stripe-ejs') url = `/ssm/mca/stripeExamPaymentEJS?studentId=${studentId}`;
+            if (gateway === 'razor') url = `/ssm/mca/examCreatePaymentRazor?studentId=${studentId}`;
+            if (gateway === 'paypal') url = `/ssm/mca/examCreatePaymentPaypal?studentId=${studentId}`;
+            if (gateway === 'cashfree') url = `/ssm/mca/examCreatePaymentCashfree?studentId=${studentId}`;
         }
 
-        // Close the popup
-        document.getElementById('closePopup').addEventListener('click', function() {
-            document.getElementById('paymentPopup').classList.remove('active');
-        });
-
-        // Select the payment gateway and redirect to the appropriate URL
-        function selectPaymentGateway(gateway) {
-            const popup = document.getElementById('paymentPopup');
-            const type = popup.getAttribute('data-type');
-            const studentId = '{{student.studentId}}'; // Replace with dynamic student ID
-
-            let url = '';
-
-            if (type === 'tuition') {
-                if (gateway === 'stripe') url = `/ssm/mca/tuitionCreatePayment?studentId=${studentId}`;
-                if (gateway === 'razor') url = `/ssm/mca/tuitionCreatePaymentRazor?studentId=${studentId}`;
-                if (gateway === 'paypal') url = `/ssm/mca/tuitionCreatePaymentPaypal?studentId=${studentId}`;
-                if (gateway === 'cashfree') url = `/ssm/mca/tuitionCreatePaymentCashfree?studentId=${studentId}`;
-            } else if (type === 'exam') {
-                if (gateway === 'stripe') url = `/ssm/mca/examCreatePayment?studentId=${studentId}`;
-                if (gateway === 'razor') url = `/ssm/mca/examCreatePaymentRazor?studentId=${studentId}`;
-                if (gateway === 'paypal') url = `/ssm/mca/examCreatePaymentPaypal?studentId=${studentId}`;
-                if (gateway === 'cashfree') url = `/ssm/mca/examCreatePaymentCashfree?studentId=${studentId}`;
-            }
-
-            window.location.href = url;  // Redirect to the generated URL
-        }
+        window.location.href = url;
+    }
 
     </script>
 </body>
