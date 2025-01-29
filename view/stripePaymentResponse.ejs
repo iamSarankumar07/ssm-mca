@@ -108,36 +108,40 @@
           <i class="fas fa-check-circle"></i> Payment Successful!
         </h1>
         <p>Thank you, <%= name %>. Your payment was processed successfully ✔️.</p>
+        
+        <!-- Transaction details only shown if payment is successful -->
+        <div class="transaction-details">
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-hashtag"></i> Transaction ID:</span>
+            <span class="detail-value"><%= txnId %></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-rupee-sign"></i> Amount Paid:</span>
+            <span class="detail-value">₹<%= amount %></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="far fa-calendar-alt"></i> Payment Date:</span>
+            <span class="detail-value"><%= txnDate %></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="far fa-envelope"></i> Email:</span>
+            <span class="detail-value"><%= email %></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-phone"></i> Phone:</span>
+            <span class="detail-value"><%= phone %></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-info-circle"></i> Description:</span>
+            <span class="detail-value"><%= description %></span>
+          </div>
+        </div>
       <% } else if (paymentStatus === "cancel") { %>
         <h1 style="color: var(--error-color);">
           <i class="fas fa-times-circle"></i> Payment Canceled!
         </h1>
         <p>Sorry, <%= name %>. Your payment could not be processed.</p>
       <% } %>
-    </div>
-
-    <div class="transaction-details">
-
-      <div class="detail-item">
-        <span class="detail-label"><i class="fas fa-rupee-sign"></i> Amount Paid:</span>
-        <span class="detail-value">₹<%= amount %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="far fa-calendar-alt"></i> Payment Date:</span>
-        <span class="detail-value"><%= txnDate %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="far fa-envelope"></i> Email:</span>
-        <span class="detail-value"><%= email %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="fas fa-phone"></i> Phone:</span>
-        <span class="detail-value"><%= phone %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="fas fa-info-circle"></i> Description:</span>
-        <span class="detail-value"><%= description %></span>
-      </div>
     </div>
 
     <a href="/ssm/mca/studentProfile" class="btn">
