@@ -405,7 +405,7 @@ exports.createStripePaymentEJS = async (req, res) => {
       success_url: `${req.protocol}://${req.get('host')}/ssm/mca/getStripeStatus?session_id={CHECKOUT_SESSION_ID}&txnId=${encodeURIComponent(txnId)}&amount=${encodeURIComponent(reqBody.amount)}&name=${encodeURIComponent(reqBody.name)}&txnDate=${encodeURIComponent(txnDate)}&email=${encodeURIComponent(reqBody.email)}&phone=${encodeURIComponent(reqBody.phone)}&description=${encodeURIComponent(reqBody.description)}&studentId=${encodeURIComponent(reqBody.studentId)}&paymentType=${encodeURIComponent(reqBody.paymentType)}&year=${encodeURIComponent(reqBody.year)}&status=${encodeURIComponent('success')}`,
       cancel_url: `${req.protocol}://${req.get('host')}/ssm/mca/getStripeStatus?session_id={CHECKOUT_SESSION_ID}&txnId=${encodeURIComponent(txnId)}&amount=${encodeURIComponent(reqBody.amount)}&name=${encodeURIComponent(reqBody.name)}&txnDate=${encodeURIComponent(txnDate)}&email=${encodeURIComponent(reqBody.email)}&phone=${encodeURIComponent(reqBody.phone)}&description=${encodeURIComponent(reqBody.description)}&studentId=${encodeURIComponent(reqBody.studentId)}&paymentType=${encodeURIComponent(reqBody.paymentType)}&year=${encodeURIComponent(reqBody.year)}&status=${encodeURIComponent('cancel')}`,
       metadata: {
-        webhook_url: `${req.protocol}://${req.get('host')}/ssm/mca/stripe/webhook`,
+        // webhook_url: `${req.protocol}://${req.get('host')}/ssm/mca/stripe/webhook`,
         studentId: studentId,
         email: email,
         phone: phone,
