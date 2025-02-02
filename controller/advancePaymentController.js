@@ -243,7 +243,7 @@ exports.createCashfreePayment = async (req, res) => {
         customer_id: reqBody.studentId, 
       },
       order_meta: {
-        return_url: `${BASE_URL}/ssm/mca/getCashfreeStatus?order_id=${encodeURIComponent(txnId)}&txnId=${encodeURIComponent(txnId)}&amount=${encodeURIComponent(reqBody.amount)}&name=${encodeURIComponent(reqBody.name)}&txnDate=${encodeURIComponent(txnDate)}&email=${encodeURIComponent(reqBody.email)}&phone=${encodeURIComponent(reqBody.phone)}&description=${encodeURIComponent(reqBody.description)}&studentId=${encodeURIComponent(reqBody.studentId)}&paymentType=${encodeURIComponent(reqBody.paymentType)}&year=${encodeURIComponent(reqBody.year)}`,
+        return_url: `${req.protocol}://${req.get('host')}/ssm/mca/getCashfreeStatus?order_id=${encodeURIComponent(txnId)}&txnId=${encodeURIComponent(txnId)}&amount=${encodeURIComponent(reqBody.amount)}&name=${encodeURIComponent(reqBody.name)}&txnDate=${encodeURIComponent(txnDate)}&email=${encodeURIComponent(reqBody.email)}&phone=${encodeURIComponent(reqBody.phone)}&description=${encodeURIComponent(reqBody.description)}&studentId=${encodeURIComponent(reqBody.studentId)}&paymentType=${encodeURIComponent(reqBody.paymentType)}&year=${encodeURIComponent(reqBody.year)}`,
         // notify_url: "http://localhost:9578/ssm/mca/webhook"
       },
     };
