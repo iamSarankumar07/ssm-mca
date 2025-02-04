@@ -144,10 +144,38 @@
             padding: 6px;
             width: 100%;
             max-width: 300px;
-            font-size: 14px;
-            border: 1px solid #ccc;
+            font-size: 16px;
+            border: 2px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+
+        .fee-summary-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 15px;
+            width: 80%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .fee-box {
+            flex: 1; 
+            min-width: 150px;
+            height: 90px;
+            border: 2px solid black;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
     
         @media (max-width: 768px) {
@@ -207,6 +235,17 @@
                 vertical-align: middle;
                 transition: width 0.3s ease, height 0.3s ease;
             }
+
+            .fee-summary-container {
+                gap: 20px; 
+                width: 90%;
+            }
+            
+            .fee-box {
+                min-width: 150px;
+                height: 80px;
+                font-size: 13px;
+            }
         }
     
         @media (max-width: 480px) {
@@ -247,6 +286,20 @@
                 vertical-align: middle;
                 transition: width 0.3s ease, height 0.3s ease;
             }
+
+            .fee-summary-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .fee-box {
+                width: 100%;
+                max-width: 250px;
+                height: 75px;
+                font-size: 12px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
@@ -258,7 +311,24 @@
     </a>
     <div class="table-container">
     <h2>MCA - I</h2>
-    <div style="margin-bottom: 20px; text-align: center;">
+    <div class="fee-summary-container">
+        <div class="fee-box">
+            <p style="color: green;"><strong>Total Fees</strong></p>
+            <p>Rs. {{firstYearExamTotalFee}}</p>
+            <p>{{firstYearStudentCount}} Students</p>
+        </div>
+        <div class="fee-box">
+            <p style="color: green;"><strong>Paid Fees</strong></p>
+            <p>Rs. {{firstYearPaidFeeEx}}</p>
+            <p>{{firstYearPaidStudents}} Students</p>
+        </div>
+        <div class="fee-box">
+            <p style="color: red;"><strong>Pending Fees</strong></p>
+            <p>Rs. {{firstYearExamPendingFee}}</p>
+            <p>{{firstYearPendingStudents}} Students</p>
+        </div>
+    </div>
+    <div style="margin-bottom: 20px; text-align: right;">
       <input
         type="text"
         id="searchInput1"
@@ -285,7 +355,7 @@
     {{#each firstYearStudents}}
         <tr>
             <td class="td">{{inc @index}}</td>
-            <td>{{name}}</td>
+            <td style="text-align: left;">{{name}}</td>
             <td class="td">{{studentId}}</td>
             <td class="td">{{gender}}</td>
             <td class="td">Rs.{{examTotalFee}}</td>
@@ -310,14 +380,31 @@
                 <input type="hidden" name="isPdf" value="true">
                 <button type="submit" class="btn">Download</button>
             </form>
-            <div class="btn-container">
+           {{!--  <div class="btn-container">
                 <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
-            </div>
+            </div> --}}
         </div>
 </div>
 <div class="table-container">
     <h2>MCA - II</h2>
-    <div style="margin-bottom: 20px; text-align: center;">
+    <div class="fee-summary-container">
+        <div class="fee-box">
+            <p style="color: green;"><strong>Total Fees</strong></p>
+            <p>Rs. {{secondYearExamTotalFee}}</p>
+            <p>{{secondYearStudentCount}} Students</p>
+        </div>
+        <div class="fee-box">
+            <p style="color: green;"><strong>Paid Fees</strong></p>
+            <p>Rs. {{secondYearPaidFeeEx}}</p>
+            <p>{{secondYearPaidStudents}} Students</p>
+        </div>
+        <div class="fee-box">
+            <p style="color: red;"><strong>Pending Fees</strong></p>
+            <p>Rs. {{secondYearExamPendingFee}}</p>
+            <p>{{secondYearPendingStudents}} Students</p>
+        </div>
+    </div>
+    <div style="margin-bottom: 20px; text-align: right;">
       <input
         type="text"
         id="searchInput2"
@@ -344,7 +431,7 @@
     {{#each secondYearStudents}}
         <tr>
             <td class="td">{{inc @index}}</td>
-            <td>{{name}}</td>
+            <td style="text-align: left;">{{name}}</td>
             <td class="td">{{studentId}}</td>
             <td class="td">{{gender}}</td>
             <td class="td">Rs.{{examTotalFee}}</td>
