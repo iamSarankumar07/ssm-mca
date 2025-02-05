@@ -178,6 +178,9 @@ exports.studentList = async (req, res) => {
       (student) => student.year === "II"
     );
 
+    let firstYearTotalCount = firstYearStudents.length;
+    let secondYearTotalCount = secondYearStudents.length;
+
     let sortedFirstYear = firstYearStudents.sort((a, b) => {
       return a.name.localeCompare(b.name);
     });
@@ -186,7 +189,23 @@ exports.studentList = async (req, res) => {
       return a.name.localeCompare(b.name);
     });
 
-    res.render("studentList", { sortedFirstYear, sortedSecondYear });
+    const firstYearMaleCount = firstYearStudents.filter(
+      (student) => student.gender === "Male"
+    ).length;
+
+    const firstYearFemaleCount = firstYearStudents.filter(
+      (student) => student.gender === "Female"
+    ).length;
+
+    const secondYearMaleCount = secondYearStudents.filter(
+      (student) => student.gender === "Male"
+    ).length;
+
+    const secondYearFemaleCount = secondYearStudents.filter(
+      (student) => student.gender === "Female"
+    ).length;
+
+    res.render("studentList", { sortedFirstYear, sortedSecondYear, firstYearTotalCount, firstYearMaleCount, firstYearFemaleCount, secondYearTotalCount, secondYearMaleCount, secondYearFemaleCount });
   } catch (err) {
     console.error(err);
     res.send("Error", err);

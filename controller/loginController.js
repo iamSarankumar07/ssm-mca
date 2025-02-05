@@ -233,10 +233,13 @@ exports.login = async (req, res) => {
     console.log(OTP);
 
     let OTPString = OTP.toString();
-
+    
     user.otp = OTPString;
-    await user.save();
 
+    res.render("otp", { user: user });
+
+    await user.save();
+    
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -344,7 +347,7 @@ exports.login = async (req, res) => {
       }
       console.log("OTP sent successfully");
     });
-    res.render("otp", { user: user });
+    // res.render("otp", { user: user });
   } catch (err) {
     console.log("Error in userLogin:", err);
     return res.send(

@@ -11,7 +11,7 @@ exports.contact = async (req, res) => {
         message: req.body.message
       });
 
-      res.redirect("/");
+      res.json({ success: true, message: 'Your message has been sent successfully!' });
   
       const savedContact = await contact.save();
       // console.log(savedContact);
