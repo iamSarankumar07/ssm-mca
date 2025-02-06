@@ -25,7 +25,7 @@ exports.contact = async (req, res) => {
       });
   
       await transPorter.sendMail({
-        from: 'verifyuserofficial@gmail.com',
+        from: '"SSM COLLEGE OF ENGINEERING" <verifyuserofficial@gmail.com>',
         to: contact.email,
         subject: 'Thank you for contacting us', 
         html: `
