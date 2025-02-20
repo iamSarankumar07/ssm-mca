@@ -1,7 +1,7 @@
 const paymentModel = require("../models/paymentModel");
 const nodemailer = require("nodemailer");
 
-exports.saveStripePayments = async (reqBody, paymentData) => {
+exports.savePaymentData = async (reqBody, paymentData) => {
     try {
         let txnData = {
             txnId: reqBody.txnId,
@@ -157,6 +157,6 @@ exports.saveStripePayments = async (reqBody, paymentData) => {
             });
         }
     } catch (err) {
-        console.log("Error in saveStripePayments : " + err);
+        console.log("Error in savePaymentData : " + err);
     }
 };

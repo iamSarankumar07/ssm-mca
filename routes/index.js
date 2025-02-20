@@ -14,5 +14,6 @@ router.use(require("./loginRoutes"));
 router.use(require("./subjectRoutes"));
 router.use(require("./paymentRoutes"));
 router.use(require("./advancePaymentRoutes"));
+router.use(require("./attendanceRoutes"));
 
 module.exports = router;
