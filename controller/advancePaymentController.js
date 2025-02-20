@@ -81,7 +81,7 @@ exports.verifyAndSavePayment = async (req, res) => {
           
           paymentDetails.paymentGateway = "Razorpay";
 
-          paymentService.saveStripePayments(reqBody, paymentDetails);
+          paymentService.savePaymentData(reqBody, paymentDetails);
 
           let formattedAmount = paymentDetails.amount / 100;
           
@@ -180,7 +180,7 @@ exports.capturePaypalPayment = async (req, res) => {
         description: reqBody.description
       };
 
-      paymentService.saveStripePayments(reqBody, paymentData);
+      paymentService.savePaymentData(reqBody, paymentData);
 
       res.status(200).json({
         success: true,
@@ -342,7 +342,7 @@ exports.getCashfreeStatus = async (req, res) => {
       };
 
       if (paymentRes.payment_status === "SUCCESS") {
-        paymentService.saveStripePayments(reqBody, paymentData);
+        paymentService.savePaymentData(reqBody, paymentData);
       }
 
       let paymentStatus = paymentRes?.payment_status;
@@ -492,7 +492,7 @@ exports.stripePaymentResponse = async (req, res) => {
         receipt_url: receiptUrl,
       };
 
-      paymentService.saveStripePayments(reqBody, paymentData);
+      paymentService.savePaymentData(reqBody, paymentData);
 
       const formattedAmount = (paymentData.amount / 100).toFixed(2);
 

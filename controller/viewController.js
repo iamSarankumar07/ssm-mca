@@ -9,6 +9,7 @@ const Subject = require("../models/subjectModel");
 const admissionModel = require("../models/admissionModel");
 const Contact = require("../models/contactModel");
 const Image = require("../models/imageModel");
+const AttendanceModel = require("../models/attendanceModel");
 const puppeteer = require('puppeteer');
 const hbs = require("hbs");
 const app = express();
@@ -557,7 +558,6 @@ exports.getStudentDetails = async (req, res) => {
     const student = await Student.findOne({ studentId, isAlumni: false, isDelete: false });
 
     let subject;
-
     if (student) {
       subject = await Subject.find({ year: student.year, isDelete: false });
     }
@@ -568,7 +568,20 @@ exports.getStudentDetails = async (req, res) => {
       );
     }
 
-    res.render("studentProfile", { student, subject });
+    const attendanceCounts = await AttendanceModel.aggregate([
+      { $match: { studentId: student._id } },
+      { $group: {
+          _id: "$status",
+          count: { $sum: 1 }
+      } }
+    ]);
+
+    let attendanceSummary = { present: 0, absent: 0, late: 0, excused: 0 };
+    attendanceCounts.forEach(item => {
+      attendanceSummary[item._id] = item.count;
+    });
+
+    res.render("studentProfile", { student, subject, attendanceSummary });
   } catch (err) {
     console.error("Error fetching user details:", err);
     res.status(500).send("Failed to fetch user details");
