@@ -2,7 +2,7 @@ const { sign, verify } = require("jsonwebtoken");
 
 exports.token = async (user) => {
   const accessToken = sign(
-    { email: user.email, id: user.id },
+    { email: user.email, id: user.id, name: user.name, staffId: user.staffId },
     "qwertyuiopasdfghjklzxcvbnm"
   );
   return accessToken;
@@ -10,7 +10,7 @@ exports.token = async (user) => {
 
 exports.sToken = async (student) => {
   const accessToken = sign(
-    { studentId: student.studentId, id: student.id },
+    { studentId: student.studentId, id: student.id, name: student.name },
     "mnbvcxzlkjhgfdsapoiuytrewq"
   );
   return accessToken;

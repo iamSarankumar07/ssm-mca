@@ -2,7 +2,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const paymentService = require("../services/paymentService");
 const moment = require("moment");
 const paymentsModel = require("../models/paymentModel");
-
+const messageModel = require("../models/messageModel");
+const { verify } = require("jsonwebtoken");
 
 exports.createPaymentStripe = async (req, res) => {
     try {
@@ -43,6 +44,28 @@ exports.getPayments = async (req, res) => {
     } catch (err) {
         console.error('Error fetching payments:', err);
         res.status(500).send('Error fetching payments');
+    }
+};
+
+
+exports.getChatroom = async (req, res) => {
+    const accessToken = req.cookies["access-token-student"];
+    const decoded = verify(accessToken, "mnbvcxzlkjhgfdsapoiuytrewq");
+    let username = decoded.name;
+
+    try {
+        const messages = await messageModel.find()
+            .sort({ createdAt: -1 }) 
+            .limit(100)
+            .lean();
+
+        res.render("chatroom", {
+            username,
+            initialMessages: JSON.stringify(messages),
+        });
+    } catch (err) {
+        console.error("Error fetching initial messages:", err);
+        res.render("chatroom", { username, initialMessages: "[]" });
     }
 };
 

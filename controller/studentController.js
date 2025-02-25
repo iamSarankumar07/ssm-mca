@@ -349,7 +349,7 @@ exports.login = async (req, res) => {
     }
     const accessToken = await authFile.sToken(student);
     res.cookie("access-token-student", accessToken, {
-      maxAge: 60 * 60 * 1000,
+      maxAge: 1.5 * 60 * 60 * 1000,
     });
 
     res.redirect("/ssm/mca/studentProfile");
