@@ -97,6 +97,18 @@ io.on('connection', async (socket) => {
         socket.emit('error', 'Failed to save message');
       }
     });
+
+    socket.on('typing', () => {
+        if (users[socket.id]) {
+            socket.broadcast.emit('userTyping', users[socket.id]);
+        }
+    });
+
+    socket.on('stopTyping', () => {
+        if (users[socket.id]) {
+            socket.broadcast.emit('userStoppedTyping', users[socket.id]);
+        }
+    });
   
     socket.on('disconnect', async () => {
         const username = users[socket.id];
