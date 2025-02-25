@@ -19,5 +19,9 @@ app.get('/paymentsList',
     paymentController.getPayments
 );
 
+app.get("/chatroom",
+    authonticationController.sValidateToken,
+    paymentController.getChatroom
+);
 
 module.exports = app;

@@ -377,7 +377,7 @@ exports.otp = async (req, res) => {
 
     const accessToken = await authFile.token(user);
     res.cookie("access-token", accessToken, {
-      maxAge: 60 * 60 * 1000,
+      maxAge: 1.5 * 60 * 60 * 1000,
     });
 
     res.redirect("/ssm/mca/dashboard");
