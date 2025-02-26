@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Chatroom</title>
+    <title>MCA Chatroom</title>
     <script src="/socket.io/socket.io.js"></script>
     <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Inter", Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #eef1f7;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
+
         .chat-container {
             width: 90%;
-            max-width: 800px;
+            max-width: 700px;
             background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 80vh;
+            height: 75vh;
         }
+
         .chat-header {
-            background-color: #0056b3;
+            background: linear-gradient(135deg, #3d6ef5ff, rgb(36, 79, 200));
             color: white;
             padding: 15px;
             text-align: center;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 18px;
+            font-weight: 600;
+            position: relative;
         }
+
         .messages {
             flex: 1;
             overflow-y: auto;
@@ -42,11 +48,12 @@
             display: flex;
             flex-direction: column;
             scrollbar-width: thin;
-            scrollbar-color: #ddd #f4f4f9;
+            scrollbar-color: #ccc #f4f4f9;
         }
+
         .message {
-            margin: 5px 0;
-            padding: 10px;
+            margin: 6px 0;
+            padding: 12px;
             border-radius: 8px;
             max-width: 70%;
             word-wrap: break-word;
@@ -54,81 +61,115 @@
             flex-direction: column;
             font-size: 14px;
         }
+
         .message.own {
-            background-color: #0056b3;
+            background-color: #3d6ef5ff;
             color: white;
             align-self: flex-end;
+            border-bottom-right-radius: 2px;
         }
+
         .message.other {
-            background-color: #e9ecef;
+            background-color: #f1f5f9;
+            color: #333;
             align-self: flex-start;
+            border-bottom-left-radius: 2px;
         }
+
         .timestamp {
-            font-size: 10px;
-            opacity: 0.7;
+            font-size: 11px;
+            opacity: 0.6;
             text-align: right;
-            margin-top: 3px;
+            margin-top: 5px;
         }
+
         .input-container {
-            padding: 15px;
-            background-color: #f8f9fa;
+            padding: 12px;
+            background: #f9fafc;
             display: flex;
             gap: 10px;
             border-top: 1px solid #ddd;
         }
+
         #messageInput {
             flex-grow: 1;
-            padding: 10px;
+            padding: 10px 14px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 14px;
+            outline: none;
+            transition: border 0.2s ease-in-out;
         }
+
+        #messageInput:focus {
+            border-color: #3d6ef5ff;
+        }
+
         button {
-            padding: 10px 15px;
-            background-color: #0056b3;
+            padding: 10px 16px;
+            background: #3d6ef5ff;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
         }
+
         button:hover {
-            background-color: #004494;
+            background: rgb(37, 81, 203);
         }
+
         .system-message {
             text-align: center;
-            color: #666;
+            color: #777;
             font-style: italic;
-            margin: 5px 0;
+            padding: 8px 12px;
+            background-color: #f0f0f0;
+            border-radius: 6px;
+            display: inline-block;
+            font-size: 13px;
+            max-width: 80%;
+            align-self: center;
+            margin: 2px auto;
         }
+
         .typing-indicator {
             font-size: 12px;
-            color: gray;
+            color: #555;
             margin-left: 10px;
         }
     </style>
 </head>
+
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            Professional Chatroom
+            MCA Chatroom
             <span class="typing-indicator" id="typingIndicator"></span>
         </div>
-        <div class="messages" id="messages"></div>
+        <div class="messages" id="messages">
+            <div id="typingIndicator" class="system-message" style="display: none;"></div>
+        </div>
         <div class="input-container">
             <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
-
-    {{!-- <script>
+    <script>
         const socket = io();
         const username = "{{username}}";
         let skip = 0;
         let loading = false;
         const messagesDiv = document.getElementById("messages");
         const typingIndicator = document.getElementById("typingIndicator");
+        const messageInput = document.getElementById("messageInput");
 
+        let typingUsers = new Set();
+        let typingTimeout;
+
+        // Load initial messages
         const initialMessages = JSON.parse('{{{initialMessages}}}');
         initialMessages.forEach(displayMessage);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -141,6 +182,7 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
 
+        // Infinite scroll for older messages
         messagesDiv.addEventListener("scroll", () => {
             if (messagesDiv.scrollTop === 0 && !loading) {
                 loading = true;
@@ -159,16 +201,15 @@
         });
 
         function sendMessage() {
-            const messageInput = document.getElementById("messageInput");
             const message = messageInput.value.trim();
-            
             if (message !== "") {
                 socket.emit("sendMessage", { username, message });
                 messageInput.value = "";
+                socket.emit("stopTyping", username);
             }
         }
 
-        document.getElementById("messageInput").addEventListener("keypress", (e) => {
+        messageInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
                 sendMessage();
             } else {
@@ -176,25 +217,67 @@
             }
         });
 
-        socket.on("typing", (user) => {
-            typingIndicator.textContent = `${user} is typing...`;
-            setTimeout(() => {
-                typingIndicator.textContent = "";
-            }, 2000);
+        messageInput.addEventListener("keyup", () => {
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                socket.emit("stopTyping", username);
+            }, 1000);
         });
+
+        socket.on("userTyping", (user) => {
+            typingUsers.add(user);
+            updateTypingIndicator();
+        });
+
+        socket.on("userStoppedTyping", (user) => {
+            typingUsers.delete(user);
+            updateTypingIndicator();
+        });
+
+        function updateTypingIndicator() {
+            const typingId = "typingMessage";
+            let typingMessage = document.getElementById(typingId);
+
+            if (typingUsers.size === 0) {
+                if (typingMessage) typingMessage.remove();
+            } else {
+                const typingText = typingUsers.size === 1
+                    ? `${[...typingUsers][0]} is typing...`
+                    : "Multiple people are typing...";
+
+                if (!typingMessage) {
+                    typingMessage = document.createElement("div");
+                    typingMessage.id = typingId;
+                    typingMessage.className = "message system-message";
+                    messagesDiv.appendChild(typingMessage);
+                }
+
+                typingMessage.textContent = typingText;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        }
 
         function displayMessage(data, prepend = false) {
             const messageDiv = document.createElement("div");
             const timestampDiv = document.createElement("div");
             timestampDiv.className = "timestamp";
-            timestampDiv.textContent = new Date(data.timestamp || Date.now()).toLocaleTimeString();
+
+            const date = new Date(data.timestamp || Date.now());
+            const day = date.getDate().toString().padStart(2, "0");
+            const month = (date.getMonth() + 1).toString().padStart(2, "0");
+            const year = date.getFullYear();
+            const hours = date.getHours() % 12 || 12;
+            const minutes = date.getMinutes().toString().padStart(2, "0");
+            const amPm = date.getHours() >= 12 ? "PM" : "AM";
+
+            timestampDiv.textContent = `${day}-${month}-${year} ${hours}:${minutes} ${amPm}`;
 
             if (data.type === "join" || data.type === "leave") {
                 messageDiv.className = "system-message";
                 messageDiv.textContent = data.message;
             } else {
                 messageDiv.className = `message ${data.senderName === username ? 'own' : 'other'}`;
-                messageDiv.textContent = data.senderName !== username ? `${data.senderName}: ${data.message}` : data.message;
+                messageDiv.innerHTML = `<span>${data.senderName !== username ? `<b>${data.senderName}:</b> ` : ''}${data.message}</span>`;
                 messageDiv.appendChild(timestampDiv);
             }
 
@@ -208,120 +291,8 @@
         socket.on("error", (error) => {
             console.error("Socket error:", error);
         });
-    </script> --}}
-    <script>
-    const socket = io();
-    const username = "{{username}}";
-    let skip = 0;
-    let loading = false;
-    const messagesDiv = document.getElementById("messages");
-    const typingIndicator = document.getElementById("typingIndicator");
-    const messageInput = document.getElementById("messageInput");
-
-    let typingUsers = new Set();
-    let typingTimeout;
-
-    // Load initial messages
-    const initialMessages = JSON.parse('{{{initialMessages}}}');
-    initialMessages.forEach(displayMessage);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    skip = initialMessages.length;
-
-    socket.emit("joinChat", username);
-
-    socket.on("receiveMessage", (data) => {
-        displayMessage(data);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    });
-
-    // Infinite scroll for older messages
-    messagesDiv.addEventListener("scroll", () => {
-        if (messagesDiv.scrollTop === 0 && !loading) {
-            loading = true;
-            socket.emit("loadOlderMessages", { skip, limit: 50 });
-        }
-    });
-
-    socket.on("olderMessages", (messages) => {
-        if (messages.length > 0) {
-            const oldScrollHeight = messagesDiv.scrollHeight;
-            messages.forEach(msg => displayMessage(msg, true));
-            messagesDiv.scrollTop = messagesDiv.scrollHeight - oldScrollHeight;
-            skip += messages.length;
-        }
-        loading = false;
-    });
-
-    function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message !== "") {
-            socket.emit("sendMessage", { username, message });
-            messageInput.value = "";
-            socket.emit("stopTyping", username);
-        }
-    }
-
-    messageInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            sendMessage();
-        } else {
-            socket.emit("typing", username);
-        }
-    });
-
-    messageInput.addEventListener("keyup", () => {
-        clearTimeout(typingTimeout);
-        typingTimeout = setTimeout(() => {
-            socket.emit("stopTyping", username);
-        }, 1000);
-    });
-
-    socket.on("userTyping", (user) => {
-        typingUsers.add(user);
-        updateTypingIndicator();
-    });
-
-    socket.on("userStoppedTyping", (user) => {
-        typingUsers.delete(user);
-        updateTypingIndicator();
-    });
-
-    function updateTypingIndicator() {
-        if (typingUsers.size === 0) {
-            typingIndicator.textContent = "";
-        } else if (typingUsers.size === 1) {
-            typingIndicator.textContent = `${[...typingUsers][0]} is typing...`;
-        } else {
-            typingIndicator.textContent = "Multiple people are typing...";
-        }
-    }
-
-    function displayMessage(data, prepend = false) {
-        const messageDiv = document.createElement("div");
-        const timestampDiv = document.createElement("div");
-        timestampDiv.className = "timestamp";
-        timestampDiv.textContent = new Date(data.timestamp || Date.now()).toLocaleTimeString();
-
-        if (data.type === "join" || data.type === "leave") {
-            messageDiv.className = "system-message";
-            messageDiv.textContent = data.message;
-        } else {
-            messageDiv.className = `message ${data.senderName === username ? 'own' : 'other'}`;
-            messageDiv.innerHTML = `<span>${data.senderName !== username ? `<b>${data.senderName}:</b> ` : ''}${data.message}</span>`;
-            messageDiv.appendChild(timestampDiv);
-        }
-
-        if (prepend) {
-            messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
-        } else {
-            messagesDiv.appendChild(messageDiv);
-        }
-    }
-
-    socket.on("error", (error) => {
-        console.error("Socket error:", error);
-    });
-</script>
+    </script>
 
 </body>
+
 </html>
