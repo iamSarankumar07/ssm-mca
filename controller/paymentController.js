@@ -61,11 +61,47 @@ exports.getChatroom = async (req, res) => {
 
         res.render("chatroom", {
             username,
+            isAdmin: false,
             initialMessages: JSON.stringify(messages),
         });
     } catch (err) {
         console.error("Error fetching initial messages:", err);
         res.render("chatroom", { username, initialMessages: "[]" });
+    }
+};
+
+exports.getAdminChatroom = async (req, res) => {
+    const accessToken = req.cookies["access-token"];
+    const decoded = verify(accessToken, "qwertyuiopasdfghjklzxcvbnm");
+    let username = decoded.name;
+
+    try {
+        const messages = await messageModel.find()
+            .sort({ createdAt: -1 }) 
+            .limit(100)
+            .lean();
+
+        res.render("chatroom", {
+            username,
+            isAdmin: true,
+            initialMessages: JSON.stringify(messages),
+        });
+    } catch (err) {
+        console.error("Error fetching initial messages:", err);
+        res.render("chatroom", { username, initialMessages: "[]" });
+    }
+};
+
+exports.deleteMessage = async (req, res) => {
+    try {
+        const { messageId } = req.body;
+
+        await messageModel.findByIdAndDelete(messageId);
+
+        res.json({ success: true, message: "Message deleted successfully" });
+    } catch (err) {
+        console.error("Error deleting message:", err);
+        res.status(500).json({ success: false, message: "Error deleting message" });
     }
 };
 
