@@ -24,4 +24,14 @@ app.get("/chatroom",
     paymentController.getChatroom
 );
 
+app.get("/adminChatroom",
+    authonticationController.validateToken,
+    paymentController.getAdminChatroom
+);
+
+app.post("/deleteMessage",
+    authonticationController.validateToken,
+    paymentController.deleteMessage
+);
+
 module.exports = app;
