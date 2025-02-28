@@ -400,9 +400,19 @@
                 </div>
             </div>
 
-            <div class="filter-button">
+            <input type="hidden" name="isPdf" id="isPdf" value="false">
+
+            <div class="filter-button" style="display: flex; gap: 10px; justify-content: center;">
+                <button type="submit" class="btn" onclick="setPdf(false)">Get Report</button>
+                <button type="submit" class="btn" onclick="setPdf(true)">Download</button>
+            </div>
+
+            {{!-- <div class="filter-button">
                 <button type="submit" class="btn">Get Report</button>
             </div>
+            <div class="filter-button">
+                <button type="submit" class="btn">Download</button>
+            </div> --}}
         </form>
 
 
@@ -442,5 +452,11 @@
         </div>
     </div>
 </body>
+
+<script>
+    function setPdf(value) {
+        document.getElementById("isPdf").value = value ? "true" : "false";
+    }
+</script>
 
 </html>

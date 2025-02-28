@@ -1,5 +1,8 @@
 const StudentModel = require("../models/studentModel");
-const AttendanceModel = require("../models/attendanceModel")
+const AttendanceModel = require("../models/attendanceModel");
+const pdf = require("html-pdf");
+const moment = require("moment");
+const TemplateModel = require("../models/templateModel");
 
 exports.getFirstYearMarkAttendence = async (req, res) => {
   try {
@@ -192,7 +195,7 @@ exports.markAttendence = async (req, res) => {
 
 exports.getAttendenceReport = async (req, res) => {
   try {
-    let { specificDate, startDate, endDate, year } = req.query;
+    let { specificDate, startDate, endDate, year, isPdf } = req.query;
     
     if (specificDate) {
       startDate = specificDate;
@@ -251,7 +254,43 @@ exports.getAttendenceReport = async (req, res) => {
 
     report.sort((a, b) => a.name.localeCompare(b.name));
 
-    res.render("attendanceReport", { report, startDate, endDate, year: year || "", specificDate });
+    if (isPdf === "true") {
+      let templateData = {
+        report: report,
+        startDate: moment(startDate).format("DD-MM-YYYY"),
+        endDate: moment(endDate).format("DD-MM-YYYY"),
+        year: year || "I & II",
+      }
+
+      let dbTemplate = await TemplateModel.findOne({ name: "ATTENDANCE_REPORT_PDF" });
+      let attachment = eval("`" + dbTemplate.content + "`");
+
+      pdf
+        .create(attachment, {
+          childProcessOptions: { env: { OPENSSL_CONF: "/dev/null" } },
+          orientation: "portrait",
+          width: "8.27in",
+          height: "11.69in",
+          timeout: "100000",
+        })
+        .toBuffer((err, buffer) => {
+          if (err) {
+            console.log("Error: " + err);
+            return res
+              .status(500)
+              .send({ success: false, message: err.message });
+          }
+          res.writeHead(200, {
+            "Content-Length": Buffer.byteLength(buffer),
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename = MCA - ${year} Attendance Report.pdf`,
+          });
+          res.end(buffer);
+        });
+    } else {
+      res.render("attendanceReport", { report, startDate, endDate, year: year || "", specificDate });
+    }
+
   } catch (err) {
     res.status(500).send(err.message);
   }
