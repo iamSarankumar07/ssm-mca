@@ -74,7 +74,7 @@ exports.newStudent = async (req, res) => {
           margin: 0 0 20px;
           font-size: 18px;
           font-weight: bold;
-          color: #28a745; /* Green color */
+          color: #28a745;
           text-align: center;
         }
     
@@ -561,7 +561,7 @@ exports.studentForgotOtp = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745;
             text-align: center;
           }
       
@@ -741,7 +741,7 @@ exports.updateStudent = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745;
             text-align: center;
           }
       
@@ -1048,7 +1048,7 @@ exports.sendAddressUpdateReq = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745;
             text-align: center;
           }
       
@@ -1180,7 +1180,7 @@ exports.addressUpdate = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745;
             text-align: center;
           }
       
@@ -1294,7 +1294,7 @@ exports.requestChange = async (req, res) => {
           margin: 0 0 20px;
           font-size: 18px;
           font-weight: bold;
-          color: #28a745; /* Green color */
+          color: #28a745;
           text-align: center;
         }
     
@@ -1434,7 +1434,7 @@ exports.requestChangeTu = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745;
             text-align: center;
           }
       
@@ -1540,7 +1540,7 @@ exports.requestChangeTu = async (req, res) => {
           margin: 0 0 20px;
           font-size: 18px;
           font-weight: bold;
-          color: #28a745; /* Green color */
+          color: #28a745;
           text-align: center;
         }
     
@@ -1722,7 +1722,7 @@ exports.requestChangeEx = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745;
             text-align: center;
           }
       
@@ -1828,7 +1828,7 @@ exports.requestChangeEx = async (req, res) => {
           margin: 0 0 20px;
           font-size: 18px;
           font-weight: bold;
-          color: #28a745; /* Green color */
+          color: #28a745;
           text-align: center;
         }
     
@@ -2824,7 +2824,7 @@ exports.admissionApply = async (req, res) => {
           margin: 0 0 20px;
           font-size: 18px;
           font-weight: bold;
-          color: #28a745; /* Green color */
+          color: #28a745;
           text-align: center;
         }
     

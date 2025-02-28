@@ -118,43 +118,41 @@ exports.sendEmailByRegNum = async (req, res) => {
   <title>${title}</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   <style>
-    /* Font and text styling */
     body {
       font-family: 'Poppins', 'Arial', sans-serif;
       line-height: 1.6;
-      color: #1a1a1a; /* Dark text color */
+      color: #1a1a1a;
       font-size: 16px;
-      background-color: #f4f4f4; /* Light gray background */
-      margin: 0; /* Remove default body margin */
+      background-color: #f4f4f4; 
+      margin: 0; 
     }
 
     h1 {
-      font-size: 28px; /* Larger heading size */
+      font-size: 28px; 
       margin-bottom: 15px;
-      color: #ff9900; /* Orange heading color */
+      color: #ff9900; 
       text-align: center;
     }
 
     p {
       margin-bottom: 15px;
-      color: #1a1a1a; /* Dark text color */
+      color: #1a1a1a;
     }
 
-    /* Structure and layout */
+    
     .container {
       max-width: 600px;
       margin: 20px auto;
-      background-color: #ffffff; /* White background */
+      background-color: #ffffff; 
       padding: 30px;
-      border-radius: 8px; /* Rounded corners */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+      border-radius: 8px; 
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
     }
 
-    /* Footer section styling */
     .footer {
       margin-top: 20px;
       font-size: 12px;
-      color: #777777; /* Lighter text color in the footer */
+      color: #777777; 
       text-align: center;
     }
   </style>
@@ -226,7 +224,7 @@ exports.sendEmailByRegNum = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745; 
             text-align: center;
           }
       
@@ -348,43 +346,43 @@ exports.commonMail = async (req, res) => {
         <html lang="en">
         <head>
         <title>${title}</title>
-        <style>/* Font and text styling */
+        <style>
         body {
           font-family: 'Poppins', 'Arial', sans-serif;
           line-height: 1.6;
-          color: #1a1a1a; /* Dark text color */
+          color: #1a1a1a;
           font-size: 16px;
-          background-color: #f4f4f4; /* Light gray background */
-          margin: 0; /* Remove default body margin */
+          background-color: #f4f4f4; 
+          margin: 0; 
         }
     
         h1 {
-          font-size: 28px; /* Larger heading size */
+          font-size: 28px; 
           margin-bottom: 15px;
-          color: #ff9900; /* Orange heading color */
+          color: #ff9900; 
           text-align: center;
         }
     
         p {
           margin-bottom: 15px;
-          color: #1a1a1a; /* Dark text color */
+          color: #1a1a1a;
         }
     
-        /* Structure and layout */
+        
         .container {
           max-width: 600px;
           margin: 20px auto;
-          background-color: #ffffff; /* White background */
+          background-color: #ffffff; 
           padding: 30px;
-          border-radius: 8px; /* Rounded corners */
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+          border-radius: 8px; 
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
         }
     
-        /* Footer section styling */
+  
         .footer {
           margin-top: 20px;
           font-size: 12px;
-          color: #777777; /* Lighter text color in the footer */
+          color: #777777; 
           text-align: center;
         }</style>
         </head>
@@ -458,7 +456,7 @@ exports.commonMail = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745; 
             text-align: center;
           }
       
@@ -835,7 +833,7 @@ exports.sendPaymentAlert = async (req, res) => {
             margin: 0 0 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #28a745; /* Green color */
+            color: #28a745; 
             text-align: center;
           }
       

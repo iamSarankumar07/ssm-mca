@@ -53,7 +53,7 @@ exports.newSubject = async (req, res) => {
               margin: 0 0 20px;
               font-size: 18px;
               font-weight: bold;
-              color: #28a745; /* Green color */
+              color: #28a745; 
               text-align: center;
             }
         

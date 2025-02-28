@@ -99,7 +99,6 @@
       -moz-appearance: textfield;
     }
 
-    /* Processing Popup Styles */
     .popup-overlay {
       display: none;
       position: fixed;
@@ -146,7 +145,7 @@
 <body>
   <div class="container">
     <h1 style="color: #0056b3;">Tuition Fees Payment</h1>
-    <!-- Display Student Information -->
+
     <div class="student-info">
       <p><%= studentData.name %></p>
       <p><%= studentData.email %></p>
@@ -167,13 +166,11 @@
       <label for="amount">Enter Amount (INR):</label>
       <input type="number" name="amount" id="amount" value="<%= studentData.pendingFee %>" oninput="validateAmount()" placeholder="Enter amount" required />
 
-      <!-- Pay Button -->
       <button type="button" id="pay-button">Pay with Stripe</button>
     </form>
     <button onclick="window.location.href='/ssm/mca/studentProfile';">Cancel</button>
   </div>
 
-  <!-- Processing Popup -->
   <div class="popup-overlay" id="popup-overlay">
     <div class="popup-content">
       <p>Processing your payment...</p>
@@ -184,7 +181,6 @@
   <script src="https://js.stripe.com/v3/"></script>
   <script>
     document.getElementById('pay-button').addEventListener('click', async () => {
-      // Show the processing popup
       document.getElementById('popup-overlay').style.display = 'flex';
 
       const formData = {
@@ -211,10 +207,8 @@
 
         const { url } = await response.json();
         
-        // Hide the processing popup
         document.getElementById('popup-overlay').style.display = 'none';
 
-        // Redirect to Stripe checkout
         window.location.href = url;
       } catch (error) {
         console.error('Error processing payment:', error);

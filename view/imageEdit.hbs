@@ -96,7 +96,7 @@
         }
 
         .file-input {
-            display: none; /* Hide the file input */
+            display: none; 
         }
 
         .file-name {
@@ -146,7 +146,6 @@
     </form>
 
     <script>
-        // Display selected file name and preview image
         const fileInput = document.getElementById('image');
         const fileNameDisplay = document.getElementById('file-name');
         const previewImage = document.getElementById('previewImage');
@@ -156,7 +155,6 @@
                 const file = this.files[0];
                 fileNameDisplay.textContent = file.name;
 
-                // Update the preview image
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     previewImage.src = e.target.result;
@@ -164,7 +162,7 @@
                 reader.readAsDataURL(file);
             } else {
                 fileNameDisplay.textContent = '';
-                previewImage.src = "{{imageData.imageUrl}}"; // Reset to original image
+                previewImage.src = "{{imageData.imageUrl}}";
             }
         });
     </script>

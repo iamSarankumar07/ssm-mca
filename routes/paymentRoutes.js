@@ -29,7 +29,7 @@ app.get("/adminChatroom",
     paymentController.getAdminChatroom
 );
 
-app.post("/deleteMessage",
+app.delete("/delete-message/:id",
     authonticationController.validateToken,
     paymentController.deleteMessage
 );

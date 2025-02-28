@@ -99,7 +99,6 @@
       -moz-appearance: textfield;
     }
 
-    /* Processing Popup Styles */
     .popup-overlay {
       display: none;
       position: fixed;
@@ -146,7 +145,7 @@
 <body>
   <div class="container">
     <h1 style="color: #0056b3;">Exam Fees Payment</h1>
-    <!-- Display Student Information -->
+
     <div class="student-info">
       <p><%= studentData.name %></p>
       <p><%= studentData.email %></p>
@@ -167,13 +166,11 @@
       <label for="amount">Enter Amount (INR):</label>
       <input type="number" name="amount" id="amount" value="<%= studentData.examPendingFee %>" oninput="validateAmount()" placeholder="Enter amount" required />
 
-      <!-- Pay Button -->
       <button type="button" id="pay-button">Pay with Stripe</button>
     </form>
     <button onclick="window.location.href='/ssm/mca/studentProfile';">Cancel</button>
   </div>
 
-  <!-- Processing Popup -->
   <div class="popup-overlay" id="popup-overlay">
     <div class="popup-content">
       <p>Processing your payment...</p>
