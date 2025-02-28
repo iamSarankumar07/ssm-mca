@@ -109,6 +109,13 @@ io.on('connection', async (socket) => {
             socket.broadcast.emit('userStoppedTyping', users[socket.id]);
         }
     });
+
+    socket.on("messageDeleted", (messageId) => {
+        const messageElement = document.querySelector(`[data-id='${messageId}']`);
+        if (messageElement) {
+            messageElement.parentNode.removeChild(messageElement);
+        }
+    });
   
     socket.on('disconnect', async () => {
         const username = users[socket.id];

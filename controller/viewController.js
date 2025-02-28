@@ -333,7 +333,6 @@ exports.studentFeeList = async (req, res) => {
     let firstYearStudents = allStudents.filter(student => student.year === "I");
     let secondYearStudents = allStudents.filter(student => student.year === "II");
 
-    // Convert fee values from strings to numbers
     firstYearStudents = firstYearStudents.map(student => ({
       ...student._doc,
       totalFee: Number(student.totalFee) || 0,
@@ -348,23 +347,19 @@ exports.studentFeeList = async (req, res) => {
       pendingFee: Number(student.pendingFee) || 0
     }));
 
-    // Sorting students alphabetically by name
     firstYearStudents.sort((a, b) => a.name.localeCompare(b.name));
     secondYearStudents.sort((a, b) => a.name.localeCompare(b.name));
 
-    // Calculate total amounts for first-year students
     let firstYearTotalFee = firstYearStudents.reduce((sum, student) => sum + student.totalFee, 0);
     let firstYearPaidFee = firstYearStudents.reduce((sum, student) => sum + student.paidFeeTu, 0);
     let firstYearPendingFee = firstYearStudents.reduce((sum, student) => sum + student.pendingFee, 0);
     let firstYearStudentCount = firstYearStudents.length;
 
-    // Calculate total amounts for second-year students
     let secondYearTotalFee = secondYearStudents.reduce((sum, student) => sum + student.totalFee, 0);
     let secondYearPaidFee = secondYearStudents.reduce((sum, student) => sum + student.paidFeeTu, 0);
     let secondYearPendingFee = secondYearStudents.reduce((sum, student) => sum + student.pendingFee, 0);
     let secondYearStudentCount = secondYearStudents.length;
 
-    // Calculate the number of students in each category (paid, total, and pending)
     const firstYearPaidStudents = firstYearStudents.filter(student => student.paidFeeTu > 0).length;
     const firstYearPendingStudents = firstYearStudents.filter(student => student.pendingFee > 0).length;
     const firstYearTotalStudents = firstYearStudents.length;
@@ -407,7 +402,6 @@ exports.examFeeList = async (req, res) => {
       (student) => student.year === "II"
     );
 
-    // Convert exam fee values from strings to numbers
     firstYearStudents = firstYearStudents.map(student => ({
       ...student._doc,
       examTotalFee: Number(student.examTotalFee) || 0,
@@ -422,7 +416,6 @@ exports.examFeeList = async (req, res) => {
       examPendingFee: Number(student.examPendingFee) || 0
     }));
 
-    // Sorting students alphabetically by name
     firstYearStudents = firstYearStudents.sort((a, b) => {
       return a.name.localeCompare(b.name);
     });
@@ -431,19 +424,16 @@ exports.examFeeList = async (req, res) => {
       return a.name.localeCompare(b.name);
     });
 
-    // Calculate total amounts for first-year students
     let firstYearExamTotalFee = firstYearStudents.reduce((sum, student) => sum + student.examTotalFee, 0);
     let firstYearPaidFeeEx = firstYearStudents.reduce((sum, student) => sum + student.paidFeeEx, 0);
     let firstYearExamPendingFee = firstYearStudents.reduce((sum, student) => sum + student.examPendingFee, 0);
     let firstYearStudentCount = firstYearStudents.length;
 
-    // Calculate total amounts for second-year students
     let secondYearExamTotalFee = secondYearStudents.reduce((sum, student) => sum + student.examTotalFee, 0);
     let secondYearPaidFeeEx = secondYearStudents.reduce((sum, student) => sum + student.paidFeeEx, 0);
     let secondYearExamPendingFee = secondYearStudents.reduce((sum, student) => sum + student.examPendingFee, 0);
     let secondYearStudentCount = secondYearStudents.length;
 
-    // Calculate the number of students in each category (paid, total, and pending)
     const firstYearPaidStudents = firstYearStudents.filter(student => student.paidFeeEx > 0).length;
     const firstYearPendingStudents = firstYearStudents.filter(student => student.examPendingFee > 0).length;
     const firstYearTotalStudents = firstYearStudents.length;

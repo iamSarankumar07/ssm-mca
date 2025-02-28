@@ -5,6 +5,13 @@ const paymentsModel = require("../models/paymentModel");
 const messageModel = require("../models/messageModel");
 const { verify } = require("jsonwebtoken");
 
+const express = require('express');
+const app = express();
+const http = require("http");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+const io = new Server(server);
+
 exports.createPaymentStripe = async (req, res) => {
     try {
         let reqBody = req.body;
@@ -94,14 +101,18 @@ exports.getAdminChatroom = async (req, res) => {
 
 exports.deleteMessage = async (req, res) => {
     try {
-        const { messageId } = req.body;
+        const accessToken = req.cookies["access-token"];
+        if (!accessToken) return res.status(403).json({ success: false, message: "Unauthorized" });
 
-        await messageModel.findByIdAndDelete(messageId);
+        const decoded = verify(accessToken, "qwertyuiopasdfghjklzxcvbnm"); 
+        if (!decoded || decoded.role !== "admin") return res.status(403).json({ success: false, message: "Not authorized" });
 
-        res.json({ success: true, message: "Message deleted successfully" });
+        await messageModel.findByIdAndDelete(req.params.id);
+        io.emit("messageDeleted", req.params.id); 
+        res.json({ success: true });
     } catch (err) {
         console.error("Error deleting message:", err);
-        res.status(500).json({ success: false, message: "Error deleting message" });
+        res.status(500).json({ success: false, message: "Server error" });
     }
 };
 

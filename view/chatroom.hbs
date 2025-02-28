@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCA Chatroom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="/socket.io/socket.io.js"></script>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
@@ -29,7 +30,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 75vh;
+            height: 80vh;
         }
 
         .chat-header {
@@ -37,7 +38,7 @@
             color: white;
             padding: 15px;
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             position: relative;
         }
@@ -150,71 +151,114 @@
             background: none;
             border: none;
             color: white;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
             outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
 
         .back-button:hover {
-            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #sendButton {
+            padding: 10px;
+            background: #3d6ef5ff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            transition: background 0.2s;
+        }
+
+        #sendButton:hover {
+            background: rgb(37, 81, 203);
+        }
+
+        #sendButton img,
+        #sendButton svg {
+            width: 22px;
+            height: 22px;
         }
 
         @media (max-width: 480px) {
+
+            html,
+            body {
+                height: 100%;
+                overflow: hidden;
+            }
+
             .chat-container {
-                width: 100vw;
-                height: 100vh;
-                border-radius: 0;
-                box-shadow: none;
-            }
-
-            .chat-header {
-                font-size: 16px;
-                padding: 15px;
-            }
-
-            .messages {
-                flex-grow: 1;
-                padding: 10px;
-            }
-
-            .input-container {
-                padding: 8px;
-                gap: 5px;
-            }
-
-            #messageInput {
-                font-size: 13px;
-                padding: 8px 12px;
-            }
-
-            button {
-                padding: 8px 10px;
-                font-size: 13px;
+                width: 100%;
+                max-width: 850px;
+                background: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+                height: 100%;
             }
         }
     </style>
+    <script>
+        const isAdmin = {{ isAdmin }};
+    </script>
 </head>
 
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <button class="back-button" onclick="goBack()">&#8592;</button>
+            <button class="back-button" onclick="goBack()">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
             MCA Chatroom
             <span class="typing-indicator" id="typingIndicator"></span>
         </div>
         <div class="messages" id="messages">
             <div id="typingIndicator" class="system-message" style="display: none;"></div>
         </div>
-        <div class="input-container">
+        {{!-- <div class="input-container">
             <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
             <button onclick="sendMessage()">Send</button>
+        </div> --}}
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
+            <button id="sendButton" onclick="sendMessage()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white">
+                    <path d="M2 21l21-9-21-9v7l15 2-15 2z" />
+                </svg>
+            </button>
         </div>
     </div>
     <script>
         function goBack() {
             window.history.back();
         }
-        
+
+        function deleteMessage(messageId) {
+            if (confirm("Are you sure you want to delete this message?")) {
+                fetch(`/ssm/mca/delete-message/${messageId}`, { method: "DELETE" })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            document.querySelector(`[data-id='${messageId}']`).remove();
+                        } else {
+                            alert("Failed to delete message.");
+                        }
+                    })
+                    .catch((error) => console.error("Error deleting message:", error));
+            }
+        }
+
         const socket = io();
         const username = "{{username}}";
         let skip = 0;
@@ -226,7 +270,6 @@
         let typingUsers = new Set();
         let typingTimeout;
 
-        // Load initial messages
         const initialMessages = JSON.parse('{{{initialMessages}}}');
         initialMessages.forEach(displayMessage);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -239,7 +282,6 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
 
-        // Infinite scroll for older messages
         messagesDiv.addEventListener("scroll", () => {
             if (messagesDiv.scrollTop === 0 && !loading) {
                 loading = true;
@@ -336,6 +378,23 @@
                 messageDiv.className = `message ${data.senderName === username ? 'own' : 'other'}`;
                 messageDiv.innerHTML = `<span>${data.senderName !== username ? `<b>${data.senderName}:</b> ` : ''}${data.message}</span>`;
                 messageDiv.appendChild(timestampDiv);
+            }
+
+            if (isAdmin) {
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "🗑";
+                deleteButton.style.marginLeft = "10px";
+                deleteButton.style.background = "none";
+                deleteButton.style.border = "none";
+                deleteButton.style.cursor = "pointer";
+                deleteButton.style.color = "#f00";
+                deleteButton.title = "Delete Message";
+
+                deleteButton.addEventListener("click", () => {
+                    deleteMessage(data._id);
+                });
+
+                messageDiv.appendChild(deleteButton);
             }
 
             if (prepend) {
