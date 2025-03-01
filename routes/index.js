@@ -16,5 +16,6 @@ router.use(require("./paymentRoutes"));
 router.use(require("./advancePaymentRoutes"));
 router.use(require("./attendanceRoutes"));
 router.use(require("./chatRoutes"));
+router.use(require("./chatbotRoutes"));
 
 module.exports = router;
