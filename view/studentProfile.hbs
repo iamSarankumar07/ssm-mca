@@ -498,7 +498,9 @@
                         </div>
                         <div class="fee-item">
                             <span class="fee-label">Payment Status</span>
-                            <span class="fee-value">{{student.paymentStatus}}</span>
+                            <span class="fee-value" style="color: {{#if (eq student.paymentStatus "Paid")}}green{{else if (eq student.paymentStatus "Partial")}}orange{{else}}red{{/if}};">
+                                {{student.paymentStatus}}
+                            </span>
                         </div>
                         <div class="fee-item">
                             <span class="fee-label">Due Date</span>
@@ -575,7 +577,9 @@
                         </div>
                         <div class="fee-item">
                             <span class="fee-label">Payment Status</span>
-                            <span class="fee-value">{{student.examPaymentStatus}}</span>
+                            <span class="fee-value" style="color: {{#if (eq student.examPaymentStatus "Paid")}}green{{else if (eq student.examPaymentStatus "Partial")}}orange{{else}}red{{/if}};">
+                                {{student.examPaymentStatus}}
+                            </span>
                         </div>
                         <div class="fee-item">
                             <span class="fee-label">Due Date</span>

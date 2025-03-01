@@ -1,5 +1,6 @@
 const paymentModel = require("../models/paymentModel");
 const nodemailer = require("nodemailer");
+const studentModel = require("../models/studentModel");
 
 exports.savePaymentData = async (reqBody, paymentData) => {
     try {
@@ -159,4 +160,45 @@ exports.savePaymentData = async (reqBody, paymentData) => {
     } catch (err) {
         console.log("Error in savePaymentData : " + err);
     }
+};
+
+exports.updateStudentPayment = async (reqBody, paymentData) => {
+
+  try {
+    let student = await studentModel.findOne({ studentId: reqBody.studentId });
+
+    let paidAmount = paymentData.amount / 100;
+    
+    if (reqBody.paymentType === "Tuition") {
+
+        let currentPaid = Number(student.paidFeeTu) + Number(paidAmount);
+        let totalFee = Number(student.totalFee);
+        let newTuPendingFee = Number(student.pendingFee) - Number(paidAmount);
+        let paymentStatus = totalFee === currentPaid ? "Paid" : "Partial";
+    
+        student.pendingFee = newTuPendingFee.toString();
+        student.paidFeeTu = currentPaid.toString();
+        student.paymentStatus = paymentStatus;
+        student.tuEditRequest = null;
+        await student.save();
+
+    } else if (reqBody.paymentType === "Exam") {
+
+        let currentPaid = Number(student.paidFeeEx) + Number(paidAmount);
+        let totalFee = Number(student.examTotalFee);
+        let newTuPendingFee = Number(student.examPendingFee) - Number(paidAmount);
+        let paymentStatus = totalFee === currentPaid ? "Paid" : "Partial";
+    
+        student.examPendingFee = newTuPendingFee.toString();
+        student.paidFeeEx = currentPaid.toString();
+        student.examPaymentStatus = paymentStatus;
+        student.exEditRequest = null;
+        await student.save();
+
+    } else {
+        return;
+    }
+  } catch (err) {
+    console.log("Error in savePaymentData : " + err);
+  }
 };
