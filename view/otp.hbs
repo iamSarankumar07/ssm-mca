@@ -18,6 +18,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
 
     form {
@@ -127,28 +128,29 @@
   </style>
 </head>
 <body>
-  <form action="/ssm/mca/otp" method="post">
+  <div class="container">
+<form action="/ssm/mca/otp" method="post">
     <h2>OTP Verification</h2>
     <p>OTP has been sent to : <span class="email">{{user.email}}</span></p>
     <div class="input-group">
       <div class="otp-block">
-        <input type="text" class="otp-input" id="otp1" name="otp1" autocomplete="off" min="0" max="9" maxlength="1" required>
+        <input type="text" class="otp-input" id="otp1" name="otp" autocomplete="off" min="0" max="9" maxlength="1" required>
       </div>
       <input type="hidden" name="staffId" value="{{user.staffId}}">
       <div class="otp-block">
-        <input type="text" class="otp-input" id="otp2" name="otp2" autocomplete="off" min="0" max="9" maxlength="1" required>
+        <input type="text" class="otp-input" id="otp2" name="otp" autocomplete="off" min="0" max="9" maxlength="1" required>
       </div>
       <div class="otp-block">
-        <input type="text" class="otp-input" id="otp3" name="otp3" autocomplete="off" min="0" max="9" maxlength="1" required>
+        <input type="text" class="otp-input" id="otp3" name="otp" autocomplete="off" min="0" max="9" maxlength="1" required>
       </div>
       <div class="otp-block">
-        <input type="text" class="otp-input" id="otp4" name="otp4" autocomplete="off" min="0" max="9" maxlength="1" required>
+        <input type="text" class="otp-input" id="otp4" name="otp" autocomplete="off" min="0" max="9" maxlength="1" required>
       </div>
       <div class="otp-block">
-        <input type="text" class="otp-input" id="otp5" name="otp5" autocomplete="off" min="0" max="9" maxlength="1" required>
+        <input type="text" class="otp-input" id="otp5" name="otp" autocomplete="off" min="0" max="9" maxlength="1" required>
       </div>
       <div class="otp-block">
-        <input type="text" class="otp-input" id="otp6" name="otp6" autocomplete="off" min="0" max="9" maxlength="1" required>
+        <input type="text" class="otp-input" id="otp6" name="otp" autocomplete="off" min="0" max="9" maxlength="1" required>
       </div>
     </div>
     <div class="button-container">
@@ -157,6 +159,7 @@
     </div>
     <p class="note">Didn't receive OTP? <span class="resend" onclick="window.location.href = '/ssm/mca/signin'">Resend</span></p>
   </form>
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -181,6 +184,14 @@
       document.querySelector('.resend').addEventListener('click', function() {
         window.location.reload();
       });
+    });
+
+    document.querySelectorAll(".otp-input").forEach(input => {
+        input.addEventListener("focus", function () {
+            setTimeout(() => {
+                document.querySelector(".container").scrollIntoView({ behavior: "smooth", block: "end" });
+            }, 300);
+        });
     });
   </script>
 </body>
