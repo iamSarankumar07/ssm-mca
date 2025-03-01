@@ -182,10 +182,14 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+
+    let userName = req.body.email.trim();
+    let password = req.body.password.trim();
+
     let user = await Admin.findOne({
       $or: [
-        { email: req.body.email },
-        { staffId: req.body.email }
+        { email: userName },
+        { staffId: userName }
       ],
       isDelete: false
     });
@@ -205,7 +209,7 @@ exports.login = async (req, res) => {
     }
 
     let isPasswordMatch = await bcrypt.compare(
-      req.body.password,
+      password,
       user.password
     );
 

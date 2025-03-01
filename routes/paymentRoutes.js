@@ -24,7 +24,7 @@ app.get("/chatroom",
     paymentController.getChatroom
 );
 
-app.get("/adminChatroom",
+app.get("/adminChatroomYear:year",
     authonticationController.validateToken,
     paymentController.getAdminChatroom
 );
