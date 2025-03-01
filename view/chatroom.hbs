@@ -11,7 +11,7 @@
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
         body {
-            font-family: "Inter", Arial, sans-serif;
+            font-family: "Poppins", sans-serif;
             margin: 0;
             padding: 0;
             background-color: #eef1f7;
@@ -19,6 +19,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
         .chat-container {
@@ -108,13 +109,13 @@
         }
 
         button {
-            padding: 10px 16px;
+            padding: 4px 7px;
             background: #3d6ef5ff;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
             transition: background 0.2s;
         }
@@ -221,15 +222,10 @@
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
             MCA Chatroom
-            <span class="typing-indicator" id="typingIndicator"></span>
         </div>
         <div class="messages" id="messages">
             <div id="typingIndicator" class="system-message" style="display: none;"></div>
         </div>
-        {{!-- <div class="input-container">
-            <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
-            <button onclick="sendMessage()">Send</button>
-        </div> --}}
         <div class="input-container">
             <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
             <button id="sendButton" onclick="sendMessage()">
@@ -267,6 +263,8 @@
 
         const socket = io();
         const username = "{{username}}";
+        const year = "{{year}}";
+
         let skip = 0;
         let loading = false;
         const messagesDiv = document.getElementById("messages");
@@ -281,7 +279,7 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
         skip = initialMessages.length;
 
-        socket.emit("joinChat", username);
+        socket.emit("joinChat", { username, year });
 
         socket.on("receiveMessage", (data) => {
             displayMessage(data);
@@ -291,7 +289,7 @@
         messagesDiv.addEventListener("scroll", () => {
             if (messagesDiv.scrollTop === 0 && !loading) {
                 loading = true;
-                socket.emit("loadOlderMessages", { skip, limit: 50 });
+                socket.emit("loadOlderMessages", { skip, limit: 50, year: year });
             }
         });
 
@@ -330,17 +328,21 @@
         });
 
         socket.on("userTyping", (user) => {
-            typingUsers.add(user);
-            updateTypingIndicator();
+            if (user && user.username) {
+                typingUsers.add(user.username);
+                updateTypingIndicator();
+            }
         });
 
         socket.on("userStoppedTyping", (user) => {
-            typingUsers.delete(user);
-            updateTypingIndicator();
+            if (user && user.username) {
+                typingUsers.delete(user.username);
+                updateTypingIndicator();
+            }
         });
 
         function updateTypingIndicator() {
-            const typingId = "typingMessage";
+            const typingId = "typingIndicator";
             let typingMessage = document.getElementById(typingId);
 
             if (typingUsers.size === 0) {
@@ -395,6 +397,14 @@
                 deleteButton.style.cursor = "pointer";
                 deleteButton.style.color = "#f00";
                 deleteButton.title = "Delete Message";
+
+                deleteButton.addEventListener("mouseover", () => {
+                    deleteButton.style.background = "#dddada";
+                });
+
+                deleteButton.addEventListener("mouseout", () => {
+                    deleteButton.style.background = "transparent";
+                });
 
                 deleteButton.addEventListener("click", () => {
                     deleteMessage(data._id);

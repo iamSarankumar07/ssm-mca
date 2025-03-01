@@ -59,15 +59,17 @@ exports.getChatroom = async (req, res) => {
     const accessToken = req.cookies["access-token-student"];
     const decoded = verify(accessToken, "mnbvcxzlkjhgfdsapoiuytrewq");
     let username = decoded.name;
+    let year = decoded.year;
 
     try {
-        const messages = await messageModel.find()
+        const messages = await messageModel.find({ year: year})
             .sort({ createdAt: -1 }) 
             .limit(100)
             .lean();
 
         res.render("chatroom", {
             username,
+            year,
             isAdmin: false,
             initialMessages: JSON.stringify(messages),
         });
@@ -81,15 +83,17 @@ exports.getAdminChatroom = async (req, res) => {
     const accessToken = req.cookies["access-token"];
     const decoded = verify(accessToken, "qwertyuiopasdfghjklzxcvbnm");
     let username = decoded.name;
+    let { year } = req.params
 
     try {
-        const messages = await messageModel.find()
+        const messages = await messageModel.find({ year: year })
             .sort({ createdAt: -1 }) 
             .limit(100)
             .lean();
 
         res.render("chatroom", {
             username,
+            year,
             isAdmin: true,
             initialMessages: JSON.stringify(messages),
         });

@@ -327,8 +327,11 @@ exports.newStudent = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { studentId, password } = req.body;
+  let { studentId, password } = req.body;
 
+  studentId = studentId.trim();
+  password = password.trim();
+  
   try {
     const student = await Student.findOne({ 
       studentId,

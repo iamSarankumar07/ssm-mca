@@ -10,7 +10,7 @@ exports.token = async (user) => {
 
 exports.sToken = async (student) => {
   const accessToken = sign(
-    { studentId: student.studentId, id: student.id, name: student.name },
+    { studentId: student.studentId, id: student.id, name: student.name, year: student.year },
     "mnbvcxzlkjhgfdsapoiuytrewq"
   );
   return accessToken;
