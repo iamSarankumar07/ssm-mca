@@ -235,7 +235,7 @@
 
                 chats.reverse().forEach(chat => {
                     chatContainer.innerHTML += `<div class="message user">${escapeHTML(chat.message)}</div>`;
-                    chatContainer.innerHTML += `<div class="message bot"><pre><code>${escapeHTML(chat.response)}</code></pre></div>`;
+                    chatContainer.innerHTML += `<div class="message bot">${escapeHTML(chat.response)}</div>`;
                 });
 
                 if (chats.length > 0) {
