@@ -344,7 +344,7 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--text-color);
+            color: var(--text-primary);
             padding: 0;
         }
 
@@ -375,11 +375,6 @@
             max-width: 100%;
             max-height: 40px;
         }
-
-        {{!-- .payment-option img[src*="stripepay"] {
-            max-height: 90%; 
-            max-width: 90%;
-        } --}}
 
         .card-content {
             padding: 1.5rem;
@@ -659,7 +654,7 @@
                     <div class="fee-item">
                         <span class="fee-label">AI Chatbot</span>
                         <span class="fee-value">
-                            <a href="/ssm/mca/student/getChatBot/{{student._id}}" class="chat-link">
+                            <a href="/ssm/mca/student/getChatBot?user={{student._id}}" class="chat-link">
                                 <i class="fa-solid fa-robot"></i>
                             </a>
                         </span>
