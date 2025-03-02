@@ -85,6 +85,13 @@ exports.googleAiChatbot = async (req, res) => {
         const result = await model.generateContent(prompt);
         let botReply = result.response.text();
 
+        console.log(botReply);
+
+        const chatEntry = new chatbotModel({ user, message, response: botReply });
+        await chatEntry.save();
+        
+        res.json({ reply: botReply });
+        
         // const response = await axios.post(
         //     "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent", // gemini-1.5-flash
         //     {
@@ -97,12 +104,6 @@ exports.googleAiChatbot = async (req, res) => {
         // );
 
         // const botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "I'm not sure how to respond.";
-
-        const chatEntry = new chatbotModel({ user, message, response: botReply });
-        await chatEntry.save();
-
-        res.json({ reply: botReply });
-
     } catch (error) {
         console.error("google AI Chatbot Error:", error);
         const botReply = "Internal Server Error!";
