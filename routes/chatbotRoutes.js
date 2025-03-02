@@ -8,12 +8,13 @@ app.set("view engine", "hbs");
 const viewPath = path.join(__dirname, "../view");
 app.set("views", viewPath);
 
-app.get("/student/getChatBot/:user",
+
+app.get("/student/getChatBot",
     authonticationController.sValidateToken,
     chatBotController.getStudentChatbot
 );
 
-app.get("/admin/getChatBot/:user",
+app.get("/admin/getChatBot",
     authonticationController.validateToken,
     chatBotController.getAdminChatbot
 );
@@ -21,6 +22,11 @@ app.get("/admin/getChatBot/:user",
 app.post("/chatbot",
     // authonticationController.sValidateToken,
     chatBotController.chatbot
+);
+
+app.post("/googleAiChatbot",
+    // authonticationController.sValidateToken,
+    chatBotController.googleAiChatbot
 );
 
 app.get("/chatbot/history/:user",
