@@ -85,7 +85,7 @@ exports.googleAiChatbot = async (req, res) => {
         const result = await model.generateContent(prompt);
         let botReply = result.response.text();
 
-        console.log(botReply);
+        // console.log(botReply);
 
         const chatEntry = new chatbotModel({ user, message, response: botReply });
         await chatEntry.save();
