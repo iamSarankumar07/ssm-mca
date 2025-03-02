@@ -132,5 +132,62 @@ exports.chatbotHistory = async (req, res) => {
     }
 };
 
+exports.jobs = async (req, res) => {
+    try {
+        res.render("jobs")
+    } catch (error) {
+        console.error("Error fetching job listings:", error);
+        res.status(500).send("Failed to load job listings.");
+    }
+};
+
+exports.jobSearch = async (req, res) => {
+    try {
+        const { query, location } = req.query;
+        
+        const response = await axios.get(`https://jsearch.p.rapidapi.com/search`, {
+            params: { query: query, location: location },
+            headers: {
+                "X-RapidAPI-Key": process.env.JOB_API_KEY,
+                "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+            }
+        });
+
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching job search results:", error.message);
+        res.status(500).json([]);
+    }
+};
+
+exports.getNews = async (req, res) => {
+    try {
+        res.render("news");
+    } catch (err) {
+        console.log("Error in getScholarships: " + err)
+    }
+};
+
+exports.getEducationNews = async (req, res) => {
+    try {
+        // const url = process.env.NEWS_API_DOMAIN +  `/v2/top-headlines?category=education&country=in&apiKey=${process.env.NEWS_API_KEY}`;
+        // const url = `https://newsapi.org/v2/everything?q=education&apiKey=${process.env.NEWS_API_KEY}`;
+
+        // const indiaRes = await axios.get(`https://newsapi.org/v2/top-headlines?country=in&apiKey=${process.env.NEWS_API_KEY}`);
+        const tamilRes = await axios.get(`https://newsapi.org/v2/everything?q="Tamil Nadu"&language=en&apiKey=${process.env.NEWS_API_KEY}`);
+
+        // const response = await axios.get(url);
+        const newsArticles = tamilRes.data.articles;
+
+        res.json(newsArticles)
+
+        // res.render("news", { news: newsArticles });
+    } catch (error) {
+        console.error("Error fetching news:", error);
+        res.status(500).send("Failed to load news.");
+    }
+};
+
+
 
 module.exports = exports;

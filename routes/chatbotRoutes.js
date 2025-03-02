@@ -34,5 +34,25 @@ app.get("/chatbot/history/:user",
     chatBotController.chatbotHistory
 );
 
+app.get("/jobs",
+    authonticationController.sValidateToken,
+    chatBotController.jobs
+);
+
+app.get("/jobs/search",
+    authonticationController.sValidateToken,
+    chatBotController.jobSearch
+);
+
+app.get("/news",
+    // authonticationController.sValidateToken,
+    chatBotController.getNews
+);
+
+app.get("/education/news",
+    // authonticationController.sValidateToken,
+    chatBotController.getEducationNews
+);
+
 
 module.exports = app;

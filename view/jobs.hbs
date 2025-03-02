@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f4f7fc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #007bff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            color: #0056b3;
+        }
+
+        .search-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .search-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .job-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .searching-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <button onclick="goBack()" class="back-btn">
+            <i class="bi bi-arrow-left me-2"></i> Back
+        </button>
+
+        <h1 class="text-center text-primary fw-bold mt-3">Find Your Dream Job</h1>
+
+        <div class="search-card mt-4">
+            <form id="jobSearchForm" class="row g-3">
+                <div class="col-md-5">
+                    <input type="text" id="query" class="form-control" placeholder="Job title, skills..." required>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" id="location" class="form-control" placeholder="Location (City, Country)" required>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">🔍 Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="searchingPopup" class="searching-popup">
+            <div class="loader"></div>
+            <p>Searching for jobs...</p>
+        </div>
+
+        <div id="jobsContainer" class="mt-4">
+            <p class="text-muted text-center">Enter job title and location to search.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        document.getElementById("jobSearchForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const query = document.getElementById("query").value;
+            const location = document.getElementById("location").value;
+            const jobsContainer = document.getElementById("jobsContainer");
+            const searchingPopup = document.getElementById("searchingPopup");
+
+            searchingPopup.style.display = "block";
+
+            try {
+                const response = await fetch(`/ssm/mca/jobs/search?query=${query}&location=${location}`);
+                const data = await response.json();
+
+                searchingPopup.style.display = "none";
+
+                jobsContainer.innerHTML = "";
+
+                if (!data.data || data.data.length === 0) {
+                    jobsContainer.innerHTML = "<p class='text-muted text-center'>No jobs found.</p>";
+                    return;
+                }
+
+                data.data.forEach(job => {
+                    const jobElement = `
+                        <div class="job-card mt-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="${job.employer_logo || 'https://via.placeholder.com/50'}" alt="Company Logo" class="rounded-circle me-3" width="50">
+                                <div>
+                                    <h5 class="mb-0">${job.job_title}</h5>
+                                    <p class="text-muted mb-0">${job.employer_name}</p>
+                                </div>
+                            </div>
+                            <p class="text-muted">${job.job_location}, ${job.job_country}</p>
+                            <p>${job.job_description.substring(0, 150)}...</p>
+                            <a href="${job.job_apply_link}" target="_blank" class="btn btn-success btn-sm">Apply Now</a>
+                        </div>
+                    `;
+                    jobsContainer.innerHTML += jobElement;
+                });
+
+            } catch (error) {
+                searchingPopup.style.display = "none";
+                jobsContainer.innerHTML = "<p class='text-danger text-center'>Error fetching jobs. Please try again.</p>";
+            }
+        });
+    </script>
+
+</body>
+</html>
