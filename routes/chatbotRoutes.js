@@ -54,5 +54,4 @@ app.get("/education/news",
     chatBotController.getEducationNews
 );
 
-
 module.exports = app;

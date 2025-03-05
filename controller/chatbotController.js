@@ -77,20 +77,46 @@ exports.googleAiChatbot = async (req, res) => {
     try {
         const { user, message } = req.body;
 
-        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        if (process.env.CHATBOT_API === "GOOGLE_AI") {
+          const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+          const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-        const prompt = message;
+          const prompt = message;
 
-        const result = await model.generateContent(prompt);
-        let botReply = result.response.text();
+          const result = await model.generateContent(prompt);
+          let botReply = result.response.text();
 
-        // console.log(botReply);
+          const chatEntry = new chatbotModel({
+            user,
+            message,
+            response: botReply,
+          });
+          await chatEntry.save();
 
-        const chatEntry = new chatbotModel({ user, message, response: botReply });
-        await chatEntry.save();
-        
-        res.json({ reply: botReply });
+          res.json({ reply: botReply });
+        } else {
+          const response = await axios.post(
+            process.env.MISTRAL_AI_URL,
+            {
+              model: "mistral-small-latest",
+              messages: [{ role: "user", content: message }],
+              max_tokens: 100,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${process.env.MISTRAL_API_KEY}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          const botReply = response.data.choices[0].message.content;
+
+          await chatbotModel.create({ user, message, response: botReply });
+
+          res.json({ reply: botReply });
+        }
+
         
         // const response = await axios.post(
         //     "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent", // gemini-1.5-flash
