@@ -1,729 +1,982 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fee Information</title>
+    <title>Fee Information Dashboard</title>
     <link rel="icon" href="https://your-favicon-url.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Add Toastify CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #2b2d42;
+            --success: #28a745;
+            --info: #007bff;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f9fafb;
+            --dark: #1f2937;
+            --body-bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --text-muted: #6b7280;
         }
-    
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
             margin: 0;
-            padding: 0;
         }
-    
-        .container {
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: auto;
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
         }
-    
-        h1 {
-            text-align: center;
-            color: #fff;
-            background-color: #3d6ef5ff;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 24px;
+
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--secondary);
             margin: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
-    
-        h2 {
-            color: #3d6ef5ff;
-            margin-top: 20px;
+
+        .section-title .badge {
+            margin-left: 0;
+            font-size: 0.7rem;
+            padding: 0.35rem 0.65rem;
+            border-radius: 2rem;
         }
-    
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px auto;
-            font-size: 15px;
+
+        .section-body {
+            padding: 1rem;
         }
-    
-        th,
-        td {
-            padding: 8px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-    
-        .td {
-            text-align: center;
-        }
-    
-        th {
-            background-color: #3d6ef5ff;
-            color: #fff;
-        }
-    
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-    
-        .edit-icon,
-        .delete-icon {
-            text-decoration: none;
-            color: #3d6ef5ff;
-            transition: color 0.3s;
-        }
-    
-        .edit-icon:hover,
-        .delete-icon:hover {
-            color: #0056b3;
-        }
-    
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-    
-        .btn {
-            padding: 8px 14px;
-            color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.4s, color 0.4s;
-        }
-    
-        .btn:hover {
-            background: #fff;
-            color: #3d6ef5ff;
-        }
-    
-        .back-button {
-            position: absolute;
-            top: 3.5%;
-            left: 2%;
-            text-decoration: none;
-        }
-    
-        .back-button img {
-            width: 45px;
-            height: 45px;
-            margin-right: 16px;
-            margin-bottom: 30px;
-            vertical-align: middle;
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-    
-        .icon-img {
-            width: 25px;
-            height: 25px;
-            vertical-align: middle;
-        }
-    
-        .view-link {
-            text-decoration: none;
-            cursor: pointer;
-        }
-    
-        .view-link:hover .icon-img {
-            transform: scale(1.2);
-            filter: brightness(1.5);
-        }
-    
-        .responsive-search-bar {
-            padding: 6px;
-            width: 100%;
-            max-width: 300px;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-    
+
         .fee-summary-container {
             display: flex;
             justify-content: center;
             align-items: stretch;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 20px;
             width: 100%;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
         }
-    
+
         .fee-box {
-            flex: 1;
-            min-width: 320px;
-            max-width: 450px;
-            height: 90px;
-            border-left: 5px solid black;
+            flex: 1 1 100%;
+            min-width: 100%;
+            height: auto;
+            min-height: 90px;
+            border-left: 5px solid;
             background-color: #fff;
-            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             border-radius: 10px;
             display: flex;
             align-items: center;
-            padding: 12px 18px;
+            padding: 12px 15px;
             transition: all 0.3s ease-in-out;
             position: relative;
             overflow: hidden;
         }
-    
+
         .fee-box:hover {
             transform: translateY(-3px);
-            box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
-    
+
+        .fee-box.total {
+            border-left-color: var(--success);
+        }
+
+        .fee-box.paid {
+            border-left-color: var(--info);
+        }
+
+        .fee-box.pending {
+            border-left-color: var(--danger);
+        }
+
         .fee-box i {
-            font-size: 30px;
+            font-size: 28px;
             min-width: 40px;
             margin-right: 15px;
         }
-    
+
+        .fee-box.total i {
+            color: var(--success);
+        }
+
+        .fee-box.paid i {
+            color: var(--info);
+        }
+
+        .fee-box.pending i {
+            color: var(--danger);
+        }
+
         .fee-content {
             display: flex;
             flex-direction: column;
             justify-content: center;
             flex-grow: 1;
         }
-    
+
         .fee-heading {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 2px;
-        }
-    
-        .fee-content .fee-amount {
-            font-size: 18px;
-            font-weight: bold;
-            color: #222;
-        }
-    
-        .fee-content .fee-label {
             font-size: 13px;
-            color: gray;
+            font-weight: 600;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-    
-        .fee-box.total {
-            border-left-color: #28a745;
+
+        .fee-amount {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: var(--dark);
         }
-    
-        .fee-box.paid {
-            border-left-color: #007bff;
+
+        .fee-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 0;
         }
-    
-        .fee-box.pending {
-            border-left-color: #dc3545;
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
         }
-    
-        .fee-box.total i {
-            color: #28a745;
+
+        th, td {
+            font-weight: 500;
         }
-    
-        .fee-box.paid i {
-            color: #007bff;
+
+        .search-input {
+            padding: 0.65rem 1rem 0.65rem 2.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            background-color: var(--light);
         }
-    
-        .fee-box.pending i {
-            color: #dc3545;
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            outline: none;
         }
-    
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 20px;
-                padding: 10px;
-            }
-    
-            h2 {
-                font-size: 18px;
-                margin: 10px;
-            }
-    
-            table {
-                font-size: 14px;
-            }
-    
-            th,
-            td {
-                padding: 8px;
-                font-size: 12px;
-            }
-    
-            input[type="text"] {
-                width: 100%;
-                max-width: none;
-            }
-    
-            .btn {
-                width: 100%;
-                font-size: 12px;
-                padding: 10px 0;
-            }
-    
-            .icon-img {
-                width: 20px;
-                height: 20px;
-            }
-    
-            .responsive-search-bar {
-                max-width: 250px;
-                font-size: 13px;
-            }
-    
-            .back-button {
-                position: absolute;
-                top: 3.6%;
-                left: 4%;
-                text-decoration: none;
-            }
-    
-            .back-button img {
-                width: 40px;
-                height: 40px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
-            }
-    
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .table-container {
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 650px;
+        }
+
+        .data-table thead th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .data-table tbody td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            color: var(--dark);
+            font-size: 0.85rem;
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.7rem;
+            display: inline-block;
+            text-align: center;
+            min-width: 70px;
+            white-space: nowrap;
+        }
+
+        .status-paid {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-partial {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .status-unpaid {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.1);
+            border: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            font-weight: 500;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+            font-weight: 500;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .actions-container {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Modern Modal Styles */
+        .modal-content {
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            border-bottom: 0;
+            padding: 0.75rem 1rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1rem;
+        }
+
+        .student-info {
+            border-left: 3px solid var(--primary);
+            background-color: rgba(67, 97, 238, 0.05) !important;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        .input-group-text {
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--light);
+            color: var(--text-muted);
+        }
+
+        .modal-footer {
+            border-top: 0;
+            padding: 0.75rem 1rem 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-save {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 0.375rem 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-save:hover {
+            background-color: #3a56d4;
+            border-color: #3a56d4;
+        }
+
+        .btn-close {
+            color: white;
+            opacity: 0.8;
+            transition: all 0.2s;
+        }
+
+        .btn-close:hover {
+            color: white;
+            opacity: 1;
+        }
+
+        .spinner-border {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        /* Custom Toastify Styles */
+        .toastify {
+            padding: 12px 20px;
+            color: #ffffff;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            background: #353535;
+            position: fixed;
+            top: -150px;
+            right: 15px;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            max-width: 300px;
+            z-index: 10000;
+        }
+
+        .toastify.on {
+            opacity: 1;
+            transform: translateY(165px);
+        }
+
+        .toastify-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .toastify-error {
+            background: linear-gradient(135deg, #dc3545, #ff6b6b);
+        }
+
+        .toastify-info {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+        }
+
+        .toastify-warning {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+        }
+
+        .toastify-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toastify-icon {
+            font-size: 20px;
+        }
+
+        .toastify-text {
+            flex: 1;
+        }
+
+        .toastify-close {
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            background: transparent;
+            outline: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .toastify-close:hover {
+            opacity: 1;
+        }
+
+        /* Animation for modal */
+        .modal.fade .modal-dialog {
+            transition: transform 0.2s ease-out;
+        }
+
+        .modal.show .modal-dialog {
+            transform: none;
+        }
+
+        @media (min-width: 576px) {
             .fee-box {
-                min-width: 280px;
-                max-width: 350px;
-                height: 85px;
-                padding: 10px;
+                flex: 1 1 calc(50% - 15px);
+                min-width: calc(50% - 15px);
             }
-    
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-container {
+                padding: 1.25rem;
+            }
+
+            .section-body {
+                padding: 1.25rem;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .section-title {
+                font-size: 1.25rem;
+            }
+
             .fee-box i {
-                font-size: 28px;
+                font-size: 32px;
+                min-width: 45px;
             }
-    
-            .fee-content .fee-amount {
-                font-size: 16px;
+
+            .fee-amount {
+                font-size: 20px;
             }
         }
-    
-        @media (max-width: 480px) {
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-    
-            th,
-            td {
-                font-size: 10px;
-                padding: 6px;
-            }
-    
-            h1,
-            h2 {
-                font-size: 16px;
-            }
-    
-            .responsive-search-bar {
-                max-width: 200px;
-                font-size: 12px;
-            }
-    
-            .back-button {
-                position: absolute;
-                top: 3.5%;
-                left: 7%;
-                text-decoration: none;
-            }
-    
-            .back-button img {
-                width: 35px;
-                height: 35px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
-            }
-    
-            .fee-summary-container {
-                flex-direction: column;
-                align-items: center;
-            }
-    
+
+        @media (min-width: 992px) {
             .fee-box {
-                width: 100%;
-                max-width: 320px;
-                height: 80px;
-                font-size: 12px;
-                padding: 8px;
+                flex: 1 1 calc(33.333% - 15px);
+                min-width: calc(33.333% - 15px);
+                height: 100px;
+            }
+
+            .fee-box i {
+                font-size: 36px;
+                min-width: 50px;
+                margin-right: 20px;
+            }
+
+            .fee-amount {
+                font-size: 22px;
+            }
+
+            .section-body {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h1>TUITION FEES DETAILS</h1>
-    <a href="/ssm/mca/dashboard#fees" class="back-button">
-        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
-    </a>
-    <div class="table-container">
-        <h2>MCA - I</h2>
+    <div class="dashboard-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <a href="/v1/api/dashboard#fees" class="back-link">
+                <i class="fas fa-arrow-left"></i> Go Back!
+            </a>
+            <h1 class="page-title">{{course}} - {{year}} Tuition Fees Details</h1>
+        </div>
 
-        <div class="fee-summary-container">
-            <div class="fee-box total">
-                <i class="fas fa-money-bill-wave"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #28a745;">Total Amount</p>
-                    <p class="fee-amount">Rs. {{firstYearTotalFee}}</p>
-                    <p class="fee-label">{{firstYearStudentCount}} Students</p>
-                </div>
+        <!-- MCA - I Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">
+                    MCA - {{year}}
+                    <span class="badge bg-primary">{{studentsCount}} Students</span>
+                </h2>
             </div>
-            <div class="fee-box paid">
-                <i class="fas fa-check-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #007bff;">Paid Amount</p>
-                    <p class="fee-amount">Rs. {{firstYearPaidFee}}</p>
-                    <p class="fee-label">{{firstYearPaidStudents}} Students</p>
+
+            <div class="section-body">
+                <div class="fee-summary-container">
+                    <div class="fee-box total">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div class="fee-content">
+                            <p class="fee-heading" style="color: #28a745;">Total Amount</p>
+                            <p class="fee-amount">₹  {{totalFees}}</p>
+                            <p class="fee-label">{{studentsCount}} Students</p>
+                        </div>
+                    </div>
+                    <div class="fee-box paid">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="fee-content">
+                            <p class="fee-heading" style="color: #007bff;">Paid Amount</p>
+                            <p class="fee-amount">₹  {{paidFees}}</p>
+                            <p class="fee-label">{{paidStudents}} Students</p>
+                        </div>
+                    </div>
+                    <div class="fee-box pending">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div class="fee-content">
+                            <p class="fee-heading" style="color: #dc3545;">Pending Amount</p>
+                            <p class="fee-amount">₹  {{pendingFees}}</p>
+                            <p class="fee-label">{{pendingStudents}} Students</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="fee-box pending">
-                <i class="fas fa-exclamation-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #dc3545;">Pending Amount</p>
-                    <p class="fee-amount">Rs. {{firstYearPendingFee}}</p>
-                    <p class="fee-label">{{firstYearPendingStudents}} Students</p>
+
+                <!-- Search Box -->
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput1" class="search-input" placeholder="Search by student name...">
+                </div>
+
+                <!-- Table -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;" width="5%">S.No</th>
+                                <th width="20%">Name</th>
+                                <th style="text-align: center;" width="12%">Student ID</th>
+                                <th style="text-align: center;" width="8%">Gender</th>
+                                <th style="text-align: center;" width="8%">Semester</th>
+                                <th style="text-align: center;" width="12%">Total Fee</th>
+                                <th style="text-align: center;" width="12%">Paid Fee</th>
+                                <th style="text-align: center;" width="12%">Pending Fee</th>
+                                <th style="text-align: center;" width="12%">Payment Status</th>
+                                <th style="text-align: center;" width="7%">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table1">
+                            {{#each studentsData}}
+                            <tr>
+                                <td class="text-center">{{inc @index}}</td>
+                                <td>{{name}}</td>
+                                <td class="text-center">{{studentId}}</td>
+                                <td class="text-center">{{gender}}</td>
+                                <td class="text-center">{{tuitionFees.semester}}</td>
+                                <td class="text-center">₹ {{tuitionFees.totalFee}}</td>
+                                <td class="text-center">₹ {{tuitionFees.paidFee}}</td>
+                                <td class="text-center">₹ {{tuitionFees.pendingFee}}</td>
+                                <td class="text-center">
+                                    <span
+                                        class="status-badge {{#if (eq tuitionFees.status 'Paid')}}status-paid{{else if (eq tuitionFees.status 'Partial')}}status-partial{{else}}status-unpaid{{/if}}">
+                                        {{tuitionFees.status}}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="action-btn edit-btn" title="Edit Student" data-id="{{_id}}" data-name="{{name}}" 
+                                        data-student-id="{{studentId}}" data-gender="{{gender}}" data-total-fee="{{tuitionFees.totalFee}}" data-semester="{{tuitionFees.semester}}"
+                                        data-paid-fee="{{tuitionFees.paidFee}}" data-pending-fee="{{tuitionFees.pendingFee}}" data-status="{{tuitionFees.status}}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Actions -->
+                <div class="actions-container">
+                    <form id="downloadForm" action="/v1/api/studentTuitionDownload" method="post">
+                        <input type="hidden" name="year" value="{{year}}">
+                        <input type="hidden" name="isPdf" value="true">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="fas fa-download me-2"></i> Download
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <div style="margin-bottom: 20px; text-align: right;">
-            <input
-                type="text"
-                id="searchInput1"
-                placeholder="Search by Student Name"
-                onkeyup="searchByRefNo('searchInput1', 'table1')"
-                class="responsive-search-bar"
-            />
+        <!-- Footer -->
+        <div class="footer">
+            <a href="/v1/api/dashboard#fees" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i> Go back!
+            </a>
         </div>
+    </div>
 
-        <table>
-            <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Name</th>
-                <th>Student ID</th>
-                <th>Gender</th>
-                <th>Total Fee</th>
-                <th>Paid Fee</th>
-                <th>Pending Fee</th>
-                <th>Payment Status</th>
-                <th>Edit</th>
-            </tr>
-            </thead>
-            <tbody id="table1">
-            {{#each firstYearStudents}}
-            <tr>
-                <td class="td">{{inc @index}}</td>
-                <td style="text-align: left;">{{name}}</td>
-                <td class="td">{{studentId}}</td>
-                <td class="td">{{gender}}</td>
-                <td class="td">Rs.{{totalFee}}</td>
-                <td class="td">Rs.{{paidFeeTu}}</td>
-                <td class="td">Rs.{{pendingFee}}</td>
-                <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
-                    {{paymentStatus}}
-                </td>
-                <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/feeEdit/{{_id}}" class="view-link">
-                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
-                </a>
-            </td>
-            </tr>
-            {{/each}}
-            </tbody>
-        </table>
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">
+                        <i class="fas fa-pencil-alt me-2"></i>Update Tuition Fees Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <form id="editFeeForm">
+                        <input type="hidden" id="studentId" name="studentId">
+                    
+                        <div class="student-info mb-3 p-2 rounded bg-light">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-user text-primary me-2"></i>
+                                <span class="fw-bold" id="studentName"></span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-id-card text-primary me-2"></i>
+                                <span id="studentIdNumber"></span>
+                            </div>
+                        </div>
+                    
+                        <div class="mb-2">
+                            <label for="totalFee" class="form-label small fw-bold text-secondary mb-1">Total Fee (₹ )</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light">₹</span>
+                                <input type="number" class="form-control form-control-sm" id="totalFee" name="totalFee">
+                            </div>
+                        </div>
+                    
+                        <div class="mb-2">
+                            <label for="pendingFee" class="form-label small fw-bold text-secondary mb-1">Pending Fee (₹ )</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light">₹</span>
+                                <input type="number" class="form-control form-control-sm bg-light" id="pendingFee" readonly>
+                            </div>
+                        </div>
 
-        <div class="btn-container">
-                <button class="btn" style="margin-bottom: 10px;" onclick="printFirstYearFee()">Print</button>
-            <form id="downloadForm" action="/ssm/mca/studentTuitionDownload" method="post">
-                <input type="hidden" name="year" value="I">
-                <input type="hidden" name="isPdf" value="true">
-                <button type="submit" class="btn">Download</button>
-            </form>
-            {{!-- <div class="btn-container">
-                <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
-            </div> --}}
+                        <div class="mb-2">
+                            <label for="paidFee" class="form-label small fw-bold text-secondary mb-1">Paid Fee (₹ )</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light">₹</span>
+                                <input type="number" class="form-control form-control-sm" id="paidFee" name="paidFee">
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="semester" class="form-label small fw-bold text-secondary mb-1">Semester</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-sm" id="semester" name="semester">
+                            </div>
+                        </div>
+                    
+                    </form>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-primary btn-save" id="saveChanges">
+                        <span id="saveSpinner" class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true"></span>
+                        Save
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="table-container">
-        <h2>MCA - II</h2>
+    <div id="printDiv" style="display:none;"></div>
 
-        <div class="fee-summary-container">
-            <div class="fee-box total">
-                <i class="fas fa-money-bill-wave"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #28a745;">Total Amount</p>
-                    <p class="fee-amount">Rs. {{secondYearTotalFee}}</p>
-                    <p class="fee-label">{{secondYearStudentCount}} Students</p>
-                </div>
-            </div>
-            <div class="fee-box paid">
-                <i class="fas fa-check-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #007bff;">Paid Amount</p>
-                    <p class="fee-amount">Rs. {{secondYearPaidFee}}</p>
-                    <p class="fee-label">{{secondYearPaidStudents}} Students</p>
-                </div>
-            </div>
-            <div class="fee-box pending">
-                <i class="fas fa-exclamation-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #dc3545;">Pending Amount</p>
-                    <p class="fee-amount">Rs. {{secondYearPendingFee}}</p>
-                    <p class="fee-label">{{secondYearPendingStudents}} Students</p>
-                </div>
-            </div>
-        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Add Toastify JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-        <div style="margin-bottom: 20px; text-align: right;">
-            <input
-                type="text"
-                id="searchInput2"
-                placeholder="Search by Student Name"
-                onkeyup="searchByRefNo('searchInput2', 'table2')"
-                class="responsive-search-bar"
-            />
-        </div>
-
-        <table>
-            <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Name</th>
-                <th>Student ID</th>
-                <th>Gender</th>
-                <th>Total Fee</th>
-                <th>Paid Fee</th>
-                <th>Pending Fee</th>
-                <th>Payment Status</th>
-                <th>Edit</th>
-            </tr>
-            </thead>
-            <tbody id="table2">
-            {{#each secondYearStudents}}
-            <tr>
-                <td class="td">{{inc @index}}</td>
-                <td style="text-align: left;">{{name}}</td>
-                <td class="td">{{studentId}}</td>
-                <td class="td">{{gender}}</td>
-                <td class="td">Rs.{{totalFee}}</td>
-                <td class="td">Rs.{{paidFeeTu}}</td>
-                <td class="td">Rs.{{pendingFee}}</td>
-                <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
-                    {{paymentStatus}}
-                </td>
-                <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/feeEdit/{{_id}}" class="view-link">
-                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
-                </a>
-            </td>
-            </tr>
-            {{/each}}
-            </tbody>
-        </table>
-        <div class="btn-container">
-                <button class="btn" style="margin-bottom: 10px;" onclick="printSecondYearFee()">Print</button>
-            <form id="downloadForm" action="/ssm/mca/studentTuitionDownload" method="post">
-                <input type="hidden" name="year" value="II">
-                <input type="hidden" name="isPdf" value="true">
-                <button type="submit" class="btn">Download</button>
-            </form>
-        </div>
-    </div>
-    <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
-    </div>
-</div>
-
-<div id="printDiv" style="display:none;"></div>
-
-<script>
-    function printFirstYearFee() {
-        var printWindow = window.open('', '_blank');
-        
-        var printContent = `
-            <html>
-            <head>
-                <style>
-                    body {
-                        font-family: 'Arial', sans-serif;
-                        background-color: #fff;
-                        margin: 0; 
-                        padding: 20px;
-                    }
-
-                    h1,h2,h3 {
-                        color: #000; 
-                        text-align: center;
-                        margin-top: 20px;
-                    }
-
-                    table {
-                        width: 100%; 
-                        border-collapse: collapse;
-                        margin-top: 20px;
-                    }
-
-                    th, td {
-                        border: 1px solid #000; 
-                        {{!-- text-align: center; --}}
-                        padding: 12px;
-                    }
-
-                    .td {
-                        text-align: center;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1>SSM COLLEGE OF ENGINEERING</h1>
-                <h2>Department Of MCA - I</h2>
-                <h3>Tution Fees Details</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Name</th>
-                            <th>Student ID</th>
-                            <th>Total Fee</th>
-                            <th>Pending Fee</th>
-                            <th>Payment Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each firstYearStudents}}
-                        <tr>
-                            <td class="td">{{inc @index}}</td>
-                            <td>{{name}}</td>
-                            <td class="td">{{studentId}}</td>
-                            <td class="td">Rs.{{totalFee}}</td>
-                            <td class="td">Rs.{{pendingFee}}</td>
-                            <td class="td">{{paymentStatus}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </body>
-            </html>
-        `;
-        
-        printWindow.document.write(printContent);
-        printWindow.document.title = 'MCA-I Tution Fees Details';
-        printWindow.document.close();
-        printWindow.print();
-    }
-
-    function printSecondYearFee() {
-        var printWindow = window.open('', '_blank');
-        
-        var printContent = `
-            <html>
-            <head>
-                <style>
-                    body {
-                        font-family: 'Arial', sans-serif;
-                        background-color: #fff; 
-                        margin: 0; 
-                        padding: 20px;
-                    }
-
-                    h1,h2,h3 {
-                        color: #000;
-                        text-align: center;
-                        margin-top: 20px;
-                    }
-
-                    table {
-                        width: 100%; 
-                        border-collapse: collapse;
-                        margin-top: 20px;
-                    }
-
-                    th, td {
-                        border: 1px solid #000;
-                        {{!-- text-align: center; --}}
-                        padding: 12px;
-                    }
-
-                    .td {
-                        text-align: center;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1>SSM COLLEGE OF ENGINEERING</h1>
-                <h2>Department Of MCA - II</h2>
-                <h3>Tution Fees Details</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Name</th>
-                            <th>Student ID</th>
-                            <th>Total Fee</th>
-                            <th>Pending Fee</th>
-                            <th>Payment Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each secondYearStudents}}
-                        <tr>
-                            <td class="td">{{inc @index}}</td>
-                            <td>{{name}}</td>
-                            <td class="td">{{studentId}}</td>
-                            <td class="td">Rs.{{totalFee}}</td>
-                            <td class="td">Rs.{{pendingFee}}</td>
-                            <td class="td">{{paymentStatus}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </body>
-            </html>
-        `;
-        
-        printWindow.document.write(printContent);
-        printWindow.document.title = 'MCA-II Tution Fees Details';
-        printWindow.document.close();
-        printWindow.print();
-    }
-
-    function searchByRefNo(searchInput, tableId) {
-        const input = document.getElementById(searchInput);
-        const filter = input.value.toUpperCase();
-        const table = document.getElementById(tableId);
-        const rows = table.getElementsByTagName('tr');
-
-        for (let i = 0; i < rows.length; i++) {
-          const td = rows[i].getElementsByTagName('td')[1]; 
-          if (td) {
-            const textValue = td.textContent || td.innerText;
-            if (textValue.toUpperCase().indexOf(filter) > -1) {
-              rows[i].style.display = '';
-            } else {
-              rows[i].style.display = 'none';
-            }
-          }
+    <script>
+        // Show toast notification function
+        function showToast(message, type = 'success') {
+            const iconMap = {
+                'success': '<i class="fas fa-check-circle"></i>',
+                'error': '<i class="fas fa-exclamation-circle"></i>',
+                'info': '<i class="fas fa-info-circle"></i>',
+                'warning': '<i class="fas fa-exclamation-triangle"></i>'
+            };
+            
+            const icon = iconMap[type] || iconMap.info;
+            
+            Toastify({
+                text: `<div class="toastify-content">
+                        <div class="toastify-icon">${icon}</div>
+                        <div class="toastify-text">${message}</div>
+                      </div>`,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                className: `toastify-${type}`,
+                escapeMarkup: false,
+                stopOnFocus: true,
+                onClick: function(){}
+            }).showToast();
         }
-      }
 
-</script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Search functionality
+            document.getElementById('searchInput1').addEventListener('keyup', function () {
+                searchByRefNo('searchInput1', 'table1');
+            });
+
+            // Edit button click handlers
+            const editButtons = document.querySelectorAll('.edit-btn');
+            const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const studentId = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    const studentIdNumber = this.getAttribute('data-student-id');
+                    const totalFee = this.getAttribute('data-total-fee');
+                    const paidFee = this.getAttribute('data-paid-fee');
+                    const pendingFee = this.getAttribute('data-pending-fee');
+                    const status = this.getAttribute('data-status');
+                    const semester = this.getAttribute('data-semester');
+                    
+                    // Populate modal fields
+                    document.getElementById('studentId').value = studentId;
+                    document.getElementById('studentName').textContent = name;
+                    document.getElementById('studentIdNumber').textContent = studentIdNumber;
+                    document.getElementById('totalFee').value = totalFee;
+                    document.getElementById('paidFee').value = paidFee;
+                    document.getElementById('pendingFee').value = pendingFee;
+                    document.getElementById('semester').value = semester;
+                    
+                    // Show the modal
+                    editModal.show();
+                });
+            });
+            
+            // Calculate pending fee when total or paid fee changes
+            document.getElementById('totalFee').addEventListener('input', updatePendingFee);
+            document.getElementById('paidFee').addEventListener('input', updatePendingFee);
+            
+            function updatePendingFee() {
+                const totalFee = parseFloat(document.getElementById('totalFee').value) || 0;
+                const paidFee = parseFloat(document.getElementById('paidFee').value) || 0;
+                const pendingFee = totalFee - paidFee;
+                
+                document.getElementById('pendingFee').value = pendingFee > 0 ? pendingFee : 0;
+            }
+            
+            // Save changes button handler
+            document.getElementById('saveChanges').addEventListener('click', function() {
+                // Show spinner
+                const spinner = document.getElementById('saveSpinner');
+                spinner.classList.remove('d-none');
+                
+                const studentId = document.getElementById('studentId').value;
+                const totalFee = document.getElementById('totalFee').value;
+                const paidFee = document.getElementById('paidFee').value;
+                const semester = document.getElementById('semester').value;
+                
+                // Validate inputs
+                if (!totalFee || !paidFee) {
+                    showToast('Please fill in all required fields', 'error');
+                    spinner.classList.add('d-none');
+                    return;
+                }
+                
+                // Prepare data for API call
+                const data = {
+                    totalFee: totalFee,
+                    paidFee: paidFee,
+                    semester: semester
+                };
+                
+                // Make API call
+                fetch(`/v1/api/updateFee/${studentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide spinner
+                    spinner.classList.add('d-none');
+                    
+                    // Close modal
+                    bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                    
+                    // Show success message with Toastify
+                    showToast('Student fee details updated successfully!', 'success');
+                    
+                    // Reload page after a delay to reflect changes
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                })
+                .catch(error => {
+                    // Hide spinner
+                    spinner.classList.add('d-none');
+                    
+                    console.error('Error updating student fee details:', error);
+                    showToast('Error updating student fee details. Please try again.', 'error');
+                });
+            });
+        });
+
+        function searchByRefNo(searchInput, tableId) {
+            const input = document.getElementById(searchInput);
+            const filter = input.value.trim().toUpperCase();
+            const table = document.getElementById(tableId);
+
+            if (!table) {
+                console.error(`Table with ID '${tableId}' not found.`);
+                return;
+            }
+
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const td = rows[i].getElementsByTagName('td')[1];
+                if (td) {
+                    const textValue = td.textContent || td.innerText;
+                    if (textValue.toUpperCase().includes(filter)) {
+                        rows[i].style.display = '';
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
+
