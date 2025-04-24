@@ -24,14 +24,14 @@
 
         .chat-container {
             width: 90%;
-            max-width: 700px;
+            max-width: 65%;
             background: #ffffff;
             border-radius: 12px;
             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: 80vh;
+            height: 90vh;
         }
 
         .chat-header {
@@ -204,7 +204,7 @@
                 width: 100%;
                 max-width: 850px;
                 background: #ffffff;
-                border-radius: 12px;
+                border-radius: 0px;
                 box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
                 height: 100%;
             }
@@ -221,7 +221,7 @@
             <button class="back-button" onclick="goBack()">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            MCA - {{year}} Chatroom
+            {{course}} - {{year}} Chatroom
         </div>
         <div class="messages" id="messages">
             <div id="typingIndicator" class="system-message" style="display: none;"></div>
@@ -248,7 +248,7 @@
 
         function deleteMessage(messageId) {
             if (confirm("Are you sure you want to delete this message?")) {
-                fetch(`/ssm/mca/delete-message/${messageId}`, { method: "DELETE" })
+                fetch(`/v1/api/delete-message/${messageId}`, { method: "DELETE" })
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.success) {
@@ -264,6 +264,8 @@
         const socket = io();
         const username = "{{username}}";
         const year = "{{year}}";
+        const course = "{{course}}";
+        const senderId = "{{senderId}}";
 
         let skip = 0;
         let loading = false;
@@ -279,7 +281,7 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
         skip = initialMessages.length;
 
-        socket.emit("joinChat", { username, year });
+        socket.emit("joinChat", { username, year, course, senderId });
 
         socket.on("receiveMessage", (data) => {
             displayMessage(data);
@@ -289,7 +291,7 @@
         messagesDiv.addEventListener("scroll", () => {
             if (messagesDiv.scrollTop === 0 && !loading) {
                 loading = true;
-                socket.emit("loadOlderMessages", { skip, limit: 50, year: year });
+                socket.emit("loadOlderMessages", { skip, limit: 50, year: year, course: course });
             }
         });
 
@@ -306,7 +308,7 @@
         function sendMessage() {
             const message = messageInput.value.trim();
             if (message !== "") {
-                socket.emit("sendMessage", { username, message });
+                socket.emit("sendMessage", { username, message, course, senderId });
                 messageInput.value = "";
                 socket.emit("stopTyping", username);
             }
@@ -383,8 +385,8 @@
                 messageDiv.className = "system-message";
                 messageDiv.textContent = data.message;
             } else {
-                messageDiv.className = `message ${data.senderName === username ? 'own' : 'other'}`;
-                messageDiv.innerHTML = `<span>${data.senderName !== username ? `<b>${data.senderName}:</b> ` : ''}${data.message}</span>`;
+                messageDiv.className = `message ${data.senderId === senderId ? 'own' : 'other'}`;
+                messageDiv.innerHTML = `<span>${data.senderId !== senderId ? `<b>${data.senderName}:</b> ` : ''}${data.message}</span>`;
                 messageDiv.appendChild(timestampDiv);
             }
 
