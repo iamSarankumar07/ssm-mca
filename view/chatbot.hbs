@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,15 +11,15 @@
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
         :root {
-            --primary-color: #7c3aed;
-            --primary-hover: #6d28d9;
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
             --primary-light: rgba(124, 58, 237, 0.1);
             --secondary-color: #f8f9fa;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --user-bubble: #7c3aed;
+            --user-bubble: #4f46e5;
             --bot-bubble: #f1f5f9;
             --border-color: #e2e8f0;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -30,6 +30,8 @@
             --radius-lg: 16px;
             --radius-xl: 24px;
             --transition: all 0.3s ease;
+            --header-height: 60px;
+            --input-height: 60px;
         }
 
         * {
@@ -40,7 +42,11 @@
 
         html, body {
             height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
+            position: fixed;
         }
 
         body {
@@ -48,17 +54,14 @@
             background-color: var(--bg-color);
             color: var(--text-primary);
             display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 0;
+            flex-direction: column;
         }
 
         .chat-container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
+            max-height: 100%;
             background-color: var(--card-bg);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -71,9 +74,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
-            z-index: 10;
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
             box-shadow: 0 1px 0 0 var(--border-color);
+            height: var(--header-height);
+            min-height: var(--header-height);
+            flex-shrink: 0;
         }
 
         .header-content {
@@ -143,6 +152,7 @@
             scrollbar-width: thin;
             scrollbar-color: var(--text-secondary) transparent;
             background-color: var(--bg-color);
+            height: calc(100% - var(--header-height) - var(--input-height));
         }
 
         .messages::-webkit-scrollbar {
@@ -231,7 +241,14 @@
             display: flex;
             gap: 12px;
             align-items: center;
-            position: relative;
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: var(--input-height);
+            min-height: var(--input-height);
+            flex-shrink: 0;
         }
 
         #user-input {
@@ -246,8 +263,9 @@
             transition: var(--transition);
             font-family: "Inter", sans-serif;
             resize: none;
-            max-height: 120px;
+            max-height: 80px;
             min-height: 40px;
+            width: 100%;
         }
 
         #user-input:focus {
@@ -270,6 +288,8 @@
             justify-content: center;
             width: 40px;
             height: 40px;
+            min-width: 40px;
+            flex-shrink: 0;
             transition: var(--transition);
             box-shadow: var(--shadow-md);
         }
@@ -330,7 +350,6 @@
             }
         }
 
-        /* Markdown-like styling */
         .message.bot strong {
             font-weight: 600;
         }
@@ -568,7 +587,6 @@
             background-color: var(--primary-hover);
         }
 
-        /* Responsive styles */
         @media (max-width: 768px) {
             .message {
                 max-width: 85%;
@@ -581,9 +599,23 @@
             .message.bot {
                 margin-right: 15%;
             }
+            
+            .chat-header {
+                padding: 8px 12px;
+            }
+            
+            .input-container {
+                padding: 8px 12px;
+                gap: 8px;
+            }
         }
 
         @media (max-width: 480px) {
+            :root {
+                --header-height: 50px;
+                --input-height: 56px;
+            }
+            
             .logo {
                 width: 28px;
                 height: 28px;
@@ -592,6 +624,15 @@
 
             .header-text {
                 font-size: 15px;
+            }
+            
+            .header-content {
+                gap: 8px;
+            }
+            
+            .header-btn {
+                width: 28px;
+                height: 28px;
             }
 
             .message {
@@ -617,6 +658,7 @@
             .send-btn {
                 width: 36px;
                 height: 36px;
+                min-width: 36px;
             }
 
             .welcome-title {
@@ -625,6 +667,11 @@
 
             .welcome-subtitle {
                 font-size: 13px;
+            }
+            
+            .input-container {
+                padding: 8px;
+                gap: 6px;
             }
         }
 
@@ -670,18 +717,17 @@
         </div>
         
         <div class="messages" id="chat-container">
-            <!-- Welcome message will be added if no chat history -->
         </div>
         
         <div class="input-container">
             <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off">
+            {{!-- <textarea id="user-input" placeholder="Ask me anything..." autocomplete="off" rows="1"></textarea> --}}
             <button class="send-btn pulse" onclick="sendMessage()">
                 <i class="fas fa-paper-plane send-icon"></i>
             </button>
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div class="modal-backdrop" id="delete-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -702,6 +748,7 @@
     <script>
         const user = "{{userData._id}}";
         let thinkingTimeout;
+        let viewportHeight = window.innerHeight;
 
         function goBack() {
             window.history.back();
@@ -729,12 +776,10 @@
                     throw new Error('Failed to delete chat history');
                 }
                 
-                // Clear the chat UI
                 document.getElementById("chat-container").innerHTML = '';
                 showWelcomeMessage();
                 hideDeleteModal();
                 
-                // Show success notification
                 showNotification('Chat history deleted successfully', 'success');
             } catch (error) {
                 console.error('Error deleting chat history:', error);
@@ -773,11 +818,10 @@
             });
         }
 
-        // Auto-resize input field
         function adjustInputHeight() {
             const input = document.getElementById("user-input");
             input.style.height = 'auto';
-            input.style.height = (input.scrollHeight) + 'px';
+            input.style.height = Math.min(input.scrollHeight, 80) + 'px';
         }
 
         document.getElementById("user-input").addEventListener("input", adjustInputHeight);
@@ -801,7 +845,6 @@
         }
 
         function formatMessageText(text) {
-            // Simple markdown parsing
             return text
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -837,6 +880,7 @@
         function suggestQuestion(question) {
             document.getElementById("user-input").value = question;
             document.getElementById("user-input").focus();
+            adjustInputHeight();
         }
 
         function showTypingIndicator() {
@@ -866,23 +910,19 @@
 
             if (!userInput) return;
 
-            // Remove welcome message if present
             const welcomeMessage = document.querySelector('.chat-welcome');
             if (welcomeMessage) {
                 welcomeMessage.remove();
             }
 
-            // Add user message
             const userMessage = document.createElement('div');
             userMessage.className = 'message user';
             userMessage.innerHTML = formatMessageText(escapeHTML(userInput));
             chatContainer.appendChild(userMessage);
 
-            // Clear input and reset height
             document.getElementById("user-input").value = '';
             document.getElementById("user-input").style.height = 'auto';
 
-            // Show typing indicator after a short delay
             thinkingTimeout = setTimeout(() => {
                 showTypingIndicator();
             }, 500);
@@ -902,7 +942,6 @@
                 clearTimeout(thinkingTimeout);
                 hideTypingIndicator();
 
-                // Add bot response
                 const botMessage = document.createElement('div');
                 botMessage.className = 'message bot';
                 botMessage.innerHTML = formatMessageText(escapeHTML(data.reply));
@@ -960,9 +999,42 @@
             }
         }
 
-        // Initialize
+        function fixMobileLayout() {
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+            
+            const chatContainer = document.querySelector('.chat-container');
+            chatContainer.style.height = `${window.innerHeight}px`;
+            
+            const messagesArea = document.getElementById('chat-container');
+            const headerHeight = document.querySelector('.chat-header').offsetHeight;
+            const inputHeight = document.querySelector('.input-container').offsetHeight;
+            messagesArea.style.height = `${window.innerHeight - headerHeight - inputHeight}px`;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadChatHistory();
+            adjustInputHeight();
+            
+            fixMobileLayout();
+            
+            window.addEventListener('resize', () => {
+                if (window.innerHeight !== viewportHeight) {
+                    viewportHeight = window.innerHeight;
+                    fixMobileLayout();
+                    
+                    if (document.activeElement.tagName === 'TEXTAREA') {
+                        setTimeout(() => {
+                            document.activeElement.scrollIntoView();
+                        }, 100);
+                    }
+                }
+            });
+            
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    fixMobileLayout();
+                }
+            });
         });
     </script>
 </body>
