@@ -127,7 +127,7 @@
 </head>
 <body>
 
-    <form action="/ssm/mca/login" method="post">
+    <form action="/v1/api/login" method="post">
         <h1>Login</h1>
         <label for="email">Email :</label>
         <input type="email" id="email" name="email" autocomplete="off" required>
@@ -142,12 +142,12 @@
 
         <button type="submit" class="btn">Login</button>
 
-        {{!-- <p>Don't have an Account? <a href="/ssm/mca/signup">Sign up</a></p> --}}
+        {{!-- <p>Don't have an Account? <a href="/v1/api/signup">Sign up</a></p> --}}
         <div class="forgot-link">
-            Forgot your password? <a href="/ssm/mca/forgotPassword">Reset it</a>
+            Forgot your password? <a href="/v1/api/forgotPassword">Reset it</a>
         </div> 
         <div class="signup-link">
-            Don't have an account? <a href="/ssm/mca/signup">Sign up</a>
+            Don't have an account? <a href="/v1/api/signup">Sign up</a>
         </div>
         <div class="home">
         <a  href="/">Home</a>

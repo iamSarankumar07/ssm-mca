@@ -1,462 +1,1627 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSM College of Engineering</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #dbeafe;
+            --secondary: #64748b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-800: #1e293b;
         }
 
         body {
-            background-color: #f9fafb;
-            color: #1f2937;
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            overflow-x: hidden;
+            background-color: var(--light);
         }
 
-        .header {
-            min-height: 100vh;
-            width: 100%;
-            background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)),
-                url("https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg");
-            background-position: center;
-            background-size: cover;
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        .navbar {
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand img {
+            height: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled .navbar-brand img {
+            height: 45px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--gray-800);
+            padding: 10px 15px !important;
+            margin: 0 5px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .navbar-toggler {
+            border: none;
+            padding: 0;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            width: 24px;
+            height: 17px;
+            background-image: none;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            border-bottom: 2px solid var(--dark);
+            transition: all 300ms linear;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 13px 5%;
-            background-color: rgba(255, 255, 255, 0.9);
-            position: fixed;
+        .navbar-toggler-icon:after,
+        .navbar-toggler-icon:before {
+            width: 24px;
+            position: absolute;
+            height: 2px;
+            background-color: var(--dark);
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            content: '';
+            z-index: 2;
+            transition: all 300ms linear;
         }
 
-        nav img {
-            width: 120px;
+        .navbar-toggler-icon:after {
+            top: 8px;
         }
 
-        .nav-links ul {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links ul li {
-            margin: 0 15px;
-            font-weight: 500;
-        }
-
-        .nav-links ul li a {
+        a {
             text-decoration: none;
-            color: #1f2937;
-            font-weight: 500;
-            transition: color 0.3s ease;
         }
 
-        .nav-links ul li a:hover {
-            color: #3b82f6;
+        .hero-section {
+            position: relative;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.8)),
+                url("https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 200px 0 120px;
+            overflow: hidden;
         }
 
-        .nav-links i {
-            font-size: 24px;
-            color: #1f2937;
-            cursor: pointer;
-            display: none;
-        }
-
-        .text-box {
-            color: #fff;
-            max-width: 800px;
-        }
-
-        .text-box h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .text-box p {
-            font-size: 18px;
-            margin-bottom: 40px;
-        }
-
-        .hero-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #3b82f6;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .hero-btn:hover {
-            background-color: #2563eb;
-        }
-
-        .course, .facilities, .contact-us, .footer {
-            padding: 80px 5%;
-            text-align: center;
-        }
-
-        .course h1, .facilities h1, .contact-us h1, .footer h4 {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .course p, .facilities p, .contact-us p, .footer p {
-            font-size: 16px;
-            color: #6b7280;
-            margin-bottom: 40px;
-        }
-
-        .row {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .course-col, .facilities-col {
-            flex: 1 1 calc(33.33% - 40px);
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .course-col:hover, .facilities-col:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .course-col h3, .facilities-col h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .facilities-col img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .contact-us .row {
-            justify-content: flex-end; 
-        }
-
-        .contact-col {
-            flex: 1 1 45%;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .contact-col .contact-item {
-            display: block;
-            font-size: 18px;
-            margin-top: 25px;
-            margin-bottom: 10px;
-        }
-
-        .contact-col .contact-item h5 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .contact-col .contact-item .fa {
-            font-size: 30px;
-            color: #3b82f6;
-            margin-right: 15px;
-        }
-
-        .contact-col input, .contact-col textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #e5e7eb;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .contact-col textarea {
-            resize: none;
-        }
-
-        .contact-col textarea {
-            min-height: 150px; 
-        }
-
-        .footer {
-            background-color: #1f2937;
-            color: #fff;
-            padding: 40px 5%;
-        }
-
-        .footer .icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .footer .icons i {
-            font-size: 24px;
-            color: #fff;
-            transition: color 0.3s ease;
-        }
-
-        .footer .icons i:hover {
-            color: #3b82f6;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
+        .hero-section::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.3) 0%, rgba(15, 23, 42, 0) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text {
+            font-size: 1.25rem;
+            font-weight: 400;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 20px -3px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline-light {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+        }
+
+        .btn-outline-light:hover {
+            background-color: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-counter {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            margin-top: -70px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .counter-item {
+            padding: 2rem;
+            text-align: center;
+            border-right: 1px solid var(--gray-200);
+        }
+
+        .counter-item:last-child {
+            border-right: none;
+        }
+
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .counter-text {
+            font-size: 1rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-heading {
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .section-heading h2 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-heading h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .section-heading.text-center h2::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-heading p {
+            font-size: 1.125rem;
+            color: var(--secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .course-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
             align-items: center;
-            z-index: 1001;
+            justify-content: center;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+        }
+
+        .course-icon i {
+            font-size: 2rem;
+        }
+
+        .facilities-section {
+            background-color: var(--gray-100);
+        }
+
+        .facility-card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .facility-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .facility-card .card-img-top {
+            height: 240px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .facility-card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .facility-card .card-body {
+            padding: 2rem;
+        }
+
+        .testimonial-section {
+            background-color: white;
+        }
+
+        .testimonial-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin-top: 40px;
+            height: calc(100% - 40px);
+        }
+
+        .testimonial-card::before {
+            content: '\f10d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 3rem;
+            color: var(--primary-light);
+            z-index: -1;
+        }
+
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .testimonial-position {
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .news-events-section {
+            background-color: var(--light);
+            padding: 100px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .scroll-container {
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .scroll-wrapper {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
+
+        .news-card,
+        .event-card {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            flex: 0 0 350px;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .news-card:hover,
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .news-img-container,
+        .event-img-container {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .news-img,
+        .event-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .news-card:hover .news-img,
+        .event-card:hover .event-img {
+            transform: scale(1.05);
+        }
+
+        .news-content,
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .news-date,
+        .event-date {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .news-title,
+        .event-title {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .news-description,
+        .event-description {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        .news-navigation,
+        .events-navigation {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-navigation button,
+        .events-navigation button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 1px solid var(--gray-200);
+            color: var(--primary);
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .news-navigation button:hover,
+        .events-navigation button:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+        }
+
+        .news-navigation button:disabled,
+        .events-navigation button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .contact-section {
+            padding: 100px 0;
+            background-color: var(--light);
+            position: relative;
+        }
+
+        .contact-wrapper {
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .contact-card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .contact-info-card {
+            background-color: var(--primary);
+            color: white;
+            height: 100%;
+            padding: 3rem;
+        }
+
+        .contact-info-card h3 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(150px, -150px);
+            z-index: -1;
+        }
+
+        .contact-info::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-100px, 100px);
+            z-index: -1;
+        }
+
+        .contact-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon-wrapper {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .social-icon-contact {
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon-contact:hover {
+            background-color: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .contact-form-wrapper {
+            background-color: white;
+        }
+
+        .form-floating>.form-control {
+            padding: 1.5rem 1rem;
+            height: calc(3.5rem + 2px);
+            line-height: 1.25;
+            border-radius: 10px;
+            border: 1px solid var(--gray-300);
+            transition: all 0.3s ease;
+        }
+
+        .form-floating>.form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-floating>textarea.form-control {
+            height: auto;
+            min-height: 150px;
+        }
+
+        .form-floating>label {
+            padding: 1rem;
+            color: var(--secondary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 20px -3px rgba(37, 99, 235, 0.4);
+        }
+
+        .map-container {
+            height: 450px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-icon i {
+            font-size: 1.25rem;
+            color: white;
+        }
+
+        .contact-text h5 {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-text p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+        }
+
+        .contact-form-card {
+            padding: 3rem;
+            background-color: white;
+        }
+
+        .contact-form-card h3 {
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .form-control {
+            padding: 0.75rem 1.25rem;
+            font-size: 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo img {
+            height: 60px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-heading {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-links a i {
+            margin-right: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            padding: 1.5rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        .footer-bottom p {
+            margin-bottom: 0;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal-content h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .modal-content p {
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .modal-content button {
-            padding: 10px 20px;
-            background-color: #3b82f6;
-            color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+            border-radius: 16px;
+            overflow: hidden;
         }
 
-        .modal-content button:hover {
-            background-color: #2563eb;
+        .modal-body {
+            padding: 3rem;
+            text-align: center;
         }
 
-        @media (max-width: 768px) {
-            .nav-links ul {
-                display: none;
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #ecfdf5;
+            color: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
             }
 
-            .nav-links.active ul {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 60px;
-                right: 5%;
-                background-color: #fff;
-                border-radius: 5px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                padding: 20px;
+            50% {
+                transform: translateY(-20px);
             }
 
-            .nav-links ul li {
-                margin: 10px 0;
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @media (max-width: 991.98px) {
+            .counter-item {
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
             }
 
-            .text-box h1 {
-                font-size: 36px;
+            .counter-item:last-child {
+                border-bottom: none;
             }
 
-            .text-box p {
-                font-size: 16px;
+            .contact-info {
+                padding: 3rem !important;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-section {
+                padding: 150px 0 100px;
             }
 
-            .row {
-                flex-direction: column;
+            .hero-title {
+                font-size: 2.5rem;
             }
 
-            .course-col, .facilities-col, .contact-col {
-                flex: 1 1 100%;
+            .section-heading h2 {
+                font-size: 2rem;
             }
 
-            .nav-links i {
-                display: block;
+            .stats-counter {
+                margin-top: -50px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .news-card,
+            .event-card {
+                flex: 0 0 300px;
             }
         }
     </style>
 </head>
+
 <body>
-    <section class="header" id="home">
-        <nav>
-            <a href="index.html"><img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="University Logo" /></a>
-            <div class="nav-links" id="navLinks">
-                <i class="fa fa-bars" onclick="toggleMenu()"></i>
-                <ul>
-                    <li><a href="#home">HOME</a></li>
-                    <li><a href="#course">COURSE</a></li>
-                    <li><a href="#facilities">FACILITIES</a></li>
-                    <li><a href="/ssm/mca/home/gallery">GALLERY</a></li>
-                    <li><a href="/ssm/mca/admissionForm">ADMISSION</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
-                    <li><a href="#about">ABOUT</a></li>
-                    <li><a href="/ssm/mca/signin">LOGIN</a></li>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="SSM Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#facilities">Facilities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#events">News & Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/v1/api/home/gallery">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary" href="/v1/api/admissionForm">Apply Now</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-primary" href="/v1/api/signin">Login</a>
+                    </li>
                 </ul>
             </div>
-        </nav>
-        <div class="text-box">
-            <h1><span style="color:#3b82f6;">SSM</span> COLLEGE OF ENGINEERING</h1>
-            <p>
-                Empowering the future through innovation, excellence, and education.
-            </p>
-            <a href="/ssm/mca/admissionForm" class="hero-btn">Apply Now</a>
         </div>
-    </section>
+    </nav>
 
-    <section class="course" id="course">
-        <h1>Courses We Offer</h1>
-        <p>Explore our wide range of undergraduate and postgraduate programs designed to shape the future.</p>
-        <div class="row">
-            <div class="course-col">
-                <h3>Intermediate</h3>
-                <p>Our intermediate programs provide a strong foundation for students to excel in their academic and professional careers.</p>
-            </div>
-            <div class="course-col">
-                <h3>Degree</h3>
-                <p>Our degree programs are designed to equip students with the skills and knowledge needed to succeed in the modern world.</p>
-            </div>
-            <div class="course-col">
-                <h3>Post Graduation</h3>
-                <p>Our postgraduate programs offer advanced learning opportunities for students to specialize in their chosen fields.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="facilities" id="facilities">
-        <h1>Our Facilities</h1>
-        <p>We provide state-of-the-art facilities to ensure a conducive learning environment for our students.</p>
-        <div class="row">
-            <div class="facilities-col">
-                <img src="https://www.ssmce.ac.in/images/pageimages/computing/comp1.jpg" alt="Library">
-                <h3>World Class Library</h3>
-                <p>Our library is equipped with a vast collection of books, journals, and digital resources to support academic excellence.</p>
-            </div>
-            <div class="facilities-col">
-                <img src="https://www.ssmce.ac.in/images/pageimages/computing/comp1.jpg" alt="Basketball Court">
-                <h3>Largest Play Ground</h3>
-                <p>Our expansive playground provides students with ample space for sports and recreational activities.</p>
-            </div>
-            <div class="facilities-col">
-                <img src="https://www.ssmce.ac.in/images/pageimages/computing/comp1.jpg" alt="Cafeteria">
-                <h3>Tasty And Healthy Food</h3>
-                <p>Our cafeteria offers a variety of healthy and delicious meals to keep students energized throughout the day.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="contact-us" id="contact">
-        <h1>Contact Us</h1>
-        <p>We are here to help. Reach out to us for any inquiries or assistance.</p>
-        <div class="row">
-            <div class="contact-col">
-                <div class="contact-item">
-                    <i class="fa fa-home"></i>
-                    <span>
-                        <h5>XYZ Road, ABC Building</h5>
-                        <p>Tbilis, Dighomi</p>
-                    </span>
-                </div>
-                <div class="contact-item">
-                    <i class="fa fa-phone"></i>
-                    <span>
-                        <h5>+91 6382384957</h5>
-                        <p>Monday to Saturday, 10AM to 6PM</p>
-                    </span>
-                </div>
-                <div class="contact-item">
-                    <i class="fa fa-envelope"></i>
-                    <span>
-                        <h5>iamsarankumar@outlook.in</h5>
-                        <p>Email us</p>
-                    </span>
+    <section class="hero-section" id="home">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center hero-content">
+                    <h1 class="hero-title display-3" data-aos="fade-up">
+                        <span class="text-primary">SSM</span> COLLEGE OF ENGINEERING
+                    </h1>
+                    <p class="hero-text" data-aos="fade-up" data-aos-delay="100">
+                        Approved by AICTE, New Delhi | Affiliated to Anna University
+                        Recognized by UGC Under Section 2(f) of 12(B) | Accredited by NAAC
+                    </p>
+                    {{!-- <p class="hero-text" data-aos="fade-up" data-aos-delay="100">
+                        Empowering the future through innovation, excellence, and education.
+                        Join us on a journey of discovery and growth.
+                    </p> --}}
+                    <div data-aos="fade-up" data-aos-delay="200">
+                        <a href="/v1/api/admissionForm" class="btn btn-primary me-3">Apply Now</a>
+                        <a href="#about" class="btn btn-outline-light">Learn More</a>
+                    </div>
                 </div>
             </div>
-           <div class="contact-col">
-                <form id="contactForm">
-                    <input type="text" id="name" name="name" placeholder="Enter Your Name" autocomplete="on" required>
-                    <input type="email" id="email" name="email" placeholder="Enter Email" autocomplete="on" required>
-                    <textarea id="message" rows="8" name="message" placeholder="Message" autocomplete="on" required></textarea>
-                    <button type="button" id="send-button" class="hero-btn">Send Message</button>
-                </form>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row stats-counter" data-aos="fade-up" data-aos-delay="300">
+            <div class="col-md-4 col-sm-6 counter-item">
+                <div class="counter-number" data-count="5000">0</div>
+                <div class="counter-text">Students Enrolled</div>
             </div>
-        </div>
-    </section>
-
-    <section class="footer" id="about">
-        <h4>About Us</h4>
-        <p>SSM College of Engineering is committed to providing quality education and fostering innovation and research.</p>
-        <div class="icons">
-            <i class="fab fa-facebook"></i>
-            <i class="fab fa-twitter"></i>
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-linkedin"></i>
-        </div>
-    </section>
-
-    <div id="successModal" class="modal">
-        <div class="modal-content">
-            <h2>Message Sent Successfully!</h2>
-            <p>We will get back to you soon.</p>
-            <button onclick="closeModal()">Close</button>
+            <div class="col-md-4 col-sm-6 counter-item">
+                <div class="counter-number" data-count="150">0</div>
+                <div class="counter-text">Expert Faculty</div>
+            </div>
+            <div class="col-md-4 col-sm-12 counter-item">
+                <div class="counter-number" data-count="98">0</div>
+                <div class="counter-text">Placement Rate %</div>
+            </div>
         </div>
     </div>
 
+    <section id="about">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                    <div class="section-heading text-start">
+                        <h2>About SSM College</h2>
+                        <p>Discover our legacy of excellence and commitment to quality education.</p>
+                    </div>
+                    <p class="mb-4">
+                        SSM College of Engineering is a premier educational institution committed to academic excellence
+                        and
+                        holistic development of students. Established with a vision to provide quality education, we
+                        have
+                        consistently maintained high standards in teaching, research, and innovation.
+                    </p>
+                    <p class="mb-4">
+                        Our state-of-the-art infrastructure, experienced faculty, and industry connections ensure that
+                        our
+                        students receive the best education and opportunities for growth and development.
+                    </p>
+                    <div class="row mt-4">
+                        <div class="col-sm-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-primary me-3 fa-2x"></i>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Quality Education</h5>
+                                    <p class="text-secondary mb-0">Excellence in teaching and learning</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-primary me-3 fa-2x"></i>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Industry Connect</h5>
+                                    <p class="text-secondary mb-0">Strong ties with leading companies</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-primary me-3 fa-2x"></i>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Research Focus</h5>
+                                    <p class="text-secondary mb-0">Innovation and discovery</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-primary me-3 fa-2x"></i>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Global Exposure</h5>
+                                    <p class="text-secondary mb-0">International collaborations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="position-relative">
+                        <img src="https://images.shiksha.com/mediadata/images/1552654227phptHZeSt.png"
+                            alt="College Campus" class="img-fluid rounded-4 shadow-lg">
+                        <div class="position-absolute top-0 start-0 translate-middle">
+                            <div class="bg-primary text-white p-3 rounded-4 shadow-lg float-animation">
+                                <h3 class="h5 fw-bold mb-0">Est. 1995</h3>
+                                <p class="mb-0">25+ Years of Excellence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-light" id="courses">
+        <div class="container">
+            <div class="section-heading text-center" data-aos="fade-up">
+                <h2>Our Academic Programs</h2>
+                <p>Explore our wide range of undergraduate and postgraduate programs designed to shape the future.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="course-card card">
+                        <div class="card-body p-4 text-center">
+                            <div class="course-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3 class="h4 fw-bold mb-3">Undergraduate Programs</h3>
+                            <p class="text-secondary mb-4">
+                                Our undergraduate programs provide a strong foundation for students to excel in their
+                                academic and professional careers.
+                            </p>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> B.Tech in Computer
+                                    Science</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> B.Tech in Mechanical
+                                    Engineering</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> B.Tech in Electrical
+                                    Engineering</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> B.Tech in Civil
+                                    Engineering</li>
+                            </ul>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="course-card card">
+                        <div class="card-body p-4 text-center">
+                            <div class="course-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <h3 class="h4 fw-bold mb-3">Postgraduate Programs</h3>
+                            <p class="text-secondary mb-4">
+                                Our postgraduate programs offer advanced learning opportunities for students to
+                                specialize in their chosen fields and develop expertise.
+                            </p>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> M.Tech in Computer
+                                    Science</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> M.Tech in Structural
+                                    Engineering</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> M.Tech in Power Systems
+                                </li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> MBA in Business
+                                    Administration</li>
+                            </ul>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="course-card card">
+                        <div class="card-body p-4 text-center">
+                            <div class="course-icon">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <h3 class="h4 fw-bold mb-3">Research Programs</h3>
+                            <p class="text-secondary mb-4">
+                                Our research programs focus on innovation and discovery, preparing students for academic
+                                and research careers.
+                            </p>
+                            <ul class="list-unstyled text-start mb-4">
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Ph.D. in Engineering
+                                </li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Ph.D. in Computer
+                                    Applications</li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Research Fellowships
+                                </li>
+                                <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Industry Sponsored
+                                    Research</li>
+                            </ul>
+                            <a href="#" class="btn btn-outline-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="facilities-section" id="facilities">
+        <div class="container">
+            <div class="section-heading text-center" data-aos="fade-up">
+                <h2>Campus Facilities</h2>
+                <p>We provide state-of-the-art facilities to ensure a conducive learning environment for our students.
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="facility-card card h-100">
+                        <div class="overflow-hidden">
+                            <img src="https://www.ssmce.ac.in/images/pageimages/computing/comp1.jpg"
+                                class="card-img-top" alt="Library">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="h4 fw-bold mb-3">Modern Library</h3>
+                            <p class="text-secondary">
+                                Our library is equipped with a vast collection of books, journals, and digital resources
+                                to support academic excellence and research.
+                            </p>
+                            <div class="d-flex align-items-center mt-3">
+                                <i class="fas fa-book text-primary me-2"></i>
+                                <span>50,000+ Books</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <i class="fas fa-journal-whills text-primary me-2"></i>
+                                <span>5,000+ Journals</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <i class="fas fa-wifi text-primary me-2"></i>
+                                <span>Digital Resources</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="facility-card card h-100">
+                        <div class="overflow-hidden">
+                            <img src="https://www.ssmce.ac.in/images/pageimages/ece101.jpg" class="card-img-top"
+                                alt="Laboratory">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="h4 fw-bold mb-3">Advanced Laboratories</h3>
+                            <p class="text-secondary">
+                                Our state-of-the-art laboratories provide hands-on experience and practical knowledge to
+                                students across all disciplines.
+                            </p>
+                            <div class="d-flex align-items-center mt-3">
+                                <i class="fas fa-flask text-primary me-2"></i>
+                                <span>Engineering Labs</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <i class="fas fa-laptop-code text-primary me-2"></i>
+                                <span>Computer Labs</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <i class="fas fa-microscope text-primary me-2"></i>
+                                <span>Research Facilities</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="facility-card card h-100">
+                        <div class="overflow-hidden">
+                            <img src="https://www.ssmce.ac.in/images/pageimages/computing/comp1.jpg"
+                                class="card-img-top" alt="Sports">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="h4 fw-bold mb-3">Sports & Recreation</h3>
+                            <p class="text-secondary">
+                                Our expansive sports facilities provide students with ample opportunities for physical
+                                activities and recreational sports.
+                            </p>
+                            <div class="d-flex align-items-center mt-3">
+                                <i class="fas fa-futbol text-primary me-2"></i>
+                                <span>Sports Grounds</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <i class="fas fa-swimming-pool text-primary me-2"></i>
+                                <span>Swimming Pool</span>
+                            </div>
+                            <div class="d-flex align-items-center mt-2">
+                                <i class="fas fa-dumbbell text-primary me-2"></i>
+                                <span>Fitness Center</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial-section">
+        <div class="container">
+            <div class="section-heading text-center" data-aos="fade-up">
+                <h2>Student Testimonials</h2>
+                <p>Hear what our students have to say about their experience at SSM College of Engineering.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-card">
+                        <img src="https://res.cloudinary.com/dxkhj5zmx/image/upload/v1741427302/student/Saran%20Passport%20Size%20Photo.jpg.jpg"
+                            class="testimonial-img" alt="Student">
+                        <p class="testimonial-text">
+                            "My experience at SSM College has been transformative. The faculty is excellent and the
+                            infrastructure is world-class. I've grown both academically and personally."
+                        </p>
+                        <h4 class="testimonial-name">Saran Kumar</h4>
+                        <p class="testimonial-position">Master of Computer Applications, 2025</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-card">
+                        <img src="https://res.cloudinary.com/dxkhj5zmx/image/upload/v1741427302/student/Saran%20Passport%20Size%20Photo.jpg.jpg"
+                            class="testimonial-img" alt="Student">
+                        <p class="testimonial-text">
+                            "The practical approach to education at SSM College prepared me well for the industry. The
+                            placement support was exceptional and helped me secure my dream job."
+                        </p>
+                        <h4 class="testimonial-name">Priya Patel</h4>
+                        <p class="testimonial-position">M.Tech Electrical, 2021</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="testimonial-card">
+                        <img src="https://res.cloudinary.com/dxkhj5zmx/image/upload/v1741427302/student/Saran%20Passport%20Size%20Photo.jpg.jpg"
+                            class="testimonial-img" alt="Student">
+                        <p class="testimonial-text">
+                            "The research opportunities at SSM College are outstanding. The mentorship I received from
+                            the faculty has been instrumental in shaping my academic career."
+                        </p>
+                        <h4 class="testimonial-name">Arun Kumar</h4>
+                        <p class="testimonial-position">Ph.D. Mechanical, 2020</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="news-events-section" id="events">
+        <div class="container">
+            <div class="section-heading text-center" data-aos="fade-up">
+                <h2>News & Events</h2>
+                <p>Stay updated with the latest happenings and upcoming events at SSM College of Engineering.</p>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="h4 fw-bold">Latest News</h3>
+                        <div class="news-navigation">
+                            <button class="btn-prev" id="news-prev">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn-next" id="news-next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scroll-container" id="news-scroll-container">
+                <div class="scroll-wrapper" id="news-container">
+                    <div class="loading-spinner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="h4 fw-bold">Upcoming Events</h3>
+                        <div class="events-navigation">
+                            <button class="btn-prev" id="events-prev">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn-next" id="events-next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scroll-container" id="events-scroll-container">
+                <div class="scroll-wrapper" id="events-container">
+                    <div class="loading-spinner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-heading text-center" data-aos="fade-up">
+                <h2>Get In Touch</h2>
+                <p>We are here to help. Reach out to us for any inquiries or assistance.</p>
+            </div>
+
+            <div class="row g-4 justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-10">
+                    <div class="contact-wrapper bg-white rounded-4 shadow-lg overflow-hidden">
+                        <div class="row g-0">
+                            <div class="col-lg-5">
+                                <div class="contact-info h-100 d-flex flex-column justify-content-between p-4 p-lg-5">
+                                    <div>
+                                        <h3 class="fw-bold mb-4">Contact Information</h3>
+                                        <p class="text-white-50 mb-5">Feel free to contact us anytime. We'll get back to
+                                            you as soon as possible.</p>
+
+                                        <div class="contact-item d-flex align-items-center mb-4">
+                                            <div class="contact-icon-wrapper me-3">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="text-white mb-1">Our Location</h6>
+                                                <p class="text-white-50 mb-0">NH 47 Valyakaranoor, Salem Main Road, Komarapalayam, Tamil Nadu 638183
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="contact-item d-flex align-items-center mb-4">
+                                            <div class="contact-icon-wrapper me-3">
+                                                <i class="fas fa-phone-alt"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="text-white mb-1">Call Us</h6>
+                                                <p class="text-white-50 mb-0">+91 6382384957</p>
+                                                <p class="text-white-50 mb-0">Monday to Saturday, 10AM to 6PM</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="contact-item d-flex align-items-center">
+                                            <div class="contact-icon-wrapper me-3">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="text-white mb-1">Email Us</h6>
+                                                <p class="text-white-50 mb-0">iamsarankumar@outlook.in</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <h6 class="text-white mb-3">Connect With Us</h6>
+                                        <div class="d-flex gap-3">
+                                            <a href="#" class="social-icon-contact">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </a>
+                                            <a href="#" class="social-icon-contact">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                            <a href="#" class="social-icon-contact">
+                                                <i class="fab fa-instagram"></i>
+                                            </a>
+                                            <a href="#" class="social-icon-contact">
+                                                <i class="fab fa-linkedin-in"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-7">
+                                <div class="contact-form-wrapper p-4 p-lg-5">
+                                    <h3 class="fw-bold mb-4">Send Us A Message</h3>
+                                    <form id="contactForm">
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="name" name="name"
+                                                        placeholder="Your Name" required>
+                                                    <label for="name">Your Name</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="email" class="form-control" id="email" name="email"
+                                                        placeholder="Your Email" required>
+                                                    <label for="email">Your Email</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="subject" name="subject"
+                                                        placeholder="Subject" required>
+                                                    <label for="subject">Subject</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" id="message" name="message"
+                                                        placeholder="Your Message" style="height: 150px"
+                                                        required></textarea>
+                                                    <label for="message">Your Message</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="button" id="send-button"
+                                                    class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
+                                                    <span>Send Message</span>
+                                                    <i class="fas fa-paper-plane ms-2"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-12">
+                    <div class="map-container rounded-4 overflow-hidden shadow-lg">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3910.5338291859844!2d77.73863207452537!3d11.44134304657849!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba9680116dfc19f%3A0xc2ac8f75c41028bc!2sSSM%20College%20Of%20Engineering!5e0!3m2!1sen!2sin!4v1742303291850!5m2!1sen!2sin"
+                            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-logo">
+                        <img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="SSM Logo">
+                    </div>
+                    <p class="footer-text">
+                        SSM College of Engineering is committed to providing quality education and fostering innovation
+                        and research.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="#courses"><i class="fas fa-chevron-right"></i> Courses</a></li>
+                        <li><a href="#facilities"><i class="fas fa-chevron-right"></i> Facilities</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="footer-heading">Programs</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Undergraduate</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Postgraduate</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Research</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Distance Learning</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Certificate Courses</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="footer-heading">Contact Us</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> XYZ Road, ABC Building</a></li>
+                        <li><a href="#"><i class="fas fa-phone-alt"></i> +91 6382384957</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> iamsarankumar@outlook.in</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2023 SSM College of Engineering. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p>Designed <i class="fas fa-heart text-danger"></i> by SARANKUMAR S</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="h4 fw-bold mb-3">Message Sent Successfully!</h2>
+                    <p class="text-secondary mb-4">Thank you for reaching out. We will get back to you soon.</p>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
-        function toggleMenu() {
-            var navLinks = document.getElementById("navLinks");
-            navLinks.classList.toggle("active");
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        const counterElements = document.querySelectorAll('.counter-number');
+
+        function animateCounter() {
+            counterElements.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const count = parseInt(counter.innerText);
+                const increment = target / 100;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(animateCounter, 60);
+                } else {
+                    counter.innerText = target;
+                }
+            });
         }
 
-        document.getElementById('send-button').onclick = function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelector('.stats-counter').querySelectorAll('.counter-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+
+        document.getElementById('send-button').onclick = function () {
             var name = document.getElementById('name').value.trim();
             var email = document.getElementById('email').value.trim();
             var message = document.getElementById('message').value.trim();
@@ -472,31 +1637,415 @@
                 message: message,
             };
 
-            fetch('/ssm/mca/userContact', {
+            fetch('/v1/api/userContact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(obj),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById("successModal").style.display = "flex";
-                    document.getElementById('contactForm').reset();
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => {
-                alert('There was a network error. Please try again later.');
-                console.error(error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        successModal.show();
+                        document.getElementById('contactForm').reset();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('There was a network error. Please try again later.');
+                    console.error(error);
+                });
         };
 
-        function closeModal() {
-            document.getElementById("successModal").style.display = "none";
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            function highlightActiveLink() {
+                const scrollPosition = window.scrollY;
+
+                document.querySelectorAll('section').forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${sectionId}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', highlightActiveLink);
+            highlightActiveLink();
+
+            fetchNews();
+
+            fetchEvents();
+        });
+
+        let newsItems = [];
+        let eventsItems = [];
+        const scrollAmount = 370;
+        let newsPosition = 0;
+        let eventsPosition = 0;
+        let newsAutoScrollInterval;
+        let eventsAutoScrollInterval;
+        let isNewsHovered = false;
+        let isEventsHovered = false;
+
+        function fetchNews() {
+            document.getElementById('news-container').innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `;
+
+            fetch('/v1/api/home/news')
+                .then(response => response.json())
+                .then(data => {
+                    newsItems = data;
+                    renderNewsItems();
+                    startNewsAutoScroll();
+                })
+                .catch(error => {
+                    console.error('Error fetching news:', error);
+                    newsItems = getDummyNews();
+                    renderNewsItems();
+                    startNewsAutoScroll();
+                });
+        }
+
+        function fetchEvents() {
+            document.getElementById('events-container').innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `;
+
+            fetch('/v1/api/home/events')
+                .then(response => response.json())
+                .then(data => {
+                    eventsItems = data;
+                    renderEventsItems();
+                    startEventsAutoScroll();
+                })
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                    eventsItems = getDummyEvents();
+                    renderEventsItems();
+                    startEventsAutoScroll();
+                });
+        }
+
+        function renderNewsItems() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = '';
+
+            if (!newsItems || newsItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <p class="text-secondary">No news available at the moment.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const allItems = [...newsItems, ...newsItems];
+
+            allItems.forEach(item => {
+                const date = new Date(item.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                const newsCard = document.createElement('div');
+                newsCard.className = 'news-card';
+
+                newsCard.innerHTML = `
+                    <div class="news-img-container">
+                        <img src="${item.imageUrl || '/placeholder.svg?height=200&width=400'}" class="news-img" alt="${item.title}">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">${date}</span>
+                        <h3 class="news-title">${item.title}</h3>
+                        <p class="news-description">${item.description}</p>
+                        <a href="${item.link || '#'}" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                `;
+
+                container.appendChild(newsCard);
+            });
+
+            const newsContainer = document.getElementById('news-scroll-container');
+            newsContainer.addEventListener('mouseenter', function () {
+                isNewsHovered = true;
+            });
+            newsContainer.addEventListener('mouseleave', function () {
+                isNewsHovered = false;
+            });
+
+            updateNewsNavButtons();
+        }
+
+        function renderEventsItems() {
+            const container = document.getElementById('events-container');
+            container.innerHTML = '';
+
+            if (!eventsItems || eventsItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <p class="text-secondary">No events available at the moment.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const allItems = [...eventsItems, ...eventsItems];
+
+            allItems.forEach(item => {
+                const date = new Date(item.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card';
+
+                eventCard.innerHTML = `
+                    <div class="event-img-container">
+                        <img src="${item.imageUrl || '/placeholder.svg?height=200&width=400'}" class="event-img" alt="${item.title}">
+                    </div>
+                    <div class="event-content">
+                        <span class="event-date">${date}</span>
+                        <h3 class="event-title">${item.title}</h3>
+                        <p class="event-description">${item.description}</p>
+                        <a href="${item.link || '#'}" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                `;
+
+                container.appendChild(eventCard);
+            });
+
+            const eventsContainer = document.getElementById('events-scroll-container');
+            eventsContainer.addEventListener('mouseenter', function () {
+                isEventsHovered = true;
+            });
+            eventsContainer.addEventListener('mouseleave', function () {
+                isEventsHovered = false;
+            });
+
+            updateEventsNavButtons();
+        }
+
+        function startNewsAutoScroll() {
+            if (newsItems.length <= 1) return;
+
+            newsAutoScrollInterval = setInterval(function () {
+                if (!isNewsHovered) {
+                    autoScrollNews();
+                }
+            }, 3000);
+        }
+
+        function startEventsAutoScroll() {
+            if (eventsItems.length <= 1) return;
+
+            eventsAutoScrollInterval = setInterval(function () {
+                if (!isEventsHovered) {
+                    autoScrollEvents();
+                }
+            }, 3000);
+        }
+
+        function autoScrollNews() {
+            const container = document.getElementById('news-container');
+            const containerWidth = container.scrollWidth / 2; // Half because we duplicated the items
+
+            newsPosition += scrollAmount;
+
+            if (newsPosition >= containerWidth) {
+                newsPosition = 0;
+            }
+
+            container.style.transform = `translateX(-${newsPosition}px)`;
+            updateNewsNavButtons();
+        }
+
+        function autoScrollEvents() {
+            const container = document.getElementById('events-container');
+            const containerWidth = container.scrollWidth / 2; 
+
+            eventsPosition += scrollAmount;
+
+            if (eventsPosition >= containerWidth) {
+                eventsPosition = 0;
+            }
+
+            container.style.transform = `translateX(-${eventsPosition}px)`;
+            updateEventsNavButtons();
+        }
+
+        function scrollNewsLeft() {
+            const container = document.getElementById('news-container');
+            const containerWidth = container.scrollWidth / 2;
+
+            newsPosition = Math.max(newsPosition - scrollAmount, 0);
+            container.style.transform = `translateX(-${newsPosition}px)`;
+
+            updateNewsNavButtons();
+        }
+
+        function scrollNewsRight() {
+            const container = document.getElementById('news-container');
+            const containerWidth = container.scrollWidth / 2;
+
+            newsPosition += scrollAmount;
+
+            if (newsPosition >= containerWidth) {
+                newsPosition = 0;
+            }
+
+            container.style.transform = `translateX(-${newsPosition}px)`;
+            updateNewsNavButtons();
+        }
+
+        function updateNewsNavButtons() {
+            document.getElementById('news-prev').disabled = false;
+            document.getElementById('news-next').disabled = false;
+        }
+
+        function scrollEventsLeft() {
+            const container = document.getElementById('events-container');
+            const containerWidth = container.scrollWidth / 2;
+
+            eventsPosition = Math.max(eventsPosition - scrollAmount, 0);
+            container.style.transform = `translateX(-${eventsPosition}px)`;
+
+            updateEventsNavButtons();
+        }
+
+        function scrollEventsRight() {
+            const container = document.getElementById('events-container');
+            const containerWidth = container.scrollWidth / 2;
+
+            eventsPosition += scrollAmount;
+
+            if (eventsPosition >= containerWidth) {
+                eventsPosition = 0;
+            }
+
+            container.style.transform = `translateX(-${eventsPosition}px)`;
+
+            updateEventsNavButtons();
+        }
+
+        function updateEventsNavButtons() {
+            document.getElementById('events-prev').disabled = false;
+            document.getElementById('events-next').disabled = false;
+        }
+
+        document.getElementById('news-prev').addEventListener('click', function () {
+            scrollNewsLeft();
+            if (newsAutoScrollInterval) {
+                clearInterval(newsAutoScrollInterval);
+                startNewsAutoScroll();
+            }
+        });
+
+        document.getElementById('news-next').addEventListener('click', function () {
+            scrollNewsRight();
+            if (newsAutoScrollInterval) {
+                clearInterval(newsAutoScrollInterval);
+                startNewsAutoScroll();
+            }
+        });
+
+        document.getElementById('events-prev').addEventListener('click', function () {
+            scrollEventsLeft();
+            if (eventsAutoScrollInterval) {
+                clearInterval(eventsAutoScrollInterval);
+                startEventsAutoScroll();
+            }
+        });
+
+        document.getElementById('events-next').addEventListener('click', function () {
+            scrollEventsRight();
+            if (eventsAutoScrollInterval) {
+                clearInterval(eventsAutoScrollInterval);
+                startEventsAutoScroll();
+            }
+        });
+
+        function getDummyNews() {
+            return [
+                {
+                    title: "New Academic Partnership",
+                    description: "SSM College signs MOU with leading international universities for student exchange programs.",
+                    date: "2023-11-15",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Research Grant Awarded",
+                    description: "Our Computer Science department receives prestigious research grant for AI innovation.",
+                    date: "2023-11-10",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Campus Expansion",
+                    description: "SSM College announces new campus wing with state-of-the-art facilities for students.",
+                    date: "2023-11-05",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "National Award",
+                    description: "SSM College recognized for excellence in technical education at national level ceremony.",
+                    date: "2023-10-28",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                }
+            ];
+        }
+
+        function getDummyEvents() {
+            return [
+                {
+                    title: "Annual Technical Symposium",
+                    description: "Join us for Technovation 2023, featuring workshops, competitions, and guest lectures.",
+                    date: "2023-12-10",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Industry Connect Workshop",
+                    description: "Leading industry experts share insights on emerging technologies and career opportunities.",
+                    date: "2023-11-25",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Cultural Festival",
+                    description: "Celebrate diversity and talent at our annual cultural extravaganza featuring performances and competitions.",
+                    date: "2023-12-15",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Alumni Meet",
+                    description: "Reconnect with classmates and faculty at the annual alumni gathering with networking opportunities.",
+                    date: "2023-12-20",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                }
+            ];
         }
     </script>
 </body>
+
 </html>

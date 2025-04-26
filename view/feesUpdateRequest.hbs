@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Update Request</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: rgba(79, 70, 229, 0.1);
+            --secondary: #f9fafb;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #e5e7eb;
+            --white: #ffffff;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --border-radius: 0.75rem;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f8;
+            color: var(--dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .page-container {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+            width: 100%;
+            padding: 0.5rem 1rem;
+        }
+        
+        .btn-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: var(--white);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            margin-right: 15px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        
+        .btn-back:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+        
+        .btn-back i {
+            font-size: 1.1rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+            overflow: hidden;
+            margin-bottom: 0;
+            transition: var(--transition);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            background-color: var(--white);
+            flex-shrink: 0;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+            height: calc(100vh - 60px);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+        
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+        
+        .form-control:disabled, 
+        .form-control[readonly] {
+            background-color: var(--secondary);
+            opacity: 0.8;
+        }
+        
+        .form-submit {
+            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.85rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
+        }
+        
+        .form-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(79, 70, 229, 0.3);
+        }
+        
+        .form-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
+        }
+        
+        .form-footer {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .file-upload-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 1.25rem 1rem;
+            background-color: var(--secondary);
+            border: 2px dashed var(--light-gray);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .file-upload-label:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+        }
+        
+        .file-upload-label i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .file-upload-label span {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-name {
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+            word-break: break-all;
+            padding: 0.5rem 0.75rem;
+            background-color: var(--primary-light);
+            border-radius: 0.5rem;
+            display: none;
+        }
+        
+        .file-name.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-box {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .info-box-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .info-box-content {
+            color: var(--dark);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .fee-summary {
+            background-color: var(--secondary);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .fee-summary-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .fee-summary-title i {
+            color: var(--primary);
+        }
+        
+        .fee-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .fee-summary-item {
+            background-color: var(--white);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .fee-summary-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .fee-summary-label {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .fee-summary-value {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+            word-break: break-word;
+        }
+        
+        .status-paid {
+            color: var(--success);
+        }
+        
+        .status-partial {
+            color: var(--warning);
+        }
+        
+        .status-unpaid {
+            color: var(--danger);
+        }
+        
+        .notification-popup {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            color: var(--white);
+            font-weight: 500;
+            font-size: 0.95rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            max-width: 350px;
+            animation: slideInRight 0.3s ease;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .section-divider {
+            margin: 2rem 0;
+            height: 1px;
+            background-color: var(--light-gray);
+            position: relative;
+        }
+        
+        .section-divider::after {
+            content: "Payment Details";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--white);
+            padding: 0 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .required-field {
+            color: var(--danger);
+            margin-left: 0.25rem;
+        }
+        
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .card-header, .card-body {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .form-col {
+                width: 100%;
+                min-width: 100%;
+            }
+            
+            .fee-summary-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .fee-summary-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem;
+            }
+            
+            .fee-summary-label {
+                margin-bottom: 0;
+            }
+            
+            .info-box, .fee-summary {
+                padding: 1rem;
+            }
+            
+            .file-upload-label {
+                padding: 1rem;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .file-upload-label span {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.1rem;
+            }
+            
+            .card-title {
+                font-size: 1.1rem;
+            }
+            
+            .form-submit {
+                padding: 0.75rem;
+                font-size: 0.95rem;
+            }
+            
+            .fee-summary-value {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="card">
+            <div class="card-header">
+                <div class="header-container">
+                    <a href="/v1/api/studentProfile" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="page-title">{{feeType}} Fee Update Request</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Important Information</span>
+                    </div>
+                    <div class="info-box-content">
+                        <p>Use this form to request an update to your fee records. Please provide accurate information and attach proof of payment. Your request will be reviewed by the administration within 2-3 business days.</p>
+                    </div>
+                </div>
+
+                <div class="fee-summary">
+                    <div class="fee-summary-title">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Current Fee Status</span>
+                    </div>
+                    <div class="fee-summary-grid">
+                        <div class="fee-summary-item">
+                            <div class="fee-summary-label">Total Fee</div>
+                            <div class="fee-summary-value">₹ {{#if (eq feeType "Tuition")}}{{student.tuitionFees.totalFee}}{{else}}{{student.examFees.totalFee}}{{/if}}</div>
+                        </div>
+                        <div class="fee-summary-item">
+                            <div class="fee-summary-label">Paid Amount</div>
+                            <div class="fee-summary-value">₹ {{#if (eq feeType "Tuition")}}{{subtract student.tuitionFees.totalFee student.tuitionFees.pendingFee}}{{else}}{{subtract student.examFees.totalFee student.examFees.pendingFee}}{{/if}}</div>
+                        </div>
+                        <div class="fee-summary-item">
+                            <div class="fee-summary-label">Pending Amount</div>
+                            <div class="fee-summary-value">₹ {{#if (eq feeType "Tuition")}}{{student.tuitionFees.pendingFee}}{{else}}{{student.examFees.pendingFee}}{{/if}}</div>
+                        </div>
+                        <div class="fee-summary-item">
+                            <div class="fee-summary-label">Status</div>
+                            <div class="fee-summary-value {{#if (eq feeType "Tuition")}}{{#if (eq student.tuitionFees.status 'Paid')}}status-paid{{else if (eq student.tuitionFees.status 'Partial')}}status-partial{{else}}status-unpaid{{/if}}{{else}}{{#if (eq student.examFees.status 'Paid')}}status-paid{{else if (eq student.examFees.status 'Partial')}}status-partial{{else}}status-unpaid{{/if}}{{/if}}">
+                                {{#if (eq feeType "Tuition")}}{{student.tuitionFees.status}}{{else}}{{student.examFees.status}}{{/if}}
+                            </div>
+                        </div>
+                        <div class="fee-summary-item">
+                            <div class="fee-summary-label">Due Date</div>
+                            <div class="fee-summary-value">{{#if (eq feeType "Tuition")}}{{student.tuitionFees.dueDate}}{{else}}{{student.examFees.dueDate}}{{/if}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="feeUpdateForm" action="/v1/api/submitFeeUpdateRequest" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="feeType" value="{{feeType}}">
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="course" class="form-label">Course</label>
+                                <input type="text" id="course" name="course" class="form-control" value="{{student.course}}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="year" class="form-label">Year</label>
+                                <input type="text" id="year" name="year" class="form-control" value="{{student.year}}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="semester" class="form-label">Semester <span class="required-field">*</span></label>
+                                <select id="semester" name="semester" class="form-control" required>
+                                    <option value="">Select Semester</option>
+                                    <option value="1" {{#if (eq student.examFees.semester "1")}}selected{{/if}}>Semester I</option>
+                                    <option value="2" {{#if (eq currentSemester "2")}}selected{{/if}}>Semester II</option>
+                                    <option value="3" {{#if (eq currentSemester "3")}}selected{{/if}}>Semester III</option>
+                                    <option value="4" {{#if (eq currentSemester "4")}}selected{{/if}}>Semester IV</option>
+                                    <option value="5" {{#if (eq currentSemester "5")}}selected{{/if}}>Semester V</option>
+                                    <option value="6" {{#if (eq currentSemester "6")}}selected{{/if}}>Semester VI</option>
+                                    <option value="7" {{#if (eq currentSemester "7")}}selected{{/if}}>Semester VII</option>
+                                    <option value="8" {{#if (eq currentSemester "8")}}selected{{/if}}>Semester VIII</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-divider"></div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="alreadyPaidAmount" class="form-label">Already Paid Amount</label>
+                                <input type="text" id="alreadyPaidAmount" class="form-control" value="{{#if (eq feeType "Tuition")}}{{subtract student.tuitionFees.totalFee student.tuitionFees.pendingFee}}{{else}}{{subtract student.examFees.totalFee student.examFees.pendingFee}}{{/if}}" readonly>
+                                <div class="form-text">Amount you have already paid</div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="currentPaidAmount" class="form-label">Current Paid Amount <span class="required-field">*</span></label>
+                                <input type="text" id="currentPaidAmount" name="currentPaidAmount" class="form-control" required oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                <div class="form-text">Enter the amount you are paying now</div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="upiReference" class="form-label">UPI Reference <span class="required-field">*</span></label>
+                                <input type="text" id="upiReference" name="upiReference" class="form-control" required oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                <div class="form-text">Enter the UPI Reference Number of your transaction</div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="pendingAmount" class="form-label">Pending Amount</label>
+                                <input type="text" id="pendingAmount" name="pendingAmount" class="form-control" readonly>
+                                <div class="form-text">Remaining amount to be paid</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="paidDate" class="form-label">Paid Date <span class="required-field">*</span></label>
+                                <input type="date" id="paidDate" name="paidDate" class="form-control" required>
+                                <div class="form-text">Date when the payment was made</div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="totalPaidAmount" class="form-label">Total Paid Amount</label>
+                                <input type="text" id="totalPaidAmount" name="paidAmount" class="form-control" readonly>
+                                <div class="form-text">Total amount paid (already paid + current payment)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comments" class="form-label">Comments <span class="required-field">*</span></label>
+                        <textarea id="comments" name="comments" class="form-control" rows="3" placeholder="Please provide details about your fee payment" required></textarea>
+                        <div class="form-text">Include details such as payment method, transaction ID, and any other relevant information</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Payment Proof <span class="required-field">*</span></label>
+                        <div class="file-upload-container">
+                            <label for="image" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload or drag and drop your payment Proof</span>
+                            </label>
+                            <input type="file" id="image" name="image" class="file-upload-input" required accept="image/*">
+                            <div id="fileName" class="file-name"></div>
+                        </div>
+                        <div class="form-text">Accepted file formats: JPG, PNG (Max size: 5MB)</div>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="submit" class="form-submit">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Fee Update Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationPopup" class="notification-popup"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('image').addEventListener('change', function(e) {
+                const fileNameElement = document.getElementById('fileName');
+                if (e.target.files[0]) {
+                    const fileName = e.target.files[0].name;
+                    fileNameElement.textContent = fileName;
+                    fileNameElement.classList.add('active');
+                } else {
+                    fileNameElement.textContent = '';
+                    fileNameElement.classList.remove('active');
+                }
+            });
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('paidDate').max = today;
+            
+            document.getElementById('paidDate').value = today;
+            
+            const totalFee = {{#if (eq feeType "Tuition")}}{{student.tuitionFees.totalFee}}{{else}}{{student.examFees.totalFee}}{{/if}};
+            const alreadyPaidAmount = {{#if (eq feeType "Tuition")}}{{subtract student.tuitionFees.totalFee student.tuitionFees.pendingFee}}{{else}}{{subtract student.examFees.totalFee student.examFees.pendingFee}}{{/if}};
+            const pendingAmountInput = document.getElementById('pendingAmount');
+            const currentPaidAmountInput = document.getElementById('currentPaidAmount');
+            const totalPaidAmountInput = document.getElementById('totalPaidAmount');
+            
+            pendingAmountInput.value = {{#if (eq feeType "Tuition")}}{{student.tuitionFees.pendingFee}}{{else}}{{student.examFees.pendingFee}}{{/if}};
+            
+            currentPaidAmountInput.addEventListener('input', function() {
+                const currentPaid = parseFloat(this.value) || 0;
+                const totalPaid = alreadyPaidAmount + currentPaid;
+                
+                const newPendingAmount = Math.max(0, totalFee - totalPaid);
+                
+                pendingAmountInput.value = newPendingAmount.toFixed(2);
+                totalPaidAmountInput.value = totalPaid.toFixed(2);
+                
+                if (currentPaid > {{#if (eq feeType "Tuition")}}{{student.tuitionFees.pendingFee}}{{else}}{{student.examFees.pendingFee}}{{/if}}) {
+                    showNotification("Current paid amount exceeds the pending fee amount", "#ef4444");
+                }
+            });
+            
+            document.getElementById('feeUpdateForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    return false;
+                }
+                
+                const formData = new FormData(this);
+                
+                showNotification("Processing your request...", "#4f46e5");
+                
+                fetch('/v1/api/submitFeeUpdateRequest', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification(data.message, "#10b981");
+                        
+                        setTimeout(() => {
+                            window.location.href = '/v1/api/studentProfile';
+                        }, 2000);
+                    } else {
+                        showNotification(data.message, "#ef4444");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error submitting fee update request:', error);
+                    showNotification("An error occurred. Please try again.", "#ef4444");
+                });
+            });
+            
+            function validateForm() {
+                const currentPaid = parseFloat(currentPaidAmountInput.value) || 0;
+                if (currentPaid <= 0) {
+                    showNotification("Current paid amount must be greater than zero", "#ef4444");
+                    return false;
+                }
+                
+                const fileInput = document.getElementById('image');
+                if (fileInput.files.length > 0) {
+                    const fileSize = fileInput.files[0].size / 1024 / 1024;
+                    if (fileSize > 5) {
+                        showNotification("File size exceeds 5MB limit. Please upload a smaller file.", "#ef4444");
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+        });
+        
+        function showNotification(message, backgroundColor) {
+            const popup = document.getElementById('notificationPopup');
+            popup.textContent = message;
+            popup.style.backgroundColor = backgroundColor;
+            popup.style.display = "block";
+            
+            if (window.notificationTimeout) {
+                clearTimeout(window.notificationTimeout);
+            }
+            
+            window.notificationTimeout = setTimeout(() => {
+                popup.style.display = "none";
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

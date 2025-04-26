@@ -96,7 +96,7 @@
 </head>
 <body>
 
-    <form action="/ssm/mca/updateExamFee/{{fee._id}}" method="post">
+    <form action="/v1/api/updateExamFee/{{fee._id}}" method="post">
         <h1>Edit Fee Details:</h1>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="{{fee.name}}" disabled />
@@ -116,7 +116,7 @@
         </select> --}}
 
         <div class="button-container">
-            <button type="button" onclick="history.back()">Back</button>
+            <button type="button"  onclick="window.location.href='{{backUrl}}'">Back</button>
             <button type="submit">Update</button>
         </div>
     </form>

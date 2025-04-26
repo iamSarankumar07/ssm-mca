@@ -371,11 +371,11 @@
 <body>
 <div class="container">
     <h1>EXAM FEES DETAILS</h1>
-    <a href="/ssm/mca/dashboard#fees" class="back-button">
+    <a href="/v1/api/dashboard#fees" class="back-button">
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
     <div class="table-container">
-    <h2>MCA - I</h2>
+    <h2>{{course}} - {{year}}</h2>
 
     <div class="fee-summary-container">
         <div class="fee-box total">
@@ -442,7 +442,7 @@
                 {{examPaymentStatus}}
             </td>
             <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/examFeeEdit/{{_id}}" class="view-link">
+                <a href="/v1/api/examFeeEdit/{{_id}}" class="view-link">
                     <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
                 </a>
             </td>
@@ -452,13 +452,13 @@
     </table>
     <div class="btn-container">
                 <button class="btn" style="margin-bottom: 10px;" onclick="printFirstYearFee()">Print</button>
-            <form id="downloadForm" action="/ssm/mca/studentExamDownload" method="post">
+            <form id="downloadForm" action="/v1/api/studentExamDownload" method="post">
                 <input type="hidden" name="year" value="I">
                 <input type="hidden" name="isPdf" value="true">
                 <button type="submit" class="btn">Download</button>
             </form>
            {{!--  <div class="btn-container">
-                <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
+                <a class="btn" href="/v1/api/dashboard#fees">< Go back!</a>
             </div> --}}
         </div>
 </div>
@@ -530,7 +530,7 @@
                 {{examPaymentStatus}}
             </td>
             <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/examFeeEdit/{{_id}}" class="view-link">
+                <a href="/v1/api/examFeeEdit/{{_id}}" class="view-link">
                     <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
                 </a>
             </td>
@@ -540,7 +540,7 @@
     </table>
     <div class="btn-container">
                 <button class="btn" style="margin-bottom: 10px;" onclick="printSecondYearFee()">Print</button>
-            <form id="downloadForm" action="/ssm/mca/studentExamDownload" method="post">
+            <form id="downloadForm" action="/v1/api/studentExamDownload" method="post">
                 <input type="hidden" name="year" value="II">
                 <input type="hidden" name="isPdf" value="true">
                 <button type="submit" class="btn">Download</button>
@@ -548,7 +548,7 @@
         </div>
 </div>
     <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
+        <a class="btn" href="/v1/api/dashboard#fees">< Go back!</a>
     </div>
 </div>
 

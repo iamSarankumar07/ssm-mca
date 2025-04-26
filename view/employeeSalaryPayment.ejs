@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="/styles/style.css">
+  <title>Payment</title>
+</head>
+<body>
+  <h1>Processing Payment for <%= employee.name %></h1>
+  <p>Order ID: <%= order.id %></p>
+  <p>Amount: ₹<%= employee.salary %></p>
+  <button id="rzp-button">Proceed to Pay</button>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    const options = {
+      key: "<%= process.env.RAZORPAY_KEY_ID %>",
+      amount: "<%= order.amount %>",
+      currency: "<%= order.currency %>",
+      name: "College Management",
+      description: "Employee Salary Payment",
+      order_id: "<%= order.id %>",
+      handler: function(response) {
+        fetch('/v1/api/verifyEmployeeSalary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            payment_id: response.razorpay_payment_id,
+            order_id: response.razorpay_order_id,
+            signature: response.razorpay_signature,
+            employeeId: "<%= employee._id %>"
+          })
+        })
+        .then(res => res.text())
+        .then(data => alert(data));
+      }
+    };
+    const rzp = new Razorpay(options);
+    document.getElementById('rzp-button').onclick = function() {
+      rzp.open();
+    };
+  </script>
+</body>
+</html>

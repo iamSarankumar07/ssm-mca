@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #f9fafb;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #e5e7eb;
+            --white: #ffffff;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 0.75rem;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f8;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .page-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--danger);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-logout:hover {
+            background-color: var(--danger-hover);
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            background-color: var(--white);
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-container {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            border: 3px solid var(--white);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        .profile-info p {
+            color: var(--gray);
+            margin: 0.25rem 0 0;
+            font-size: 0.95rem;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .attachment-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .attachment-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+        
+        .nav-tabs {
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--gray);
+            font-weight: 500;
+            padding: 0.75rem 1.25rem;
+            margin-right: 0.5rem;
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: var(--primary);
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            background-color: transparent;
+        }
+        
+        .fee-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .fee-item:last-child {
+            border-bottom: none;
+        }
+        
+        .fee-label {
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+        
+        .fee-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .status-present {
+            color: var(--success);
+        }
+        
+        .status-absent {
+            color: var(--danger);
+        }
+        
+        .status-leave {
+            color: var(--warning);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-update {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-update:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-check-in {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-check-in:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-check-in:disabled {
+            background-color: var(--success);
+            cursor: not-allowed;
+        }
+        
+        .edit-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: rgba(79, 70, 229, 0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .edit-button:hover {
+            background-color: rgba(79, 70, 229, 0.2);
+        }
+        
+        .edit-button img {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        
+        .service-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: all 0.2s ease;
+        }
+        
+        .service-icon:hover {
+            color: var(--primary-hover);
+            transform: scale(1.1);
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray);
+            background-color: var(--secondary);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .table td {
+            vertical-align: middle;
+            font-size: 0.95rem;
+            color: var(--dark);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .table-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .table-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+        
+        .attendance-popup {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--border-radius);
+            color: var(--white);
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            background-color: var(--success);
+            max-width: 300px;
+            text-align: center;
+        }
+        
+        .leave-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .leave-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .leave-popup-content {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            width: 95%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .leave-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            position: sticky;
+            top: 0;
+            background-color: var(--white);
+            z-index: 10;
+        }
+        
+        .leave-popup-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        .leave-popup-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+        
+        .leave-popup-close:hover {
+            color: var(--dark);
+            background-color: var(--light-gray);
+        }
+        
+        .leave-popup-body {
+            padding: 1.5rem;
+        }
+        
+        .leave-form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .leave-form-col {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .leave-form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .leave-form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .leave-form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background-color: var(--white);
+        }
+        
+        .leave-form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+        
+        .leave-form-control::placeholder {
+            color: #9ca3af;
+        }
+        
+        .leave-form-submit {
+            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.85rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .leave-form-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        
+        .leave-form-submit:active {
+            transform: translateY(0);
+        }
+        
+        .leave-form-footer {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .leave-balance-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .leave-balance-item {
+            flex: 1;
+            min-width: 100px;
+            padding: 0.75rem;
+            background-color: var(--secondary);
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        
+        .leave-balance-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+        
+        .leave-balance-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .file-upload-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--secondary);
+            border: 1px dashed var(--light-gray);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .file-upload-label:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+            border-color: var(--primary);
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--gray);
+            word-break: break-all;
+        }
+        
+        /* Chatroom styles */
+        .chatroom-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .chatroom-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .chatroom-link:hover {
+            color: var(--primary-hover);
+        }
+        
+        .history-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .history-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .history-popup-content {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            width: 95%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease forwards;
+        }
+        
+        .history-popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            position: sticky;
+            top: 0;
+            background-color: var(--white);
+            z-index: 10;
+        }
+        
+        .history-popup-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        .history-popup-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+        
+        .history-popup-close:hover {
+            color: var(--dark);
+            background-color: var(--light-gray);
+        }
+        
+        .history-popup-body {
+            padding: 1.5rem;
+        }
+        
+        .history-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .history-filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .history-table-container {
+            overflow-x: auto;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .history-table th {
+            position: sticky;
+            top: 0;
+            background-color: var(--secondary);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .history-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .history-table tr:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 600;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.375rem;
+        }
+        
+        .badge-pending {
+            background-color: var(--warning);
+            color: #fff;
+        }
+        
+        .badge-approved {
+            background-color: var(--success);
+            color: #fff;
+        }
+        
+        .badge-rejected {
+            background-color: var(--danger);
+            color: #fff;
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(79, 70, 229, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state-text {
+            color: var(--gray);
+            font-size: 1rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .avatar-container {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .leave-popup-content,
+            .history-popup-content {
+                width: 95%;
+                max-width: none;
+                height: auto;
+                max-height: 90vh;
+            }
+            
+            .history-filters {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .history-filter-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header class="header">
+            <h1>Staff Profile</h1>
+            <button class="btn-logout" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </header>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Staff Details</h2>
+                        {{!-- <a href="/v1/api/staffProfileEdit/{{staff._id}}" class="edit-button">
+                            <img src="https://i.postimg.cc/dtwWjbPs/edit-info.png" alt="Edit Profile">
+                        </a> --}}
+                    </div>
+                    <div class="card-body">
+                        <div class="profile-header">
+                            <div class="avatar-container">
+                                <img id="avatar-img" class="avatar-img" alt="Staff Avatar">
+                            </div>
+                            <div class="profile-info">
+                                <h3>{{ staff.name }}</h3>
+                                <p>{{ staff.department }} - {{ staff.designation }}</p>
+                            </div>
+                        </div>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Staff ID</div>
+                                <div class="detail-value">{{ staff.staffId }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Employee ID</div>
+                                <div class="detail-value">{{ staff.employeeId }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Gender</div>
+                                <div class="detail-value">{{ staff.gender }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Date of Birth</div>
+                                <div class="detail-value">{{ staff.dob }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Phone</div>
+                                <div class="detail-value">+91 {{ staff.phone }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Email</div>
+                                <div class="detail-value">{{ staff.email }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Blood Group</div>
+                                <div class="detail-value">{{ staff.bloodGroup }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Emergency Contact</div>
+                                <div class="detail-value">{{ staff.emergencyContact }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Aadhaar Number</div>
+                                <div class="detail-value">{{ staff.aadhaarNum }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Joining Date</div>
+                                <div class="detail-value">{{ staff.joiningDate }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Address</div>
+                                <div class="detail-value" id="hideTd">{{ staff.address }}, {{ staff.city }}, {{ staff.state }}, {{ staff.pinCode }}, India.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Assigned Classes</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <th>S.No</th>
+                                        <th>Subject Code</th>
+                                        <th>Subject Title</th>
+                                        <th>Course</th>
+                                        <th>Semester</th>
+                                        <th>Schedule</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each assignedClasses}}
+                                    <tr style="text-align: center;">
+                                        <td>{{inc @index}}</td>
+                                        <td>{{subjectCode}}</td>
+                                        <td>{{subjectTitle}}</td>
+                                        <td>{{course}}</td>
+                                        <td>{{semester}}</td>
+                                        <td>{{schedule}}</td>
+                                        <td><a href="/v1/api/class/{{_id}}" class="table-link">View</a></td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Attendance & Leave</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="attendanceTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="attendance-tab" data-bs-toggle="tab" data-bs-target="#attendanceTabContent" type="button" role="tab" aria-controls="attendanceTabContent" aria-selected="true">Attendance</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="leave-tab" data-bs-toggle="tab" data-bs-target="#leaveTabContent" type="button" role="tab" aria-controls="leaveTabContent" aria-selected="false">Leave</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="attendanceTabContent">
+                            <div class="tab-pane fade show active" id="attendanceTabContent" role="tabpanel" aria-labelledby="attendance-tab">
+                                <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                                    <h5 class="mb-0">Attendance Details</h5>
+                                    <button id="staffAttendanceBtn" class="btn-check-in" onclick="submitStaffAttendance()">Check-In</button>
+                                </div>
+                                <div class="fee-item">
+                                    <span class="fee-label">Total Present Days</span>
+                                    <span class="fee-value">{{attendanceSummary.present}}</span>
+                                </div>
+                                <div class="fee-item">
+                                    <span class="fee-label">Total Absent Days</span>
+                                    <span class="fee-value">{{attendanceSummary.absent}}</span>
+                                </div>
+                                <div class="fee-item">
+                                    <span class="fee-label">Total Leave Days</span>
+                                    <span class="fee-value">{{attendanceSummary.leave}}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="leaveTabContent" role="tabpanel" aria-labelledby="leave-tab">
+                                <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                                    <h5 class="mb-0">Leave Details</h5>
+                                    <button class="btn-update" onclick="openLeavePopup()">Apply Leave</button>
+                                </div>
+                                <div class="fee-item">
+                                    <span class="fee-label">Casual Leave</span>
+                                    <span class="fee-value">{{staff.leaveBalance.casual}} / {{staff.leaveBalance.casualTotal}}</span>
+                                </div>
+                                <div class="fee-item">
+                                    <span class="fee-label">Sick Leave</span>
+                                    <span class="fee-value">{{staff.leaveBalance.sick}} / {{staff.leaveBalance.sickTotal}}</span>
+                                </div>
+                                <div class="fee-item">
+                                    <span class="fee-label">Earned Leave</span>
+                                    <span class="fee-value">{{staff.leaveBalance.earned}} / {{staff.leaveBalance.earnedTotal}}</span>
+                                </div>
+                                
+                                <h6 class="mt-4 mb-3">Recent Leave Applications</h6>
+                                {{#each recentLeaves}}
+                                <div class="fee-item">
+                                    <span class="fee-label">{{type}} ({{formatDate startDate}} - {{formatDate endDate}})</span>
+                                    <span class="fee-value {{#if (eq status 'Approved')}}status-present{{else if (eq status 'Rejected')}}status-absent{{else}}status-leave{{/if}}">
+                                        {{status}}
+                                    </span>
+                                </div>
+                                {{/each}}
+                                <div class="d-grid gap-2 mt-3">
+                                    <button onclick="openLeaveHistoryPopup()" class="btn btn-primary">View Leave History</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Other Services</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="fee-item">
+                            <span class="fee-label">Department Chatrooms</span>
+                            <span class="fee-value">
+                                <a href="#" class="service-link" data-bs-toggle="collapse" data-bs-target="#chatroomCollapse" aria-expanded="false" aria-controls="chatroomCollapse">
+                                    <i class="fas fa-users service-icon"></i>
+                                </a>
+                            </span>
+                        </div>
+
+                        <div class="collapse mt-2" id="chatroomCollapse">
+                            <div class="card card-body">
+                                <div class="chatroom-links">
+                                    {{#if (eq staff.department "BCA")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> BCA Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> BCA Year II
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=III" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> BCA Year III
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "MCA")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MCA Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MCA Year II
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "MBA")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MBA Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MBA Year II
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "Civil")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Civil Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Civil Year II
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=III" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Civil Year III
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=IV" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Civil Year IV
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "Mechanical")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Mechanical Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Mechanical Year II
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=III" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Mechanical Year III
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=IV" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> Mechanical Year IV
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "ECE")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> ECE Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> ECE Year II
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=III" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> ECE Year III
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=IV" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> ECE Year IV
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "CSE")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> CSE Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> CSE Year II
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=III" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> CSE Year III
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=IV" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> CSE Year IV
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "EEE")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> EEE Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> EEE Year II
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=III" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> EEE Year III
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=IV" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> EEE Year IV
+                                        </a>
+                                    {{/if}}
+                                    
+                                    {{#if (eq staff.department "MTech")}}
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=I" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MTech Year I
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=II" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MTech Year II
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=III" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MTech Year III
+                                        </a>
+                                        <a href="/v1/api/getAdminChatroom?course={{staff.department}}&year=IV" class="chatroom-link">
+                                            <i class="fas fa-comment-dots"></i> MTech Year IV
+                                        </a>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fee-item">
+                            <span class="fee-label">AI Chatbot</span>
+                            <span class="fee-value">
+                                <a href="/v1/api/admin/getChatBot?user={{staff._id}}" class="service-link">
+                                    <i class="fas fa-robot service-icon"></i>
+                                </a>
+                            </span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="attendancePopup" class="attendance-popup">
+        <p id="attendancePopupText"></p>
+    </div>
+
+    <div class="leave-popup" id="leavePopup">
+        <div class="leave-popup-content">
+            <div class="leave-popup-header">
+                <h2>Apply for Leave</h2>
+                <button class="leave-popup-close" id="closeLeavePopup" aria-label="Close">&times;</button>
+            </div>
+            <div class="leave-popup-body">
+                <div class="leave-balance-info">
+                    <div class="leave-balance-item">
+                        <div class="leave-balance-label">Casual Leave</div>
+                        <div class="leave-balance-value">{{staff.leaveBalance.casual}} / {{staff.leaveBalance.casualTotal}}</div>
+                    </div>
+                    <div class="leave-balance-item">
+                        <div class="leave-balance-label">Sick Leave</div>
+                        <div class="leave-balance-value">{{staff.leaveBalance.sick}} / {{staff.leaveBalance.sickTotal}}</div>
+                    </div>
+                    <div class="leave-balance-item">
+                        <div class="leave-balance-label">Earned Leave</div>
+                        <div class="leave-balance-value">{{staff.leaveBalance.earned}} / {{staff.leaveBalance.earnedTotal}}</div>
+                    </div>
+                </div>
+                
+                <form id="leaveForm" onsubmit="submitLeaveApplication(event)">
+                    <div class="leave-form-row">
+                        <div class="leave-form-col">
+                            <div class="leave-form-group">
+                                <label for="leaveType" class="leave-form-label">Leave Type <span class="text-danger">*</span></label>
+                                <select id="leaveType" class="leave-form-control" required>
+                                    <option value="">Select Leave Type</option>
+                                    <option value="Casual">Casual Leave</option>
+                                    <option value="Sick">Sick Leave</option>
+                                    <option value="Earned">Earned Leave</option>
+                                    <option value="Maternity">Maternity/Paternity Leave</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-form-row">
+                        <div class="leave-form-col">
+                            <div class="leave-form-group">
+                                <label for="startDate" class="leave-form-label">Start Date <span class="text-danger">*</span></label>
+                                <input type="date" id="startDate" class="leave-form-control" required>
+                            </div>
+                        </div>
+                        <div class="leave-form-col">
+                            <div class="leave-form-group">
+                                <label for="endDate" class="leave-form-label">End Date <span class="text-danger">*</span></label>
+                                <input type="date" id="endDate" class="leave-form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="leave-form-group">
+                        <label for="reason" class="leave-form-label">Reason for Leave <span class="text-danger">*</span></label>
+                        <textarea id="reason" class="leave-form-control" rows="4" placeholder="Please provide detailed reason for your leave request" required></textarea>
+                    </div>
+                    
+                    <div class="leave-form-group">
+                        <label class="leave-form-label">Supporting Documents (if any)</label>
+                        <div class="file-upload-container">
+                            <label for="attachment" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload or drag and drop</span>
+                            </label>
+                            <input type="file" id="attachment" class="file-upload-input">
+                            <div id="fileName" class="file-name"></div>
+                        </div>
+                        <small class="text-muted">Accepted file formats: PDF, JPG, PNG (Max size: 5MB)</small>
+                    </div>
+                    
+                    <div class="leave-form-footer">
+                        <button type="submit" class="leave-form-submit">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Leave Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="history-popup" id="leaveHistoryPopup">
+        <div class="history-popup-content">
+            <div class="history-popup-header">
+                <h2>Leave History</h2>
+                <button class="history-popup-close" id="closeHistoryPopup" aria-label="Close">&times;</button>
+            </div>
+            <div class="history-popup-body">
+                <div class="history-filters">
+                    <div class="history-filter-item">
+                        <label for="leaveTypeFilter" class="leave-form-label">Leave Type</label>
+                        <select id="leaveTypeFilter" class="leave-form-control" onchange="filterLeaveHistory()">
+                            <option value="">All Types</option>
+                            <option value="Casual">Casual Leave</option>
+                            <option value="Sick">Sick Leave</option>
+                            <option value="Earned">Earned Leave</option>
+                            <option value="Maternity">Maternity/Paternity Leave</option>
+                        </select>
+                    </div>
+                    <div class="history-filter-item">
+                        <label for="statusFilter" class="leave-form-label">Status</label>
+                        <select id="statusFilter" class="leave-form-control" onchange="filterLeaveHistory()">
+                            <option value="">All Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="history-filter-item">
+                        <label for="yearFilter" class="leave-form-label">Year</label>
+                        <select id="yearFilter" class="leave-form-control" onchange="filterLeaveHistory()">
+                            <option value="">All Years</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="leaveHistoryLoading" class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+                
+                <div id="leaveHistoryEmpty" class="empty-state" style="display: none;">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-calendar-times"></i>
+                    </div>
+                    <div class="empty-state-text">
+                        No leave history found. Apply for leave to see your history here.
+                    </div>
+                </div>
+                
+                <div id="leaveHistoryTable" class="history-table-container" style="display: none;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Days</th>
+                                <th>Reason</th>
+                                <th>Applied On</th>
+                                <th>Status</th>
+                                <th>Comment</th>
+                                <th>Attachment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaveHistoryTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let leaveHistoryData = [];
+        let filteredLeaveHistory = [];
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                window.location.href = '/v1/api/logout';
+            }
+        }
+
+        window.onload = function() {
+            hideUpdateButton();
+
+            const avatarImg = document.getElementById('avatar-img');
+            const staffGender = "{{ staff.gender }}";
+            const staffImg = "{{ staff.imageUrl }}";
+
+            if (staffImg && staffImg.trim() !== '') {
+                avatarImg.src = staffImg;
+            } else if (staffGender === 'Male') {
+                avatarImg.src = 'https://i.ibb.co/6JxYzd3/man.png';
+            } else if (staffGender === 'Female') {
+                avatarImg.src = 'https://i.ibb.co/Bfrp572/woman.png';
+            } else {
+                avatarImg.src = 'https://i.ibb.co/6JxYzd3/man.png';
+            }
+
+            fetch('/v1/api/getStaffAttendanceStatus')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.attendanceMarked) {
+                        document.getElementById('staffAttendanceBtn').innerText = "Marked";
+                        document.getElementById('staffAttendanceBtn').disabled = true;
+                    }
+                });
+                
+            document.getElementById('attachment').addEventListener('change', function(e) {
+                const fileName = e.target.files[0] ? e.target.files[0].name : '';
+                document.getElementById('fileName').textContent = fileName;
+            });
+            
+            document.getElementById('startDate').addEventListener('change', function() {
+                document.getElementById('endDate').min = this.value;
+            });
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').min = today;
+        };
+
+        function openLeavePopup() {
+            const popup = document.getElementById('leavePopup');
+            popup.classList.add('active');
+        }
+
+        document.getElementById('closeLeavePopup').addEventListener('click', function() {
+            closeLeavePopup();
+        });
+
+        document.getElementById('leavePopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLeavePopup();
+            }
+        });
+
+        function closeLeavePopup() {
+            const leavePopup = document.getElementById('leavePopup');
+            
+            leavePopup.classList.remove('active');
+            
+            setTimeout(function() {
+                leavePopup.style.display = 'none';
+                
+                setTimeout(function() {
+                    leavePopup.style.display = '';
+                    leavePopup.style.opacity = '';
+                    leavePopup.style.visibility = 'hidden';
+                }, 50);
+            }, 300);
+        }
+
+        function submitLeaveApplication(event) {
+            event.preventDefault();
+            
+            const leaveType = document.getElementById('leaveType').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const reason = document.getElementById('reason').value;
+            const attachment = document.getElementById('attachment').files[0];
+            
+            const formData = new FormData();
+            formData.append('leaveType', leaveType);
+            formData.append('startDate', startDate);
+            formData.append('endDate', endDate);
+            formData.append('reason', reason);
+            if (attachment) {
+                formData.append('attachment', attachment);
+            }
+            
+            showAttendancePopup("Processing your request...", true);
+            
+            document.getElementById('leavePopup').style.display = 'none';
+            document.getElementById('leavePopup').style.visibility = 'hidden';
+            document.getElementById('leavePopup').classList.remove('active');
+            
+            fetch('/v1/api/applyLeave', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('leaveForm').reset();
+                    document.getElementById('fileName').textContent = '';
+                    
+                    showAttendancePopup(data.message, true);
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    showAttendancePopup(data.message, false);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting leave application:', error);
+                showAttendancePopup("An error occurred. Please try again.", false);
+            });
+        }
+
+        function submitStaffAttendance() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(attendanceSuccess, attendanceError, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                });
+            } else {
+                showAttendancePopup("Geolocation is not supported by your browser.", false);
+            }
+        }
+
+        function attendanceSuccess(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            fetch('/v1/api/staffSelfAttendance', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ latitude, longitude })
+            })
+            .then(response => response.json())
+            .then(data => {
+                showAttendancePopup(data.message, data.success);
+
+                if (data.success) {
+                    document.getElementById('staffAttendanceBtn').innerText = "Marked";
+                    document.getElementById('staffAttendanceBtn').disabled = true;
+                }
+            });
+        }
+
+        function attendanceError() {
+            showAttendancePopup("Unable to retrieve location.", false);
+        }
+
+        function showAttendancePopup(message, success) {
+            const popup = document.getElementById('attendancePopup');
+            const popupText = document.getElementById('attendancePopupText');
+            
+            popupText.innerText = message;
+            popup.style.backgroundColor = success ? "#10b981" : "#ef4444";
+            popup.style.display = "block";
+
+            setTimeout(() => {
+                popup.style.display = "none";
+            }, 5000);
+        }
+        
+        function openLeaveHistoryPopup() {
+            const popup = document.getElementById('leaveHistoryPopup');
+            popup.classList.add('active');
+            
+            document.getElementById('leaveHistoryLoading').style.display = 'flex';
+            document.getElementById('leaveHistoryTable').style.display = 'none';
+            document.getElementById('leaveHistoryEmpty').style.display = 'none';
+            
+            fetchLeaveHistory();
+        }
+        
+        document.getElementById('closeHistoryPopup').addEventListener('click', function() {
+            document.getElementById('leaveHistoryPopup').classList.remove('active');
+        });
+        
+        document.getElementById('leaveHistoryPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        function fetchLeaveHistory() {
+            fetch('/v1/api/staff/leaveHistory')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('leaveHistoryLoading').style.display = 'none';
+                    
+                    if (data.success && data.data && data.data.length > 0) {
+                        leaveHistoryData = data.data;
+                        filteredLeaveHistory = [...leaveHistoryData];
+                        
+                        populateLeaveHistoryTable(filteredLeaveHistory);
+                        
+                        document.getElementById('leaveHistoryTable').style.display = 'block';
+                    } else {
+                        document.getElementById('leaveHistoryEmpty').style.display = 'flex';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching leave history:', error);
+                    document.getElementById('leaveHistoryLoading').style.display = 'none';
+                    document.getElementById('leaveHistoryEmpty').style.display = 'flex';
+                    document.getElementById('leaveHistoryEmpty').querySelector('.empty-state-text').textContent = 
+                        'An error occurred while fetching leave history. Please try again later.';
+                });
+        }
+        
+        function populateLeaveHistoryTable(data) {
+            const tableBody = document.getElementById('leaveHistoryTableBody');
+            tableBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                document.getElementById('leaveHistoryTable').style.display = 'none';
+                document.getElementById('leaveHistoryEmpty').style.display = 'flex';
+                return;
+            }
+            
+            document.getElementById('leaveHistoryTable').style.display = 'block';
+            document.getElementById('leaveHistoryEmpty').style.display = 'none';
+            
+            data.forEach(leave => {
+                const row = document.createElement('tr');
+                
+                const startDate = new Date(leave.startDate);
+                const endDate = new Date(leave.endDate);
+                const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                
+                const formattedStartDate = formatDate(startDate);
+                const formattedEndDate = formatDate(endDate);
+                const formattedAppliedDate = formatDate(new Date(leave.appliedOn));
+                
+                let statusClass = '';
+                if (leave.status === 'Approved') {
+                    statusClass = 'badge-approved';
+                } else if (leave.status === 'Rejected') {
+                    statusClass = 'badge-rejected';
+                } else {
+                    statusClass = 'badge-pending';
+                }
+                
+                row.innerHTML = `
+                    <td>${leave.type}</td>
+                    <td>${formattedStartDate}</td>
+                    <td>${formattedEndDate}</td>
+                    <td>${days}</td>
+                    <td>${leave.reason}</td>
+                    <td>${formattedAppliedDate}</td>
+                    <td><span class="badge ${statusClass}">${leave.status}</span></td>
+                    <td>${leave.adminComment || '-'}</td>
+                    <td>
+                        <a href="${leave.attachment}" class="attachment-link" target="_blank">
+                                <i class="fas fa-paperclip"></i> View
+                        </a>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function filterLeaveHistory() {
+            const leaveType = document.getElementById('leaveTypeFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const year = document.getElementById('yearFilter').value;
+            
+            filteredLeaveHistory = leaveHistoryData.filter(leave => {
+                const leaveDate = new Date(leave.startDate);
+                const leaveYear = leaveDate.getFullYear().toString();
+                
+                const matchesType = leaveType === '' || leave.type === leaveType;
+                const matchesStatus = status === '' || leave.status === status;
+                const matchesYear = year === '' || leaveYear === year;
+                
+                return matchesType && matchesStatus && matchesYear;
+            });
+            
+            populateLeaveHistoryTable(filteredLeaveHistory);
+        }
+        
+        function formatDate(date) {
+            if (!date || isNaN(date.getTime())) return '-';
+            
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            
+            return `${day}/${month}/${year}`;
+        }
+        
+        function hideUpdateButton() {
+        }
+    </script>
+</body>
+</html>

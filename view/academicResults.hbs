@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Exam Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #4338ca;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 1rem;
+            /* Reduced padding for smaller header */
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            height: 100vh;
+            margin: 0 auto;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .py-5 {
+            padding-top: 10px !important;
+            padding-bottom: 3rem !important;
+        }
+
+        .table {
+            vertical-align: middle;
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border-bottom: none;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.5em 0.8em;
+            border-radius: 6px;
+        }
+
+        .badge-pass {
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #198754;
+        }
+
+        .badge-fail {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .btn {
+            border-radius: 6px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-warning {
+            background-color: #ff9e00;
+            border-color: #ff9e00;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #f08c00;
+            border-color: #f08c00;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #20c997;
+            border-color: #20c997;
+        }
+
+        .btn-success:hover {
+            background-color: #1ba87e;
+            border-color: #1ba87e;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            border: 1px solid #dee2e6;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            border-radius: 12px 12px 0 0;
+            padding: 1.5rem;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .toast {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            min-width: 300px;
+        }
+
+        .summary-card {
+            border-left: 4px solid var(--primary-color);
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
+            {
+                {
+                !-- .summary-card:hover {
+                    transform: translateY(-5px);
+                }
+
+                --
+            }
+        }
+
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.5rem;
+        }
+
+        .add-form-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .back-btn:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn i {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                border-radius: 8px;
+            }
+
+            .summary-row {
+                flex-direction: column;
+            }
+
+            .summary-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{{backUrl}}" class="back-btn" title="Back to Dashboard">
+                                <i class="bi bi-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="mb-0">{{student.name}}'s Exam Results</h4>
+                            <p class="text-white-50 mb-0">Student ID: {{student.studentId}}</p>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4 summary-row">
+            <div class="col-md-3 mb-3 mb-md-0">
+                <div class="card summary-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon bg-primary-subtle text-primary me-3">
+                            <i class="bi bi-journal-check"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Total Subjects</h6>
+                            <h3 class="mb-0">{{student.examResults.length}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3 mb-md-0">
+                <div class="card summary-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon bg-success-subtle text-success me-3">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Passed</h6>
+                            <h3 class="mb-0" id="passedCount">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3 mb-md-0">
+                <div class="card summary-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon bg-danger-subtle text-danger me-3">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Failed</h6>
+                            <h3 class="mb-0" id="failedCount">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card summary-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="summary-icon bg-info-subtle text-info me-3">
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Avg. Grade</h6>
+                            <h3 class="mb-0" id="avgGrade">-</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <i class="bi bi-table me-2"></i>Exam Results
+                </h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Semester</th>
+                                <th style="text-align: center;">Subject Code</th>
+                                <th style="text-align: center;">Subject Name</th>
+                                <th style="text-align: center;">Grade</th>
+                                <th style="text-align: center;">Result</th>
+                                <th style="text-align: center;" {{!-- class="text-end" --}}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTable">
+                            {{#each student.examResults}}
+                            <tr id="row-{{this._id}}">
+                                <td style="text-align: center;">
+                                    <span class="badge bg-primary-subtle text-primary">
+                                        Semester {{this.semester}}
+                                    </span>
+                                </td>
+                                <td style="text-align: center;">{{this.subjectCode}}</td>
+                                <td style="text-align: center;">{{this.subjectName}}</td>
+                                <td style="text-align: center;">
+                                    <span class="fw-medium">{{this.grade}}</span>
+                                </td>
+                                <td style="text-align: center;">
+                                    {{#if (eq this.result "PASS")}}
+                                    <span class="badge badge-pass">
+                                        <i class="bi bi-check-circle-fill me-1"></i>PASS
+                                    </span>
+                                    {{else}}
+                                    <span class="badge badge-fail">
+                                        <i class="bi bi-x-circle-fill me-1"></i>RA
+                                    </span>
+                                    {{/if}}
+                                </td>
+                                <td {{!-- class="text-end" --}} style="text-align: center;">
+                                    <button class="btn btn-sm btn-warning edit-btn" data-bs-toggle="modal"
+                                        data-bs-target="#editModal" data-id="{{this._id}}"
+                                        data-semester="{{this.semester}}" data-code="{{this.subjectCode}}"
+                                        data-subject="{{this.subjectName}}" data-grade="{{this.grade}}"
+                                        data-result="{{this.result}}">
+                                        <i class="bi bi-pencil-square me-1"></i>Edit
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Result Form -->
+        <div class="add-form-section">
+            <form id="addResultForm" class="needs-validation" novalidate>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <i class="bi bi-plus-circle-fill text-primary me-2 fs-4"></i>
+                        <h5 class="d-inline mb-0">Add New Exam Result</h5>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-lg me-2"></i>Add Result
+                    </button>
+                </div>
+
+                <input type="hidden" name="studentId" value="{{student._id}}">
+
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="semesterInput" class="form-label">Semester</label>
+                        <input type="number" name="semester" class="form-control" id="semesterInput"
+                            placeholder="Enter semester" required>
+                        <div class="invalid-feedback">Please enter a semester number.</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="subjectCodeInput" class="form-label">Subject Code</label>
+                        <select name="subjectCode" class="form-select" id="subjectCodeInput" required>
+                            <option value="" selected disabled>Select Subject Code</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a subject code.</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="subjectNameInput" class="form-label">Subject Name</label>
+                        <input type="text" name="subjectName" class="form-control" id="subjectNameInput"
+                            placeholder="Subject Name" readonly required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="gradeInput" class="form-label">Grade</label>
+                        <input type="text" name="grade" class="form-control" id="gradeInput" placeholder="Enter grade"
+                            required>
+                        <div class="invalid-feedback">Please enter a grade.</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="resultInput" class="form-label">Result</label>
+                        <select name="result" class="form-select" id="resultInput" required>
+                            <option value="PASS">PASS</option>
+                            <option value="RA">RA</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container">
+        <div id="toastMessage" class="toast align-items-center text-white bg-success" role="alert" aria-live="assertive"
+            aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span id="toastText"></span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Exam Result Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="editModalLabel">
+                        <i class="bi bi-pencil-square me-2"></i>Edit Exam Result
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editResultForm" class="needs-validation" novalidate>
+                        <input type="hidden" name="studentId" value="{{student._id}}">
+                        <input type="hidden" name="resultId" id="editResultId">
+                        <div class="mb-3">
+                            <label for="editSemester" class="form-label">Semester</label>
+                            <input type="number" id="editSemester" name="semester" value="{{student.semester}}"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter a semester number.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSubjectCode" class="form-label">Subject Code</label>
+                            <input type="text" id="editSubjectCode" name="subjectCode" value="{{student.subjectCode}}"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter a subject code.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSubjectName" class="form-label">Subject Name</label>
+                            <input type="text" id="editSubjectName" name="subjectName" value="{{student.subjectName}}"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter a subject name.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editGrade" class="form-label">Grade</label>
+                            <input type="text" id="editGrade" name="grade" value="{{student.grade}}"
+                                class="form-control" required>
+                            <div class="invalid-feedback">Please enter a grade.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editResult" class="form-label">Result</label>
+                            <select id="editResult" name="result" class="form-select">
+                                <option value="PASS">PASS</option>
+                                <option value="RA">RA</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-1"></i>Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        function showToast(message, type) {
+            const toastEl = document.getElementById("toastMessage");
+            const toastText = document.getElementById("toastText");
+            toastText.textContent = message;
+
+
+            const iconElement = toastEl.querySelector('.bi');
+            if (type === 'success') {
+                iconElement.className = 'bi bi-check-circle-fill me-2';
+            } else if (type === 'danger') {
+                iconElement.className = 'bi bi-exclamation-circle-fill me-2';
+            } else if (type === 'warning') {
+                iconElement.className = 'bi bi-exclamation-triangle-fill me-2';
+            } else if (type === 'info') {
+                iconElement.className = 'bi bi-info-circle-fill me-2';
+            }
+
+            toastEl.className = `toast align-items-center text-white bg-${type}`;
+            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        }
+
+
+        function validateForm(form) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+                return false;
+            }
+            return true;
+        }
+
+
+        function updateSummaryStats() {
+            const rows = document.querySelectorAll('#resultsTable tr');
+            let passCount = 0;
+            let failCount = 0;
+            let totalGradePoints = 0;
+            let validGradeCount = 0;
+
+            rows.forEach(row => {
+                const resultCell = row.querySelector('td:nth-child(4)');
+                if (resultCell && resultCell.textContent.includes('PASS')) {
+                    passCount++;
+                } else if (resultCell) {
+                    failCount++;
+                }
+
+
+                const gradeCell = row.querySelector('td:nth-child(3)');
+                if (gradeCell) {
+                    const grade = gradeCell.textContent.trim();
+                    let gradePoint = 0;
+
+
+                    if (grade === 'S' || grade === 'A+') gradePoint = 10;
+                    else if (grade === 'A') gradePoint = 9;
+                    else if (grade === 'B+') gradePoint = 8;
+                    else if (grade === 'B') gradePoint = 7;
+                    else if (grade === 'C+') gradePoint = 6;
+                    else if (grade === 'C') gradePoint = 5;
+                    else if (grade === 'D') gradePoint = 4;
+                    else if (grade === 'E' || grade === 'F') gradePoint = 0;
+
+                    if (gradePoint > 0) {
+                        totalGradePoints += gradePoint;
+                        validGradeCount++;
+                    }
+                }
+            });
+
+            document.getElementById('passedCount').textContent = passCount;
+            document.getElementById('failedCount').textContent = failCount;
+
+            const avgGrade = validGradeCount > 0 ? (totalGradePoints / validGradeCount).toFixed(2) : '-';
+            document.getElementById('avgGrade').textContent = avgGrade;
+        }
+
+
+        document.getElementById("addResultForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.target;
+
+            if (!validateForm(form)) return;
+
+            const formData = new FormData(form);
+            try {
+                const response = await fetch("/v1/api/examResults/add", {
+                    method: "POST",
+                    body: new URLSearchParams(formData),
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showToast(data.message, "success");
+                    form.reset();
+                    form.classList.remove('was-validated');
+                    setTimeout(() => { window.location.reload(); }, 2000);
+                } else {
+                    showToast(data.message || "An error occurred", "danger");
+                }
+            } catch (error) {
+                showToast("Failed to add result. Please try again.", "danger");
+                console.error("Error:", error);
+            }
+        });
+
+
+        document.querySelectorAll(".edit-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                document.getElementById("editResultId").value = this.dataset.id;
+                document.getElementById("editSemester").value = this.dataset.semester;
+                document.getElementById("editSubjectCode").value = this.dataset.code;
+                document.getElementById("editSubjectName").value = this.dataset.subject;
+                document.getElementById("editGrade").value = this.dataset.grade;
+                document.getElementById("editResult").value = this.dataset.result;
+            });
+        });
+
+
+        document.getElementById("editResultForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const form = event.target;
+
+            if (!validateForm(form)) return;
+
+            const formData = new FormData(form);
+            try {
+                const response = await fetch("/v1/api/examResults/update", {
+                    method: "POST",
+                    body: new URLSearchParams(formData),
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showToast(data.message, "success");
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+                    modal.hide();
+                    setTimeout(() => { window.location.reload(); }, 2000);
+                } else {
+                    showToast(data.message || "An error occurred", "danger");
+                }
+            } catch (error) {
+                showToast("Failed to update result. Please try again.", "danger");
+                console.error("Error:", error);
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            updateSummaryStats();
+
+
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+
+
+            const subjectCodeInput = document.getElementById("subjectCodeInput");
+            const subjectNameInput = document.getElementById("subjectNameInput");
+
+            try {
+                const response = await fetch("/v1/api/getSubjectCodes");
+                const data = await response.json();
+
+                if (data.success) {
+                    data.subjects.forEach(subject => {
+                        const option = document.createElement("option");
+                        option.value = subject.subjectCode;
+                        option.textContent = subject.subjectCode;
+                        option.dataset.subjectName = subject.subjectName;
+                        subjectCodeInput.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching subjects:", error);
+            }
+
+
+            subjectCodeInput.addEventListener("change", function () {
+                const selectedOption = subjectCodeInput.options[subjectCodeInput.selectedIndex];
+                subjectNameInput.value = selectedOption.dataset.subjectName || "";
+            });
+        });
+    </script>
+</body>
+
+</html>

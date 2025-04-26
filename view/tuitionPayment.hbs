@@ -109,7 +109,7 @@
       <p>{{studentData.phone}}</p>
     </div>
 
-    <form action="/ssm/mca/createPaymentStripe" method="POST" id="payment-form">
+    <form action="/v1/api/createPaymentStripe" method="POST" id="payment-form">
       <label for="pendingFee">Pending Tuition Fees (INR):</label>
       <input type="number" name="pendingFee" id="pendingFee" value="{{studentData.pendingFee}}" readonly required />
 
@@ -129,7 +129,7 @@
       <button type="submit">Pay with Stripepay</button>
       <input type="hidden" name="stripeToken" id="stripeToken">
     </form>
-      <button onclick="window.location.href='/ssm/mca/studentProfile';">Cancel</button>
+      <button onclick="window.location.href='/v1/api/studentProfile';">Cancel</button>
   </div>
 
   <script>

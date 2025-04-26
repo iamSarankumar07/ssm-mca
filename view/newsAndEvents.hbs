@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSM College - News & Events Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary-color: #4f46e5;
+        --primary-dark: #4338ca;
+        --secondary-color: #f72585;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --light-bg: #f8fafc;
+        --card-bg: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border-color: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        --radius-sm: 0.375rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: 'Inter', sans-serif;
+        background-color: var(--light-bg);
+        color: var(--text-primary);
+        width: 100%;
+    }
+
+    .container {
+        height: 100vh;
+        width: 100%;
+        max-width: 100%;
+        padding: 1.5rem;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .admin-container {
+        background-color: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 2rem;
+        margin-bottom: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .admin-header {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        width: 100%;
+    }
+
+    .admin-header h1 {
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .admin-header p {
+        color: var(--text-secondary);
+        margin-bottom: 0;
+    }
+
+    .back-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
+        transition: all 0.2s ease;
+    }
+
+    .nav-tabs {
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 1.5rem;
+        gap: 0.5rem;
+        flex-shrink: 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .nav-tabs .nav-link {
+        font-weight: 600;
+        color: var(--text-secondary);
+        border: none;
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        transition: all 0.2s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: var(--primary-color);
+        background-color: rgba(67, 97, 238, 0.05);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        border-bottom: 3px solid var(--primary-color);
+        background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .nav-pills {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .nav-pills .nav-link {
+        color: var(--text-secondary);
+        font-weight: 500;
+        border-radius: var(--radius-md);
+        padding: 0.5rem 1.25rem;
+        transition: all 0.2s ease;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .tab-content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .tab-pane {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        max-width: 100%;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .form-check-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 200px;
+        border: 2px dashed var(--border-color);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        background-color: rgba(67, 97, 238, 0.05);
+        transition: all 0.2s ease;
+    }
+
+    .image-preview:hover {
+        border-color: var(--primary-color);
+    }
+
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .image-preview-text {
+        color: var(--text-secondary);
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .image-preview-text i {
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    .btn {
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+    }
+
+    .btn-outline-primary {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover, .btn-outline-primary:focus {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-submit {
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .items-container {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0.5rem;
+        width: 100%;
+    }
+
+    .item-card {
+        margin-bottom: 1.25rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-sm);
+        width: 100%;
+    }
+
+    .item-card:hover {
+        box-shadow: var(--shadow-md);
+    }
+
+    .item-card .card-body {
+        padding: 1.25rem;
+    }
+
+    .item-card .card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .item-card .card-text {
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+    }
+
+    .item-card img {
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+    }
+
+    .item-actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        font-weight: 500;
+        padding: 0.5rem 0.75rem;
+        border-radius: var(--radius-sm);
+    }
+
+    .badge.bg-success {
+        background-color: var(--success-color) !important;
+    }
+
+    .badge.bg-warning {
+        background-color: var(--warning-color) !important;
+    }
+
+    .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+    }
+
+    .spinner-border {
+        color: var(--primary-color);
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .search-container {
+        position: relative;
+        margin-bottom: 1.5rem;
+        width: 100%;
+    }
+
+    .search-container i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+    }
+
+    .search-input {
+        padding-left: 2.75rem;
+        background-color: rgba(67, 97, 238, 0.05);
+        border: 1px solid var(--border-color);
+        width: 100%;
+    }
+
+    .search-input:focus {
+        background-color: white;
+    }
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        padding: 0.35rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+    }
+
+    .status-published {
+        background-color: rgba(16, 185, 129, 0.1);
+        color: var(--success-color);
+    }
+
+    .status-draft {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: var(--warning-color);
+    }
+
+    .status-indicator::before {
+        content: "";
+        display: inline-block;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background-color: currentColor;
+    }
+
+    .featured-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 0.35rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 10;
+    }
+
+    .modal-content {
+        border-radius: var(--radius-lg);
+        border: none;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.5rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color);
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .upload-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1050;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: var(--radius-lg);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .upload-progress {
+        margin: 1.5rem 0;
+    }
+
+    .progress {
+        height: 0.75rem;
+        border-radius: 1rem;
+        background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .progress-bar {
+        background-color: var(--primary-color);
+        border-radius: 1rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--text-secondary);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--border-color);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h4 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .updated-indicator {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 0.35rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 10;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(67, 97, 238, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(67, 97, 238, 0);
+        }
+    }
+
+    /* Fix for horizontal scrolling */
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    /* Ensure all content fits within containers */
+    form {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .admin-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .back-btn {
+            align-self: flex-start;
+        }
+        
+        .item-card .row {
+            flex-direction: column;
+        }
+        
+        .item-card img {
+            height: 200px;
+            width: 100%;
+        }
+
+        .container {
+            padding: 1rem;
+        }
+
+        .admin-container {
+            padding: 1rem;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="admin-container">
+        <div class="admin-header">
+            <a href="/v1/api/dashboard#gallery" class="btn btn-outline-primary back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+            <div class="text-end">
+                <h1 class="h3">News & Events Management</h1>
+                <p class="text-muted">Upload and manage news and events content</p>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs mb-4" id="contentTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="news-tab" data-bs-toggle="tab" data-bs-target="#news-content" type="button" role="tab" aria-controls="news-content" aria-selected="true">
+                    <i class="fas fa-newspaper me-2"></i>News
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events-content" type="button" role="tab" aria-controls="events-content" aria-selected="false">
+                    <i class="fas fa-calendar-alt me-2"></i>Events
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="manage-tab" data-bs-toggle="tab" data-bs-target="#manage-content" type="button" role="tab" aria-controls="manage-content" aria-selected="false">
+                    <i class="fas fa-cog me-2"></i>Manage Items
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="contentTabsContent">
+            <div class="tab-pane fade show active" id="news-content" role="tabpanel" aria-labelledby="news-tab">
+                <form id="newsForm">
+                    <div class="row g-4">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="newsTitle" class="form-label">News Title</label>
+                                <input type="text" class="form-control" id="newsTitle" name="title" placeholder="Enter news title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newsDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="newsDate" name="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newsDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="newsDescription" name="description" rows="5" placeholder="Enter news description" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="newsImage" class="form-label">News Image</label>
+                                <div class="image-preview" id="newsImagePreview">
+                                    <div class="image-preview-text">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Image Preview</span>
+                                    </div>
+                                </div>
+                                <input type="file" class="form-control" id="newsImage" name="image" accept="image/*" required>
+                                <div class="form-text">Recommended size: 800x450 pixels (16:9 ratio)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newsStatus" class="form-label">Status</label>
+                                <select class="form-select" id="newsStatus" name="status">
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="newsFeatured" name="featured">
+                                    <label for="newsFeatured" class="form-check-label">
+                                        Featured News
+                                    </label>
+                                    <div class="form-text">Featured news will be displayed prominently on the website</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="reset" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-redo me-2"></i>Reset
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-upload me-2"></i>Upload News
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="events-content" role="tabpanel" aria-labelledby="events-tab">
+                <form id="eventsForm">
+                    <div class="row g-4">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="eventTitle" class="form-label">Event Title</label>
+                                <input type="text" class="form-control" id="eventTitle" name="title" placeholder="Enter event title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newsDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="newsDate" name="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="eventDescription" name="description" rows="4" placeholder="Enter event description" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="eventImage" class="form-label">Event Image</label>
+                                <div class="image-preview" id="eventImagePreview">
+                                    <div class="image-preview-text">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Image Preview</span>
+                                    </div>
+                                </div>
+                                <input type="file" class="form-control" id="eventImage" name="image" accept="image/*" required>
+                                <div class="form-text">Recommended size: 800x450 pixels (16:9 ratio)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventStatus" class="form-label">Status</label>
+                                <select class="form-select" id="eventStatus" name="status">
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="eventRegistration" name="registration">
+                                    <label for="eventRegistration" class="form-check-label">
+                                        Registration Required
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3 event-registration-url" style="display: none;">
+                                <label for="eventRegistrationUrl" class="form-label">Registration URL</label>
+                                <input type="url" class="form-control" id="eventRegistrationUrl" name="registrationUrl" placeholder="https://example.com/register">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="reset" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-redo me-2"></i>Reset
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-upload me-2"></i>Upload Event
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="manage-content" role="tabpanel" aria-labelledby="manage-tab">
+                <ul class="nav nav-pills mb-4" id="manageItemsTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="manage-news-tab" data-bs-toggle="pill" data-bs-target="#manage-news" type="button" role="tab" aria-controls="manage-news" aria-selected="true">
+                            <i class="fas fa-newspaper me-2"></i>News Items
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="manage-events-tab" data-bs-toggle="pill" data-bs-target="#manage-events" type="button" role="tab" aria-controls="manage-events" aria-selected="false">
+                            <i class="fas fa-calendar-alt me-2"></i>Event Items
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="manageItemsTabsContent">
+                    <div class="tab-pane fade show active" id="manage-news" role="tabpanel" aria-labelledby="manage-news-tab">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="form-control search-input" id="searchNews" placeholder="Search news items...">
+                        </div>
+                        <div class="items-container" id="newsItemsContainer">
+                            <div class="loading-spinner" id="newsLoadingSpinner">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="manage-events" role="tabpanel" aria-labelledby="manage-events-tab">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="form-control search-input" id="searchEvents" placeholder="Search event items...">
+                        </div>
+                        <div class="items-container" id="eventsItemsContainer">
+                            <div class="loading-spinner" id="eventsLoadingSpinner">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editNewsModal" tabindex="-1" aria-labelledby="editNewsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNewsModalLabel">Edit News</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editNewsForm">
+                    <input type="hidden" id="editNewsId" name="id">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="editNewsTitle" class="form-label">News Title</label>
+                                <input type="text" class="form-control" id="editNewsTitle" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editNewsDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="editNewsDate" name="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editNewsDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="editNewsDescription" name="description" rows="5" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="editNewsImage" class="form-label">News Image</label>
+                                <div class="image-preview" id="editNewsImagePreview">
+                                    <div class="image-preview-text">Current Image</div>
+                                </div>
+                                <input type="file" class="form-control" id="editNewsImage" name="image" accept="image/*">
+                                <div class="form-text">Leave empty to keep current image</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editNewsStatus" class="form-label">Status</label>
+                                <select class="form-select" id="editNewsStatus" name="status">
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="editNewsFeatured" name="featured">
+                                    <label for="editNewsFeatured" class="form-check-label">
+                                        Featured News
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveNewsChanges">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editEventForm">
+                    <input type="hidden" id="editEventId" name="id">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="editEventTitle" class="form-label">Event Title</label>
+                                <input type="text" class="form-control" id="editEventTitle" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newsDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="newsDate" name="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editEventLocation" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="editEventLocation" name="location">
+                            </div>
+                            <div class="mb-3">
+                                <label for="editEventDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="editEventDescription" name="description" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="editEventImage" class="form-label">Event Image</label>
+                                <div class="image-preview" id="editEventImagePreview">
+                                    <div class="image-preview-text">Current Image</div>
+                                </div>
+                                <input type="file" class="form-control" id="editEventImage" name="image" accept="image/*">
+                                <div class="form-text">Leave empty to keep current image</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editEventStatus" class="form-label">Status</label>
+                                <select class="form-select" id="editEventStatus" name="status">
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="editEventRegistration" name="registration">
+                                    <label for="editEventRegistration" class="form-check-label">
+                                        Registration Required
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3 edit-event-registration-url" style="display: none;">
+                                <label for="editEventRegistrationUrl" class="form-label">Registration URL</label>
+                                <input type="url" class="form-control" id="editEventRegistrationUrl" name="registrationUrl">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveEventChanges">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                    <h4>Are you sure?</h4>
+                    <p>You are about to delete this item. This action cannot be undone.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">
+                    <i class="fas fa-trash me-2"></i>Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="upload-modal" id="uploadModal">
+    <div class="upload-modal-content">
+        <h4 id="uploadModalTitle">Uploading...</h4>
+        <div class="upload-progress">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+            </div>
+        </div>
+        <p id="uploadModalMessage">Please wait while your content is being uploaded.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    const API_ENDPOINTS = {
+        uploadNews: '/v1/api/admin/upload-news',
+        uploadEvent: '/v1/api/admin/upload-event',
+        fetchNews: '/v1/api/admin/getNews',
+        fetchEvents: '/v1/api/admin/getEvents',
+        updateNews: '/v1/api/admin/updateNews/',
+        updateEvent: '/v1/api/admin/updateEvents/',
+        deleteNews: '/v1/api/admin/deleteNews/',
+        deleteEvent: '/v1/api/admin/deleteEvents/'
+    };
+
+    let deleteItemId = '';
+    let deleteItemType = '';
+    
+    let recentlyUpdatedItems = {
+        news: [],
+        events: []
+    };
+
+    let currentNewsItems = [];
+    let currentEventItems = [];
+
+    let newsDataLoaded = false;
+    let eventsDataLoaded = false;
+
+    function safeGetElement(id) {
+        const element = document.getElementById(id);
+        if (!element) {
+            console.warn(`Element with ID ${id} not found`);
+        }
+        return element;
+    }
+
+    function showUploadModal(title = 'Uploading...', message = 'Please wait while your content is being uploaded.') {
+        try {
+            const titleElement = safeGetElement('uploadModalTitle');
+            const messageElement = safeGetElement('uploadModalMessage');
+            const modalElement = safeGetElement('uploadModal');
+            
+            if (titleElement) titleElement.textContent = title;
+            if (messageElement) messageElement.textContent = message;
+            if (modalElement) modalElement.style.display = 'flex';
+        } catch (error) {
+            console.error('Error showing upload modal:', error);
+        }
+    }
+
+    function hideUploadModal() {
+        try {
+            const modalElement = safeGetElement('uploadModal');
+            if (modalElement) modalElement.style.display = 'none';
+        } catch (error) {
+            console.error('Error hiding upload modal:', error);
+        }
+    }
+
+    function showToast(message, success = true) {
+        try {
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: success ? "#10b981" : "#ef4444",
+                stopOnFocus: true,
+                className: "toast-notification"
+            }).showToast();
+        } catch (error) {
+            console.error('Error showing toast:', error);
+            alert(message);
+        }
+    }
+
+    function formatDate(dateString) {
+        try {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return dateString;
+        }
+    }
+
+    function truncateText(text, maxLength) {
+        if (!text) return '';
+        if (text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + '...';
+    }
+
+    function getStatusColor(status) {
+        return status === 'published' ? 'success' : 'warning';
+    }
+
+    function setupImagePreview(inputId, previewId) {
+        try {
+            const input = safeGetElement(inputId);
+            const preview = safeGetElement(previewId);
+            
+            if (!input || !preview) {
+                console.error(`Image preview setup failed: Element with ID ${inputId} or ${previewId} not found`);
+                return;
+            }
+            
+            input.addEventListener('change', function() {
+                try {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            try {
+                                const previewElement = safeGetElement(previewId);
+                                if (previewElement) {
+                                    previewElement.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                                }
+                            } catch (innerError) {
+                                console.error('Error in FileReader onload:', innerError);
+                            }
+                        };
+                        
+                        reader.onerror = function(e) {
+                            console.error('FileReader error:', e);
+                            showToast('Error loading image preview', false);
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    } else {
+                        const previewElement = safeGetElement(previewId);
+                        if (previewElement) {
+                            previewElement.innerHTML = `
+                                <div class="image-preview-text">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Image Preview</span>
+                                </div>
+                            `;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error handling file change:', error);
+                }
+            });
+        } catch (error) {
+            console.error('Error setting up image preview:', error);
+        }
+    }
+    
+    function setupRegistrationToggle(checkboxId, containerClass) {
+        try {
+            const checkbox = safeGetElement(checkboxId);
+            if (!checkbox) {
+                console.error(`Registration toggle setup failed: Element with ID ${checkboxId} not found`);
+                return;
+            }
+            
+            checkbox.addEventListener('change', function() {
+                try {
+                    const registrationUrlDiv = document.querySelector('.' + containerClass);
+                    if (registrationUrlDiv) {
+                        registrationUrlDiv.style.display = this.checked ? 'block' : 'none';
+                    }
+                } catch (error) {
+                    console.error('Error in registration toggle change handler:', error);
+                }
+            });
+        } catch (error) {
+            console.error('Error setting up registration toggle:', error);
+        }
+    }
+    
+    async function handleNewsSubmit(event) {
+        event.preventDefault();
+        
+        try {
+            const form = safeGetElement('newsForm');
+            if (!form) {
+                showToast('News form not found', false);
+                return;
+            }
+            
+            const formData = new FormData(form);
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            showUploadModal('Uploading News', 'Please wait while your news item is being uploaded.');
+            
+            const response = await fetch(API_ENDPOINTS.uploadNews, {
+                method: 'POST',
+                body: formData
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error('Failed to upload news');
+            }
+            
+            const result = await response.json();
+            
+            if (result && result._id) {
+                recentlyUpdatedItems.news.push(result._id);
+                if (recentlyUpdatedItems.news.length > 5) {
+                    recentlyUpdatedItems.news.shift();
+                }
+            }
+            
+            showToast('News uploaded successfully!', true);
+            
+            form.reset();
+            const imagePreview = safeGetElement('newsImagePreview');
+            if (imagePreview) {
+                imagePreview.innerHTML = `
+                    <div class="image-preview-text">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Image Preview</span>
+                    </div>
+                `;
+            }
+            
+            await refreshAllNewsData();
+            
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error('Error uploading news:', error);
+            showToast('Error uploading news: ' + error.message, false);
+        }
+    }
+    
+    async function handleEventSubmit(event) {
+        event.preventDefault();
+        
+        try {
+            const form = safeGetElement('eventsForm');
+            if (!form) {
+                showToast('Events form not found', false);
+                return;
+            }
+            
+            const formData = new FormData(form);
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            showUploadModal('Uploading Event', 'Please wait while your event item is being uploaded.');
+            
+            const response = await fetch(API_ENDPOINTS.uploadEvent, {
+                method: 'POST',
+                body: formData
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error('Failed to upload event');
+            }
+            
+            const result = await response.json();
+            
+            if (result && result._id) {
+                recentlyUpdatedItems.events.push(result._id);
+                if (recentlyUpdatedItems.events.length > 5) {
+                    recentlyUpdatedItems.events.shift();
+                }
+            }
+            
+            showToast('Event uploaded successfully!', true);
+            
+            form.reset();
+            const imagePreview = safeGetElement('eventImagePreview');
+            if (imagePreview) {
+                imagePreview.innerHTML = `
+                    <div class="image-preview-text">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Image Preview</span>
+                    </div>
+                `;
+            }
+            
+            const registrationUrlDiv = document.querySelector('.event-registration-url');
+            if (registrationUrlDiv) {
+                registrationUrlDiv.style.display = 'none';
+            }
+            
+            await refreshAllEventData();
+            
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error('Error uploading event:', error);
+            showToast('Error uploading event: ' + error.message, false);
+        }
+    }
+    
+    async function fetchNewsItems() {
+        try {
+            console.log('Fetching news items from API...');
+            {{!-- showToast('Loading news items...', true); --}}
+            
+            const response = await fetch(API_ENDPOINTS.fetchNews);
+            if (!response.ok) {
+                throw new Error('Failed to fetch news items');
+            }
+            const data = await response.json();
+            console.log('News items fetched successfully:', data.length);
+            
+            currentNewsItems = data;
+            newsDataLoaded = true;
+            return data;
+        } catch (error) {
+            console.error('Error fetching news:', error);
+            showToast('Error fetching news: ' + error.message, false);
+            return [];
+        }
+    }
+    
+    async function fetchEventItems() {
+        try {
+            console.log('Fetching event items from API...');
+            {{!-- showToast('Loading event items...', true); --}}
+            
+            const response = await fetch(API_ENDPOINTS.fetchEvents);
+            if (!response.ok) {
+                throw new Error('Failed to fetch event items');
+            }
+            const data = await response.json();
+            console.log('Event items fetched successfully:', data.length);
+            
+            currentEventItems = data;
+            eventsDataLoaded = true;
+            return data;
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            showToast('Error fetching events: ' + error.message, false);
+            return [];
+        }
+    }
+    
+    function renderNewsItems(newsItems) {
+        try {
+            const container = safeGetElement('newsItemsContainer');
+            const spinner = safeGetElement('newsLoadingSpinner');
+            
+            if (!container) {
+                console.error('News items container not found');
+                return;
+            }
+            
+            if (spinner) {
+                spinner.style.display = 'none';
+            }
+            
+            if (!newsItems || newsItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-newspaper"></i>
+                        <h4>No News Items Found</h4>
+                        <p>Start by adding your first news item</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            newsItems.forEach(item => {
+                try {
+                    if (!item || !item._id) {
+                        console.warn('Invalid news item:', item);
+                        return;
+                    }
+                    
+                    const isUpdated = recentlyUpdatedItems.news.includes(item._id);
+                    const featuredBadge = item.featured ? `<div class="featured-badge"><i class="fas fa-star me-1"></i>Featured</div>` : '';
+                    const updatedBadge = isUpdated ? `<div class="updated-indicator"><i class="fas fa-sync-alt me-1"></i>Updated</div>` : '';
+                    
+                    html += `
+                        <div class="card item-card position-relative" data-id="${item._id}">
+                            ${featuredBadge}
+                            ${updatedBadge}
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <img src="${item.imageUrl}" class="img-fluid rounded-start" alt="${item.title}">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="card-title mb-0">${item.title}</h5>
+                                            <span class="status-indicator ${item.status === 'published' ? 'status-published' : 'status-draft'}">
+                                                ${item.status}
+                                            </span>
+                                        </div>
+                                        <p class="card-text">${truncateText(item.description, 120)}</p>
+                                        <p class="card-text"><small class="text-muted"><i class="far fa-calendar-alt me-1"></i>${formatDate(item.date)}</small></p>
+                                        <div class="item-actions">
+                                            <button class="btn btn-sm btn-outline-primary edit-news" data-id="${item._id}">
+                                                <i class="fas fa-edit me-1"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger delete-item" data-id="${item._id}" data-type="news">
+                                                <i class="fas fa-trash me-1"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } catch (itemError) {
+                    console.error('Error rendering news item:', itemError);
+                }
+            });
+            
+            container.innerHTML = html;
+            
+            document.querySelectorAll('.edit-news').forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const newsId = this.getAttribute('data-id');
+                        openNewsEditModal(newsId, newsItems);
+                    } catch (error) {
+                        console.error('Error in edit news button click handler:', error);
+                        showToast('Error opening edit modal', false);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.delete-item[data-type="news"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const itemId = this.getAttribute('data-id');
+                        openDeleteModal(itemId, 'news');
+                    } catch (error) {
+                        console.error('Error in delete news button click handler:', error);
+                        showToast('Error opening delete modal', false);
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Error rendering news items:', error);
+            showToast('Error displaying news items', false);
+        }
+    }
+    
+    function renderEventItems(eventItems) {
+        try {
+            const container = safeGetElement('eventsItemsContainer');
+            const spinner = safeGetElement('eventsLoadingSpinner');
+            
+            if (!container) {
+                console.error('Events items container not found');
+                return;
+            }
+            
+            if (spinner) {
+                spinner.style.display = 'none';
+            }
+            
+            if (!eventItems || eventItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h4>No Event Items Found</h4>
+                        <p>Start by adding your first event</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            eventItems.forEach(item => {
+                try {
+                    if (!item || !item._id || !item.title) {
+                        console.warn('Invalid event item:', item);
+                        return;
+                    }
+                    
+                    const isUpdated = recentlyUpdatedItems.events.includes(item._id);
+                    const registrationBadge = item.registration ? `<div class="featured-badge" style="background-color: var(--primary-color);"><i class="fas fa-user-plus me-1"></i>Registration</div>` : '';
+                    const updatedBadge = isUpdated ? `<div class="updated-indicator"><i class="fas fa-sync-alt me-1"></i>Updated</div>` : '';
+                    const locationInfo = item.location ? `<p class="card-text mb-1"><small><i class="fas fa-map-marker-alt me-1"></i>${item.location}</small></p>` : '';
+                    
+                    html += `
+                        <div class="card item-card position-relative" data-id="${item._id}">
+                            ${registrationBadge}
+                            ${updatedBadge}
+                            <div class="row g-0">
+                                <div class="col-md-3">
+                                    <img src="${item.imageUrl}" class="img-fluid rounded-start" alt="${item.title}">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h5 class="card-title mb-0">${item.title}</h5>
+                                            <span class="status-indicator ${item.status === 'published' ? 'status-published' : 'status-draft'}">
+                                                ${item.status}
+                                            </span>
+                                        </div>
+                                        <p class="card-text">${truncateText(item.description, 100)}</p>
+                                        <p class="card-text mb-1"><small><i class="far fa-calendar-alt me-1"></i>${formatDate(item.date)}${item.time ? ' at ' + formatTime(item.time) : ''}</small></p>
+                                        ${locationInfo}
+                                        <div class="item-actions">
+                                            <button class="btn btn-sm btn-outline-primary edit-event" data-id="${item._id}">
+                                                <i class="fas fa-edit me-1"></i> Edit
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger delete-item" data-id="${item._id}" data-type="event">
+                                                <i class="fas fa-trash me-1"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } catch (itemError) {
+                    console.error('Error rendering event item:', itemError);
+                }
+            });
+            
+            container.innerHTML = html;
+            
+            document.querySelectorAll('.edit-event').forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const eventId = this.getAttribute('data-id');
+                        openEventEditModal(eventId, eventItems);
+                    } catch (error) {
+                        console.error('Error in edit event button click handler:', error);
+                        showToast('Error opening edit modal', false);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.delete-item[data-type="event"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const itemId = this.getAttribute('data-id');
+                        openDeleteModal(itemId, 'event');
+                    } catch (error) {
+                        console.error('Error in delete event button click handler:', error);
+                        showToast('Error opening delete modal', false);
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Error rendering event items:', error);
+            showToast('Error displaying event items', false);
+        }
+    }
+    
+    function formatTime(timeString) {
+        try {
+            if (!timeString) return '';
+            const [hours, minutes] = timeString.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const hour12 = hour % 12 || 12;
+            return `${hour12}:${minutes} ${ampm}`;
+        } catch (error) {
+            console.error('Error formatting time:', error);
+            return timeString;
+        }
+    }
+    
+    function openNewsEditModal(newsId, newsItems) {
+        try {
+            const newsItem = newsItems.find(item => item._id === newsId);
+            if (!newsItem) {
+                console.error('News item not found:', newsId);
+                showToast('News item not found', false);
+                return;
+            }
+            
+            const idField = safeGetElement('editNewsId');
+            const titleField = safeGetElement('editNewsTitle');
+            const dateField = safeGetElement('editNewsDate');
+            const descriptionField = safeGetElement('editNewsDescription');
+            const statusField = safeGetElement('editNewsStatus');
+            const featuredField = safeGetElement('editNewsFeatured');
+            
+            if (idField) idField.value = newsItem._id;
+            if (titleField) titleField.value = newsItem.title;
+            if (dateField) dateField.value = formatDateForInput(newsItem.date);
+            if (descriptionField) descriptionField.value = newsItem.description;
+            if (statusField) statusField.value = newsItem.status;
+            if (featuredField) featuredField.checked = newsItem.featured || false;
+            
+            const imagePreview = safeGetElement('editNewsImagePreview');
+            if (imagePreview) {
+                imagePreview.innerHTML = `<img src="${newsItem.imageUrl}" alt="Current Image">`;
+            }
+            
+            try {
+                const modalElement = safeGetElement('editNewsModal');
+                if (modalElement) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                } else {
+                    throw new Error('Edit news modal element not found');
+                }
+            } catch (modalError) {
+                console.error('Error showing modal:', modalError);
+                showToast('Error opening edit modal', false);
+            }
+        } catch (error) {
+            console.error('Error opening news edit modal:', error);
+            showToast('Error opening edit modal', false);
+        }
+    }
+    
+    function openEventEditModal(eventId, eventItems) {
+        try {
+            const eventItem = eventItems.find(item => item._id === eventId);
+            if (!eventItem) {
+                console.error('Event item not found:', eventId);
+                showToast('Event item not found', false);
+                return;
+            }
+            
+            const idField = safeGetElement('editEventId');
+            const titleField = safeGetElement('editEventTitle');
+            const dateField = safeGetElement('editEventDate');
+            const descriptionField = safeGetElement('editEventDescription');
+            const statusField = safeGetElement('editEventStatus');
+            const timeField = safeGetElement('editEventTime');
+            const locationField = safeGetElement('editEventLocation');
+            const registrationField = safeGetElement('editEventRegistration');
+            const registrationUrlField = safeGetElement('editEventRegistrationUrl');
+            
+            if (idField) idField.value = eventItem._id;
+            if (titleField) titleField.value = eventItem.title;
+            if (dateField) dateField.value = formatDateForInput(eventItem.date);
+            if (descriptionField) descriptionField.value = eventItem.description;
+            if (statusField) statusField.value = eventItem.status;
+            
+            if (timeField && eventItem.time) {
+                timeField.value = eventItem.time;
+            }
+            
+            if (locationField && eventItem.location) {
+                locationField.value = eventItem.location;
+            }
+            
+            const registrationRequired = eventItem.registration || false;
+            if (registrationField) registrationField.checked = registrationRequired;
+            
+            const registrationUrlDiv = document.querySelector('.edit-event-registration-url');
+            if (registrationUrlDiv) {
+                registrationUrlDiv.style.display = registrationRequired ? 'block' : 'none';
+            }
+            
+            if (registrationUrlField && registrationRequired && eventItem.registrationUrl) {
+                registrationUrlField.value = eventItem.registrationUrl;
+            } else if (registrationUrlField) {
+                registrationUrlField.value = '';
+            }
+            
+            const imagePreview = safeGetElement('editEventImagePreview');
+            if (imagePreview) {
+                imagePreview.innerHTML = `<img src="${eventItem.imageUrl}" alt="Current Image">`;
+            }
+            
+            try {
+                const modalElement = safeGetElement('editEventModal');
+                if (modalElement) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                } else {
+                    throw new Error('Edit event modal element not found');
+                }
+            } catch (modalError) {
+                console.error('Error showing modal:', modalError);
+                showToast('Error opening edit modal', false);
+            }
+        } catch (error) {
+            console.error('Error opening event edit modal:', error);
+            showToast('Error opening edit modal', false);
+        }
+    }
+    
+    function formatDateForInput(dateString) {
+        try {
+            const date = new Date(dateString);
+            return date.toISOString().split('T')[0];
+        } catch (error) {
+            console.error('Error formatting date for input:', error);
+            return ''; 
+        }
+    }
+    
+    function openDeleteModal(itemId, itemType) {
+        try {
+            deleteItemId = itemId;
+            deleteItemType = itemType;
+            
+            const modalElement = safeGetElement('deleteModal');
+            if (modalElement) {
+                const deleteModal = new bootstrap.Modal(modalElement);
+                deleteModal.show();
+            } else {
+                throw new Error('Delete modal element not found');
+            }
+        } catch (error) {
+            console.error('Error opening delete modal:', error);
+            showToast('Error opening delete modal', false);
+        }
+    }
+    
+    async function refreshAllNewsData() {
+        try {
+            const newsItems = await fetchNewsItems();
+            renderNewsItems(newsItems);
+            
+            const newsTab = safeGetElement('news-tab');
+            if (newsTab && newsTab.classList.contains('active')) {
+                const editNewsId = safeGetElement('editNewsId');
+                if (editNewsId && editNewsId.value) {
+                    const updatedItem = newsItems.find(item => item._id === editNewsId.value);
+                    if (updatedItem) {
+                        const titleField = safeGetElement('newsTitle');
+                        const dateField = safeGetElement('newsDate');
+                        const descriptionField = safeGetElement('newsDescription');
+                        const statusField = safeGetElement('newsStatus');
+                        const featuredField = safeGetElement('newsFeatured');
+                        
+                        if (titleField) titleField.value = updatedItem.title;
+                        if (dateField) dateField.value = formatDateForInput(updatedItem.date);
+                        if (descriptionField) descriptionField.value = updatedItem.description;
+                        if (statusField) statusField.value = updatedItem.status;
+                        if (featuredField) featuredField.checked = updatedItem.featured || false;
+                        
+                        const imagePreview = safeGetElement('newsImagePreview');
+                        if (imagePreview) {
+                            imagePreview.innerHTML = `<img src="${updatedItem.imageUrl}" alt="${updatedItem.title}">`;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error refreshing news data:', error);
+            showToast('Error refreshing news data', false);
+        }
+    }
+    
+    async function refreshAllEventData() {
+        try {
+            const eventItems = await fetchEventItems();
+            renderEventItems(eventItems);
+            
+            const eventsTab = safeGetElement('events-tab');
+            if (eventsTab && eventsTab.classList.contains('active')) {
+                const editEventId = safeGetElement('editEventId');
+                if (editEventId && editEventId.value) {
+                    const updatedItem = eventItems.find(item => item._id === editEventId.value);
+                    if (updatedItem) {
+                        const titleField = safeGetElement('eventTitle');
+                        const dateField = safeGetElement('eventDate');
+                        const descriptionField = safeGetElement('eventDescription');
+                        const statusField = safeGetElement('eventStatus');
+                        const timeField = safeGetElement('eventTime');
+                        const locationField = safeGetElement('eventLocation');
+                        const registrationField = safeGetElement('eventRegistration');
+                        const registrationUrlField = safeGetElement('eventRegistrationUrl');
+                        
+                        if (titleField) titleField.value = updatedItem.title;
+                        if (dateField) dateField.value = formatDateForInput(updatedItem.date);
+                        if (descriptionField) descriptionField.value = updatedItem.description;
+                        if (statusField) statusField.value = updatedItem.status;
+                        
+                        if (timeField && updatedItem.time) {
+                            timeField.value = updatedItem.time;
+                        }
+                        
+                        if (locationField && updatedItem.location) {
+                            locationField.value = updatedItem.location;
+                        }
+                        
+                        const registrationRequired = updatedItem.registration || false;
+                        if (registrationField) registrationField.checked = registrationRequired;
+                        
+                        const registrationUrlDiv = document.querySelector('.event-registration-url');
+                        if (registrationUrlDiv) {
+                            registrationUrlDiv.style.display = registrationRequired ? 'block' : 'none';
+                        }
+                        
+                        if (registrationUrlField && registrationRequired && updatedItem.registrationUrl) {
+                            registrationUrlField.value = updatedItem.registrationUrl;
+                        }
+                        
+                        const imagePreview = safeGetElement('eventImagePreview');
+                        if (imagePreview) {
+                            imagePreview.innerHTML = `<img src="${updatedItem.imageUrl}" alt="${updatedItem.title}">`;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error refreshing event data:', error);
+            showToast('Error refreshing event data', false);
+        }
+    }
+    
+    async function saveNewsChanges() {
+        try {
+            const form = safeGetElement('editNewsForm');
+            if (!form) {
+                showToast('Edit news form not found', false);
+                return;
+            }
+            
+            const formData = new FormData(form);
+            const newsId = formData.get('id');
+            
+            if (!newsId) {
+                showToast('News ID not found', false);
+                return;
+            }
+            
+            showUploadModal('Updating News', 'Please wait while your news item is being updated.');
+            
+            const response = await fetch(API_ENDPOINTS.updateNews + newsId, {
+                method: 'PUT',
+                body: formData
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error('Failed to update news');
+            }
+            
+            if (!recentlyUpdatedItems.news.includes(newsId)) {
+                recentlyUpdatedItems.news.push(newsId);
+                if (recentlyUpdatedItems.news.length > 5) {
+                    recentlyUpdatedItems.news.shift();
+                }
+            }
+            
+            try {
+                const modalElement = safeGetElement('editNewsModal');
+                if (modalElement) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    } else {
+                        jQuery(modalElement).modal('hide');
+                    }
+                }
+            } catch (modalError) {
+                console.error('Error hiding modal:', modalError);
+                try {
+                    const closeButton = document.querySelector('#editNewsModal .btn-close');
+                    if (closeButton) {
+                        closeButton.click();
+                    }
+                } catch (closeError) {
+                    console.error('Error clicking close button:', closeError);
+                }
+            }
+            
+            await refreshAllNewsData();
+            
+            showToast('News updated successfully!', true);
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error('Error updating news:', error);
+            showToast('Error updating news: ' + error.message, false);
+        }
+    }
+    
+    async function saveEventChanges() {
+        try {
+            const form = safeGetElement('editEventForm');
+            if (!form) {
+                showToast('Edit event form not found', false);
+                return;
+            }
+            
+            const formData = new FormData(form);
+            const eventId = formData.get('id');
+            
+            if (!eventId) {
+                showToast('Event ID not found', false);
+                return;
+            }
+            
+            showUploadModal('Updating Event', 'Please wait while your event item is being updated.');
+            
+            const response = await fetch(API_ENDPOINTS.updateEvent + eventId, {
+                method: 'PUT',
+                body: formData
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error('Failed to update event');
+            }
+            
+            if (!recentlyUpdatedItems.events.includes(eventId)) {
+                recentlyUpdatedItems.events.push(eventId);
+                if (recentlyUpdatedItems.events.length > 5) {
+                    recentlyUpdatedItems.events.shift();
+                }
+            }
+            
+            try {
+                const modalElement = safeGetElement('editEventModal');
+                if (modalElement) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    } else {
+                        jQuery(modalElement).modal('hide');
+                    }
+                }
+            } catch (modalError) {
+                console.error('Error hiding modal:', modalError);
+                try {
+                    const closeButton = document.querySelector('#editEventModal .btn-close');
+                    if (closeButton) {
+                        closeButton.click();
+                    }
+                } catch (closeError) {
+                    console.error('Error clicking close button:', closeError);
+                }
+            }
+            
+            await refreshAllEventData();
+            
+            showToast('Event updated successfully!', true);
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error('Error updating event:', error);
+            showToast('Error updating event: ' + error.message, false);
+        }
+    }
+    
+    async function deleteItem(itemId, itemType) {
+        try {
+            if (!itemId || !itemType) {
+                showToast('Invalid item information for deletion', false);
+                return;
+            }
+            
+            const endpoint = itemType === 'news' 
+                ? API_ENDPOINTS.deleteNews + itemId 
+                : API_ENDPOINTS.deleteEvent + itemId;
+            
+            showUploadModal('Deleting Item', 'Please wait while the item is being deleted.');
+            
+            const response = await fetch(endpoint, {
+                method: 'DELETE'
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error(`Failed to delete ${itemType}`);
+            }
+            
+            if (itemType === 'news') {
+                recentlyUpdatedItems.news = recentlyUpdatedItems.news.filter(id => id !== itemId);
+                await refreshAllNewsData();
+            } else {
+                recentlyUpdatedItems.events = recentlyUpdatedItems.events.filter(id => id !== itemId);
+                await refreshAllEventData();
+            }
+            
+            try {
+                const modalElement = safeGetElement('deleteModal');
+                if (modalElement) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+            } catch (modalError) {
+                console.error('Error hiding delete modal:', modalError);
+            }
+            
+            showToast(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} deleted successfully!`, true);
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error(`Error deleting ${itemType}:`, error);
+            showToast(`Error deleting ${itemType}: ` + error.message, false);
+        }
+    }
+    
+    function setupSearch(inputId, itemsSelector) {
+        try {
+            const searchInput = safeGetElement(inputId);
+            if (!searchInput) {
+                console.error(`Search input with ID ${inputId} not found`);
+                return;
+            }
+            
+            searchInput.addEventListener('keyup', function() {
+                try {
+                    const searchTerm = this.value.toLowerCase();
+                    const items = document.querySelectorAll(itemsSelector);
+                    
+                    items.forEach(item => {
+                        try {
+                            const title = item.querySelector('.card-title');
+                            const description = item.querySelector('.card-text');
+                            
+                            if (!title || !description) {
+                                console.warn('Item missing title or description:', item);
+                                return;
+                            }
+                            
+                            const titleText = title.textContent.toLowerCase();
+                            const descriptionText = description.textContent.toLowerCase();
+                            
+                            if (titleText.includes(searchTerm) || descriptionText.includes(searchTerm)) {
+                                item.style.display = '';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        } catch (itemError) {
+                            console.error('Error processing search for item:', itemError);
+                        }
+                    });
+                } catch (searchError) {
+                    console.error('Error in search keyup handler:', searchError);
+                }
+            });
+        } catch (error) {
+            console.error('Error setting up search:', error);
+        }
+    }
+    
+    async function loadNewsItems() {
+        try {
+            console.log('Loading news items...');
+            const spinner = safeGetElement('newsLoadingSpinner');
+            if (spinner) {
+                spinner.style.display = 'flex';
+            }
+            
+            await refreshAllNewsData();
+        } catch (error) {
+            console.error('Error loading news items:', error);
+            showToast('Error loading news items', false);
+        }
+    }
+    
+    async function loadEventItems() {
+        try {
+            console.log('Loading event items...');
+            const spinner = safeGetElement('eventsLoadingSpinner');
+            if (spinner) {
+                spinner.style.display = 'flex';
+            }
+            
+            await refreshAllEventData();
+        } catch (error) {
+            console.error('Error loading event items:', error);
+            showToast('Error loading event items', false);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            console.log('DOM content loaded, initializing application...');
+            
+            setupImagePreview('newsImage', 'newsImagePreview');
+            setupImagePreview('eventImage', 'eventImagePreview');
+            setupImagePreview('editNewsImage', 'editNewsImagePreview');
+            setupImagePreview('editEventImage', 'editEventImagePreview');
+            
+            setupRegistrationToggle('eventRegistration', 'event-registration-url');
+            setupRegistrationToggle('editEventRegistration', 'edit-event-registration-url');
+            
+            const newsForm = safeGetElement('newsForm');
+            const eventsForm = safeGetElement('eventsForm');
+            
+            if (newsForm) {
+                newsForm.addEventListener('submit', handleNewsSubmit);
+            }
+            
+            if (eventsForm) {
+                eventsForm.addEventListener('submit', handleEventSubmit);
+            }
+            
+            const manageTab = safeGetElement('manage-tab');
+            if (manageTab) {
+                manageTab.addEventListener('click', function() {
+                    console.log('Manage tab clicked');
+                    loadNewsItems();
+                    loadEventItems();
+                });
+            }
+            
+            const manageNewsTab = safeGetElement('manage-news-tab');
+            if (manageNewsTab) {
+                manageNewsTab.addEventListener('click', function() {
+                    console.log('Manage news tab clicked');
+                    loadNewsItems();
+                });
+            }
+            
+            const manageEventsTab = safeGetElement('manage-events-tab');
+            if (manageEventsTab) {
+                manageEventsTab.addEventListener('click', function() {
+                    console.log('Manage events tab clicked');
+                    loadEventItems();
+                });
+            }
+            
+            const newsTab = safeGetElement('news-tab');
+            if (newsTab) {
+                newsTab.addEventListener('click', function() {
+                    console.log('News tab clicked');
+                    if (currentNewsItems.length > 0) {
+                        const updatedItems = currentNewsItems.filter(item => recentlyUpdatedItems.news.includes(item._id));
+                        if (updatedItems.length > 0) {
+                            {{!-- showToast('Displaying updated news items', true); --}}
+                        }
+                    }
+                });
+            }
+            
+            const eventsTab = safeGetElement('events-tab');
+            if (eventsTab) {
+                eventsTab.addEventListener('click', function() {
+                    console.log('Events tab clicked');
+                    if (currentEventItems.length > 0) {
+                        const updatedItems = currentEventItems.filter(item => recentlyUpdatedItems.events.includes(item._id));
+                        if (updatedItems.length > 0) {
+                            {{!-- showToast('Displaying updated event items', true); --}}
+                        }
+                    }
+                });
+            }
+            
+            document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(event) {
+                    const targetId = event.target.getAttribute('data-bs-target');
+                    console.log('Tab shown:', targetId);
+                    
+                    if (targetId === '#manage-content') {
+                        loadNewsItems();
+                        loadEventItems();
+                    } else if (targetId === '#manage-news') {
+                        loadNewsItems();
+                    } else if (targetId === '#manage-events') {
+                        loadEventItems();
+                    }
+                });
+            });
+            
+            if (manageTab && manageTab.classList.contains('active')) {
+                console.log('Manage tab is active on page load');
+                loadNewsItems();
+                loadEventItems();
+            }
+            
+            if (manageNewsTab && manageNewsTab.classList.contains('active')) {
+                console.log('Manage news tab is active on page load');
+                loadNewsItems();
+            }
+            
+            if (manageEventsTab && manageEventsTab.classList.contains('active')) {
+                console.log('Manage events tab is active on page load');
+                loadEventItems();
+            }
+            
+            setupSearch('searchNews', '#newsItemsContainer .item-card');
+            setupSearch('searchEvents', '#eventsItemsContainer .item-card');
+            
+            const saveNewsChangesBtn = safeGetElement('saveNewsChanges');
+            if (saveNewsChangesBtn) {
+                saveNewsChangesBtn.addEventListener('click', saveNewsChanges);
+            }
+            
+            const saveEventChangesBtn = safeGetElement('saveEventChanges');
+            if (saveEventChangesBtn) {
+                saveEventChangesBtn.addEventListener('click', saveEventChanges);
+            }
+            
+            const confirmDeleteBtn = safeGetElement('confirmDelete');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (deleteItemId && deleteItemType) {
+                        deleteItem(deleteItemId, deleteItemType);
+                    } else {
+                        showToast('No item selected for deletion', false);
+                    }
+                });
+            }
+            
+            setTimeout(() => {
+                const manageContent = safeGetElement('manage-content');
+                if (manageContent && manageContent.classList.contains('active')) {
+                    console.log('Manage content is active, loading data after timeout');
+                    loadNewsItems();
+                    loadEventItems();
+                }
+                
+                const manageNews = safeGetElement('manage-news');
+                if (manageNews && manageNews.classList.contains('active')) {
+                    console.log('Manage news is active, loading news data after timeout');
+                    loadNewsItems();
+                }
+                
+                const manageEvents = safeGetElement('manage-events');
+                if (manageEvents && manageEvents.classList.contains('active')) {
+                    console.log('Manage events is active, loading events data after timeout');
+                    loadEventItems();
+                }
+            }, 500);
+        } catch (error) {
+            console.error('Error initializing application:', error);
+            showToast('Error initializing application. Please refresh the page.', false);
+        }
+    });
+</script>
+</body>
+</html>

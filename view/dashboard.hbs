@@ -1,0 +1,2497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #dbeafe;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --sidebar-active: #4f46e5;
+            --card-hover: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .sidebar-header .logo-icon {
+            background-color: var(--primary);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style-type: none;
+        }
+
+        .sidebar-menu-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-menu-button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            text-align: left;
+            border: none;
+            background: transparent;
+            color: #f8fafc;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+            margin: 0 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sidebar-menu-button:hover {
+            background-color: var(--sidebar-hover);
+        }
+
+        .sidebar-menu-button.active {
+            background-color: var(--sidebar-active);
+            color: white;
+            font-weight: 500;
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .user-id {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .logout-icon-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .logout-icon-btn:hover {
+            background-color: var(--sidebar-hover);
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .welcome-text h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .welcome-text h1 span {
+            color: var(--primary);
+        }
+
+        .welcome-text p {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .welcome-text p span {
+            color: #0f172a;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dashboard-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            background-color: var(--card-hover);
+        }
+
+        .card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 9999px;
+            background-color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+
+        .card-icon i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 28rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .modal-header {
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .modal-description {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-cancel {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #0f172a;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-cancel:hover {
+            background-color: #f8fafc;
+        }
+
+        .modal-confirm {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-confirm:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Profile Settings Styles */
+        .profile-settings-container {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .profile-settings-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 1rem;
+        }
+
+        .profile-settings-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .profile-settings-header p {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .profile-avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #6c757d;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #212529;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            font-size: 0.875rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-control:focus {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #495057;
+        }
+
+        .mobile-sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 60;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            width: 3rem;
+            height: 3rem;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .course-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .course-modal {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 36rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .course-modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .course-modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            text-align: center;
+        }
+
+        .course-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem 1rem;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .course-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            background-color: var(--card-hover);
+        }
+
+        .course-option-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background-color: var(--primary-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .course-option-icon i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .course-option-title {
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .course-modal-footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .course-modal-cancel {
+            padding: 0.5rem 1rem;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #0f172a;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .course-modal-cancel:hover {
+            background-color: #e2e8f0;
+        }
+
+        .course-modal-back {
+            padding: 0.5rem 1rem;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #0f172a;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-right: 0.75rem;
+        }
+
+        .course-modal-back:hover {
+            background-color: #e2e8f0;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff0000;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            animation: fadeInOut 4s ease-in-out;
+        }
+
+        .toast-success {
+            background: #28a745;
+        }
+
+        .toast-error {
+            background: #dc3545;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(100%); }
+            10% { opacity: 1; transform: translateX(0); }
+            90% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(100%); }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .mobile-sidebar-toggle {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-modal {
+                padding: 1rem;
+                max-height: 80vh;
+            }
+
+            .course-options {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .course-option {
+                padding: 1rem;
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 1rem;
+            }
+
+            .course-option-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+                margin-bottom: 0;
+            }
+
+            .course-option-icon i {
+                font-size: 1rem;
+            }
+
+            .course-modal-footer {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .course-modal-back,
+            .course-modal-cancel {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .course-modal-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .course-modal {
+                max-width: 100%;
+                border-radius: 1rem 1rem 0 0;
+                max-height: 85vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-settings-container {
+                padding: 1.25rem;
+                border-radius: 0.5rem;
+            }
+
+            .profile-settings-header {
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.75rem;
+            }
+
+            .profile-avatar-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .form-section-title {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-label {
+                margin-bottom: 0.25rem;
+                font-size: 0.75rem;
+            }
+
+            .form-control {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-settings-container {
+                padding: 1rem;
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+
+            .profile-form-section {
+                margin-bottom: 1.5rem;
+            }
+
+            .grid.grid-cols-1.md\:grid-cols-2 {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .form-control {
+                min-height: 2.5rem;
+                display: flex;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <button class="mobile-sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">
+                    <i class="fas fa-user-graduate text-white"></i>
+                </div>
+                <h1>Admin Dashboard</h1>
+            </div>
+            <div class="sidebar-content">
+                <ul class="sidebar-menu" id="sidebarMenu">
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button active" data-section="students">
+                            <i class="fas fa-users"></i>
+                            <span>Student Management</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="fees">
+                            <i class="fas fa-wallet"></i>
+                            <span>Fees & Payments</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="academicRecords">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Academic Records</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="announcements">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>Announcements</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="materials">
+                            <i class="fas fa-book"></i>
+                            <span>Study Materials</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="staff">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>Staff Management</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="gallery">
+                            <i class="fas fa-images"></i>
+                            <span>Image, News & Events</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="alumni">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Alumni</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="admission">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Admissions</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="support">
+                            <i class="fas fa-headset"></i>
+                            <span>Support</span>
+                        </button>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <button class="sidebar-menu-button" data-section="profileSettings">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-info">
+                        <div class="avatar">
+                            {{#if user.imageUrl}}
+                            <img src="{{user.imageUrl}}" alt="{{user.name}}"
+                                class="w-full h-full rounded-full object-cover">
+                            {{else}}
+                            {{user.initials}}
+                            {{/if}}
+                        </div>
+                        <div class="user-details">
+                            <span class="user-name">{{user.name}}</span>
+                            <span class="user-id">{{user.staffId}}</span>
+                        </div>
+                    </div>
+                    <button class="logout-icon-btn" id="sidebarLogoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="welcome-text">
+                    <h1>Welcome, <span>{{user.firstName}} {{user.lastName}}</span>!</h1>
+                    <p>Employee ID: <span>{{user.staffId}}</span></p>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </header>
+
+            <!-- Students Section -->
+            <div id="students" class="content-section active">
+                <div class="card-grid">
+                    <button class="dashboard-card" id="studentRegisterBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h2 class="card-title">Add New Student</h2>
+                    </button>
+                    <button class="dashboard-card" id="studentDetailsBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 class="card-title">Students Details</h2>
+                    </button>
+                    <button class="dashboard-card" id="attendanceBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h2 class="card-title">Attendance</h2>
+                    </button>
+                    <button class="dashboard-card" id="attendanceReportBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h2 class="card-title">Attendance Report</h2>
+                    </button>
+                    <a href="/v1/api/reviewRequest" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <h2 class="card-title">Student Profile Update Request</h2>
+                    </a>
+                    <a href="/v1/api/addressUpdateReq" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h2 class="card-title">Address Update Request</h2>
+                    </a>
+                    <button class="dashboard-card" id="moveStudentsBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h2 class="card-title">Move Students</h2>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Fees Section -->
+            <div id="fees" class="content-section">
+                <div class="card-grid">
+                    <button class="dashboard-card" id="tuitionFeesBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h2 class="card-title">Tuition Fees</h2>
+                    </button>
+                    <button class="dashboard-card" id="examFeesBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <h2 class="card-title">Exam Fees</h2>
+                    </button>
+                    <button class="dashboard-card" id="dueDateBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h2 class="card-title">Update Due Date</h2>
+                    </button>
+                    {{!-- <a href="/v1/api/reviewRequestTu" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h2 class="card-title">Tuition Fee Update Request</h2>
+                    </a>
+                    <a href="/v1/api/reviewRequestEx" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h2 class="card-title">Exam Fee Update Request</h2>
+                    </a> --}}
+                    <a href="/v1/api/getPayments" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h2 class="card-title">Fees Transactions Data</h2>
+                    </a>
+                    <button class="dashboard-card" id="paymentAlertBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h2 class="card-title">Payment Alerts</h2>
+                    </button>
+                    <button class="dashboard-card" id="feesUpdateRequestBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h2 class="card-title">Fees Update Request</h2>
+                    </button>
+                    {{!-- <a href="/v1/api/feesUpdateRequestList" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h2 class="card-title">Exam Fee Update Request</h2>
+                    </a> --}}
+                </div>
+            </div>
+
+            <div id="academicRecords" class="content-section">
+                <div class="card-grid">
+                    <button class="dashboard-card" id="academicDetailsBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2 class="card-title">Academic Details</h2>
+                    </button>
+                </div>
+            </div>
+
+            <div id="announcements" class="content-section">
+                <div class="card-grid">
+                    {{!-- <a href="/v1/api/announcement" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h2 class="card-title">Student Announcement</h2>
+                    </a> --}}
+                    <a href="/v1/api/commonAnnouncement" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <h2 class="card-title">Campus Announcement</h2>
+                    </a>
+                </div>
+            </div>
+
+            <div id="materials" class="content-section">
+                <div class="card-grid">
+                    <button class="dashboard-card" id="uploadStudyMaterialsBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                        <h2 class="card-title">Upload Study Materials</h2>
+                    </button>
+                    <button class="dashboard-card" id="viewStudyMaterialsBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h2 class="card-title">View Materials</h2>
+                    </button>
+                </div>
+            </div>
+
+            <div id="ecommerce" class="content-section">
+                <div class="card-grid">
+                    <a href="/v1/api/getBookStore" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h2 class="card-title">Book Store</h2>
+                    </a>
+                    <a href="/v1/api/getProductManagement" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h2 class="card-title">Manage Products</h2>
+                    </a>
+                    <a href="/v1/api/getOrders" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <h2 class="card-title">Orders</h2>
+                    </a>
+                    <a href="/v1/api/reports/sales" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h2 class="card-title">Sales Reports</h2>
+                    </a>
+                </div>
+            </div>
+
+            <div id="staff" class="content-section">
+                <div class="card-grid">
+                    <a href="/v1/api/staffRegistration" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h2 class="card-title">Add staff</h2>
+                    </a>
+                    <a href="/v1/api/staffList" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <h2 class="card-title">Staff Management</h2>
+                    </a>
+                    <a href="/v1/api/staff/updateSalaryList" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-money-check"></i>
+                        </div>
+                        <h2 class="card-title">Update Staff Salary</h2>
+                    </a>
+                    <a href="/v1/api/employee/getSingleSalary" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h2 class="card-title">Employes Salary Payment</h2>
+                    </a>
+                    <a href="/v1/api/staff/viewLeaveRequest" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h2 class="card-title">Leave Request</h2>
+                    </a>
+                </div>
+            </div>
+
+            <div id="gallery" class="content-section">
+                <div class="card-grid">
+                    <a href="/v1/api/getImageGallery" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h2 class="card-title">Image Gallery Management</h2>
+                    </a>
+                    <a href="/v1/api/gallery" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-photo-video"></i>
+                        </div>
+                        <h2 class="card-title">Images Gallery</h2>
+                    </a>
+                    <a href="/v1/api/newsAndEvents" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h2 class="card-title">News & Event Management</h2>
+                    </a>
+                </div>
+            </div>
+
+            <div id="alumni" class="content-section">
+                <div class="card-grid">
+                    <a href="/v1/api/alumniList" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h2 class="card-title">Alumni Directory</h2>
+                    </a>
+                </div>
+            </div>
+
+            <div id="admission" class="content-section">
+                <div class="card-grid">
+                    <a href="/v1/api/admissionFormList" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <h2 class="card-title">Admission Applications</h2>
+                    </a>
+                </div>
+            </div>
+
+            <div id="support" class="content-section">
+                <div class="card-grid">
+                    <a href="/v1/api/messages" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h2 class="card-title">Received Contact Messages</h2>
+                    </a>
+                    <button class="dashboard-card" id="chatRoomDetailsBtn">
+                        <div class="card-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h2 class="card-title">Chatroom</h2>
+                    </button>
+                    <a href="/v1/api/admin/getChatBot?user={{user._id}}" class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h2 class="card-title">AI Chatbot</h2>
+                    </a>
+                </div>
+            </div>
+
+            <div id="profileSettings" class="content-section">
+                <div class="profile-settings-container">
+                    <div class="profile-settings-header">
+                        <h2>Profile</h2>
+                        <p>Your account information</p>
+                    </div>
+
+                    <div class="profile-avatar-section">
+                        <div class="profile-avatar">
+                            {{#if user.imageUrl}}
+                            <img src="{{user.imageUrl}}" alt="{{user.name}}">
+                            {{else}}
+                            <i class="fas fa-user"></i>
+                            {{/if}}
+                        </div>
+                        <div>
+                            <h5 class="mb-2 font-medium text-lg">Profile Picture</h5>
+                            <p class="text-sm text-gray-500">Your profile photo will be visible to other users</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-section">
+                        <h4 class="form-section-title">Personal Details</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <p class="form-control bg-gray-50">{{user.firstName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <p class="form-control bg-gray-50">{{user.lastName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Employee ID</label>
+                                <p class="form-control bg-gray-50">{{user.staffId}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date Of Birth</label>
+                                <p class="form-control bg-gray-50">{{user.dob}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <p class="form-control bg-gray-50">{{user.email}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <p class="form-control bg-gray-50">{{user.phone}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Department</label>
+                                <p class="form-control bg-gray-50">{{user.department}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Designation</label>
+                                <p class="form-control bg-gray-50">{{user.designation}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Role</label>
+                                <p class="form-control bg-gray-50">{{user.role}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Joining Date</label>
+                                <p class="form-control bg-gray-50">{{user.joiningDate}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-section">
+                        <h4 class="form-section-title">Security Settings</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Account Status</label>
+                                <p class="form-control bg-gray-50">Active</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Login</label>
+                                <p class="form-control bg-gray-50">{{user.lastLogin}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-section">
+                        <h4 class="form-section-title">Bank Details</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label">Account Holder Name</label>
+                                <p class="form-control bg-gray-50">{{user.bankDetails.accountHolderName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bank Name</label>
+                                <p class="form-control bg-gray-50">{{user.bankDetails.bankName}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Account Number</label>
+                                <p class="form-control bg-gray-50">{{user.bankDetails.accountNumber}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">IFSC Code</label>
+                                <p class="form-control bg-gray-50">{{user.bankDetails.ifscCode}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">UPI ID</label>
+                                <p class="form-control bg-gray-50">{{user.bankDetails.upiId}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Are you sure you want to log out?</h3>
+                <p class="modal-description">You will be redirected to the login page.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-cancel" id="cancelLogout">Cancel</button>
+                <button class="modal-confirm" id="confirmLogout">Log out</button>
+            </div>
+        </div>
+    </div>
+
+<div class="course-modal-overlay" id="courseSelectionModal">
+  <div class="course-modal">
+    <div class="course-modal-header">
+      <h3 class="course-modal-title">Select Department</h3>
+    </div>
+    <div class="course-options">
+      <div class="course-option" data-course="bca">
+        <div class="course-option-icon">
+          <i class="fas fa-desktop"></i>
+        </div>
+        <h2 class="course-option-title">BCA</h2>
+      </div>
+      <div class="course-option" data-course="mca">
+        <div class="course-option-icon">
+          <i class="fas fa-laptop-code"></i>
+        </div>
+        <h2 class="course-option-title">MCA</h2>
+      </div>
+      <div class="course-option" data-course="mba">
+        <div class="course-option-icon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <h2 class="course-option-title">MBA</h2>
+      </div>
+      <div class="course-option" data-course="btech">
+        <div class="course-option-icon">
+          <i class="fas fa-microchip"></i>
+        </div>
+        <h2 class="course-option-title">BTech</h2>
+      </div>
+      <div class="course-option" data-course="cse">
+        <div class="course-option-icon">
+          <i class="fas fa-code"></i>
+        </div>
+        <h2 class="course-option-title">CSE</h2>
+      </div>
+      <div class="course-option" data-course="ece">
+        <div class="course-option-icon">
+          <i class="fas fa-satellite-dish"></i>
+        </div>
+        <h2 class="course-option-title">ECE</h2>
+      </div>
+      <div class="course-option" data-course="mech">
+        <div class="course-option-icon">
+          <i class="fas fa-cogs"></i>
+        </div>
+        <h2 class="course-option-title">Mechanical</h2>
+      </div>
+      <div class="course-option" data-course="civil">
+        <div class="course-option-icon">
+          <i class="fas fa-hard-hat"></i>
+        </div>
+        <h2 class="course-option-title">Civil</h2>
+      </div>
+      <div class="course-option" data-course="eee">
+        <div class="course-option-icon">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <h2 class="course-option-title">EEE</h2>
+      </div>
+    </div>
+    <div class="course-modal-footer">
+      <button class="course-modal-cancel" id="closeCourseSelectionModal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+    <div class="course-modal-overlay" id="yearSelectionModal">
+        <div class="course-modal">
+            <div class="course-modal-header">
+                <h3 class="course-modal-title">Select Year for <span id="selectedCourseName">Course</span></h3>
+            </div>
+            <div class="course-options" id="yearOptions">
+            </div>
+            <div class="course-modal-footer">
+                <button class="course-modal-back" id="backToCourseSelection">Back</button>
+                <button class="course-modal-cancel" id="closeYearSelectionModal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarButtons = document.querySelectorAll('.sidebar-menu-button');
+        const contentSections = document.querySelectorAll('.content-section');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+        const logoutModal = document.getElementById('logoutModal');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
+
+        const courseSelectionModal = document.getElementById('courseSelectionModal');
+        const yearSelectionModal = document.getElementById('yearSelectionModal');
+        const closeCourseSelectionModal = document.getElementById('closeCourseSelectionModal');
+        const closeYearSelectionModal = document.getElementById('closeYearSelectionModal');
+        const backToCourseSelection = document.getElementById('backToCourseSelection');
+        const courseOptions = document.querySelectorAll('.course-option');
+        const selectedCourseName = document.getElementById('selectedCourseName');
+        const yearOptions = document.getElementById('yearOptions');
+
+        const studentRegisterBtn = document.getElementById('studentRegisterBtn');
+        const studentDetailsBtn = document.getElementById('studentDetailsBtn');
+        const attendanceBtn = document.getElementById('attendanceBtn');
+        const attendanceReportBtn = document.getElementById('attendanceReportBtn'); 
+        const tuitionFeesBtn = document.getElementById('tuitionFeesBtn');
+        const examFeesBtn = document.getElementById('examFeesBtn');
+        const academicDetailsBtn = document.getElementById('academicDetailsBtn');
+        const chatRoomDetailsBtn = document.getElementById('chatRoomDetailsBtn');
+        const uploadStudyMaterialsBtn = document.getElementById('uploadStudyMaterialsBtn');
+        const viewStudyMaterialsBtn = document.getElementById('viewStudyMaterialsBtn');
+        const paymentAlertBtn = document.getElementById('paymentAlertBtn');
+        const moveStudentsBtn = document.getElementById('moveStudentsBtn');
+        const dueDateBtn = document.getElementById('dueDateBtn');
+        const feesUpdateRequestBtn = document.getElementById('feesUpdateRequestBtn');
+
+        let currentAction = '';
+        let selectedCourse = '';
+
+        const courseConfig = {
+            bca: {
+                name: 'BCA',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' },
+                    { year: 3, label: 'Year III' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=BCA',
+                        2: '/v1/api/getStudentRegister?course=BCA',
+                        3: '/v1/api/getStudentRegister?course=BCA'
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=BCA&year=I',
+                        2: '/v1/api/getStudentsList?course=BCA&year=II',
+                        3: '/v1/api/getStudentsList?course=BCA&year=III'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=BCA&year=I',
+                        2: '/v1/api/getMarkAttendence?course=BCA&year=II',
+                        3: '/v1/api/getMarkAttendence?course=BCA&year=III'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=BCA&year=I',
+                        2: '/v1/api/getAttendenceReport?course=BCA&year=II',
+                        3: '/v1/api/getAttendenceReport?course=BCA&year=III'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=BCA&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=BCA&year=II',
+                        3: '/v1/api/getStudentsTuitionFeesList?course=BCA&year=III'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=BCA&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=BCA&year=II',
+                        3: '/v1/api/getStudentsExamFeesList?course=BCA&year=III'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=BCA&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=BCA&year=II',
+                        3: '/v1/api/getAcademicStudentsList?course=BCA&year=III'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=BCA&year=I',
+                        2: '/v1/api/getAdminChatroom?course=BCA&year=II',
+                        3: '/v1/api/getAdminChatroom?course=BCA&year=III',
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=BCA&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=BCA&year=II',
+                        3: '/v1/api/getStudyMaterialUpload?course=BCA&year=III'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=BCA&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=BCA&year=II',
+                        3: '/v1/api/viewStudyMaterials?course=BCA&year=III'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=BCA&year=I',
+                        2: '/v1/api/paymentAlert?course=BCA&year=II',
+                        3: '/v1/api/paymentAlert?course=BCA&year=III'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=BCA&year=I',
+                        2: '/v1/api/moveStudentsPage?course=BCA&year=II',
+                        3: '/v1/api/moveStudentsPage?course=BCA&year=III'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=BCA&year=I',
+                        2: '/v1/api/viewDueDatePage?course=BCA&year=II',
+                        3: '/v1/api/viewDueDatePage?course=BCA&year=III'
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=BCA&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=BCA&year=II',
+                        3: '/v1/api/feesUpdateRequestList?course=BCA&year=III'
+                    },
+                }
+            },
+            mca: {
+                name: 'MCA',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=MCA',
+                        2: '/v1/api/getStudentRegister?course=MCA',
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=MCA&year=I',
+                        2: '/v1/api/getStudentsList?course=MCA&year=II'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=MCA&year=I',
+                        2: '/v1/api/getMarkAttendence?course=MCA&year=II'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=MCA&year=I',
+                        2: '/v1/api/getAttendenceReport?course=MCA&year=II'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=MCA&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=MCA&year=II'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=MCA&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=MCA&year=II'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=MCA&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=MCA&year=II'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=MCA&year=I',
+                        2: '/v1/api/getAdminChatroom?course=MCA&year=II'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=MCA&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=MCA&year=II'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=MCA&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=MCA&year=II'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=MCA&year=I',
+                        2: '/v1/api/paymentAlert?course=MCA&year=II'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=MCA&year=I',
+                        2: '/v1/api/moveStudentsPage?course=MCA&year=II'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=MCA&year=I',
+                        2: '/v1/api/viewDueDatePage?course=MCA&year=II',
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=MCA&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=MCA&year=II',
+                    },
+                }
+            },
+            mba: {
+                name: 'MBA',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=MBA',
+                        2: '/v1/api/getStudentRegister?course=MBA',
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=MBA&year=I',
+                        2: '/v1/api/getStudentsList?course=MBA&year=II'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=MBA&year=I',
+                        2: '/v1/api/getMarkAttendence?course=MBA&year=II'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=MBA&year=I',
+                        2: '/v1/api/getAttendenceReport?course=MBA&year=II'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=MBA&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=MBA&year=II'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=MBA&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=MBA&year=II'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=MBA&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=MBA&year=II'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=MBA&year=I',
+                        2: '/v1/api/getAdminChatroom?course=MBA&year=II'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=MBA&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=MBA&year=II'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=MBA&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=MBA&year=II'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=MBA&year=I',
+                        2: '/v1/api/paymentAlert?course=MBA&year=II'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=MBA&year=I',
+                        2: '/v1/api/moveStudentsPage?course=MBA&year=II'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=MBA&year=I',
+                        2: '/v1/api/viewDueDatePage?course=MBA&year=II',
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=MBA&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=MBA&year=II',
+                    },
+                }
+            },
+            btech: {
+                name: 'BTech',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' },
+                    { year: 3, label: 'Year III' },
+                    { year: 4, label: 'Year IV' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=BTech',
+                        2: '/v1/api/getStudentRegister?course=BTech',
+                        3: '/v1/api/getStudentRegister?course=BTech',
+                        4: '/v1/api/getStudentRegister?course=BTech'
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=BTech&year=I',
+                        2: '/v1/api/getStudentsList?course=BTech&year=II',
+                        3: '/v1/api/getStudentsList?course=BTech&year=III',
+                        4: '/v1/api/getStudentsList?course=BTech&year=IV'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=BTech&year=I',
+                        2: '/v1/api/getMarkAttendence?course=BTech&year=II',
+                        3: '/v1/api/getMarkAttendence?course=BTech&year=III',
+                        4: '/v1/api/getMarkAttendence?course=BTech&year=IV'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=BTech&year=I',
+                        2: '/v1/api/getAttendenceReport?course=BTech&year=II',
+                        3: '/v1/api/getAttendenceReport?course=BTech&year=III',
+                        4: '/v1/api/getAttendenceReport?course=BTech&year=IV'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=BTech&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=BTech&year=II',
+                        3: '/v1/api/getStudentsTuitionFeesList?course=BTech&year=III',
+                        4: '/v1/api/getStudentsTuitionFeesList?course=BTech&year=IV'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=BTech&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=BTech&year=II',
+                        3: '/v1/api/getStudentsExamFeesList?course=BTech&year=III',
+                        4: '/v1/api/getStudentsExamFeesList?course=BTech&year=IV'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=BTech&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=BTech&year=II',
+                        3: '/v1/api/getAcademicStudentsList?course=BTech&year=III',
+                        4: '/v1/api/getAcademicStudentsList?course=BTech&year=IV'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=BTech&year=I',
+                        2: '/v1/api/getAdminChatroom?course=BTech&year=II',
+                        3: '/v1/api/getAdminChatroom?course=BTech&year=II',
+                        4: '/v1/api/getAdminChatroom?course=BTech&year=II'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=BTech&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=BTech&year=II',
+                        3: '/v1/api/getStudyMaterialUpload?course=BTech&year=III',
+                        4: '/v1/api/getStudyMaterialUpload?course=BTech&year=IV'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=BTech&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=BTech&year=II',
+                        3: '/v1/api/viewStudyMaterials?course=BTech&year=III',
+                        4: '/v1/api/viewStudyMaterials?course=BTech&year=IV'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=BTech&year=I',
+                        2: '/v1/api/paymentAlert?course=BTech&year=II',
+                        3: '/v1/api/paymentAlert?course=BTech&year=III',
+                        4: '/v1/api/paymentAlert?course=BTech&year=IV'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=BTech&year=I',
+                        2: '/v1/api/moveStudentsPage?course=BTech&year=II',
+                        3: '/v1/api/moveStudentsPage?course=BTech&year=III',
+                        4: '/v1/api/moveStudentsPage?course=BTech&year=IV'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=BTech&year=I',
+                        2: '/v1/api/viewDueDatePage?course=BTech&year=II',
+                        3: '/v1/api/viewDueDatePage?course=BTech&year=III',
+                        4: '/v1/api/viewDueDatePage?course=BTech&year=IV'
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=BTech&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=BTech&year=II',
+                        3: '/v1/api/feesUpdateRequestList?course=BTech&year=III',
+                        4: '/v1/api/feesUpdateRequestList?course=BTech&year=IV'
+                    },
+                }
+            },
+            cse: {
+                name: 'CSE',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' },
+                    { year: 3, label: 'Year III' },
+                    { year: 4, label: 'Year IV' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=CSE',
+                        2: '/v1/api/getStudentRegister?course=CSE',
+                        3: '/v1/api/getStudentRegister?course=CSE',
+                        4: '/v1/api/getStudentRegister?course=CSE'
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=CSE&year=I',
+                        2: '/v1/api/getStudentsList?course=CSE&year=II',
+                        3: '/v1/api/getStudentsList?course=CSE&year=III',
+                        4: '/v1/api/getStudentsList?course=CSE&year=IV'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=CSE&year=I',
+                        2: '/v1/api/getMarkAttendence?course=CSE&year=II',
+                        3: '/v1/api/getMarkAttendence?course=CSE&year=III',
+                        4: '/v1/api/getMarkAttendence?course=CSE&year=IV'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=CSE&year=I',
+                        2: '/v1/api/getAttendenceReport?course=CSE&year=II',
+                        3: '/v1/api/getAttendenceReport?course=CSE&year=III',
+                        4: '/v1/api/getAttendenceReport?course=CSE&year=IV'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=CSE&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=CSE&year=II',
+                        3: '/v1/api/getStudentsTuitionFeesList?course=CSE&year=III',
+                        4: '/v1/api/getStudentsTuitionFeesList?course=CSE&year=IV'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=CSE&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=CSE&year=II',
+                        3: '/v1/api/getStudentsExamFeesList?course=CSE&year=III',
+                        4: '/v1/api/getStudentsExamFeesList?course=CSE&year=IV'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=CSE&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=CSE&year=II',
+                        3: '/v1/api/getAcademicStudentsList?course=CSE&year=III',
+                        4: '/v1/api/getAcademicStudentsList?course=CSE&year=IV'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=CSE&year=I',
+                        2: '/v1/api/getAdminChatroom?course=CSE&year=II',
+                        3: '/v1/api/getAdminChatroom?course=CSE&year=II',
+                        4: '/v1/api/getAdminChatroom?course=CSE&year=II'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=CSE&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=CSE&year=II',
+                        3: '/v1/api/getStudyMaterialUpload?course=CSE&year=III',
+                        4: '/v1/api/getStudyMaterialUpload?course=CSE&year=IV'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=CSE&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=CSE&year=II',
+                        3: '/v1/api/viewStudyMaterials?course=CSE&year=III',
+                        4: '/v1/api/viewStudyMaterials?course=CSE&year=IV'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=CSE&year=I',
+                        2: '/v1/api/paymentAlert?course=CSE&year=II',
+                        3: '/v1/api/paymentAlert?course=CSE&year=III',
+                        4: '/v1/api/paymentAlert?course=CSE&year=IV'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=CSE&year=I',
+                        2: '/v1/api/moveStudentsPage?course=CSE&year=II',
+                        3: '/v1/api/moveStudentsPage?course=CSE&year=III',
+                        4: '/v1/api/moveStudentsPage?course=CSE&year=IV'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=CSE&year=I',
+                        2: '/v1/api/viewDueDatePage?course=CSE&year=II',
+                        3: '/v1/api/viewDueDatePage?course=CSE&year=III',
+                        4: '/v1/api/viewDueDatePage?course=CSE&year=IV'
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=CSE&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=CSE&year=II',
+                        3: '/v1/api/feesUpdateRequestList?course=CSE&year=III',
+                        4: '/v1/api/feesUpdateRequestList?course=CSE&year=IV'
+                    },
+                }
+            },
+            ece: {
+                name: 'ECE',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' },
+                    { year: 3, label: 'Year III' },
+                    { year: 4, label: 'Year IV' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=ECE',
+                        2: '/v1/api/getStudentRegister?course=ECE',
+                        3: '/v1/api/getStudentRegister?course=ECE',
+                        4: '/v1/api/getStudentRegister?course=ECE'
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=ECE&year=I',
+                        2: '/v1/api/getStudentsList?course=ECE&year=II',
+                        3: '/v1/api/getStudentsList?course=ECE&year=III',
+                        4: '/v1/api/getStudentsList?course=ECE&year=IV'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=ECE&year=I',
+                        2: '/v1/api/getMarkAttendence?course=ECE&year=II',
+                        3: '/v1/api/getMarkAttendence?course=ECE&year=III',
+                        4: '/v1/api/getMarkAttendence?course=ECE&year=IV'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=ECE&year=I',
+                        2: '/v1/api/getAttendenceReport?course=ECE&year=II',
+                        3: '/v1/api/getAttendenceReport?course=ECE&year=III',
+                        4: '/v1/api/getAttendenceReport?course=ECE&year=IV'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=ECE&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=ECE&year=II',
+                        3: '/v1/api/getStudentsTuitionFeesList?course=ECE&year=III',
+                        4: '/v1/api/getStudentsTuitionFeesList?course=ECE&year=IV'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=ECE&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=ECE&year=II',
+                        3: '/v1/api/getStudentsExamFeesList?course=ECE&year=III',
+                        4: '/v1/api/getStudentsExamFeesList?course=ECE&year=IV'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=ECE&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=ECE&year=II',
+                        3: '/v1/api/getAcademicStudentsList?course=ECE&year=III',
+                        4: '/v1/api/getAcademicStudentsList?course=ECE&year=IV'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=ECE&year=I',
+                        2: '/v1/api/getAdminChatroom?course=ECE&year=II',
+                        3: '/v1/api/getAdminChatroom?course=ECE&year=II',
+                        4: '/v1/api/getAdminChatroom?course=ECE&year=II'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=ECE&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=ECE&year=II',
+                        3: '/v1/api/getStudyMaterialUpload?course=ECE&year=III',
+                        4: '/v1/api/getStudyMaterialUpload?course=ECE&year=IV'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=ECE&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=ECE&year=II',
+                        3: '/v1/api/viewStudyMaterials?course=ECE&year=III',
+                        4: '/v1/api/viewStudyMaterials?course=ECE&year=IV'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=ECE&year=I',
+                        2: '/v1/api/paymentAlert?course=ECE&year=II',
+                        3: '/v1/api/paymentAlert?course=ECE&year=III',
+                        4: '/v1/api/paymentAlert?course=ECE&year=IV'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=ECE&year=I',
+                        2: '/v1/api/moveStudentsPage?course=ECE&year=II',
+                        3: '/v1/api/moveStudentsPage?course=ECE&year=III',
+                        4: '/v1/api/moveStudentsPage?course=ECE&year=IV'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=ECE&year=I',
+                        2: '/v1/api/viewDueDatePage?course=ECE&year=II',
+                        3: '/v1/api/viewDueDatePage?course=ECE&year=III',
+                        4: '/v1/api/viewDueDatePage?course=ECE&year=IV'
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=ECE&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=ECE&year=II',
+                        3: '/v1/api/feesUpdateRequestList?course=ECE&year=III',
+                        4: '/v1/api/feesUpdateRequestList?course=ECE&year=IV'
+                    },
+                }
+            },
+            mech: {
+                name: 'Mechanical',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' },
+                    { year: 3, label: 'Year III' },
+                    { year: 4, label: 'Year IV' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=Mechanical',
+                        2: '/v1/api/getStudentRegister?course=Mechanical',
+                        3: '/v1/api/getStudentRegister?course=Mechanical',
+                        4: '/v1/api/getStudentRegister?course=Mechanical'
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=Mechanical&year=I',
+                        2: '/v1/api/getStudentsList?course=Mechanical&year=II',
+                        3: '/v1/api/getStudentsList?course=Mechanical&year=III',
+                        4: '/v1/api/getStudentsList?course=Mechanical&year=IV'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=Mechanical&year=I',
+                        2: '/v1/api/getMarkAttendence?course=Mechanical&year=II',
+                        3: '/v1/api/getMarkAttendence?course=Mechanical&year=III',
+                        4: '/v1/api/getMarkAttendence?course=Mechanical&year=IV'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=Mechanical&year=I',
+                        2: '/v1/api/getAttendenceReport?course=Mechanical&year=II',
+                        3: '/v1/api/getAttendenceReport?course=Mechanical&year=III',
+                        4: '/v1/api/getAttendenceReport?course=Mechanical&year=IV'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=Mechanical&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=Mechanical&year=II',
+                        3: '/v1/api/getStudentsTuitionFeesList?course=Mechanical&year=III',
+                        4: '/v1/api/getStudentsTuitionFeesList?course=Mechanical&year=IV'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=Mechanical&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=Mechanical&year=II',
+                        3: '/v1/api/getStudentsExamFeesList?course=Mechanical&year=III',
+                        4: '/v1/api/getStudentsExamFeesList?course=Mechanical&year=IV'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=Mechanical&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=Mechanical&year=II',
+                        3: '/v1/api/getAcademicStudentsList?course=Mechanical&year=III',
+                        4: '/v1/api/getAcademicStudentsList?course=Mechanical&year=IV'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=Mechanical&year=I',
+                        2: '/v1/api/getAdminChatroom?course=Mechanical&year=II',
+                        3: '/v1/api/getAdminChatroom?course=Mechanical&year=III',
+                        4: '/v1/api/getAdminChatroom?course=Mechanical&year=IV'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=Mechanical&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=Mechanical&year=II',
+                        3: '/v1/api/getStudyMaterialUpload?course=Mechanical&year=III',
+                        4: '/v1/api/getStudyMaterialUpload?course=Mechanical&year=IV'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=Mechanical&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=Mechanical&year=II',
+                        3: '/v1/api/viewStudyMaterials?course=Mechanical&year=III',
+                        4: '/v1/api/viewStudyMaterials?course=Mechanical&year=IV'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=Mechanical&year=I',
+                        2: '/v1/api/paymentAlert?course=Mechanical&year=II',
+                        3: '/v1/api/paymentAlert?course=Mechanical&year=III',
+                        4: '/v1/api/paymentAlert?course=Mechanical&year=IV'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=Mechanical&year=I',
+                        2: '/v1/api/moveStudentsPage?course=Mechanical&year=II',
+                        3: '/v1/api/moveStudentsPage?course=Mechanical&year=III',
+                        4: '/v1/api/moveStudentsPage?course=Mechanical&year=IV'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=Mechanical&year=I',
+                        2: '/v1/api/viewDueDatePage?course=Mechanical&year=II',
+                        3: '/v1/api/viewDueDatePage?course=Mechanical&year=III',
+                        4: '/v1/api/viewDueDatePage?course=Mechanical&year=IV'
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=Mechanical&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=Mechanical&year=II',
+                        3: '/v1/api/feesUpdateRequestList?course=Mechanical&year=III',
+                        4: '/v1/api/feesUpdateRequestList?course=Mechanical&year=IV'
+                    },
+                }
+            },
+            civil: {
+                name: 'Civil',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' },
+                    { year: 3, label: 'Year III' },
+                    { year: 4, label: 'Year IV' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=Civil',
+                        2: '/v1/api/getStudentRegister?course=Civil',
+                        3: '/v1/api/getStudentRegister?course=Civil',
+                        4: '/v1/api/getStudentRegister?course=Civil'
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=Civil&year=I',
+                        2: '/v1/api/getStudentsList?course=Civil&year=II',
+                        3: '/v1/api/getStudentsList?course=Civil&year=III',
+                        4: '/v1/api/getStudentsList?course=Civil&year=IV'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=Civil&year=I',
+                        2: '/v1/api/getMarkAttendence?course=Civil&year=II',
+                        3: '/v1/api/getMarkAttendence?course=Civil&year=III',
+                        4: '/v1/api/getMarkAttendence?course=Civil&year=IV'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=Civil&year=I',
+                        2: '/v1/api/getAttendenceReport?course=Civil&year=II',
+                        3: '/v1/api/getAttendenceReport?course=Civil&year=III',
+                        4: '/v1/api/getAttendenceReport?course=Civil&year=IV'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=Civil&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=Civil&year=II',
+                        3: '/v1/api/getStudentsTuitionFeesList?course=Civil&year=III',
+                        4: '/v1/api/getStudentsTuitionFeesList?course=Civil&year=IV'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=Civil&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=Civil&year=II',
+                        3: '/v1/api/getStudentsExamFeesList?course=Civil&year=III',
+                        4: '/v1/api/getStudentsExamFeesList?course=Civil&year=IV'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=Civil&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=Civil&year=II',
+                        3: '/v1/api/getAcademicStudentsList?course=Civil&year=III',
+                        4: '/v1/api/getAcademicStudentsList?course=Civil&year=IV'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=Civil&year=I',
+                        2: '/v1/api/getAdminChatroom?course=Civil&year=II',
+                        3: '/v1/api/getAdminChatroom?course=Civil&year=III',
+                        4: '/v1/api/getAdminChatroom?course=Civil&year=IV'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=Civil&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=Civil&year=II',
+                        3: '/v1/api/getStudyMaterialUpload?course=Civil&year=III',
+                        4: '/v1/api/getStudyMaterialUpload?course=Civil&year=IV'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=Civil&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=Civil&year=II',
+                        3: '/v1/api/viewStudyMaterials?course=Civil&year=III',
+                        4: '/v1/api/viewStudyMaterials?course=Civil&year=IV'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=Civil&year=I',
+                        2: '/v1/api/paymentAlert?course=Civil&year=II',
+                        3: '/v1/api/paymentAlert?course=Civil&year=III',
+                        4: '/v1/api/paymentAlert?course=Civil&year=IV'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=Civil&year=I',
+                        2: '/v1/api/moveStudentsPage?course=Civil&year=II',
+                        3: '/v1/api/moveStudentsPage?course=Civil&year=III',
+                        4: '/v1/api/moveStudentsPage?course=Civil&year=IV'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=Civil&year=I',
+                        2: '/v1/api/viewDueDatePage?course=Civil&year=II',
+                        3: '/v1/api/viewDueDatePage?course=Civil&year=III',
+                        4: '/v1/api/viewDueDatePage?course=Civil&year=IV'
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=Civil&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=Civil&year=II',
+                        3: '/v1/api/feesUpdateRequestList?course=Civil&year=III',
+                        4: '/v1/api/feesUpdateRequestList?course=Civil&year=IV'
+                    },
+                }
+            },
+            eee: {
+                name: 'EEE',
+                years: [
+                    { year: 1, label: 'Year I' },
+                    { year: 2, label: 'Year II' },
+                    { year: 3, label: 'Year III' },
+                    { year: 4, label: 'Year IV' }
+                ],
+                paths: {
+                    studentRegister: {
+                        1: '/v1/api/getStudentRegister?course=EEE',
+                        2: '/v1/api/getStudentRegister?course=EEE',
+                        3: '/v1/api/getStudentRegister?course=EEE',
+                        4: '/v1/api/getStudentRegister?course=EEE'
+                    },
+                    studentDetails: {
+                        1: '/v1/api/getStudentsList?course=EEE&year=I',
+                        2: '/v1/api/getStudentsList?course=EEE&year=II',
+                        3: '/v1/api/getStudentsList?course=EEE&year=III',
+                        4: '/v1/api/getStudentsList?course=EEE&year=IV'
+                    },
+                    attendance: {
+                        1: '/v1/api/getMarkAttendence?course=EEE&year=I',
+                        2: '/v1/api/getMarkAttendence?course=EEE&year=II',
+                        3: '/v1/api/getMarkAttendence?course=EEE&year=III',
+                        4: '/v1/api/getMarkAttendence?course=EEE&year=IV'
+                    },
+                    attendanceReport: {
+                        1: '/v1/api/getAttendenceReport?course=EEE&year=I',
+                        2: '/v1/api/getAttendenceReport?course=EEE&year=II',
+                        3: '/v1/api/getAttendenceReport?course=EEE&year=III',
+                        4: '/v1/api/getAttendenceReport?course=EEE&year=IV'
+                    },
+                    tuitionFees: {
+                        1: '/v1/api/getStudentsTuitionFeesList?course=EEE&year=I',
+                        2: '/v1/api/getStudentsTuitionFeesList?course=EEE&year=II',
+                        3: '/v1/api/getStudentsTuitionFeesList?course=EEE&year=III',
+                        4: '/v1/api/getStudentsTuitionFeesList?course=EEE&year=IV'
+                    },
+                    examFees: {
+                        1: '/v1/api/getStudentsExamFeesList?course=EEE&year=I',
+                        2: '/v1/api/getStudentsExamFeesList?course=EEE&year=II',
+                        3: '/v1/api/getStudentsExamFeesList?course=EEE&year=III',
+                        4: '/v1/api/getStudentsExamFeesList?course=EEE&year=IV'
+                    },
+                    academicDetails: {
+                        1: '/v1/api/getAcademicStudentsList?course=EEE&year=I',
+                        2: '/v1/api/getAcademicStudentsList?course=EEE&year=II',
+                        3: '/v1/api/getAcademicStudentsList?course=EEE&year=III',
+                        4: '/v1/api/getAcademicStudentsList?course=EEE&year=IV'
+                    },
+                    chatRoom: {
+                        1: '/v1/api/getAdminChatroom?course=EEE&year=I',
+                        2: '/v1/api/getAdminChatroom?course=EEE&year=II',
+                        3: '/v1/api/getAdminChatroom?course=EEE&year=III',
+                        4: '/v1/api/getAdminChatroom?course=EEE&year=IV'
+                    },
+                    uploadStudyMaterial: {
+                        1: '/v1/api/getStudyMaterialUpload?course=EEE&year=I',
+                        2: '/v1/api/getStudyMaterialUpload?course=EEE&year=II',
+                        3: '/v1/api/getStudyMaterialUpload?course=EEE&year=III',
+                        4: '/v1/api/getStudyMaterialUpload?course=EEE&year=IV'
+                    },
+                    viewStudyMaterials: {
+                        1: '/v1/api/viewStudyMaterials?course=EEE&year=I',
+                        2: '/v1/api/viewStudyMaterials?course=EEE&year=II',
+                        3: '/v1/api/viewStudyMaterials?course=EEE&year=III',
+                        4: '/v1/api/viewStudyMaterials?course=EEE&year=IV'
+                    },
+                    paymentAlert: {
+                        1: '/v1/api/paymentAlert?course=EEE&year=I',
+                        2: '/v1/api/paymentAlert?course=EEE&year=II',
+                        3: '/v1/api/paymentAlert?course=EEE&year=III',
+                        4: '/v1/api/paymentAlert?course=EEE&year=IV'
+                    },
+                    moveStudents: {
+                        1: '/v1/api/moveStudentsPage?course=EEE&year=I',
+                        2: '/v1/api/moveStudentsPage?course=EEE&year=II',
+                        3: '/v1/api/moveStudentsPage?course=EEE&year=III',
+                        4: '/v1/api/moveStudentsPage?course=EEE&year=IV'
+                    },
+                    dueDate: {
+                        1: '/v1/api/viewDueDatePage?course=EEE&year=I',
+                        2: '/v1/api/viewDueDatePage?course=EEE&year=II',
+                        3: '/v1/api/viewDueDatePage?course=EEE&year=III',
+                        4: '/v1/api/viewDueDatePage?course=EEE&year=IV'
+                    },
+                    feesUpdateRequest: {
+                        1: '/v1/api/feesUpdateRequestList?course=EEE&year=I',
+                        2: '/v1/api/feesUpdateRequestList?course=EEE&year=II',
+                        3: '/v1/api/feesUpdateRequestList?course=EEE&year=III',
+                        4: '/v1/api/feesUpdateRequestList?course=EEE&year=IV'
+                    },
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lastActiveTab = localStorage.getItem('activeTab') || 'students';
+            showSection(lastActiveTab);
+        });
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        sidebarButtons.forEach(button => {
+            button.addEventListener('click', async () => {
+                const sectionId = button.getAttribute('data-section');
+
+                if (sectionId === 'staff') {
+                    try {
+                        const response = await fetch(`/v1/api/getUserRole?userId={{user._id}}`);
+                        const data = await response.json();
+
+                        if (!data.success || !data.isSuperAdmin) {
+                            showToast('You don\'t have permission to access the Staff section', 'error');
+                            return;
+                        }
+                    } catch (error) {
+                        console.error('Error fetching user role:', error);
+                        showToast('Something went wrong. Please try again.', 'error');
+                        return;
+                    }
+                }
+
+                showSection(sectionId);
+
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+
+        function showSection(sectionId) {
+            sidebarButtons.forEach(btn => {
+                if (btn.getAttribute('data-section') === sectionId) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            contentSections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+
+            localStorage.setItem('activeTab', sectionId);
+        }
+
+        function showCourseSelectionModal(actionType) {
+            currentAction = actionType;
+            courseSelectionModal.style.display = 'flex';
+        }
+
+        function showYearSelectionModal(course) {
+            selectedCourse = course;
+
+            if (currentAction === 'studentRegister') {
+                navigateToPage(course, 1);
+                return;
+            }
+
+            selectedCourseName.textContent = courseConfig[course].name;
+
+            yearOptions.innerHTML = '';
+
+            courseConfig[course].years.forEach(yearInfo => {
+                const yearOption = document.createElement('div');
+                yearOption.className = 'course-option';
+                yearOption.setAttribute('data-year', yearInfo.year);
+
+                yearOption.innerHTML = `
+                    <div class="course-option-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h2 class="course-option-title">${yearInfo.label}</h2>
+                `;
+
+                yearOption.addEventListener('click', () => {
+                    navigateToPage(course, yearInfo.year);
+                });
+
+                yearOptions.appendChild(yearOption);
+            });
+
+            courseSelectionModal.style.display = 'none';
+            yearSelectionModal.style.display = 'flex';
+        }
+
+        function navigateToPage(course, year) {
+             if (currentAction === 'studentRegister') {
+                const path = `/v1/api/getStudentRegister?course=${courseConfig[course].name}`;
+                window.location.href = path;
+                return;
+            }
+            const path = courseConfig[course].paths[currentAction][year];
+            if (path) {
+                window.location.href = path;
+            } else {
+                alert('Path not configured for this course and year combination.');
+            }
+        }
+
+        studentRegisterBtn.addEventListener('click', () => {
+            showCourseSelectionModal('studentRegister');
+        });
+
+        studentDetailsBtn.addEventListener('click', () => {
+            showCourseSelectionModal('studentDetails');
+        });
+
+        attendanceBtn.addEventListener('click', () => {
+            showCourseSelectionModal('attendance');
+        });
+
+        attendanceReportBtn.addEventListener('click', () => {
+            showCourseSelectionModal('attendanceReport');
+        });
+
+        tuitionFeesBtn.addEventListener('click', () => {
+            showCourseSelectionModal('tuitionFees');
+        });
+
+        examFeesBtn.addEventListener('click', () => {
+            showCourseSelectionModal('examFees');
+        });
+
+        academicDetailsBtn.addEventListener('click', () => {
+            showCourseSelectionModal('academicDetails');
+        });
+
+        chatRoomDetailsBtn.addEventListener('click', () => {
+            showCourseSelectionModal('chatRoom');
+        });
+
+        uploadStudyMaterialsBtn.addEventListener('click', () => {
+            showCourseSelectionModal('uploadStudyMaterial');
+        });
+
+        viewStudyMaterialsBtn.addEventListener('click', () => {
+            showCourseSelectionModal('viewStudyMaterials');
+        });
+
+        paymentAlertBtn.addEventListener('click', () => {
+            showCourseSelectionModal('paymentAlert');
+        });
+
+        moveStudentsBtn.addEventListener('click', () => {
+            showCourseSelectionModal('moveStudents');
+        });
+
+        dueDateBtn.addEventListener('click', () => {
+            showCourseSelectionModal('dueDate');
+        });
+
+        feesUpdateRequestBtn.addEventListener('click', () => {
+            showCourseSelectionModal('feesUpdateRequest');
+        });
+
+        courseOptions.forEach(option => {
+            option.addEventListener('click', async () => {
+                const course = option.getAttribute('data-course');
+
+                try {
+                    const response = await fetch('/v1/api/getUserRole?userId={{user._id}}');
+                    const data = await response.json();
+
+                    if (data.success && (data.isAdmin && course === data?.department || data.isSuperAdmin)) {
+                        showYearSelectionModal(course);
+                    } else {
+                        showToast('You don\'t have permission to access this department', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error fetching user role:', error);
+                    showToast('Something went wrong. Please try again.', 'error');
+                }
+            });
+        });
+
+        closeCourseSelectionModal.addEventListener('click', () => {
+            courseSelectionModal.style.display = 'none';
+        });
+
+        closeYearSelectionModal.addEventListener('click', () => {
+            yearSelectionModal.style.display = 'none';
+        });
+
+        backToCourseSelection.addEventListener('click', () => {
+            yearSelectionModal.style.display = 'none';
+            courseSelectionModal.style.display = 'flex';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('course-modal-overlay')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        logoutBtn.addEventListener('click', showLogoutModal);
+        sidebarLogoutBtn.addEventListener('click', showLogoutModal);
+
+        function showLogoutModal() {
+            logoutModal.style.display = 'flex';
+        }
+
+        cancelLogout.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+
+        confirmLogout.addEventListener('click', () => {
+            localStorage.removeItem('activeTab');
+            window.location.href = '/v1/api/logout';
+        });
+
+        logoutModal.addEventListener('click', (e) => {
+            if (e.target === logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                logoutModal.style.display = 'none';
+                courseSelectionModal.style.display = 'none';
+                yearSelectionModal.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        function showToast(message, type) {
+            Swal.fire({
+                icon: type === 'error' ? 'error' : 'success',
+                title: message,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        }
+    </script>
+
+</body>
+
+</html>

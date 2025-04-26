@@ -321,7 +321,7 @@
 <body>
     <div class="main-container">
         <h1>Tuition Fees Update Request</h1>
-    <a href="/ssm/mca/dashboard#fees" class="back-button">
+    <a href="/v1/api/dashboard#fees" class="back-button">
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
 
@@ -371,7 +371,7 @@
 
                 <div class="actions">
                     <button class="btn btn-reject" onclick="openRejectModal('{{studentId}}')">Reject</button>
-                    <form action="/ssm/mca/approveAndRejectTu" method="POST">
+                    <form action="/v1/api/approveAndRejectTu" method="POST">
                         <input type="hidden" name="studentId" value="{{studentId}}">
                         <input type="submit" name="action" value="Approve" class="btn btn-approve">
                     </form>
@@ -393,7 +393,7 @@
         <div class="modal-content">
             <h2 style="color:#1d4ed8;">Reject Request</h2>
             <p>Please provide the reason for rejecting this request:</p>
-            <form id="reject-form" action="/ssm/mca/approveAndRejectTu" method="POST">
+            <form id="reject-form" action="/v1/api/approveAndRejectTu" method="POST">
                 <input type="hidden" name="studentId" id="reject-studentId" value="">
                 <input type="hidden" name="action" id="reject-action" value="">
                 <textarea 

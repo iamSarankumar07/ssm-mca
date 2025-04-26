@@ -191,11 +191,10 @@
 <body>
   <div class="container">
     <div class="header">
-      <a href="/ssm/mca/dashboard#admission" class="back-button">&larr; Back</a>
+      <a href="/v1/api/dashboard#admission" class="back-button">&larr; Back</a>
       <h1 style="color: #3d6ef5ff;">Applications Received</h1>
     </div>
 
-    <!-- Search Bar -->
     <div style="margin-bottom: 20px; text-align: center;">
       <input
         type="text"
@@ -242,7 +241,6 @@
     </table>
 
     {{#each applications}}
-    <!-- Modal Structure -->
     <div id="modal-{{refNo}}" class="modal">
       <div class="modal-content">
         <span class="modal-close" onclick="closeDetails('{{refNo}}')">&times;</span>

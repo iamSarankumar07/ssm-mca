@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Request Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #f9fafb;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --success-hover: #059669;
+            --warning: #f59e0b;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #e5e7eb;
+            --white: #ffffff;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 0.75rem;
+        }
+        
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f8;
+            color: var(--dark);
+            line-height: 1.6;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            flex-shrink: 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            padding: 0;
+        }
+        
+        .card-header-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-button {
+            margin-right: 1rem;
+            background-color: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .back-button:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            background-color: var(--white);
+            flex-shrink: 0;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .data-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: var(--success-hover);
+            border-color: var(--success-hover);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+            border-color: var(--danger-hover);
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 600;
+            border-radius: 0.375rem;
+        }
+        
+        .badge-pending {
+            background-color: var(--warning);
+            color: #fff;
+        }
+        
+        .badge-approved {
+            background-color: var(--success);
+            color: #fff;
+        }
+        
+        .badge-rejected {
+            background-color: var(--danger);
+            color: #fff;
+        }
+        
+        .leave-request-card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+            background-color: var(--white);
+        }
+        
+        .leave-request-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+        }
+        
+        .leave-request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .leave-request-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+        
+        .leave-request-status {
+            font-size: 0.85rem;
+        }
+        
+        .leave-request-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .leave-request-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .leave-request-reason {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: var(--secondary);
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .leave-request-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .staff-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .staff-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .staff-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+        
+        .staff-position {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state-text {
+            color: var(--gray);
+            font-size: 1rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid var(--light-gray);
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--dark);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--light-gray);
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+        
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .filter-item {
+                width: 100%;
+            }
+            
+            .leave-request-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .leave-request-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .leave-request-actions .btn {
+                width: 100%;
+            }
+            
+            .view-toggle {
+                flex-wrap: wrap;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .card-header-content {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+        
+        .table-view .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .table-view .table th {
+            background-color: var(--secondary);
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            border-bottom: 1px solid var(--light-gray);
+            white-space: nowrap;
+        }
+        
+        .table-view .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .table-view .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table-view .table tr:hover {
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .view-toggle-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            background-color: var(--secondary);
+            border: 1px solid var(--light-gray);
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .view-toggle-btn:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+        
+        .view-toggle-btn.active {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+        
+        .attachment-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .attachment-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+        
+        .tooltip-inner {
+            background-color: var(--dark);
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+        }
+        
+        .skeleton-card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background-color: var(--white);
+        }
+        
+        .skeleton-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .skeleton-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+        }
+        
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .skeleton-text.sm {
+            width: 30%;
+            height: 0.8rem;
+        }
+        
+        .skeleton-text.md {
+            width: 50%;
+        }
+        
+        .skeleton-text.lg {
+            width: 80%;
+        }
+        
+        .skeleton-badge {
+            width: 4rem;
+            height: 1.5rem;
+            border-radius: 0.375rem;
+        }
+        
+        .skeleton-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .skeleton-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .skeleton-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        .skeleton-button {
+            width: 6rem;
+            height: 2rem;
+            border-radius: var(--border-radius);
+        }
+        
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+
+        .toastify {
+            font-family: 'Inter', sans-serif;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .toastify-success {
+            background: linear-gradient(135deg, var(--success) 0%, var(--success-hover) 100%);
+        }
+        
+        .toastify-error {
+            background: linear-gradient(135deg, var(--danger) 0%, var(--danger-hover) 100%);
+        }
+        
+        .toastify-info {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-content">
+                        <a href="javascript:history.back()" class="back-button">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <h2 class="card-title">Leave Requests</h2>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" data-view="card">
+                            <i class="fas fa-th-large me-1"></i> Card View
+                        </button>
+                        <button class="view-toggle-btn" data-view="table">
+                            <i class="fas fa-table me-1"></i> Table View
+                        </button>
+                        <button class="btn btn-primary" id="refreshBtn">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="filters">
+                        <div class="filter-item">
+                            <label for="statusFilter" class="form-label">Status</label>
+                            <select id="statusFilter" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="Pending" selected>Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="departmentFilter" class="form-label">Department</label>
+                            <select id="departmentFilter" class="form-select">
+                                <option value="">All Departments</option>
+                                <option value="CSE">CSE</option>
+                                <option value="ECE">ECE</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="Civil">Civil</option>
+                                <option value="EEE">EEE</option>
+                                <option value="MBA">MBA</option>
+                                <option value="MCA">MCA</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="leaveTypeFilter" class="form-label">Leave Type</label>
+                            <select id="leaveTypeFilter" class="form-select">
+                                <option value="">All Types</option>
+                                <option value="Casual">Casual Leave</option>
+                                <option value="Sick">Sick Leave</option>
+                                <option value="Earned">Earned Leave</option>
+                                <option value="Maternity">Maternity/Paternity Leave</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="searchFilter" class="form-label">Search</label>
+                            <input type="text" id="searchFilter" class="form-control" placeholder="Search by name or ID...">
+                        </div>
+                    </div>
+
+                    <div class="data-container">
+                        <div id="loadingSpinner" class="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
+
+                        <div id="skeletonLoading" style="display: none;">
+                            <div id="cardViewSkeleton" class="card-view">
+                            </div>
+
+                            <div id="tableViewSkeleton" class="table-view" style="display: none;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Staff</th>
+                                                <th>Leave Type</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>Days</th>
+                                                <th>Applied On</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableBodySkeleton">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="emptyState" class="empty-state" style="display: none;">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-calendar-times"></i>
+                            </div>
+                            <div class="empty-state-text">
+                                No leave requests found matching your filters.
+                            </div>
+                        </div>
+
+                        <div id="cardView" class="card-view" style="display: none;">
+                        </div>
+
+                        <div id="tableView" class="table-view" style="display: none;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Staff</th>
+                                            <th>Leave Type</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Days</th>
+                                            <th>Applied On</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Leave Request Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="commentForm">
+                        <input type="hidden" id="leaveRequestId" value="">
+                        <input type="hidden" id="actionType" value="">
+                        
+                        <div class="mb-3">
+                            <label for="adminComment" class="form-label">Comments</label>
+                            <textarea id="adminComment" class="form-control" rows="4" placeholder="Enter your comments for this leave request..."></textarea>
+                            <div class="form-text">Your comments will be visible to the staff member.</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitAction">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="leaveDetailsModal" tabindex="-1" aria-labelledby="leaveDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="leaveDetailsModalLabel">Leave Request Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="leaveDetailsContent">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        let leaveRequests = [];
+        let filteredRequests = [];
+        let currentView = 'card';
+        let isLoading = false;
+        
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const skeletonLoading = document.getElementById('skeletonLoading');
+        const cardViewSkeleton = document.getElementById('cardViewSkeleton');
+        const tableViewSkeleton = document.getElementById('tableViewSkeleton');
+        const tableBodySkeleton = document.getElementById('tableBodySkeleton');
+        const emptyState = document.getElementById('emptyState');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+        const tableBody = document.getElementById('tableBody');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const statusFilter = document.getElementById('statusFilter');
+        const departmentFilter = document.getElementById('departmentFilter');
+        const leaveTypeFilter = document.getElementById('leaveTypeFilter');
+        const searchFilter = document.getElementById('searchFilter');
+        const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
+        const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
+        const leaveDetailsModal = new bootstrap.Modal(document.getElementById('leaveDetailsModal'));
+        
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        function showToast(message, type = 'info') {
+            const toastClass = type === 'success' ? 'toastify-success' : 
+                              type === 'error' ? 'toastify-error' : 'toastify-info';
+            
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                className: `toastify ${toastClass}`,
+                stopOnFocus: true,
+            }).showToast();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            generateSkeletons();
+            
+            fetchLeaveRequests();
+            
+            refreshBtn.addEventListener('click', fetchLeaveRequests);
+            
+            statusFilter.addEventListener('change', filterLeaveRequests);
+            departmentFilter.addEventListener('change', filterLeaveRequests);
+            leaveTypeFilter.addEventListener('change', filterLeaveRequests);
+            searchFilter.addEventListener('input', filterLeaveRequests);
+            
+            viewToggleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const view = this.getAttribute('data-view');
+                    setActiveView(view);
+                });
+            });
+            
+            document.getElementById('submitAction').addEventListener('click', submitLeaveAction);
+        });
+        
+        function generateSkeletons() {
+            cardViewSkeleton.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const skeletonCard = document.createElement('div');
+                skeletonCard.className = 'skeleton-card';
+                skeletonCard.innerHTML = `
+                    <div class="skeleton-header">
+                        <div class="d-flex align-items-center">
+                            <div class="skeleton skeleton-avatar me-3"></div>
+                            <div>
+                                <div class="skeleton skeleton-text md mb-1"></div>
+                                <div class="skeleton skeleton-text sm"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton skeleton-badge"></div>
+                    </div>
+                    <div class="skeleton-details">
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton skeleton-text lg mb-3"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                `;
+                cardViewSkeleton.appendChild(skeletonCard);
+            }
+            
+            tableBodySkeleton.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const skeletonRow = document.createElement('tr');
+                skeletonRow.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="skeleton skeleton-avatar me-3"></div>
+                            <div>
+                                <div class="skeleton skeleton-text md mb-1"></div>
+                                <div class="skeleton skeleton-text sm"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text sm"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-badge"></div></td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                        </div>
+                    </td>
+                `;
+                tableBodySkeleton.appendChild(skeletonRow);
+            }
+        }
+        
+        function fetchLeaveRequests() {
+            showLoading();
+            
+            loadingSpinner.style.display = 'none';
+            skeletonLoading.style.display = 'block';
+            
+            if (currentView === 'card') {
+                cardViewSkeleton.style.display = 'block';
+                tableViewSkeleton.style.display = 'none';
+            } else {
+                cardViewSkeleton.style.display = 'none';
+                tableViewSkeleton.style.display = 'block';
+            }
+            
+            setTimeout(() => {
+                fetch('/v1/api/staff/leaveRequests')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success && data.data) {
+                            leaveRequests = data.data;
+                            filterLeaveRequests();
+                            {{!-- showToast('Leave requests loaded successfully', 'success'); --}}
+                        } else {
+                            showEmpty();
+                            showToast('No leave requests found', 'info');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching leave requests:', error);
+                        showEmpty();
+                        showToast('Failed to load leave requests. Please try again.', 'error');
+                    })
+                    .finally(() => {
+                        skeletonLoading.style.display = 'none';
+                    });
+            }, 1500);
+        }
+        
+        function filterLeaveRequests() {
+            const status = statusFilter.value;
+            const department = departmentFilter.value;
+            const leaveType = leaveTypeFilter.value;
+            const search = searchFilter.value.toLowerCase();
+            
+            filteredRequests = leaveRequests.filter(request => {
+                const matchesStatus = status === '' || request.status === status;
+                const matchesDepartment = department === '' || request.staffId.department === department;
+                const matchesLeaveType = leaveType === '' || request.type === leaveType;
+                const matchesSearch = search === '' || 
+                    request.staffId.fullName.toLowerCase().includes(search) || 
+                    request.staffId.staffId.toLowerCase().includes(search);
+                
+                return matchesStatus && matchesDepartment && matchesLeaveType && matchesSearch;
+            });
+            
+            renderLeaveRequests();
+        }
+        
+        function renderLeaveRequests() {
+            if (filteredRequests.length === 0) {
+                showEmpty();
+                return;
+            }
+            
+            hideLoading();
+            emptyState.style.display = 'none';
+            
+            if (currentView === 'card') {
+                renderCardView();
+                cardView.style.display = 'block';
+                tableView.style.display = 'none';
+            } else {
+                renderTableView();
+                cardView.style.display = 'none';
+                tableView.style.display = 'block';
+            }
+        }
+        
+        function renderCardView() {
+            cardView.innerHTML = '';
+            
+            filteredRequests.forEach(request => {
+                const startDate = new Date(request.startDate);
+                const endDate = new Date(request.endDate);
+                const appliedDate = new Date(request.appliedOn);
+                const days = calculateDays(startDate, endDate);
+                
+                let statusClass = '';
+                if (request.status === 'Approved') {
+                    statusClass = 'badge-approved';
+                } else if (request.status === 'Rejected') {
+                    statusClass = 'badge-rejected';
+                } else {
+                    statusClass = 'badge-pending';
+                }
+                
+                const card = document.createElement('div');
+                card.className = 'leave-request-card';
+                
+                const initials = getInitials(request.staffId.fullName);
+                
+                card.innerHTML = `
+                    <div class="leave-request-header">
+                        <div class="staff-info">
+                            <div class="avatar">
+                                ${request.staffId.imageUrl ? 
+                                    `<img src="${request.staffId.imageUrl}" alt="${request.staffId.fullName}">` : 
+                                    initials}
+                            </div>
+                            <div class="staff-details">
+                                <div class="staff-name">${request.staffId.fullName}</div>
+                                <div class="staff-position">${request.staffId.department} - ${request.staffId.designation}</div>
+                            </div>
+                        </div>
+                        <span class="badge ${statusClass}">${request.status}</span>
+                    </div>
+                    <div class="leave-request-details">
+                        <div class="leave-request-detail">
+                            <span class="detail-label">Leave Type</span>
+                            <span class="detail-value">${request.type}</span>
+                        </div>
+                        <div class="leave-request-detail">
+                            <span class="detail-label">From</span>
+                            <span class="detail-value">${formatDate(startDate)}</span>
+                        </div>
+                        <div class="leave-request-detail">
+                            <span class="detail-label">To</span>
+                            <span class="detail-value">${formatDate(endDate)}</span>
+                        </div>
+                        <div class="leave-request-detail">
+                            <span class="detail-label">Days</span>
+                            <span class="detail-value">${days}</span>
+                        </div>
+                        <div class="leave-request-detail">
+                            <span class="detail-label">Applied On</span>
+                            <span class="detail-value">${formatDate(appliedDate)}</span>
+                        </div>
+                        ${request.attachment ? `
+                        <div class="leave-request-detail">
+                            <span class="detail-label">Attachment</span>
+                            <a href="${request.attachment}" class="attachment-link" target="_blank">
+                                <i class="fas fa-paperclip"></i> View
+                            </a>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="leave-request-reason">
+                        <strong>Reason:</strong> ${request.reason}
+                    </div>
+                    ${request.adminComment ? `
+                    <div class="leave-request-reason">
+                        <strong>Admin Comment:</strong> ${request.adminComment}
+                    </div>
+                    ` : ''}
+                    <div class="leave-request-actions">
+                        <button class="btn btn-sm btn-primary view-details-btn" data-id="${request._id}">
+                            <i class="fas fa-eye me-1"></i> View Details
+                        </button>
+                        ${request.status === 'Pending' ? `
+                        <button class="btn btn-sm btn-success approve-btn" data-id="${request._id}">
+                            <i class="fas fa-check me-1"></i> Approve
+                        </button>
+                        <button class="btn btn-sm btn-danger reject-btn" data-id="${request._id}">
+                            <i class="fas fa-times me-1"></i> Reject
+                        </button>
+                        ` : ''}
+                    </div>
+                `;
+                
+                cardView.appendChild(card);
+                
+                const viewDetailsBtn = card.querySelector('.view-details-btn');
+                viewDetailsBtn.addEventListener('click', () => showLeaveDetails(request));
+                
+                if (request.status === 'Pending') {
+                    const approveBtn = card.querySelector('.approve-btn');
+                    const rejectBtn = card.querySelector('.reject-btn');
+                    
+                    approveBtn.addEventListener('click', () => openCommentModal(request._id, 'approve'));
+                    rejectBtn.addEventListener('click', () => openCommentModal(request._id, 'reject'));
+                }
+            });
+        }
+        
+        function renderTableView() {
+            tableBody.innerHTML = '';
+            
+            filteredRequests.forEach(request => {
+                const startDate = new Date(request.startDate);
+                const endDate = new Date(request.endDate);
+                const appliedDate = new Date(request.appliedOn);
+                const days = calculateDays(startDate, endDate);
+                
+                let statusClass = '';
+                if (request.status === 'Approved') {
+                    statusClass = 'badge-approved';
+                } else if (request.status === 'Rejected') {
+                    statusClass = 'badge-rejected';
+                } else {
+                    statusClass = 'badge-pending';
+                }
+                
+                const initials = getInitials(request.staffId.fullName);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="staff-info">
+                            <div class="avatar">
+                                ${request.staffId.imageUrl ? 
+                                    `<img src="${request.staffId.imageUrl}" alt="${request.staffId.fullName}">` : 
+                                    initials}
+                            </div>
+                            <div class="staff-details">
+                                <div class="staff-name">${request.staffId.fullName}</div>
+                                <div class="staff-position">${request.staffId.department}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${request.type}</td>
+                    <td>${formatDate(startDate)}</td>
+                    <td>${formatDate(endDate)}</td>
+                    <td>${days}</td>
+                    <td>${formatDate(appliedDate)}</td>
+                    <td><span class="badge ${statusClass}">${request.status}</span></td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <button class="btn btn-sm btn-primary view-details-btn" data-id="${request._id}" data-bs-toggle="tooltip" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${request.status === 'Pending' ? `
+                            <button class="btn btn-sm btn-success approve-btn" data-id="${request._id}" data-bs-toggle="tooltip" title="Approve">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger reject-btn" data-id="${request._id}" data-bs-toggle="tooltip" title="Reject">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+                
+                const viewDetailsBtn = row.querySelector('.view-details-btn');
+                viewDetailsBtn.addEventListener('click', () => showLeaveDetails(request));
+                
+                if (request.status === 'Pending') {
+                    const approveBtn = row.querySelector('.approve-btn');
+                    const rejectBtn = row.querySelector('.reject-btn');
+                    
+                    approveBtn.addEventListener('click', () => openCommentModal(request._id, 'approve'));
+                    rejectBtn.addEventListener('click', () => openCommentModal(request._id, 'reject'));
+                }
+                
+                const tooltips = row.querySelectorAll('[data-bs-toggle="tooltip"]');
+                tooltips.forEach(el => {
+                    new bootstrap.Tooltip(el);
+                });
+            });
+        }
+        
+        function showLeaveDetails(request) {
+            const startDate = new Date(request.startDate);
+            const endDate = new Date(request.endDate);
+            const appliedDate = new Date(request.appliedOn);
+            const days = calculateDays(startDate, endDate);
+            
+            let statusClass = '';
+            if (request.status === 'Approved') {
+                statusClass = 'badge-approved';
+            } else if (request.status === 'Rejected') {
+                statusClass = 'badge-rejected';
+            } else {
+                statusClass = 'badge-pending';
+            }
+            
+            const detailsContent = document.getElementById('leaveDetailsContent');
+            
+            const initials = getInitials(request.staffId.fullName);
+            
+            detailsContent.innerHTML = `
+                <div class="staff-info mb-4">
+                    <div class="avatar">
+                        ${request.staffId.imageUrl ? 
+                            `<img src="${request.staffId.imageUrl}" alt="${request.staffId.fullName}">` : 
+                            initials}
+                    </div>
+                    <div class="staff-details">
+                        <div class="staff-name">${request.staffId.fullName}</div>
+                        <div class="staff-position">${request.staffId.department} - ${request.staffId.designation}</div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Leave Information</h6>
+                        <div class="mb-2">
+                            <strong>Leave Type:</strong> ${request.type}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Status:</strong> <span class="badge ${statusClass}">${request.status}</span>
+                        </div>
+                        <div class="mb-2">
+                            <strong>From:</strong> ${formatDate(startDate)}
+                        </div>
+                        <div class="mb-2">
+                            <strong>To:</strong> ${formatDate(endDate)}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Total Days:</strong> ${days}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Applied On:</strong> ${formatDate(appliedDate)}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Staff Information</h6>
+                        <div class="mb-2">
+                            <strong>Staff ID:</strong> ${request.staffId.staffId}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Department:</strong> ${request.staffId.department}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Designation:</strong> ${request.staffId.designation}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Email:</strong> ${request.staffId.email}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Phone:</strong> ${request.staffId.phone || 'N/A'}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="mb-2">Reason for Leave</h6>
+                    <div class="p-3 bg-light rounded">
+                        ${request.reason}
+                    </div>
+                </div>
+                
+                ${request.attachment ? `
+                <div class="mb-4">
+                    <h6 class="mb-2">Supporting Documents</h6>
+                    <a href="${request.attachment}" class="btn btn-sm btn-outline-primary" target="_blank">
+                        <i class="fas fa-paperclip me-1"></i> View Attachment
+                    </a>
+                </div>
+                ` : ''}
+                
+                ${request.adminComment ? `
+                <div class="mb-4">
+                    <h6 class="mb-2">Admin Comments</h6>
+                    <div class="p-3 bg-light rounded">
+                        ${request.adminComment}
+                    </div>
+                </div>
+                ` : ''}
+                
+                ${request.status === 'Pending' ? `
+                <div class="d-flex gap-2 mt-4">
+                    <button class="btn btn-success approve-btn" data-id="${request._id}">
+                        <i class="fas fa-check me-1"></i> Approve
+                    </button>
+                    <button class="btn btn-danger reject-btn" data-id="${request._id}">
+                        <i class="fas fa-times me-1"></i> Reject
+                    </button>
+                </div>
+                ` : ''}
+            `;
+            
+            if (request.status === 'Pending') {
+                const approveBtn = detailsContent.querySelector('.approve-btn');
+                const rejectBtn = detailsContent.querySelector('.reject-btn');
+                
+                approveBtn.addEventListener('click', () => {
+                    leaveDetailsModal.hide();
+                    openCommentModal(request._id, 'approve');
+                });
+                
+                rejectBtn.addEventListener('click', () => {
+                    leaveDetailsModal.hide();
+                    openCommentModal(request._id, 'reject');
+                });
+            }
+            
+            leaveDetailsModal.show();
+        }
+        
+        function openCommentModal(requestId, action) {
+            document.getElementById('leaveRequestId').value = requestId;
+            document.getElementById('actionType').value = action;
+            
+            const modalTitle = document.getElementById('commentModalLabel');
+            modalTitle.textContent = action === 'approve' ? 'Approve Leave Request' : 'Reject Leave Request';
+            
+            const submitBtn = document.getElementById('submitAction');
+            submitBtn.className = action === 'approve' ? 'btn btn-success' : 'btn btn-danger';
+            submitBtn.textContent = action === 'approve' ? 'Approve' : 'Reject';
+            
+            commentModal.show();
+        }
+        
+        function submitLeaveAction() {
+            const requestId = document.getElementById('leaveRequestId').value;
+            const action = document.getElementById('actionType').value;
+            const comment = document.getElementById('adminComment').value;
+            
+            const data = {
+                leaveId: requestId,
+                status: action === 'approve' ? 'Approved' : 'Rejected',
+                adminComment: comment
+            };
+            
+            showLoading();
+            
+            fetch('/v1/api/updateLeaveStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    commentModal.hide();
+                    
+                    document.getElementById('commentForm').reset();
+                    
+                    fetchLeaveRequests();
+                    
+                    showToast(
+                        `Leave request ${action === 'approve' ? 'approved' : 'rejected'} successfully!`, 
+                        'success'
+                    );
+                } else {
+                    showToast(`Error: ${data.message}`, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating leave status:', error);
+                
+                showToast('Failed to process request. Please try again.', 'error');
+                
+                commentModal.hide();
+                document.getElementById('commentForm').reset();
+            })
+            .finally(() => {
+                hideLoading();
+            });
+        }
+        
+        function calculateDays(startDate, endDate) {
+            return Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        }
+        
+        function formatDate(date) {
+            if (!date || isNaN(date.getTime())) return '-';
+            
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            
+            return `${day}/${month}/${year}`;
+        }
+        
+        function getInitials(name) {
+            if (!name) return '';
+            
+            return name
+                .split(' ')
+                .map(word => word.charAt(0))
+                .join('')
+                .toUpperCase()
+                .substring(0, 2);
+        }
+        
+        function setActiveView(view) {
+            currentView = view;
+            
+            viewToggleBtns.forEach(btn => {
+                if (btn.getAttribute('data-view') === view) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            if (isLoading) {
+                if (view === 'card') {
+                    cardViewSkeleton.style.display = 'block';
+                    tableViewSkeleton.style.display = 'none';
+                } else {
+                    cardViewSkeleton.style.display = 'none';
+                    tableViewSkeleton.style.display = 'block';
+                }
+            } else {
+                renderLeaveRequests();
+            }
+        }
+        
+        function showLoading() {
+            isLoading = true;
+            loadingSpinner.style.display = 'flex';
+            cardView.style.display = 'none';
+            tableView.style.display = 'none';
+            emptyState.style.display = 'none';
+        }
+        
+        function hideLoading() {
+            isLoading = false;
+            loadingSpinner.style.display = 'none';
+        }
+        
+        function showEmpty() {
+            hideLoading();
+            cardView.style.display = 'none';
+            tableView.style.display = 'none';
+            emptyState.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

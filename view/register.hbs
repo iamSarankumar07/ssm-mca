@@ -4,401 +4,996 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-        * {
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --transition: all 0.2s ease;
+            --border-radius: 8px;
         }
+        
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-sizing: border-box;
+        }
+        
         body {
-            background-color: #f4f4f4;
+            background-color: #f8fafc;
             margin: 0;
-            padding: 10px;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            color: var(--text-primary);
+        }
+        
+        .layout-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: white;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            color: var(--text-primary);
+            border: none;
+            margin-right: 1rem;
+            transition: var(--transition);
+        }
+        
+        .back-btn:hover {
+            background-color: #e2e8f0;
+            color: var(--primary-color);
+        }
+        
+        .header-title h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+        
+        .header-title p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .content-area {
+            flex: 1;
+            overflow: hidden;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .steps-container {
+            margin-bottom: 1rem;
+        }
+        
+        .steps-wrapper {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 1rem;
+        }
+        
+        .steps-progress {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 0 1rem;
+        }
+        
+        .steps-progress::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+        
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .step-circle.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+        
+        .step-circle.completed {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .step-label.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .form-container {
+            flex: 1;
+            overflow: hidden;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+        
+        .form-scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .form-scroll-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .form-scroll-area::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 6px;
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .section-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background-color: rgba(99, 102, 241, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+        
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .section-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0.25rem 0 0 0;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .required-field::after {
+            content: "*";
+            color: var(--danger-color);
+            margin-left: 4px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 6px;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            font-size: 0.875rem;
+            background-color: #fff;
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: var(--primary-color);
+        }
+        
+        .input-group-text {
+            background-color: var(--secondary-color);
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .btn {
+            border-radius: 6px;
+            padding: 0.625rem 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .form-field {
+            margin-bottom: 1.25rem;
+        }
+        
+        .photo-upload-container {
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .photo-preview-wrapper {
+            margin-right: 1.5rem;
+        }
+        
+        .photo-preview-container {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+        
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .photo-upload-content {
+            flex: 1;
+        }
+        
+        .upload-label {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            border-radius: 6px;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+        
+        .upload-label:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+        }
+        
+        .form-text {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .invalid-feedback {
+            color: var(--danger-color);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .validation-message {
+            border-radius: var(--border-radius);
+            padding: 0.75rem;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid var(--danger-color);
+            color: #b91c1c;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+        
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            z-index: 9999;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s;
         }
-        form {
-            width: 100%;
-            max-width: 1400px;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        
+        .spinner-overlay.show {
+            visibility: visible;
+            opacity: 1;
         }
-        h2 {
-            color: #3d6ef5;
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5em;
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
         }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        .form-group {
-            margin-bottom: 8px;
-        }
-        label {
-            display: block;
-            margin-bottom: 3px;
-            color: #333;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        input,
-        select {
-            width: 100%;
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-        .button-container {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-        button {
-            width: 120px;
-            background-color: #3d6ef5;
-            color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px;
-            border: none;
-            font-size: 0.9em;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        button:hover {
-            background-color: #f2f2f2;
-            color: #3d6ef5;
-            border: 2px solid #3d6ef5;
-        }
-        @media (max-width: 1200px) {
-            .form-grid {
-                grid-template-columns: repeat(3, 1fr);
+        
+        @media (max-width: 768px) {
+            .photo-upload-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
-        }
-        @media (max-width: 900px) {
-            .form-grid {
-                grid-template-columns: repeat(2, 1fr);
+            
+            .photo-preview-wrapper {
+                margin-right: 0;
+                margin-bottom: 1rem;
             }
-        }
-        @media (max-width: 600px) {
-            .form-grid {
-                grid-template-columns: 1fr;
+            
+            .content-area {
+                padding: 1rem;
+            }
+            
+            .form-scroll-area {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <form action="/ssm/mca/studentRegister" method="post">
-    <h2>Student Registration Form</h2>
-    <br>
-    <div class="form-grid">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="registerNumber">Register Number:</label>
-            <input type="text" id="registerNumber" name="registerNumber" required>
-        </div>
-        <div class="form-group">
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob" required>
-        </div>
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="year">Year:</label>
-            <select id="year" name="year" required>
-                <option value="">Select Year</option>
-                <option value="I">MCA-I</option>
-                <option value="II">MCA-II</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone:</label>
-            <input type="tel" id="phone" name="phone" required>
-        </div>
-        <div class="form-group">
-            <label for="aadhaarNum">Aadhaar Number:</label>
-            <input type="text" id="aadhaarNum" name="aadhaarNum" maxlength="14" oninput="formatAadhaar(this)" required>
-        </div>
-        <div class="form-group">
-            <label for="totalFee">Total Fees:</label>
-            <input type="text" id="totalFee" name="totalFee" required>
-        </div>
-        <div class="form-group">
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" required>
-        </div>
-        <div class="form-group">
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city" required>
-        </div>
-        <div class="form-group">
-            <label for="state">State:</label>
-            <select id="state" name="state" required>
-                <option value="">Select State</option>
-                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                <option value="Andhra Pradesh">Andhra Pradesh</option>
-                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                <option value="Assam">Assam</option>
-                <option value="Bihar">Bihar</option>
-                <option value="Chandigarh">Chandigarh</option>
-                <option value="Chhattisgarh">Chhattisgarh</option>
-                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Goa">Goa</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Himachal Pradesh">Himachal Pradesh</option>
-                <option value="Jharkhand">Jharkhand</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Kerala">Kerala</option>
-                <option value="Lakshadweep">Lakshadweep</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Manipur">Manipur</option>
-                <option value="Meghalaya">Meghalaya</option>
-                <option value="Mizoram">Mizoram</option>
-                <option value="Nagaland">Nagaland</option>
-                <option value="Odisha">Odisha</option>
-                <option value="Puducherry">Puducherry</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Sikkim">Sikkim</option>
-                <option value="Tamil Nadu">Tamil Nadu</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Tripura">Tripura</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Uttarakhand">Uttarakhand</option>
-                <option value="West Bengal">West Bengal</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="pinCode">Pincode:</label>
-            <input type="text" id="pinCode" name="pinCode" required>
-        </div>
-        <div class="form-group">
-            <label for="country">Country:</label>
-            <select id="country" name="country" required>
-                <option value="">Select Country</option>
-                <option value="India">India</option>
-                <option value="Afghanistan">Afghanistan</option>
-                <option value="Albania">Albania</option>
-                <option value="Algeria">Algeria</option>
-                <option value="Argentina">Argentina</option>
-                <option value="Australia">Australia</option>
-                <option value="Bangladesh">Bangladesh</option>
-                <option value="Belgium">Belgium</option>
-                <option value="Brazil">Brazil</option>
-                <option value="Canada">Canada</option>
-                <option value="China">China</option>
-                <option value="France">France</option>
-                <option value="Germany">Germany</option>
-                <option value="Italy">Italy</option>
-                <option value="Japan">Japan</option>
-                <option value="Mexico">Mexico</option>
-                <option value="Pakistan">Pakistan</option>
-                <option value="Russia">Russia</option>
-                <option value="South Africa">South Africa</option>
-                <option value="Sri Lanka">Sri Lanka</option>
-                <option value="United States">United States</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="parentName">Parent/Guardian Name:</label>
-            <input type="text" id="parentName" name="parentName" required>
-        </div>
-        <div class="form-group">
-            <label for="parentPhone">Parent/Guardian Phone:</label>
-            <input type="tel" id="parentPhone" name="parentPhone" required>
-        </div>
-        <div class="form-group">
-            <label for="parentalIncome">Parental Income (Per Annum):</label>
-            <input type="text" id="parentalIncome" name="parentalIncome" oninput="this.value=this.value.replace(/\D/g,'')" required>
-        </div>
-        <div class="form-group">
-            <label for="previousInstitution">Previous Institution:</label>
-            <input type="text" id="previousInstitution" name="previousInstitution" required>
-        </div>
-        <div class="form-group">
-            <label for="previousMarks">Previous Marks (Percentage):</label>
-            <input type="text" id="previousMarks" name="previousMarks" oninput="this.value=this.value.replace(/\D/g,'')" required>
-        </div>
-        <div class="form-group">
-            <label for="emergencyContact">Emergency Contact Name:</label>
-            <input type="text" id="emergencyContact" name="emergencyContact" required>
-        </div>
-        <div class="form-group">
-            <label for="emergencyContactRelationship">Emergency Contact Relationship:</label>
-            <input type="text" id="emergencyContactRelationship" name="emergencyContactRelationship" required>
-        </div>
-        <div class="form-group">
-            <label for="emergencyPhone">Emergency Contact Phone:</label>
-            <input type="tel" id="emergencyPhone" name="emergencyPhone" required>
-        </div>
-        <div class="form-group">
-            <label for="religion">Religion:</label>
-            <select id="religion" name="religion" required>
-                <option value="">Select Religion</option>
-                <option value="Hindu">Hindu</option>
-                <option value="Muslim">Muslim</option>
-                <option value="Christian">Christian</option>
-                <option value="Sikh">Sikh</option>
-                <option value="Buddhist">Buddhist</option>
-                <option value="Jain">Jain</option>
-                <option value="Other">Other</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="bloodGroup">Blood Group:</label>
-            <select id="bloodGroup" name="bloodGroup" required>
-                <option value="">Select Blood Group</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="nationality">Nationality:</label>
-            <select id="nationality" name="nationality" required>
-                <option value="">Select Nationality</option>
-                <option value="Indian">Indian</option>
-                <option value="Afghan">Afghan</option>
-                <option value="Albanian">Albanian</option>
-                <option value="Algerian">Algerian</option>
-                <option value="American">American</option>
-                <option value="Andorran">Andorran</option>
-                <option value="Angolan">Angolan</option>
-                <option value="Argentine">Argentine</option>
-                <option value="Australian">Australian</option>
-                <option value="Austrian">Austrian</option>
-                <option value="Bangladeshi">Bangladeshi</option>
-                <option value="Barbadian">Barbadian</option>
-                <option value="Belgian">Belgian</option>
-                <option value="Brazilian">Brazilian</option>
-                <option value="British">British</option>
-                <option value="Canadian">Canadian</option>
-                <option value="Chinese">Chinese</option>
-                <option value="Colombian">Colombian</option>
-                <option value="Egyptian">Egyptian</option>
-                <option value="French">French</option>
-                <option value="German">German</option>
-                <option value="Indian">Indian</option>
-                <option value="Italian">Italian</option>
-                <option value="Japanese">Japanese</option>
-                <option value="Kenyan">Kenyan</option>
-                <option value="Mexican">Mexican</option>
-                <option value="Nepali">Nepali</option>
-                <option value="Pakistani">Pakistani</option>
-                <option value="Russian">Russian</option>
-                <option value="South African">South African</option>
-                <option value="Sri Lankan">Sri Lankan</option>
-                <option value="Swiss">Swiss</option>
-                <option value="United States">United States</option>
-                <option value="Zimbabwean">Zimbabwean</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="scholarship">Scholarship:</label>
-            <select id="scholarship" name="scholarship" required>
-                <option value="">Select Option</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="bridgeCourse">Bridge Course:</label>
-            <select id="bridgeCourse" name="bridgeCourse" required>
-                <option value="">Select Option</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="transportation">Transportation Required:</label>
-            <select id="transportation" name="transportation" required>
-                <option value="">Select Option</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="hostelRequired">Hostel Required:</label>
-            <select id="hostelRequired" name="hostelRequired" required>
-                <option value="">Select Option</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="admissionDate">Admission Date:</label>
-            <input type="date" id="admissionDate" name="admissionDate" required>
-        </div>
-        <div class="button-container">
-            <button type="button" onclick="window.location.href='/ssm/mca/dashboard#students'">Back</button>
-            <button type="submit">Register</button>
+    <div class="layout-container">
+        <header class="header">
+            <div class="header-left"> 
+                <button type="button" class="back-btn" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Student Registration</h1>
+                    <p>Complete all required information to register a new student</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <div class="steps-container">
+                <div class="steps-wrapper">
+                    <div class="steps-progress">
+                        <div class="step-item">
+                            <div class="step-circle active" data-step="1">1</div>
+                            <div class="step-label active">Personal</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle" data-step="2">2</div>
+                            <div class="step-label">Address</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle" data-step="3">3</div>
+                            <div class="step-label">Academic</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle" data-step="4">4</div>
+                            <div class="step-label">Guardian</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle" data-step="5">5</div>
+                            <div class="step-label">Emergency</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container">
+                <div class="form-scroll-area">
+                    <form id="studentRegistrationForm" action="/v1/api/studentRegister" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <div class="form-section active" id="section-1" data-section="1">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <h3 class="section-title">Personal Information</h3>
+                                    <p class="section-subtitle">Basic details about the student</p>
+                                </div>
+                            </div>
+
+                            <div class="photo-upload-container">
+                                <div class="photo-preview-wrapper">
+                                    <div class="photo-preview-container">
+                                        <img id="preview-image" class="preview-image" src="#" alt="Preview">
+                                        <div id="upload-placeholder">
+                                            <i class="fas fa-user upload-icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="photo-upload-content">
+                                    <h5 class="mb-2 fw-semibold">Student Photo</h5>
+                                    <p class="form-text mb-2">Upload a passport size photo (Max 100KB)</p>
+                                    <label for="student-photo" class="upload-label">
+                                        <i class="fas fa-camera"></i>
+                                        Choose Photo
+                                    </label>
+                                    <input type="file" id="student-photo" name="image" class="d-none" accept="image/*" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4 form-field">
+                                    <label for="name" class="form-label required-field">Full Name</label>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter full name" required>
+                                    <div class="invalid-feedback">Please enter the student's full name</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="registerNumber" class="form-label required-field">Register Number</label>
+                                    <input type="text" id="registerNumber" name="registerNumber" class="form-control" placeholder="Enter register number" required>
+                                    <div class="invalid-feedback">Please enter a valid register number</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="dob" class="form-label required-field">Date of Birth</label>
+                                    <input type="date" id="dob" name="dob" class="form-control" required>
+                                    <div class="invalid-feedback">Please select date of birth</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="gender" class="form-label required-field">Gender</label>
+                                    <select id="gender" name="gender" class="form-select" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a gender</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="email" class="form-label required-field">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input type="email" id="email" name="email" class="form-control" placeholder="student@example.com" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid email address</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="phone" class="form-label required-field">Phone Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="Enter phone number" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid phone number</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="aadhaarNum" class="form-label required-field">Aadhaar Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        <input type="text" id="aadhaarNum" name="aadhaarNum" maxlength="14" class="form-control" placeholder="XXXX XXXX XXXX" oninput="formatAadhaar(this)" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid Aadhaar number</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="bloodGroup" class="form-label required-field">Blood Group</label>
+                                    <select id="bloodGroup" name="bloodGroup" class="form-select" required>
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a blood group</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="religion" class="form-label required-field">Religion</label>
+                                    <select id="religion" name="religion" class="form-select" required>
+                                        <option value="">Select Religion</option>
+                                        <option value="Hindu">Hindu</option>
+                                        <option value="Muslim">Muslim</option>
+                                        <option value="Christian">Christian</option>
+                                        <option value="Sikh">Sikh</option>
+                                        <option value="Buddhist">Buddhist</option>
+                                        <option value="Jain">Jain</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a religion</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="nationality" class="form-label required-field">Nationality</label>
+                                    <select id="nationality" name="nationality" class="form-select" required>
+                                        <option value="">Select Nationality</option>
+                                        <option value="Indian">Indian</option>
+                                        <option value="Afghan">Afghan</option>
+                                        <option value="Albanian">Albanian</option>
+                                        <option value="Algerian">Algerian</option>
+                                        <option value="American">American</option>
+                                        <option value="Andorran">Andorran</option>
+                                        <option value="Angolan">Angolan</option>
+                                        <option value="Argentine">Argentine</option>
+                                        <option value="Australian">Australian</option>
+                                        <option value="Austrian">Austrian</option>
+                                        <option value="Bangladeshi">Bangladeshi</option>
+                                        <option value="Barbadian">Barbadian</option>
+                                        <option value="Belgian">Belgian</option>
+                                        <option value="Brazilian">Brazilian</option>
+                                        <option value="British">British</option>
+                                        <option value="Canadian">Canadian</option>
+                                        <option value="Chinese">Chinese</option>
+                                        <option value="Colombian">Colombian</option>
+                                        <option value="Egyptian">Egyptian</option>
+                                        <option value="French">French</option>
+                                        <option value="German">German</option>
+                                        <option value="Italian">Italian</option>
+                                        <option value="Japanese">Japanese</option>
+                                        <option value="Kenyan">Kenyan</option>
+                                        <option value="Mexican">Mexican</option>
+                                        <option value="Nepali">Nepali</option>
+                                        <option value="Pakistani">Pakistani</option>
+                                        <option value="Russian">Russian</option>
+                                        <option value="South African">South African</option>
+                                        <option value="Sri Lankan">Sri Lankan</option>
+                                        <option value="Swiss">Swiss</option>
+                                        <option value="United States">United States</option>
+                                        <option value="Zimbabwean">Zimbabwean</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a nationality</div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div></div>
+                                <button type="button" class="btn btn-primary next-btn" data-next="2">
+                                    Next Step
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-section" id="section-2" data-section="2">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h3 class="section-title">Address Information</h3>
+                                    <p class="section-subtitle">Current residential details</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-12 form-field">
+                                    <label for="address" class="form-label required-field">Complete Address</label>
+                                    <textarea id="address" name="address" class="form-control" rows="3" placeholder="Enter complete address" required></textarea>
+                                    <div class="invalid-feedback">Please enter the complete address</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="city" class="form-label required-field">City</label>
+                                    <input type="text" id="city" name="city" class="form-control" placeholder="Enter city" required>
+                                    <div class="invalid-feedback">Please enter a city</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="state" class="form-label required-field">State</label>
+                                    <select id="state" name="state" class="form-select" required>
+                                        <option value="">Select State</option>
+                                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chandigarh">Chandigarh</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Lakshadweep">Lakshadweep</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Puducherry">Puducherry</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a state</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="pinCode" class="form-label required-field">Pincode</label>
+                                    <input type="text" id="pinCode" name="pinCode" class="form-control" placeholder="Enter pincode" required>
+                                    <div class="invalid-feedback">Please enter a valid pincode</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="country" class="form-label required-field">Country</label>
+                                    <select id="country" name="country" class="form-select" required>
+                                        <option value="">Select Country</option>
+                                        <option value="India">India</option>
+                                        <option value="Afghanistan">Afghanistan</option>
+                                        <option value="Albania">Albania</option>
+                                        <option value="Algeria">Algeria</option>
+                                        <option value="Argentina">Argentina</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Bangladesh">Bangladesh</option>
+                                        <option value="Belgium">Belgium</option>
+                                        <option value="Brazil">Brazil</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="China">China</option>
+                                        <option value="France">France</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="Mexico">Mexico</option>
+                                        <option value="Pakistan">Pakistan</option>
+                                        <option value="Russia">Russia</option>
+                                        <option value="South Africa">South Africa</option>
+                                        <option value="Sri Lanka">Sri Lanka</option>
+                                        <option value="United States">United States</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a country</div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline-primary prev-btn" data-prev="1">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Previous Step
+                                </button>
+                                <button type="button" class="btn btn-primary next-btn" data-next="3">
+                                    Next Step
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-section" id="section-3" data-section="3">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div>
+                                    <h3 class="section-title">Academic Information</h3>
+                                    <p class="section-subtitle">Educational and course details</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-3 form-field">
+                                    <label for="course" class="form-label required-field">Course</label>
+                                    <input type="text" id="course" name="course" class="form-control" value="{{course}}" required readonly>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="totalFee" class="form-label required-field">Total Fees</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">₹</span>
+                                        <input type="text" id="totalFee" name="totalFee" class="form-control" placeholder="Enter total fees" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter the total fees</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="previousInstitution" class="form-label required-field">Previous Institution</label>
+                                    <input type="text" id="previousInstitution" name="previousInstitution" class="form-control" placeholder="Enter previous institution" required>
+                                    <div class="invalid-feedback">Please enter previous institution</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="previousMarks" class="form-label required-field">Previous Marks (%)</label>
+                                    <div class="input-group">
+                                        <input type="text" id="previousMarks" name="previousMarks" class="form-control" placeholder="Enter percentage" oninput="this.value=this.value.replace(/\D/g,'')" required>
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter previous marks</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="scholarship" class="form-label required-field">Scholarship</label>
+                                    <select id="scholarship" name="scholarship" class="form-select" required>
+                                        <option value="">Select Option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select an option</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="bridgeCourse" class="form-label required-field">Bridge Course</label>
+                                    <select id="bridgeCourse" name="bridgeCourse" class="form-select" required>
+                                        <option value="">Select Option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select an option</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="transportation" class="form-label required-field">Transportation Required</label>
+                                    <select id="transportation" name="transportation" class="form-select" required>
+                                        <option value="">Select Option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select an option</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="hostelRequired" class="form-label required-field">Hostel Required</label>
+                                    <select id="hostelRequired" name="hostelRequired" class="form-select" required>
+                                        <option value="">Select Option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select an option</div>
+                                </div>
+                                <div class="col-md-3 form-field">
+                                    <label for="admissionDate" class="form-label required-field">Admission Date</label>
+                                    <input type="date" id="admissionDate" name="admissionDate" class="form-control" required>
+                                    <div class="invalid-feedback">Please select admission date</div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline-primary prev-btn" data-prev="2">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Previous Step
+                                </button>
+                                <button type="button" class="btn btn-primary next-btn" data-next="4">
+                                    Next Step
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-section" id="section-4" data-section="4">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <h3 class="section-title">Parent/Guardian Information</h3>
+                                    <p class="section-subtitle">Details of parent or guardian</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4 form-field">
+                                    <label for="parentName" class="form-label required-field">Parent/Guardian Name</label>
+                                    <input type="text" id="parentName" name="parentName" class="form-control" placeholder="Enter parent/guardian name" required>
+                                    <div class="invalid-feedback">Please enter parent/guardian name</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="parentPhone" class="form-label required-field">Parent/Guardian Phone</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input type="tel" id="parentPhone" name="parentPhone" class="form-control" placeholder="Enter phone number" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid phone number</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="parentalIncome" class="form-label required-field">Parental Income (Per Annum)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">₹</span>
+                                        <input type="text" id="parentalIncome" name="parentalIncome" class="form-control" placeholder="Enter annual income" oninput="this.value=this.value.replace(/\D/g,'')" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter parental income</div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline-primary prev-btn" data-prev="3">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Previous Step
+                                </button>
+                                <button type="button" class="btn btn-primary next-btn" data-next="5">
+                                    Next Step
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-section" id="section-5" data-section="5">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                                <div>
+                                    <h3 class="section-title">Emergency Contact Information</h3>
+                                    <p class="section-subtitle">Person to contact in case of emergency</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4 form-field">
+                                    <label for="emergencyContact" class="form-label required-field">Emergency Contact Name</label>
+                                    <input type="text" id="emergencyContact" name="emergencyContact" class="form-control" placeholder="Enter contact name" required>
+                                    <div class="invalid-feedback">Please enter emergency contact name</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="emergencyContactRelationship" class="form-label required-field">Relationship</label>
+                                    <input type="text" id="emergencyContactRelationship" name="emergencyContactRelationship" class="form-control" placeholder="Enter relationship" required>
+                                    <div class="invalid-feedback">Please enter relationship</div>
+                                </div>
+                                <div class="col-md-4 form-field">
+                                    <label for="emergencyPhone" class="form-label required-field">Emergency Contact Phone</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input type="tel" id="emergencyPhone" name="emergencyPhone" class="form-control" placeholder="Enter phone number" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid phone number</div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline-primary prev-btn" data-prev="4">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Previous Step
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Register Student
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</form>
 
+    <div class="spinner-overlay" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
     <script>
-        document.getElementById("phone").addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, '');
-            if (this.value.length > 10) {
-                this.value = this.value.slice(0, 10);
-            }
-        });
-        document.getElementById("registerNumber").addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, '');
-        });
-        document.getElementById("totalFee").addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, '');
-        });
-        document.getElementById("parentPhone").addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, '');
-            if (this.value.length > 10) {
-                this.value = this.value.slice(0, 10);
-            }
-        });
-        document.getElementById("emergencyPhone").addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, '');
-            if (this.value.length > 10) {
-                this.value = this.value.slice(0, 10);
-            }
-        });
-        document.getElementById("pincode").addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, '');
-            if (this.value.length > 6) {
-                this.value = this.value.slice(0, 6);
-            }
-        });
         function formatAadhaar(input) {
             let value = input.value.replace(/\D/g, '');
             
@@ -406,191 +1001,242 @@
                 input.value = value.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
             }
         }
-    </script>
-</body>
-</html>
 
-
-{{!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Registration</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        form {
-            max-width: 400px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #3d6ef5ff;
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        function showSpinner() {
+            document.getElementById('loadingSpinner').classList.add('show');
         }
         
-        a {
-            display: block;
-            margin-top: 20px;
-            color: #333;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        button[type="submit"],
-        button[type="button"] {
-            width: 30%;
-            background-color: #3d6ef5ff;
-            color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px 14px;
-            border: none;
-            font-size: 13px;
-            border-radius: 5px;
-            border: 2px solid #3d6ef5ff;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button[type="submit"]:hover,
-        button[type="button"]:hover {
-            background-color: #f2f2f2;
-            color: #3d6ef5ff;
-            font-weight: bold;
-        }
-        h2 {
-            color: #3d6ef5ff;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-    </style>
-</head>
-<body>
-        <table>
-    <tr>
-        <td>
-            <form action="/ssm/mca/studentRegister" method="post">
-            <h2>Student Registration Form</h2>
-                <table>
-            <tr>
-                <td><label for="name">Name :</label></td>
-                <td><input type="text" id="name" name="name" required></td>
-            </tr>
-            <tr>
-                <td><label for="registerNumber">Register Number :</label></td>
-                <td><input type="text" id="registerNumber" name="registerNumber" required></td>
-            </tr>
-            <tr>
-                <td><label for="gender">Gender :</label></td>
-                <td>
-                    <select id="gender" name="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="dob">Date of Birth :</label></td>
-                <td><input type="date" id="dob" name="dob" required></td>
-            </tr>
-            <tr>
-                <td><label for="year">Year :</label></td>
-                <td>
-                    <select id="year" name="year" required>
-                        <option value="">Select Year</option>
-                        <option value="I">MCA-I</option>
-                        <option value="II">MCA-II</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="phone">Phone :</label></td>
-                <td><input type="phone" id="phone" name="phone" required></td>
-            </tr>
-            <tr>
-                <td><label for="email">Email :</label></td>
-                <td><input type="email" id="email" name="email" required></td>
-            </tr>
-            <tr>
-                <td><label for="totalFee">Total Fees :</label></td>
-                <td><input type="text" id="totalFee" name="totalFee" required></td>
-            </tr>
+        function hideSpinner() {
+            document.getElementById('loadingSpinner').classList.remove('show');
+        }        
         
-        </table>
-                <div class="button-container">
-                    <button type="button" onclick = redirect()>Back</button>
-                    <button type="submit" >Register</button>
-                </div>
+        document.getElementById('student-photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 102400) {
+                    showToast('File size exceeds 100KB. Please choose a smaller image.', 'error');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                const previewImage = document.getElementById('preview-image');
+                const uploadPlaceholder = document.getElementById('upload-placeholder');
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    uploadPlaceholder.style.display = 'none';
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
 
-    </form>
-</table>
+        (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        showToast('Please fill in all required fields correctly.', 'error');
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
 
-    <script>
-        
         document.getElementById("phone").addEventListener("input", function() {
-        this.value = this.value.replace(/\D/g, '');
-        if (this.value.length > 10) {
-            this.value = this.value.slice(0, 10);
-        }
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
         });
+        
         document.getElementById("registerNumber").addEventListener("input", function() {
-        this.value = this.value.replace(/\D/g, '');
+            this.value = this.value.replace(/\D/g, '');
         });
+        
         document.getElementById("totalFee").addEventListener("input", function() {
-        this.value = this.value.replace(/\D/g, '');
+            this.value = this.value.replace(/\D/g, '');
         });
-        function redirect() {
-            window.location.href = "/ssm/mca/dashboard";
-          }
-    </script>
+        
+        document.getElementById("parentPhone").addEventListener("input", function() {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+        
+        document.getElementById("emergencyPhone").addEventListener("input", function() {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+        
+        document.getElementById("pinCode").addEventListener("input", function() {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 6) {
+                this.value = this.value.slice(0, 6);
+            }
+        });
 
+        function showToast(message, type = 'info') {
+            const backgroundColor = type === 'success' ? '#10b981' : 
+                                   type === 'error' ? '#ef4444' : 
+                                   type === 'warning' ? '#f59e0b' : '#3b82f6';
+            
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: backgroundColor,
+                stopOnFocus: true,
+                className: "rounded-lg",
+                style: {
+                    borderRadius: "6px",
+                    padding: "10px 14px",
+                    fontSize: "13px",
+                    fontWeight: "500"
+                }
+            }).showToast();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.form-section');
+            const progressSteps = document.querySelectorAll('.step-circle');
+            const progressLabels = document.querySelectorAll('.step-label');
+            const nextButtons = document.querySelectorAll('.next-btn');
+            const prevButtons = document.querySelectorAll('.prev-btn');
+            const totalSections = sections.length;
+            
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentSection = this.closest('.form-section');
+                    const nextSectionNum = this.getAttribute('data-next');
+                    
+                    if (validateSection(currentSection)) {
+                        currentSection.classList.remove('active');
+                        document.getElementById('section-' + nextSectionNum).classList.add('active');
+                        updateProgress(nextSectionNum);
+                        window.scrollTo(0, 0);
+                    }
+                });
+            });
+            
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentSection = this.closest('.form-section');
+                    const prevSectionNum = this.getAttribute('data-prev');
+                    
+                    currentSection.classList.remove('active');
+                    document.getElementById('section-' + prevSectionNum).classList.add('active');
+                    updateProgress(prevSectionNum);
+                    window.scrollTo(0, 0);
+                });
+            });
+            
+            function updateProgress(currentStep) {
+                currentStep = parseInt(currentStep);
+                
+                progressSteps.forEach(step => {
+                    const stepNumber = parseInt(step.getAttribute('data-step'));
+                    step.classList.remove('active', 'completed');
+                    
+                    if (stepNumber < currentStep) {
+                        step.classList.add('completed');
+                        step.innerHTML = '<i class="fas fa-check"></i>';
+                    } else if (stepNumber == currentStep) {
+                        step.classList.add('active');
+                        step.textContent = stepNumber;
+                    } else {
+                        step.textContent = stepNumber;
+                    }
+                });
+                
+                progressLabels.forEach((label, index) => {
+                    label.classList.remove('active');
+                    if (index + 1 === currentStep) {
+                        label.classList.add('active');
+                    }
+                });
+            }
+            
+            function validateSection(section) {
+                const requiredFields = section.querySelectorAll('[required]');
+                let valid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value) {
+                        field.classList.add('is-invalid');
+                        valid = false;
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+                
+                if (!valid) {
+                    if (!section.querySelector('.validation-message')) {
+                        const validationMsg = document.createElement('div');
+                        validationMsg.className = 'validation-message mt-3';
+                        validationMsg.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Please fill in all required fields before proceeding.';
+                        section.appendChild(validationMsg);
+                        
+                        setTimeout(() => {
+                            validationMsg.remove();
+                        }, 3000);
+                    }
+                }
+                
+                return valid;
+            }
+            
+            const form = document.getElementById('studentRegistrationForm');
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                if (!form.checkValidity()) {
+                    event.stopPropagation();
+                    form.classList.add('was-validated');
+                    showToast('Please fill in all required fields correctly.', 'error');
+                    return;
+                }
+                
+                try {
+                    showSpinner();
+                    
+                    const formData = new FormData(form);
+                    
+                    const response = await fetch('/v1/api/studentRegister', {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'same-origin',
+                        cache: 'no-cache'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showToast('Student registered successfully!', 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = '/v1/api/dashboard#teachers';
+                        }, 2000);
+                    } else {
+                        showToast(`${data.message || 'Failed to register student'}`, 'error');
+                    }
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    showToast(`Error: ${error.message || 'Something went wrong'}`, 'error');
+                } finally {
+                    hideSpinner();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
- --}}

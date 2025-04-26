@@ -1,0 +1,477 @@
+{{!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            width: 250px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h1 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #34495e;
+            text-transform: uppercase;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: block;
+            padding: 12px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, padding-left 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+            padding-left: 30px;
+        }
+
+        .sidebar a.active-tab {
+            background-color: #3498db;
+            padding-left: 30px;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background-color: #3d6ef5ff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            font-weight: 500;
+            background-color: #f2f2f2;
+            color: #3d6ef5ff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            text-align: center;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            text-decoration: none;
+            color: inherit;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            background-color: #f1f1f1;
+        }
+
+        .card h2 {
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+
+        .card i {
+            margin-bottom: 15px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header h1 {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h1>Admin Dashboard</h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#students" onclick="showSection('students')">
+                            <i class="fas fa-user-graduate"></i> Students
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#fees" onclick="showSection('fees')">
+                            <i class="fas fa-wallet"></i> Fees & Payments
+                        </a>
+                    </li>
+                    {{!-- 
+                    <li>
+                        <a href="#alerts" onclick="showSection('alerts')">
+                            <i class="fas fa-bell"></i> Alerts
+                        </a>
+                    </li> 
+                    --}}
+                    <li>
+                        <a href="#announcements" onclick="showSection('announcements')">
+                            <i class="fas fa-bullhorn"></i> Announcements
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#materials" onclick="showSection('materials')">
+                            <i class="fas fa-book"></i> Study Materials
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#staff" onclick="showSection('staff')">
+                            <i class="fas fa-chalkboard-teacher"></i> Staff
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#gallery" onclick="showSection('gallery')">
+                            <i class="fas fa-images"></i> Image Gallery
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#alumni" onclick="showSection('alumni')">
+                            <i class="fas fa-users"></i> Alumni
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#admission" onclick="showSection('admission')">
+                            <i class="fas fa-user-plus"></i> Admissions & Support
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="header">
+                <h1>Welcome, <span style="color: #3d6ef5ff;">{{user.name}}</span>!</h1>
+                <h1>Staff ID: <span style="color: #3d6ef5ff;">{{user.staffId}}</span></h1>
+                <button class="logout-btn" onclick="return confirmLogout()">Logout!</button>
+            </header>
+
+            <!-- Students Section -->
+            <div id="students" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/register" class="card">
+                        <i class="fas fa-user-plus fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Student Management</h2>
+                    </a>
+                    <a href="/ssm/mca/studentList" class="card">
+                        <i class="fas fa-users fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Student Details</h2>
+                    </a>
+                    <a href="/ssm/mca/getFirstYearMarkAttendence" class="card">
+                        <i class="fas fa-clipboard-check fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Attendance MCA-I</h2>
+                    </a>
+                    <a href="/ssm/mca/getSecondYearMarkAttendence" class="card">
+                        <i class="fas fa-clipboard-check fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Attendance MCA-II</h2>
+                    </a>
+                    <a href="/ssm/mca/getAttendenceReport" class="card">
+                        <i class="fas fa-chart-bar fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Attendance Report</h2>
+                    </a>
+                    <a href="/ssm/mca/reviewRequest" class="card">
+                        <i class="fas fa-user-edit fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Student Profile Update Request</h2>
+                    </a>
+                    <a href="/ssm/mca/addressUpdateReq" class="card">
+                        <i class="fas fa-map-marker-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Address Update Request</h2>
+                    </a>
+                    <a href="/ssm/mca/moveStudentsPage" class="card">
+                        <i class="fas fa-exchange-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Move Students</h2>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Fees Section -->
+            <div id="fees" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/feeList" class="card">
+                        <i class="fas fa-money-bill-wave fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Tuition Fees</h2>
+                    </a>
+                    <a href="/ssm/mca/examFeeList" class="card">
+                        <i class="fas fa-file-invoice-dollar fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Exam Fees</h2>
+                    </a>
+                    <a href="/ssm/mca/updateDueDatesForAll" class="card">
+                        <i class="fas fa-calendar-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Update Due Date</h2>
+                    </a>
+                    <a href="/ssm/mca/reviewRequestTu" class="card">
+                        <i class="fas fa-edit fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Tuition Fee Update Request</h2>
+                    </a>
+                    <a href="/ssm/mca/reviewRequestEx" class="card">
+                        <i class="fas fa-file-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Exam Fee Update Request</h2>
+                    </a>
+                    <a href="/ssm/mca/paymentsList" class="card">
+                        <i class="fas fa-credit-card-alt fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Payments</h2>
+                    </a>
+                    <a href="/ssm/mca/paymentAlert" class="card">
+                        <i class="fas fa-bell fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Payment Alerts</h2>
+                    </a>
+                </div>
+            </div>
+
+           {{!--  <!-- Alerts Section -->
+            <div id="alerts" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/paymentAlert" class="card">
+                        <i class="fas fa-bell fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Payment Alerts</h2>
+                    </a>
+                </div>
+            </div> --}}
+
+            <!-- Announcements Section -->
+            <div id="announcements" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/announcement" class="card">
+                        <i class="fas fa-bullhorn fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Student Announcement</h2>
+                    </a>
+                    <a href="/ssm/mca/commonAnnouncement" class="card">
+                        <i class="fas fa-volume-up fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Common Announcement</h2>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Study Materials Section -->
+            <div id="materials" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/subject" class="card">
+                        <i class="fas fa-upload fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Upload Materials</h2>
+                    </a>
+                    <a href="/ssm/mca/subjectList" class="card">
+                        <i class="fas fa-book-open fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>View Materials</h2>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Staff Section -->
+            <div id="staff" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/signup" class="card">
+                        <i class="fas fa-user-plus fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Create Account</h2>
+                    </a>
+                    <a href="/ssm/mca/staffList" class="card">
+                        <i class="fas fa-user-cog fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Staff Management</h2>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div id="gallery" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/imageUpload" class="card">
+                        <i class="fas fa-image fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Upload Image</h2>
+                    </a>
+                    <a href="/ssm/mca/gallery" class="card">
+                        <i class="fas fa-photo-video fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>View Images</h2>
+                    </a>
+                    <a href="/ssm/mca/imageList" class="card">
+                        <i class="fas fa-edit fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Edit Images</h2>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Alumni Section -->
+            <div id="alumni" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/alumniList" class="card">
+                        <i class="fas fa-user-graduate fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Alumni List</h2>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Admission Section -->
+            <div id="admission" class="content-section">
+                <div class="grid">
+                    <a href="/ssm/mca/admissionFormList" class="card">
+                        <i class="fas fa-file-signature fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Admission Applications</h2>
+                    </a>
+                    <a href="/ssm/mca/messages" class="card">
+                        <i class="fas fa-envelope fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>Received Contact Messages</h2>
+                    </a>
+                    <a href="/ssm/mca/adminChatroomYearI" class="card">
+                        <i class="fas fa-comments fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>MCA - I Chatroom</h2>
+                    </a>
+                    <a href="/ssm/mca/adminChatroomYearII" class="card">
+                        <i class="fas fa-comments fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>MCA - II Chatroom</h2>
+                    </a>
+                    <a href="/ssm/mca/admin/getChatBot?user={{user._id}}" class="card">
+                        <i class="fas fa-robot fa-3x" style="color: #3d6ef5ff; margin-bottom: 15px;"></i>
+                        <h2>AI Chatbot</h2>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active-tab');
+            });
+
+            const activeLink = document.querySelector(`.sidebar a[href="#${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active-tab');
+            }
+
+            localStorage.setItem('activeTab', sectionId);
+        }
+
+        function confirmLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem('activeTab');
+
+                window.location.href = '/ssm/mca/logout';
+                return true;
+            }
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lastActiveTab = localStorage.getItem('activeTab') || 'students';
+            showSection(lastActiveTab);
+        });
+    </script>
+</body>
+
+</html> --}}

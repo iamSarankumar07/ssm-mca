@@ -3,120 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Gallery</title>
+    <title>SSM College - Image Gallery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+            --secondary: #64748b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            background-color: #f8f9fa;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray-800);
+            overflow-x: hidden;
+            background-color: var(--gray-50);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 8px;
+        }
+
+        .header-section {
+            background-color: white;
+            padding: 20px 0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-with-button {
             display: flex;
             align-items: center;
-            margin-bottom: 30px;
-            position: relative;
+            justify-content: space-between;
         }
 
         .header-with-button h1 {
-            margin: 0 auto;
-            color: #3d6ef5ff;
-            font-size: 2.5rem;
-            text-align: center;
-            flex: 1;
+            color: var(--gray-800);
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.75rem;
+            display: flex;
+            align-items: center;
         }
 
-        .back-button-inside {
-            font-size: 1rem;
-            background: #3d6ef5ff;
-            color: #fff;
-            font-weight: 500;
-            text-decoration: none;
-            padding: 8px 13px;
-            border-radius: 5px;
-            transition: background 0.3s ease;
+        .header-with-button h1 span {
+            color: var(--primary);
+            margin-left: 0.25rem;
         }
 
-        .back-button-inside:hover {
-            background: #f2f2f2;
-            color: #3d6ef5ff;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery-item {
-            background: #fff;
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
             border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1), 0 2px 4px -1px rgba(99, 102, 241, 0.06);
+        }
+
+        .back-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1), 0 4px 6px -2px rgba(99, 102, 241, 0.05);
+            color: white;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .gallery-section {
+            padding: 40px 0 80px;
+        }
+
+        .section-heading {
+            position: relative;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .section-heading h2 {
+            font-weight: 800;
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            color: var(--gray-800);
+        }
+
+        .section-heading p {
+            font-size: 1.125rem;
+            color: var(--gray-500);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-heading .accent {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+
+        .section-heading .accent::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: var(--primary-light);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding: 0 15px;
+        }
+
+        .category-btn {
+            background-color: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-200);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            padding: 0 15px;
+        }
+
+        @media (max-width: 767.98px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        .gallery-card {
+            background-color: white;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
-        .gallery-item:hover {
+        .gallery-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
         }
 
-        .gallery-item a {
+        .gallery-link {
             text-decoration: none;
             color: inherit;
-        }
-
-        .gallery-item-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .gallery-item img {
-            width: 100%;
+            display: flex;
+            flex-direction: column;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
         }
 
-        .gallery-item:hover img {
+        .gallery-img-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-card:hover .gallery-img {
             transform: scale(1.05);
         }
 
-        .gallery-item-content {
-            padding: 15px;
-            text-align: center;
+        .gallery-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
-        .gallery-item h2 {
-            margin: 0;
-            font-size: 1em;
-            color: #161616;
-            text-align: center;
+        .gallery-category {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            width: fit-content;
         }
 
-        .gallery-item p {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            text-align: center;
+        .gallery-date {
+            display: inline-flex;
+            align-items: center;
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
         }
 
-        .lightbox {
+        .gallery-date i {
+            margin-right: 5px;
+            font-size: 0.85rem;
+        }
+
+        .gallery-title {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+            color: var(--gray-800);
+        }
+
+        .gallery-description {
+            color: var(--gray-600);
+            margin-bottom: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+
+        .spinner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .spinner-text {
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .lightbox-overlay {
             display: none;
             position: fixed;
             z-index: 999;
@@ -124,123 +317,311 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(15, 23, 42, 0.95);
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            background: white;
+            border-radius: 16px;
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            height: 90%;
+            max-height: 700px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-overlay.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-image-container {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--gray-800);
+            display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .lightbox:target {
-            display: flex;
-        }
-
-        .lightbox-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            overflow: auto;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .lightbox img {
+        .lightbox-image {
             max-width: 100%;
-            max-height: 70vh;
-            margin: 0 auto;
-            display: block;
+            max-height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-image.active {
+            opacity: 1;
         }
 
         .lightbox-close {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 2rem;
-            color: #fff;
-            background: rgba(0, 0, 0, 0.6);
+            top: 15px;
+            right: 15px;
+            font-size: 1.25rem;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
             width: 40px;
             height: 40px;
-            line-height: 40px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
             text-decoration: none;
             z-index: 1000;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.8);
-            color: #000;
+            background: var(--primary);
+            transform: rotate(90deg);
         }
 
         .lightbox-text {
-            margin-top: 20px;
+            padding: 20px 25px;
+            color: var(--gray-800);
+            height: 150px;
+            overflow-y: auto;
+            background-color: white;
+        }
+
+        .lightbox-text h2 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .lightbox-text p {
+            color: var(--gray-600);
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .lightbox-category {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .lightbox-date {
+            display: inline-flex;
+            align-items: center;
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .lightbox-date i {
+            margin-right: 5px;
+            font-size: 0.85rem;
+        }
+
+        .lightbox-navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .lightbox-nav-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lightbox-nav-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .empty-state {
             text-align: center;
-            color: #333;
+            padding: 60px 20px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--gray-300);
+            margin-bottom: 1rem;
         }
 
-        @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
+        .empty-state-text {
+            color: var(--gray-500);
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+        }
 
-            .header-with-button h1 {
+        @media (max-width: 991.98px) {
+            .section-heading h2 {
                 font-size: 2rem;
             }
+            
+            .lightbox-content {
+                width: 95%;
+                height: 80%;
+            }
+        }
 
-            .back-button-inside {
+        @media (max-width: 767.98px) {
+            .section-heading h2 {
+                font-size: 1.75rem;
+            }
+            
+            .header-with-button h1 {
+                font-size: 1.5rem;
+            }
+            
+            .back-button {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .gallery-section {
+                padding: 30px 0 60px;
+            }
+            
+            .lightbox-text {
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .lightbox-content {
+                height: 90%;
+            }
+            
+            .lightbox-text {
+                height: 100px;
+            }
+
+            .category-filter {
+                gap: 8px;
+            }
+
+            .category-btn {
+                padding: 6px 16px;
                 font-size: 0.8rem;
-                padding: 8px 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-with-button">
-            <a href="#" class="back-button-inside" onclick="redirectToLastApi()">< Back</a>
-            <h1>Image Gallery</h1>
-        </div>
-        <div class="gallery">
-            {{#each images}}
-            <div class="gallery-item">
-                <a href="#lightbox-{{ @index }}">
-                    <div class="gallery-item-image">
-                        <img src="{{ imageUrl }}" alt="{{ title }}" loading="lazy">
-                    </div>
-                    <div class="gallery-item-content">
-                        <h2>{{ title }}</h2>
-                        <p>{{ description }}</p>
-                    </div>
+    <header class="header-section">
+        <div class="container">
+            <div class="header-with-button">
+                <a href="#" class="back-button" onclick="redirectToLastApi()">
+                    <i class="fas fa-arrow-left"></i> Back
                 </a>
+                <h1>SSM College <span>Gallery</span></h1>
             </div>
-            {{/each}}
         </div>
-        {{#each images}}
-        <div id="lightbox-{{ @index }}" class="lightbox">
-            <div class="lightbox-content">
-                <a href="#" class="lightbox-close" aria-label="Close">&times;</a>
-                <img src="{{ imageUrl }}" alt="{{ title }}">
-                <div class="lightbox-text">
-                    <h2>{{ title }}</h2>
-                    <p>{{ description }}</p>
+    </header>
+
+    <section class="gallery-section">
+        <div class="container">
+            <div class="section-heading" data-aos="fade-up">
+                <h2>Our <span class="accent">Campus</span> Moments</h2>
+                <p>Explore the vibrant life and memorable events at SSM College of Engineering through our gallery.</p>
+            </div>
+
+            <div class="category-filter" data-aos="fade-up" data-aos-delay="100">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="events">Events</button>
+                <button class="category-btn" data-category="cultural">Cultural</button>
+                <button class="category-btn" data-category="academic">Academic</button>
+                <button class="category-btn" data-category="sports">Sports</button>
+                <button class="category-btn" data-category="campus">Campus</button>
+            </div>
+
+            <div class="gallery-grid" id="gallery-container">
+                <div class="loading-spinner">
+                    <div class="spinner-container">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="spinner-text">Loading gallery...</p>
+                    </div>
                 </div>
             </div>
         </div>
-        {{/each}}
+    </section>
+
+    <div id="lightbox-overlay" class="lightbox-overlay">
+        <div class="lightbox-content">
+            <div class="lightbox-close" onclick="closeLightbox()">&times;</div>
+            <div class="lightbox-navigation">
+                <div class="lightbox-nav-btn prev-btn" onclick="navigateLightbox('prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="lightbox-nav-btn next-btn" onclick="navigateLightbox('next')">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            <div class="lightbox-image-container" id="lightbox-image-container">
+            </div>
+            <div class="lightbox-text" id="lightbox-text">
+            </div>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+
+        let allGalleryItems = [];
+        let filteredGalleryItems = [];
+        let currentLightboxIndex = 0;
+        let isTransitioning = false;
+        let currentCategory = 'all';
+
         function redirectToLastApi() {
             const apiUrl = "{{apiUrl}}"; 
             sessionStorage.setItem('lastApiUrl', apiUrl);
@@ -252,6 +633,282 @@
                 window.location.href = '/';
             }
         }
+
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function openLightbox(index) {
+            if (isTransitioning) return;
+            
+            currentLightboxIndex = index;
+            updateLightboxContent(index);
+            
+            const lightbox = document.getElementById('lightbox-overlay');
+            lightbox.classList.add('active');
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox-overlay');
+            lightbox.classList.remove('active');
+            
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            if (isTransitioning || !filteredGalleryItems.length) return;
+            
+            isTransitioning = true;
+            
+            const currentImage = document.querySelector('.lightbox-image.active');
+            if (currentImage) {
+                currentImage.classList.remove('active');
+            }
+            
+            const totalItems = filteredGalleryItems.length;
+            if (direction === 'next') {
+                currentLightboxIndex = (currentLightboxIndex + 1) % totalItems;
+            } else {
+                currentLightboxIndex = (currentLightboxIndex - 1 + totalItems) % totalItems;
+            }
+            
+            setTimeout(() => {
+                updateLightboxContent(currentLightboxIndex);
+                isTransitioning = false;
+            }, 300);
+        }
+
+        function updateLightboxContent(index) {
+            if (!filteredGalleryItems || !filteredGalleryItems[index]) return;
+            
+            const item = filteredGalleryItems[index];
+            const formattedDate = formatDate(item.date);
+            
+            const imageContainer = document.getElementById('lightbox-image-container');
+            
+            imageContainer.innerHTML = '';
+            
+            const img = document.createElement('img');
+            img.src = item.imageUrl;
+            img.alt = item.title;
+            img.className = 'lightbox-image';
+            imageContainer.appendChild(img);
+            
+            void img.offsetWidth;
+            img.classList.add('active');
+            
+            const textContainer = document.getElementById('lightbox-text');
+            textContainer.innerHTML = `
+                ${item.category ? `<span class="lightbox-category">${item.category}</span>` : ''}
+                <span class="lightbox-date"><i class="far fa-calendar"></i> ${formattedDate}</span>
+                <h2>${item.title}</h2>
+                <p>${item.description}</p>
+            `;
+        }
+
+        function fetchGallery(category = 'all') {
+            document.getElementById('gallery-container').innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-container">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="spinner-text">Loading gallery...</p>
+                    </div>
+                </div>
+            `;
+
+            currentCategory = category;
+
+            const endpoint = category === 'all' 
+                ? '/v1/api/fetch/Images/gallery' 
+                : `/v1/api/fetch/Images/gallery?category=${category}`;
+
+            fetch(endpoint)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (category === 'all') {
+                        allGalleryItems = data;
+                        filteredGalleryItems = data;
+                    } else {
+                        filteredGalleryItems = data;
+                    }
+                    renderGalleryItems();
+                })
+                .catch(error => {
+                    console.error('Error fetching gallery:', error);
+                    
+                    if (category === 'all') {
+                        allGalleryItems = getDummyGallery();
+                        filteredGalleryItems = allGalleryItems;
+                    } else {
+                        filteredGalleryItems = allGalleryItems.filter(item => 
+                            item.category && item.category.toLowerCase() === category.toLowerCase()
+                        );
+                    }
+                    renderGalleryItems();
+                });
+        }
+
+        function filterGallery(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if (btn.getAttribute('data-category') === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            fetchGallery(category);
+        }
+
+        function getDummyGallery() {
+            return [
+                {
+                    title: "Annual Day Celebration",
+                    description: "Students performing cultural activities during the annual day celebration at SSM College. The event showcased various talents and cultural diversity among our students.",
+                    date: "2023-03-15",
+                    category: "cultural",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Technical Symposium",
+                    description: "Students showcasing their innovative projects at the technical symposium. The event attracted participants from various colleges across the region.",
+                    date: "2023-02-10",
+                    category: "academic",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Sports Day",
+                    description: "Students participating in various sports activities during the annual sports day. The event promoted physical fitness and sportsmanship among students.",
+                    date: "2023-01-25",
+                    category: "sports",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Graduation Ceremony",
+                    description: "Proud graduates at the convocation ceremony receiving their degrees. The ceremony was attended by distinguished guests and proud family members.",
+                    date: "2022-12-18",
+                    category: "events",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Industry Visit",
+                    description: "Students on an educational trip to a leading manufacturing company. The visit provided practical insights into industrial operations and manufacturing processes.",
+                    date: "2022-11-05",
+                    category: "academic",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Cultural Festival",
+                    description: "Vibrant performances by students during the cultural festival. The festival celebrated the rich cultural diversity of our student community through music, dance, and art.",
+                    date: "2022-10-12",
+                    category: "cultural",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Workshop on AI & Machine Learning",
+                    description: "Students attending a hands-on workshop on artificial intelligence and machine learning. The workshop was conducted by industry experts and provided practical knowledge.",
+                    date: "2022-09-20",
+                    category: "academic",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Alumni Meet",
+                    description: "Former students gathering for the annual alumni meet. The event strengthened the bond between current students and alumni, facilitating networking and mentorship.",
+                    date: "2022-08-15",
+                    category: "events",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                },
+                {
+                    title: "Campus Tour",
+                    description: "A guided tour of our beautiful campus facilities for prospective students and their parents. The tour showcased our state-of-the-art infrastructure and learning environment.",
+                    date: "2022-07-10",
+                    category: "campus",
+                    imageUrl: "https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg"
+                }
+            ];
+        }
+
+        function renderGalleryItems() {
+            const container = document.getElementById('gallery-container');
+            
+            container.innerHTML = '';
+
+            if (!filteredGalleryItems || filteredGalleryItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="far fa-images"></i>
+                        </div>
+                        <p class="empty-state-text">No gallery images available for this category.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredGalleryItems.forEach((item, index) => {
+                const formattedDate = formatDate(item.date);
+
+                const galleryCard = document.createElement('div');
+                galleryCard.className = 'gallery-card';
+                galleryCard.setAttribute('data-aos', 'fade-up');
+                galleryCard.setAttribute('data-aos-delay', `${index * 50}`);
+                
+                galleryCard.innerHTML = `
+                    <a href="javascript:void(0);" class="gallery-link" onclick="openLightbox(${index})">
+                        <div class="gallery-img-container">
+                            <img src="${item.imageUrl}" class="gallery-img" alt="${item.title}">
+                        </div>
+                        <div class="gallery-content">
+                            ${item.category ? `<span class="gallery-category">${item.category}</span>` : ''}
+                            <span class="gallery-date"><i class="far fa-calendar"></i> ${formattedDate}</span>
+                            <h3 class="gallery-title">${item.title}</h3>
+                            <p class="gallery-description">${item.description}</p>
+                        </div>
+                    </a>
+                `;
+                
+                container.appendChild(galleryCard);
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('lightbox-overlay').classList.contains('active')) {
+                if (e.key === 'ArrowRight') {
+                    navigateLightbox('next');
+                } else if (e.key === 'ArrowLeft') {
+                    navigateLightbox('prev');
+                } else if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchGallery('all');
+            
+            document.querySelectorAll('.category-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    filterGallery(category);
+                });
+            });
+        });
     </script>
 </body>
 </html>

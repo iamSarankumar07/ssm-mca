@@ -129,7 +129,7 @@
 </head>
 <body>
   <div class="container">
-<form action="/ssm/mca/otp" method="post">
+<form action="/v1/api/otp" method="post">
     <h2>OTP Verification</h2>
     <p>OTP has been sent to : <span class="email">{{user.email}}</span></p>
     <div class="input-group">
@@ -157,7 +157,7 @@
       <button type="button" onclick="history.back()">Back</button>
       <button type="submit" id="verifyButton">Verify</button>
     </div>
-    <p class="note">Didn't receive OTP? <span class="resend" onclick="window.location.href = '/ssm/mca/signin'">Resend</span></p>
+    <p class="note">Didn't receive OTP? <span class="resend" onclick="window.location.href = '/v1/api/signin'">Resend</span></p>
   </form>
   </div>
 

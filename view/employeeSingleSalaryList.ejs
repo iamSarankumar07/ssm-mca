@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Salary Payment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: rgba(67, 97, 238, 0.1);
+      --success-color: #10b981;
+      --warning-color: #f59e0b;
+      --danger-color: #ef4444;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --bg-light: #f1f5f9;
+      --bg-white: #ffffff;
+      --border-color: #e2e8f0;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      --transition: all 0.3s ease;
+    }
+    
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    
+    body {
+      background-color: var(--bg-light);
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .page-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 100%;
+      padding: 1rem;
+      margin: 0 auto;
+    }
+    
+    .page-header {
+      background-color: var(--bg-white);
+      border-radius: 0.75rem;
+      box-shadow: var(--card-shadow);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .back-button {
+      color: var(--primary-color);
+      font-size: 1.125rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    
+    .back-button:hover {
+      background-color: rgba(67, 97, 238, 0.2);
+      transform: translateX(-3px);
+    }
+    
+    .page-title {
+      font-weight: 700;
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .payment-date {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      background-color: var(--primary-light);
+      border-radius: 0.5rem;
+      color: var(--primary-color);
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+    
+    .month-year-selector {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .month-year-selector select {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: var(--primary-color);
+      font-weight: 600;
+      padding-right: 1.25rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+    }
+    
+    .month-year-selector select:focus {
+      outline: none;
+    }
+    
+    .month-year-selector::after {
+      content: '\F282';
+      font-family: 'bootstrap-icons';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 0.75rem;
+    }
+    
+    .loading-indicator {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      margin-left: 0.5rem;
+      border: 2px solid rgba(67, 97, 238, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .payment-card {
+      border-radius: 0.75rem;
+      box-shadow: var(--card-shadow);
+      border: none;
+      overflow: hidden;
+      background-color: var(--bg-white);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      background-color: var(--bg-white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-header h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .card-header h2 i {
+      color: var(--primary-color);
+      font-size: 1.25rem;
+    }
+    
+    .card-body {
+      padding: 0;
+      flex: 1;
+      overflow: auto;
+    }
+    
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      height: 100%;
+    }
+    
+    .table {
+      margin-bottom: 0;
+      width: 100%;
+    }
+    
+    .table th {
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      padding: 0.75rem 1rem;
+      border-bottom-width: 1px;
+      white-space: nowrap;
+    }
+    
+    .table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+    
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .table tr:hover {
+      background-color: rgba(67, 97, 238, 0.02);
+    }
+    
+    .employee-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .employee-avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background-color: var(--primary-light);
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+    
+    .employee-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    
+    .employee-position, .employee-email {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-weight: normal;
+      margin-top: 0.125rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+    
+    .salary-amount {
+      font-weight: 700;
+      color: var(--success-color);
+      font-size: 1rem;
+    }
+    
+    .btn-pay {
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      font-weight: 500;
+      border: none;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      white-space: nowrap;
+      font-size: 0.8125rem;
+      margin: 0 auto;
+    }
+    
+    .btn-pay:hover {
+      background-color: var(--primary-hover);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
+    }
+    
+    .btn-pay:active {
+      transform: translateY(0);
+    }
+    
+    .btn-pay:disabled {
+      background-color: var(--text-muted);
+      transform: none;
+      box-shadow: none;
+      opacity: 0.7;
+    }
+    
+    .btn-pay i {
+      font-size: 0.875rem;
+    }
+    
+    .btn-bulk-pay {
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      font-weight: 500;
+      border: none;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      white-space: nowrap;
+      font-size: 0.8125rem;
+    }
+    
+    .btn-bulk-pay:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
+      color: white;
+    }
+    
+    .btn-bulk-pay:active {
+      transform: translateY(0);
+      color: white;
+    }
+    
+    .spinner-border {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+    
+    .payment-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.625rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .status-pending {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning-color);
+    }
+    
+    .status-paid {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success-color);
+    }
+    
+    .toast-success {
+      border-radius: 0.5rem !important;
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2) !important;
+    }
+    
+    .toast-error {
+      border-radius: 0.5rem !important;
+      box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.2) !important;
+    }
+    
+    .table-container::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    
+    .table-container::-webkit-scrollbar-track {
+      background: var(--bg-light);
+      border-radius: 10px;
+    }
+    
+    .table-container::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+      border-radius: 10px;
+    }
+    
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background: var(--text-secondary);
+    }
+    
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    
+    .empty-state-icon {
+      font-size: 2.5rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    
+    .empty-state-text {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 992px) {
+      .table th, .table td {
+        padding: 0.75rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      
+      .card-header h2 {
+        font-size: 1rem;
+      }
+      
+      .page-title {
+        font-size: 1.125rem;
+      }
+      
+      .employee-info {
+        max-width: 150px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .table th, .table td {
+        padding: 0.625rem;
+      }
+      
+      .employee-avatar {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.75rem;
+      }
+      
+      .btn-pay {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+      }
+      
+      .payment-status {
+        padding: 0.1875rem 0.5rem;
+        font-size: 0.6875rem;
+      }
+      
+      .salary-amount {
+        font-size: 0.875rem;
+      }
+    }
+    
+    .text-center-cell {
+      text-align: center;
+    }
+    
+    .employee-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+    
+    .employee-id {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    .employee-phone, .employee-email {
+      font-size: 0.75rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    
+    .action-cell {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid page-container">
+    <div class="page-header">
+      <div class="header-left">
+        <a href="javascript:history.back()" class="back-button">
+          <i class="bi bi-arrow-left"></i>
+        </a>
+        <h1 class="page-title">Employees Salary Management</h1>
+      </div>
+      <div class="header-right">
+        <div class="payment-date">
+          <i class="bi bi-calendar3"></i> Payment Period: 
+          <div class="month-year-selector">
+            <select id="month-year-selector" onchange="fetchSalaryData()">
+              <%
+                const currentDate = new Date();
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+                // Generate options for the last 12 months
+                for (let i = 0; i < 12; i++) {
+                  const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+                  const month = months[date.getMonth()];
+                  const year = date.getFullYear();
+                  const value = `${date.getMonth()}-${year}`;
+                  const selected = (i === 0) ? 'selected' : '';
+                %>
+                  <option value="<%= value %>" <%= selected %>><%= month %> <%= year %></option>
+              <% } %>
+            </select>
+            <span id="loading-indicator" class="loading-indicator" style="display: none;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-card">
+      <div class="card-header">
+        <h2><i class="bi bi-credit-card"></i> Make Single Payment</h2>
+        <button class="btn-bulk-pay" onclick="payBulkSalary()" id="bulk-pay-btn">
+          <i class="bi bi-credit-card-2-front"></i> Make Bulk Payment
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">#</th>
+                <th style="padding-left: 90px;" scope="col" style="text-align: left;">Employee</th>
+                <th scope="col" style="text-align: left;">Contact</th>
+                <th scope="col" class="text-center">Employee ID</th>
+                <th scope="col" class="text-center">Salary</th>
+                <th scope="col" class="text-center">Status</th>
+                <th scope="col" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="employee-table-body">
+              <% 
+                // Get selected month and year (default to current)
+                const selectedMonth = currentDate.getMonth();
+                const selectedYear = currentDate.getFullYear();
+                
+                if (employees && employees.length > 0) {
+                  employees.forEach((employee, index) => { 
+                    const selectedMonthTransaction = employee.transactions?.find(transaction => {
+                      const transDate = new Date(transaction.date);
+                      return transDate.getMonth() === selectedMonth && transDate.getFullYear() === selectedYear;
+                    });
+              
+                    const selectedMonthStatus = selectedMonthTransaction ? selectedMonthTransaction.status.toLowerCase() : 'pending';
+              %>
+                <tr>
+                  <td class="text-center-cell"><%= index + 1 %></td>
+                  <td>
+                    <div class="employee-name">
+                      <div class="employee-avatar">
+                        <%= employee.fullName.charAt(0).toUpperCase() %>
+                      </div>
+                      <div class="employee-info">
+                        <span><%= employee.fullName %></span>
+                        <span class="employee-position"><%= employee.designation || 'Staff' %></span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="employee-contact">
+                      <span class="employee-email">
+                        <i class="bi bi-envelope-fill"></i> <%= employee.email || 'N/A' %>
+                      </span>
+                      <span class="employee-phone">
+                        <i class="bi bi-telephone-fill"></i> <%= employee.phone || 'N/A' %>
+                      </span>
+                    </div>
+                  </td>
+                  <td class="text-center-cell">
+                    <span class="employee-id"><%= employee.staffId || index + 1000 %></span>
+                  </td>
+                  <td class="text-center-cell"><span class="salary-amount">₹<%= employee.currentMonthSalary?.toLocaleString() || '0' %></span></td>
+                  <td class="text-center-cell">
+                    <% if (selectedMonthStatus === 'paid') { %>
+                      <span class="payment-status status-paid">
+                        <i class="bi bi-check-circle-fill"></i> Paid
+                      </span>
+                    <% } else { %>
+                      <span class="payment-status status-pending">
+                        <i class="bi bi-clock-fill"></i> Pending
+                      </span>
+                    <% } %>
+                  </td>
+                  <td class="action-cell">
+                    <button 
+                      class="btn btn-pay" 
+                      onclick="paySalary('<%= employee._id %>', this)"
+                      id="pay-btn-<%= employee._id %>"
+                      <% if (selectedMonthStatus === 'paid') { %> disabled <% } %>
+                    >
+                      <span id="btn-text-<%= employee._id %>">
+                        <% if (selectedMonthStatus === 'paid') { %>
+                          <i class="bi bi-check-circle"></i> Paid
+                        <% } else { %>
+                          <i class="bi bi-credit-card"></i> Pay
+                        <% } %>
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              <% }) } else { %>
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-state">
+                      <div class="empty-state-icon">
+                        <i class="bi bi-people"></i>
+                      </div>
+                      <p class="empty-state-text">No employees found. Add employees to manage their salary payments.</p>
+                    </div>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>            
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  
+  <script>
+    function fetchSalaryData() {
+      const selector = document.getElementById('month-year-selector');
+      const loadingIndicator = document.getElementById('loading-indicator');
+      const tableBody = document.getElementById('employee-table-body');
+      
+      if (!selector || !loadingIndicator || !tableBody) return;
+      
+      loadingIndicator.style.display = 'inline-block';
+      
+      const [month, year] = selector.value.split('-');
+      
+      fetch(`/v1/api/employee/getSalaryData?month=${month}&year=${year}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        loadingIndicator.style.display = 'none';
+        
+        if (data.success && data.employees) {
+          tableBody.innerHTML = '';
+          
+          if (data.employees.length === 0) {
+            tableBody.innerHTML = `
+              <tr>
+                <td colspan="7">
+                  <div class="empty-state">
+                    <div class="empty-state-icon">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <p class="empty-state-text">No employees found for the selected month.</p>
+                  </div>
+                </td>
+              </tr>
+            `;
+            return;
+          }
+          
+          data.employees.forEach((employee, index) => {
+            let isPaid = false;
+            
+            if (employee.status && employee.status.toLowerCase() === 'paid') {
+              isPaid = true;
+            }
+            
+            else if (employee.paymentStatus && employee.paymentStatus.toLowerCase() === 'paid') {
+              isPaid = true;
+            }
+            
+            else if (employee.transactions && Array.isArray(employee.transactions)) {
+              const selectedMonthTransaction = employee.transactions.find(transaction => {
+                if (!transaction.date) return false;
+                const transDate = new Date(transaction.date);
+                return transDate.getMonth() == month && transDate.getFullYear() == year;
+              });
+              
+              if (selectedMonthTransaction && selectedMonthTransaction.status && 
+                  selectedMonthTransaction.status.toLowerCase() === 'paid') {
+                isPaid = true;
+              }
+            }
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td class="text-center-cell">${index + 1}</td>
+              <td>
+                <div class="employee-name">
+                  <div class="employee-avatar">
+                    ${employee.fullName.charAt(0).toUpperCase()}
+                  </div>
+                  <div class="employee-info">
+                    <span>${employee.fullName}</span>
+                    <span class="employee-position">${employee.designation || employee.position || 'Staff'}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="employee-contact">
+                  <span class="employee-email">
+                    <i class="bi bi-envelope-fill"></i> ${employee.email || 'N/A'}
+                  </span>
+                  <span class="employee-phone">
+                    <i class="bi bi-telephone-fill"></i> ${employee.phone || 'N/A'}
+                  </span>
+                </div>
+              </td>
+              <td class="text-center-cell">
+                <span class="employee-id">${employee.staffId || index + 1000}</span>
+              </td>
+              <td class="text-center-cell"><span class="salary-amount">₹${employee.salary?.toLocaleString() || '0'}</span></td>
+              <td class="text-center-cell">
+                ${isPaid ? 
+                  `<span class="payment-status status-paid">
+                    <i class="bi bi-check-circle-fill"></i> Paid
+                  </span>` : 
+                  `<span class="payment-status status-pending">
+                    <i class="bi bi-clock-fill"></i> Pending
+                  </span>`
+                }
+              </td>
+              <td class="action-cell">
+                <button 
+                  class="btn btn-pay" 
+                  onclick="paySalary('${employee._id}', this, ${month}, ${year})"
+                  id="pay-btn-${employee._id}"
+                  ${isPaid ? 'disabled' : ''}
+                >
+                  <span id="btn-text-${employee._id}">
+                    ${isPaid ? 
+                      `<i class="bi bi-check-circle"></i> Paid` : 
+                      `<i class="bi bi-credit-card"></i> Pay`
+                    }
+                  </span>
+                </button>
+              </td>
+            `;
+            
+            tableBody.appendChild(row);
+          });
+        } else {
+          Toastify({
+            text: data.message || "Failed to fetch salary data!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "var(--danger-color)",
+            stopOnFocus: true,
+            className: "toast-error"
+          }).showToast();
+          
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-state-icon">
+                    <i class="bi bi-exclamation-triangle"></i>
+                  </div>
+                  <p class="empty-state-text">Failed to load salary data. Please try again.</p>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
+      })
+      .catch(error => {
+        loadingIndicator.style.display = 'none';
+        
+        Toastify({
+          text: "An unexpected error occurred. Please try again.",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "var(--danger-color)",
+          stopOnFocus: true,
+          className: "toast-error"
+        }).showToast();
+        
+        console.error('Error:', error);
+        
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="empty-state">
+                <div class="empty-state-icon">
+                  <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <p class="empty-state-text">Failed to load salary data. Please try again.</p>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+    
+    function paySalary(employeeId, buttonElement, month, year) {
+      const button = document.getElementById(`pay-btn-${employeeId}`);
+      const btnText = document.getElementById(`btn-text-${employeeId}`);
+      
+      button.disabled = true;
+      btnText.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ...`;
+      
+      if (month === undefined || year === undefined) {
+        const selector = document.getElementById('month-year-selector');
+        if (selector) {
+          [month, year] = selector.value.split('-');
+        }
+      }
+      
+      fetch(`/v1/api/employee/paySingleSalary/${employeeId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ month, year })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          Toastify({
+            text: data.message || "Payment successful!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "var(--success-color)",
+            stopOnFocus: true,
+            className: "toast-success"
+          }).showToast();
+          
+          button.disabled = true;
+          btnText.innerHTML = `<i class="bi bi-check-circle"></i> Paid`;
+          
+          const statusCell = button.closest('tr').querySelector('.payment-status');
+          statusCell.className = 'payment-status status-paid';
+          statusCell.innerHTML = '<i class="bi bi-check-circle-fill"></i> Paid';
+        } else {
+          Toastify({
+            text: data.message || "Payment failed!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "var(--danger-color)",
+            stopOnFocus: true,
+            className: "toast-error"
+          }).showToast();
+          
+          button.disabled = false;
+          btnText.innerHTML = `<i class="bi bi-credit-card"></i> Pay`;
+        }
+      })
+      .catch(error => {
+        Toastify({
+          text: "An unexpected error occurred. Please try again.",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "var(--danger-color)",
+          stopOnFocus: true,
+          className: "toast-error"
+        }).showToast();
+        console.error('Error:', error);
+        
+        button.disabled = false;
+        btnText.innerHTML = `<i class="bi bi-credit-card"></i> Pay`;
+      });
+    }
+    
+    function payBulkSalary() {
+      const selector = document.getElementById('month-year-selector');
+      const bulkPayBtn = document.getElementById('bulk-pay-btn');
+      
+      if (!selector || !bulkPayBtn) return;
+      
+      bulkPayBtn.disabled = true;
+      bulkPayBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
+      
+      const [month, year] = selector.value.split('-');
+      
+      fetch('/v1/api/employee/payBulkSalary', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ month, year })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        bulkPayBtn.disabled = false;
+        bulkPayBtn.innerHTML = `<i class="bi bi-credit-card-2-front"></i> Make Bulk Payment`;
+        
+        if (data.success) {
+          Toastify({
+            text: data.message || "Bulk payment successful!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "var(--success-color)",
+            stopOnFocus: true,
+            className: "toast-success"
+          }).showToast();
+          
+          fetchSalaryData();
+        } else {
+          Toastify({
+            text: data.message || "Bulk payment failed!",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "var(--danger-color)",
+            stopOnFocus: true,
+            className: "toast-error"
+          }).showToast();
+        }
+      })
+      .catch(error => {
+        bulkPayBtn.disabled = false;
+        bulkPayBtn.innerHTML = `<i class="bi bi-credit-card-2-front"></i> Make Bulk Payment`;
+        
+        Toastify({
+          text: "An unexpected error occurred. Please try again.",
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "var(--danger-color)",
+          stopOnFocus: true,
+          className: "toast-error"
+        }).showToast();
+        console.error('Error:', error);
+      });
+    }
+  </script>
+</body>
+</html>

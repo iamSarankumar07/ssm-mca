@@ -3,278 +3,1880 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>SSM College - Login Portal</title>
     <link rel="icon" href="https://i.postimg.cc/x1RfJjWH/user-1.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #e0e7ff;
+            --secondary: #64748b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-800: #1e293b;
+        }
+        
         * {
-            font-family: "Poppins", sans-serif;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fff;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            padding: 30px;
-            border-radius: 10px;
-        }
-
-        .form-wrapper {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            width: 300px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
+            padding: 0;
             box-sizing: border-box;
         }
-
-        h1 {
-            text-align: center;
-            color: #3d6ef5ff;
-        }
-
-        a {
-            text-align: center;
-            font-weight: bold;
-            text-decoration: none;
-            color: #472ddb;
-        }
-
-        a:hover {
-            color: #1459da;
-        }
-
-        p {
-            text-align: center;
-            margin-top: 10px;
-            color: #333;
-        }
-
-        .btn {
-            padding: 8px 15px;
-            color: #f2f2f2;
-            width: 100%;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            font-size: 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: .4s;
-        }
-
-        .btn:hover {
-            background: #f2f2f2;
-            color: #3d6ef5ff;
-        }
-
-        .showPassCode {
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--light);
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            margin: 5px 0px;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 2rem 1rem;
         }
-
-        #showAdminPassword, #showStudentPassword {
-            width: min-content;
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(224, 231, 255, 0.4) 0%, rgba(79, 70, 229, 0.1) 100%);
+            z-index: -1;
         }
-
-        .box {
-            margin-right: 10px;
+        
+        .shape {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.6;
         }
-
-        .txt {
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: #1459da;
+        
+        .shape-1 {
+            top: 10%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--primary-light) 0%, rgba(224, 231, 255, 0) 70%);
+            border-radius: 50%;
+            filter: blur(50px);
+            animation: float 8s ease-in-out infinite;
         }
-
-        .signup-link, .forgot-link {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            text-align: center;
+        
+        .shape-2 {
+            bottom: 10%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--primary-light) 0%, rgba(224, 231, 255, 0) 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float 10s ease-in-out infinite alternate;
         }
-
-        .home {
-            text-align: center;
-            margin-top: 20px;
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.05);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
         }
-
-        .switch-login {
-            text-align: center;
-            font-weight: bold;
-            margin-top: 20px;
+        
+        .login-container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            display: flex;
+            position: relative;
+        }
+        
+        .login-sidebar {
+            width: 40%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-sidebar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: 0;
+        }
+        
+        .sidebar-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .login-sidebar h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .login-sidebar p {
             font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .login-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+        }
+        
+        .login-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .login-features li i {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .login-logo {
+            margin-bottom: 2rem;
+        }
+        
+        .login-logo img {
+            height: 60px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .login-forms {
+            width: 60%;
+            padding: 3rem;
+            position: relative;
+        }
+        
+        .form-wrapper {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .form-wrapper.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-header h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-header p {
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            font-size: 0.9rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-group .form-control {
+            padding-left: 3rem;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
             cursor: pointer;
-            color: #472ddb;
+            background: none;
+            border: none;
+            padding: 0;
+            transition: color 0.2s ease;
         }
-
-        .switch-login:hover {
-            color: #1459da;
+        
+        .password-toggle:hover {
+            color: var(--primary);
         }
-
-        @media (max-width: 1200px) {
-            .container {
-                padding: 20px;
-            }
-
-            .form-wrapper {
-                width: 90%;
-            }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
-
-        @media (max-width: 992px) {
-            .container {
+        
+        .form-check-input {
+            width: 1.1rem;
+            height: 1.1rem;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            border-color: var(--gray-300);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .form-check-label {
+            font-size: 0.875rem;
+            color: var(--secondary);
+            cursor: pointer;
+        }
+        
+        .btn {
+            display: flex;
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 1px 3px 0 rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray-200);
+            color: var(--gray-800);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--gray-300);
+            transform: translateY(-2px);
+        }
+        
+        .form-footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .form-footer p {
+            font-size: 0.875rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .form-footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .switch-form {
+            display: inline-block;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .switch-form:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--secondary);
+            font-size: 0.875rem;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--gray-300);
+        }
+        
+        .divider::before {
+            margin-right: 1rem;
+        }
+        
+        .divider::after {
+            margin-left: 1rem;
+        }
+        
+        .home-link {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: var(--primary);
+            font-size: 1.25rem;
+            transition: all 0.2s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(224, 231, 255, 0.3);
+        }
+        
+        .home-link:hover {
+            color: var(--primary-dark);
+            background-color: rgba(224, 231, 255, 0.5);
+            {{!-- transform: translateY(-2px); --}}
+        }
+        
+        .alert {
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.3s ease forwards;
+        }
+        
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        .alert-info {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .alert i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .otp-container {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .otp-container.active {
+            display: block;
+        }
+        
+        .otp-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .otp-input {
+            width: 3rem;
+            height: 3.5rem;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            margin: 0 0.25rem;
+            transition: all 0.2s ease;
+        }
+        
+        .otp-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        .resend-otp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--secondary);
+        }
+        
+        .resend-otp a {
+            margin-left: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .resend-otp a:hover {
+            text-decoration: underline;
+        }
+        
+        .timer {
+            margin-left: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .email-notification {
+            background-color: rgba(79, 70, 229, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .email-notification i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+        
+        .email-notification-content {
+            flex: 1;
+        }
+        
+        .email-notification-content p {
+            margin: 0;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .email-notification-content .email {
+            font-weight: 600;
+            color: var(--dark);
+            word-break: break-all;
+        }
+        
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            max-width: 95%;
+            margin: 0 auto;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.25rem 1.5rem;
+            background-color: var(--light);
+        }
+        
+        .modal-title {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1.25rem;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--gray-200);
+            padding: 1.25rem 1.5rem;
+            background-color: var(--light);
+        }
+        
+        .btn-modal {
+            padding: 0.625rem 1.25rem;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            width: auto;
+        }
+        
+        .btn-close {
+            background-color: var(--gray-200);
+            border-radius: 50%;
+            padding: 0.5rem;
+            opacity: 1;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-close:hover {
+            background-color: var(--gray-300);
+            transform: rotate(90deg);
+        }
+        
+        .reset-otp-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .reset-otp-input {
+            width: 2.5rem;
+            height: 3rem;
+            font-size: 1.25rem;
+            margin: 0 0.2rem;
+        }
+        
+        .password-strength {
+            height: 5px;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            background-color: var(--gray-200);
+            overflow: hidden;
+        }
+        
+        .password-strength-meter {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .password-strength-text {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            text-align: right;
+        }
+        
+        .password-weak {
+            background-color: var(--danger);
+            width: 33%;
+        }
+        
+        .password-medium {
+            background-color: var(--warning);
+            width: 66%;
+        }
+        
+        .password-strong {
+            background-color: var(--success);
+            width: 100%;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.75rem;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 991.98px) {
+            .login-container {
                 flex-direction: column;
-                align-items: center;
+                max-width: 600px;
             }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-                padding: 15px;
-            }
-
-            .form-wrapper {
+            
+            .login-sidebar,
+            .login-forms {
                 width: 100%;
-                max-width: 100%;
-                margin-bottom: 20px;
+            }
+            
+            .login-sidebar {
+                padding: 2.5rem 2rem;
+            }
+            
+            .modal-dialog {
+                max-width: 90%;
+                margin: 1rem auto;
             }
         }
-
-        @media (max-width: 576px) {
+        
+        @media (max-width: 767.98px) {
+            .login-sidebar {
+                padding: 2rem;
+            }
+            
+            .login-forms {
+                padding: 2rem;
+            }
+            
+            .login-sidebar h2 {
+                font-size: 1.75rem;
+            }
+            
+            .form-header h3 {
+                font-size: 1.5rem;
+            }
+            
+            .otp-input {
+                width: 2.5rem;
+                height: 3rem;
+                font-size: 1.25rem;
+            }
+            
+            .reset-otp-input {
+                width: 2rem;
+                height: 2.5rem;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 575.98px) {
             body {
-                font-size: 14px;
+                padding: 1rem;
             }
-
-            .container {
-                padding: 10px;
+            
+            .login-container {
+                border-radius: 16px;
             }
-
-            .form-wrapper {
-                padding: 15px;
+            
+            .login-sidebar {
+                padding: 1.5rem 1rem;
+                text-align: center;
+            }
+            
+            .login-features li {
+                justify-content: center;
+            }
+            
+            .login-forms {
+                padding: 1.5rem 1rem;
+            }
+            
+            .form-header h3 {
+                font-size: 1.5rem;
+            }
+            
+            .home-link {
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .otp-input {
+                width: 2rem;
+                height: 2.5rem;
+                font-size: 1rem;
+            }
+            
+            .reset-otp-input {
+                width: 1.75rem;
+                height: 2.25rem;
+                font-size: 0.9rem;
+                margin: 0 0.1rem;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .modal-header,
+            .modal-footer {
+                padding: 0.75rem 1rem;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .modal-footer .btn {
                 width: 100%;
-            }
-
-            .btn {
-                font-size: 14px;
-                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-wrapper" id="staffLoginForm">
-            <h1>Staff Login</h1>
-            <form action="/ssm/mca/login" method="post">
-                <label for="email">Email or Staff ID:</label>
-                <input type="text" id="email" name="email" autocomplete="off" required>
-
-                <label for="password">Password:</label>
-                <input type="password" id="adminPassword" name="password" aria-label="Password" required>
-
-                <div class="showPassCode">
-                    <input class="box" type="checkbox" id="showAdminPassword" name="showAdminPassword">
-                    <label class="txt" for="showAdminPassword"> Show Password</label>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    
+    <div class="login-container">
+        <div class="login-sidebar">
+            <div class="sidebar-content">
+                <div class="login-logo">
+                    <img src="https://www.ssmce.ac.in/images/ssmlogo.png" alt="SSM College Logo">
                 </div>
-
-                <button type="submit" class="btn">Login</button>
-
-                <div class="forgot-link">
-                    Forgot your password? <a href="/ssm/mca/forgotPassword">Reset it</a>
-                </div>
-
-                <div class="switch-login" id="switchToStudent">Login as a Student</div>
-
-                <div class="home">
-                    <a href="/">Home</a>
-                </div>
-            </form>
+                <h2>Welcome to SSM College</h2>
+                <p>Access your personalized dashboard to manage courses, view grades, and stay connected with the campus community.</p>
+                
+                <ul class="login-features">
+                    <li>
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Access course materials and assignments</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-line"></i>
+                        <span>Track your academic progress</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Stay updated with campus events</span>
+                    </li>
+                </ul>
+            </div>
         </div>
-
-        <div class="form-wrapper" id="studentLoginForm" style="display: none;">
-            <h1>Student Login</h1>
-            <form action="/ssm/mca/studentLogin" method="post">
-                <label for="userName">Student ID:</label>
-                <input type="text" id="userName" name="studentId" autocomplete="off" required>
-
-                <label for="password">Date of Birth:</label>
-                <input type="password" id="studentPassword" name="password" required placeholder="DD-MM-YYYY">
-
-                <div class="showPassCode">
-                    <input class="box" type="checkbox" id="showStudentPassword" name="showStudentPassword">
-                    <label class="txt" for="showStudentPassword"> Show Password</label>
-                </div>
-
-                <button type="submit" class="btn">Login</button>
-                <div class="forgot-link">
-                    Forgot your password? <a href="/ssm/mca/student/forgotPassword">Reset it</a>
+        
+        <div class="login-forms">
+            <a style="text-decoration: none;" href="/" class="home-link" title="Home">
+                <i class="fas fa-home"></i>
+            </a>
+            
+            <div class="form-wrapper active" id="staffLoginForm">
+                <div class="form-header">
+                    <h3>Staff Login</h3>
+                    <p>Enter your credentials to access your account</p>
                 </div>
                 
-                <div class="switch-login" id="switchToStaff">Login as Staff</div>
-
-                <div class="home">
-                    <a href="/">Home</a>
+                <div class="alert alert-danger" id="staffLoginAlert" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="staffLoginAlertMessage"></span>
                 </div>
-            </form>
+                
+                <form id="staffLoginFormElement">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email or Staff ID</label>
+                        <div class="input-group">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="email" name="email" class="form-control" placeholder="Enter your email or ID" autocomplete="off" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adminPassword" class="form-label">Password</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="adminPassword" name="password" class="form-control" placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" id="toggleAdminPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" id="rememberStaff" name="remember" class="form-check-input">
+                        <label for="rememberStaff" class="form-check-label">Remember me</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="staffLoginBtn">
+                        <span class="spinner" id="staffLoginSpinner"></span>
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div class="form-footer">
+                        <p>
+                            <a href="#" id="staffForgotPasswordLink">Forgot your password?</a>
+                        </p>
+                        <p>
+                            Need to login as a student? 
+                            <span class="switch-form" id="switchToStudent">Student Login</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="form-wrapper" id="staffForgotPasswordForm">
+                <div class="form-header">
+                    <h3>Reset Password</h3>
+                    <p>Enter your email or staff ID to receive a password reset code</p>
+                </div>
+                
+                <div class="alert alert-danger" id="staffForgotAlert" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="staffForgotAlertMessage"></span>
+                </div>
+                
+                <form id="staffForgotPasswordFormElement">
+                    <div class="form-group">
+                        <label for="staffForgotEmail" class="form-label">Email or Staff ID</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="text" id="staffForgotEmail" name="email" class="form-control" placeholder="Enter your email or staff ID" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="staffForgotBtn">
+                        <span class="spinner" id="staffForgotSpinner"></span>
+                        <span>Send Reset Code</span>
+                    </button>
+                    
+                    <div class="form-footer">
+                        <p>
+                            <span class="switch-form" id="backToStaffLogin">Back to Login</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="form-wrapper" id="otpVerificationForm">
+                <div class="form-header">
+                    <h3>OTP Verification</h3>
+                    <p>Enter the one-time password sent to your registered email</p>
+                </div>
+                
+                <div class="email-notification" id="emailNotification">
+                    <i class="fas fa-envelope"></i>
+                    <div class="email-notification-content">
+                        <p>We've sent a verification code to:</p>
+                        <p class="email" id="userEmail">loading...</p>
+                    </div>
+                </div>
+                
+                <div class="alert alert-danger" id="otpAlert" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="otpAlertMessage"></span>
+                </div>
+                
+                <form id="otpVerificationFormElement">
+                    <div class="form-group">
+                        <label class="form-label">Enter OTP</label>
+                        <div class="otp-inputs">
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                            <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="verifyOtpBtn">
+                        <span class="spinner" id="otpVerifySpinner"></span>
+                        <span>Verify OTP</span>
+                    </button>
+                    
+                    <div class="resend-otp">
+                        <span>Didn't receive the code?</span>
+                        <a href="#" id="resendOtp">Resend OTP</a>
+                        <span class="timer" id="otpTimer"></span>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <p>
+                            <span class="switch-form" id="backToLogin">Back to Login</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="form-wrapper" id="studentLoginForm">
+                <div class="form-header">
+                    <h3>Student Login</h3>
+                    <p>Enter your credentials to access your account</p>
+                </div>
+                
+                <div class="alert alert-danger" id="studentLoginAlert" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="studentLoginAlertMessage"></span>
+                </div>
+                
+                <form id="studentLoginFormElement">
+                    <div class="form-group">
+                        <label for="userName" class="form-label">Student ID</label>
+                        <div class="input-group">
+                            <i class="fas fa-id-card input-icon"></i>
+                            <input type="text" id="userName" name="studentId" class="form-control" placeholder="Enter your student ID" autocomplete="off" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="studentPassword" class="form-label">Password</label>
+                        <div class="input-group">
+                            <i class="fas fa-calendar input-icon"></i>
+                            <input type="password" id="studentPassword" name="password" class="form-control" placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" id="toggleStudentPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" id="rememberStudent" name="remember" class="form-check-input">
+                        <label for="rememberStudent" class="form-check-label">Remember me</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="studentLoginBtn">
+                        <span class="spinner" id="studentLoginSpinner"></span>
+                        <span>Sign In</span>
+                    </button>
+                    
+                    <div class="form-footer">
+                        <p>
+                            <a href="#" id="studentForgotPasswordLink">Forgot your password?</a>
+                        </p>
+                        <p>
+                            Need to login as staff? 
+                            <span class="switch-form" id="switchToStaff">Staff Login</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="form-wrapper" id="studentForgotPasswordForm">
+                <div class="form-header">
+                    <h3>Reset Password</h3>
+                    <p>Enter your student ID to receive a password reset code</p>
+                </div>
+                
+                <div class="alert alert-danger" id="studentForgotAlert" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="studentForgotAlertMessage"></span>
+                </div>
+                
+                <form id="studentForgotPasswordFormElement">
+                    <div class="form-group">
+                        <label for="studentForgotId" class="form-label">Student ID</label>
+                        <div class="input-group">
+                            <i class="fas fa-id-card input-icon"></i>
+                            <input type="text" id="studentForgotId" name="studentId" class="form-control" placeholder="Enter your student ID" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="studentForgotBtn">
+                        <span class="spinner" id="studentForgotSpinner"></span>
+                        <span>Send Reset Code</span>
+                    </button>
+                    
+                    <div class="form-footer">
+                        <p>
+                            <span class="switch-form" id="backToStudentLogin">Back to Login</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordResetModalLabel">Reset Your Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" id="resetPasswordAlert" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="resetPasswordAlertMessage"></span>
+                    </div>
+                    
+                    <form id="resetPasswordForm">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Enter Verification Code</label>
+                            <div class="reset-otp-container">
+                                <input type="text" class="otp-input reset-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                <input type="text" class="otp-input reset-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                <input type="text" class="otp-input reset-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                <input type="text" class="otp-input reset-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                <input type="text" class="otp-input reset-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                <input type="text" class="otp-input reset-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Enter new password" required>
+                                <button type="button" class="password-toggle" id="toggleNewPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="password-strength-meter" id="passwordStrengthMeter"></div>
+                            </div>
+                            <div class="password-strength-text" id="passwordStrengthText"></div>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm new password" required>
+                                <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="resetUserId" name="userId">
+                        <input type="hidden" id="resetUserType" name="userType">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-modal" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-modal" id="resetPasswordBtn">
+                        <span class="spinner" id="resetPasswordSpinner"></span>
+                        <span>Reset Password</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
+    <div class="modal fade" id="redirectModal" tabindex="-1" aria-labelledby="redirectModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="redirectModalLabel">Choose Destination</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Where would you like to go?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="goToProfileBtn" class="btn btn-primary btn-modal">My Profile</button>
+                    <button type="button" id="goToDashboardBtn" class="btn btn-primary btn-modal">Admin Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         const staffLoginForm = document.getElementById('staffLoginForm');
         const studentLoginForm = document.getElementById('studentLoginForm');
+        const otpVerificationForm = document.getElementById('otpVerificationForm');
+        const staffForgotPasswordForm = document.getElementById('staffForgotPasswordForm');
+        const studentForgotPasswordForm = document.getElementById('studentForgotPasswordForm');
+        
         const switchToStudent = document.getElementById('switchToStudent');
         const switchToStaff = document.getElementById('switchToStaff');
+        const backToLogin = document.getElementById('backToLogin');
+        const staffForgotPasswordLink = document.getElementById('staffForgotPasswordLink');
+        const studentForgotPasswordLink = document.getElementById('studentForgotPasswordLink');
+        const backToStaffLogin = document.getElementById('backToStaffLogin');
+        const backToStudentLogin = document.getElementById('backToStudentLogin');
 
+        const staffLoginAlert = document.getElementById('staffLoginAlert');
+        const staffLoginAlertMessage = document.getElementById('staffLoginAlertMessage');
+        const studentLoginAlert = document.getElementById('studentLoginAlert');
+        const studentLoginAlertMessage = document.getElementById('studentLoginAlertMessage');
+        const otpAlert = document.getElementById('otpAlert');
+        const otpAlertMessage = document.getElementById('otpAlertMessage');
+        const staffForgotAlert = document.getElementById('staffForgotAlert');
+        const staffForgotAlertMessage = document.getElementById('staffForgotAlertMessage');
+        const studentForgotAlert = document.getElementById('studentForgotAlert');
+        const studentForgotAlertMessage = document.getElementById('studentForgotAlertMessage');
+        const resetPasswordAlert = document.getElementById('resetPasswordAlert');
+        const resetPasswordAlertMessage = document.getElementById('resetPasswordAlertMessage');
+
+        const staffLoginFormElement = document.getElementById('staffLoginFormElement');
+        const studentLoginFormElement = document.getElementById('studentLoginFormElement');
+        const otpVerificationFormElement = document.getElementById('otpVerificationFormElement');
+        const staffForgotPasswordFormElement = document.getElementById('staffForgotPasswordFormElement');
+        const studentForgotPasswordFormElement = document.getElementById('studentForgotPasswordFormElement');
+        const resetPasswordForm = document.getElementById('resetPasswordForm');
+
+        const staffLoginBtn = document.getElementById('staffLoginBtn');
+        const studentLoginBtn = document.getElementById('studentLoginBtn');
+        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+        const staffForgotBtn = document.getElementById('staffForgotBtn');
+        const studentForgotBtn = document.getElementById('studentForgotBtn');
+        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+        
+        const staffLoginSpinner = document.getElementById('staffLoginSpinner');
+        const studentLoginSpinner = document.getElementById('studentLoginSpinner');
+        const otpVerifySpinner = document.getElementById('otpVerifySpinner');
+        const staffForgotSpinner = document.getElementById('staffForgotSpinner');
+        const studentForgotSpinner = document.getElementById('studentForgotSpinner');
+        const resetPasswordSpinner = document.getElementById('resetPasswordSpinner');
+
+        const otpInputs = document.querySelectorAll('.otp-input');
+        const resetOtpInputs = document.querySelectorAll('.reset-otp-input');
+        const resendOtp = document.getElementById('resendOtp');
+        const otpTimer = document.getElementById('otpTimer');
+        
+        const userEmail = document.getElementById('userEmail');
+        
+        const passwordResetModal = new bootstrap.Modal(document.getElementById('passwordResetModal'));
+        const resetUserId = document.getElementById('resetUserId');
+        const resetUserType = document.getElementById('resetUserType');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        
+        const passwordStrengthMeter = document.getElementById('passwordStrengthMeter');
+        const passwordStrengthText = document.getElementById('passwordStrengthText');
+
+        let currentUser = null;
+        
         switchToStudent.addEventListener('click', () => {
-            staffLoginForm.style.display = 'none';
-            studentLoginForm.style.display = 'block';
+            staffLoginForm.classList.remove('active');
+            studentLoginForm.classList.add('active');
+            otpVerificationForm.classList.remove('active');
+            staffForgotPasswordForm.classList.remove('active');
+            studentForgotPasswordForm.classList.remove('active');
+            
+            staffLoginFormElement.reset();
+            staffLoginAlert.style.display = 'none';
         });
 
         switchToStaff.addEventListener('click', () => {
-            studentLoginForm.style.display = 'none';
-            staffLoginForm.style.display = 'block';
+            studentLoginForm.classList.remove('active');
+            staffLoginForm.classList.add('active');
+            otpVerificationForm.classList.remove('active');
+            staffForgotPasswordForm.classList.remove('active');
+            studentForgotPasswordForm.classList.remove('active');
+            
+            studentLoginFormElement.reset();
+            studentLoginAlert.style.display = 'none';
         });
 
-        const showPasswordCheckboxAdmin = document.getElementById('showAdminPassword');
-        const passwordFieldAdmin = document.getElementById('adminPassword');
+        backToLogin.addEventListener('click', () => {
+            otpVerificationForm.classList.remove('active');
+            staffLoginForm.classList.add('active');
+            studentForgotPasswordForm.classList.remove('active');
+            staffForgotPasswordForm.classList.remove('active');
+            
+            otpVerificationFormElement.reset();
+            otpAlert.style.display = 'none';
+        });
         
-        showPasswordCheckboxAdmin.addEventListener('change', function() {
-            passwordFieldAdmin.type = this.checked ? 'text' : 'password';
+        staffForgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            staffLoginForm.classList.remove('active');
+            studentLoginForm.classList.remove('active');
+            otpVerificationForm.classList.remove('active');
+            staffForgotPasswordForm.classList.add('active');
+            studentForgotPasswordForm.classList.remove('active');
+            
+            staffForgotPasswordFormElement.reset();
+            staffForgotAlert.style.display = 'none';
+        });
+        
+        studentForgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            staffLoginForm.classList.remove('active');
+            studentLoginForm.classList.remove('active');
+            otpVerificationForm.classList.remove('active');
+            staffForgotPasswordForm.classList.remove('active');
+            studentForgotPasswordForm.classList.add('active');
+            
+            studentForgotPasswordFormElement.reset();
+            studentForgotAlert.style.display = 'none';
+        });
+        
+        backToStaffLogin.addEventListener('click', () => {
+            staffForgotPasswordForm.classList.remove('active');
+            staffLoginForm.classList.add('active');
+            
+            staffForgotPasswordFormElement.reset();
+            staffForgotAlert.style.display = 'none';
+        });
+        
+        backToStudentLogin.addEventListener('click', () => {
+            studentForgotPasswordForm.classList.remove('active');
+            studentLoginForm.classList.add('active');
+            
+            studentForgotPasswordFormElement.reset();
+            studentForgotAlert.style.display = 'none';
         });
 
-        const showPasswordCheckboxStudent = document.getElementById('showStudentPassword');
-        const passwordFieldStudent = document.getElementById('studentPassword');
+        const toggleAdminPassword = document.getElementById('toggleAdminPassword');
+        const adminPassword = document.getElementById('adminPassword');
+        
+        toggleAdminPassword.addEventListener('click', function() {
+            const type = adminPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            adminPassword.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
 
-        showPasswordCheckboxStudent.addEventListener('change', function() {
-            passwordFieldStudent.type = this.checked ? 'text' : 'password';
+        const toggleStudentPassword = document.getElementById('toggleStudentPassword');
+        const studentPassword = document.getElementById('studentPassword');
+        
+        toggleStudentPassword.addEventListener('click', function() {
+            const type = studentPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            studentPassword.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+        
+        const toggleNewPassword = document.getElementById('toggleNewPassword');
+        
+        toggleNewPassword.addEventListener('click', function() {
+            const type = newPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            newPassword.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+        
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        function setupOtpInputs(inputs) {
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    if (this.value.length === this.maxLength) {
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        } else {
+                            this.blur();
+                        }
+                    }
+                });
+    
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !this.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+    
+                input.addEventListener('keypress', function(e) {
+                    if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
+        
+        setupOtpInputs(otpInputs);
+        setupOtpInputs(resetOtpInputs);
+
+        function addDigitOnlyValidation(inputs) {
+            inputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            });
+        }
+
+        addDigitOnlyValidation(otpInputs);
+        addDigitOnlyValidation(resetOtpInputs);
+
+        function getOtpValue(inputs) {
+            return Array.from(inputs)
+                .map(input => input.value.trim().replace(/[^0-9]/g, ''))
+                .join(''); 
+        }
+
+        let timerInterval;
+        function startOtpTimer(seconds = 60) {
+            clearInterval(timerInterval);
+            resendOtp.style.pointerEvents = 'none';
+            resendOtp.style.opacity = '0.5';
+            
+            let remainingTime = seconds;
+            updateTimerDisplay(remainingTime);
+            
+            timerInterval = setInterval(() => {
+                remainingTime--;
+                updateTimerDisplay(remainingTime);
+                
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    resendOtp.style.pointerEvents = 'auto';
+                    resendOtp.style.opacity = '1';
+                    otpTimer.textContent = '';
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay(seconds) {
+            otpTimer.textContent = `(${seconds}s)`;
+        }
+
+        function showAlert(alertElement, messageElement, message, type = 'danger') {
+            alertElement.className = `alert alert-${type}`;
+            messageElement.textContent = message;
+            alertElement.style.display = 'flex';
+        }
+
+        function hideAlert(alertElement) {
+            alertElement.style.display = 'none';
+        }
+
+        function toggleLoading(button, spinner, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                spinner.style.display = 'inline-block';
+                button.querySelector('span:not(.spinner)').textContent = 'Please wait...';
+            } else {
+                button.disabled = false;
+                spinner.style.display = 'none';
+                button.querySelector('span:not(.spinner)').textContent = button.getAttribute('data-original-text') || 'Sign In';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = [staffLoginBtn, studentLoginBtn, verifyOtpBtn, staffForgotBtn, studentForgotBtn, resetPasswordBtn];
+            
+            buttons.forEach(button => {
+                const textSpan = button.querySelector('span:not(.spinner)');
+                if (textSpan) {
+                    button.setAttribute('data-original-text', textSpan.textContent.trim());
+                }
+            });
+            
+            const spinners = [staffLoginSpinner, studentLoginSpinner, otpVerifySpinner, 
+                             staffForgotSpinner, studentForgotSpinner, resetPasswordSpinner];
+            
+            spinners.forEach(spinner => {
+                spinner.style.display = 'none';
+            });
+
+            const redirectModalEl = document.getElementById('redirectModal');
+            if (redirectModalEl) {
+                new bootstrap.Modal(redirectModalEl);
+            }
+        });
+
+        newPassword.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            let feedback = '';
+            
+            if (password.length >= 8) strength += 1;
+            if (password.match(/[A-Z]/)) strength += 1;
+            if (password.match(/[0-9]/)) strength += 1;
+            if (password.match(/[^A-Za-z0-9]/)) strength += 1;
+            
+            passwordStrengthMeter.className = '';
+            
+            if (password.length === 0) {
+                passwordStrengthMeter.style.width = '0';
+                passwordStrengthText.textContent = '';
+            } else if (strength <= 1) {
+                passwordStrengthMeter.classList.add('password-weak');
+                passwordStrengthText.textContent = 'Weak';
+                passwordStrengthText.style.color = 'var(--danger)';
+            } else if (strength <= 2) {
+                passwordStrengthMeter.classList.add('password-medium');
+                passwordStrengthText.textContent = 'Medium';
+                passwordStrengthText.style.color = 'var(--warning)';
+            } else {
+                passwordStrengthMeter.classList.add('password-strong');
+                passwordStrengthText.textContent = 'Strong';
+                passwordStrengthText.style.color = 'var(--success)';
+            }
+        });
+
+        staffLoginFormElement.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            hideAlert(staffLoginAlert);
+            
+            toggleLoading(staffLoginBtn, staffLoginSpinner, true);
+            
+            const formData = new FormData(this);
+            const loginData = {
+                email: formData.get('email'),
+                password: formData.get('password'),
+                remember: formData.get('remember') ? true : false
+            };
+            
+            try {
+                const response = await fetch('/v1/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data?.success) {
+                    showAlert(staffLoginAlert, staffLoginAlertMessage, data.message || 'Login failed. Please check your credentials.');
+                    toggleLoading(staffLoginBtn, staffLoginSpinner, false);
+                    return;
+                }
+                
+                currentUser = data.data;
+                
+                if (currentUser && currentUser.email) {
+                    userEmail.textContent = currentUser.email;
+                } else if (currentUser && currentUser.staffId) {
+                    userEmail.textContent = currentUser.staffId;
+                } else {
+                    userEmail.textContent = loginData.email;
+                }
+                
+                staffLoginForm.classList.remove('active');
+                otpVerificationForm.classList.add('active');
+                
+                otpInputs.forEach(input => input.value = '');
+                otpInputs[0].focus();
+                
+                startOtpTimer();
+                
+                toggleLoading(staffLoginBtn, staffLoginSpinner, false);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert(staffLoginAlert, staffLoginAlertMessage, 'An unexpected error occurred. Please try again later.');
+                toggleLoading(staffLoginBtn, staffLoginSpinner, false);
+            }
+        });
+
+        otpVerificationFormElement.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            hideAlert(otpAlert);
+            
+            toggleLoading(verifyOtpBtn, otpVerifySpinner, true);
+            
+            const otp = getOtpValue(otpInputs);
+            
+            if (otp.length !== 6 || !/^\d{6}$/.test(otp)) {
+                showAlert(otpAlert, otpAlertMessage, 'Please enter a valid 6-digit OTP.');
+                toggleLoading(verifyOtpBtn, otpVerifySpinner, false);
+                return;
+            }
+            
+            try {
+                const response = await fetch('/v1/api/verifyOtp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        staffId: currentUser?.staffId,
+                        otp: otp 
+                    }),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data?.success) {
+                    showAlert(otpAlert, otpAlertMessage, data.message || 'Invalid OTP. Please try again.');
+                    toggleLoading(verifyOtpBtn, otpVerifySpinner, false);
+                    return;
+                }
+
+                const user = data.data;
+
+                if (user.isAdmin || user.isSuperAdmin) {
+                    // Initialize the redirect modal
+                    const redirectModal = new bootstrap.Modal(document.getElementById('redirectModal'));
+                    
+                    // Set up event listeners for the modal buttons
+                    document.getElementById('goToDashboardBtn').onclick = function() {
+                        window.location.href = user.redirectUrls.dashboardUrl;
+                    };
+                    
+                    if (user.isFaculty) {
+                        document.getElementById('goToProfileBtn').onclick = function() {
+                            window.location.href = user.redirectUrls.profileUrl;
+                        };
+                    } else {
+                        // Hide the profile button if user is not faculty
+                        document.getElementById('goToProfileBtn').style.display = 'none';
+                    }
+                    
+                    // Show the modal
+                    toggleLoading(verifyOtpBtn, otpVerifySpinner, false);
+                    redirectModal.show();
+                } else if (user.isFaculty) {
+                    // Redirect faculty directly to their profile
+                    toggleLoading(verifyOtpBtn, otpVerifySpinner, false);
+                    window.location.href = user.redirectUrls.profileUrl;
+                } else {
+                    // Fallback for other cases
+                    toggleLoading(verifyOtpBtn, otpVerifySpinner, false);
+                    showAlert(otpAlert, otpAlertMessage, 'No valid redirect URL found.', 'danger');
+                }
+                
+            } catch (error) {
+                console.error('OTP verification error:', error);
+                showAlert(otpAlert, otpAlertMessage, 'An unexpected error occurred. Please try again later.');
+                toggleLoading(verifyOtpBtn, otpVerifySpinner, false);
+            }
+        });
+
+        studentLoginFormElement.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            hideAlert(studentLoginAlert);
+            
+            toggleLoading(studentLoginBtn, studentLoginSpinner, true);
+            
+            const formData = new FormData(this);
+            const loginData = {
+                studentId: formData.get('studentId'),
+                password: formData.get('password'),
+                remember: formData.get('remember') ? true : false
+            };
+            
+            try {
+                const response = await fetch('/v1/api/studentLogin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data?.success) {
+                    showAlert(studentLoginAlert, studentLoginAlertMessage, data.message || 'Login failed. Please check your credentials.');
+                    toggleLoading(studentLoginBtn, studentLoginSpinner, false);
+                    return;
+                }
+                
+                setTimeout(() => {
+                    window.location.href = '/v1/api/studentProfile';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Student login error:', error);
+                showAlert(studentLoginAlert, studentLoginAlertMessage, 'An unexpected error occurred. Please try again later.');
+                toggleLoading(studentLoginBtn, studentLoginSpinner, false);
+            }
+        });
+
+        resendOtp.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            if (this.style.pointerEvents === 'none') {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/v1/api/resendOtp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        staffId: currentUser?.staffId
+                    }),
+                    credentials: 'include' 
+                });
+                
+                const data = await response.json();
+                
+                if (!data?.success) {
+                    showAlert(otpAlert, otpAlertMessage, data.message || 'Failed to resend OTP. Please try again.');
+                    return;
+                }
+                
+                showAlert(otpAlert, otpAlertMessage, 'OTP has been resent to your registered email.', 'success');
+                
+                otpInputs.forEach(input => input.value = '');
+                otpInputs[0].focus();
+                
+                startOtpTimer();
+                
+            } catch (error) {
+                console.error('Resend OTP error:', error);
+                showAlert(otpAlert, otpAlertMessage, 'An unexpected error occurred. Please try again later.');
+            }
+        });
+        
+        staffForgotPasswordFormElement.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            hideAlert(staffForgotAlert);
+            
+            toggleLoading(staffForgotBtn, staffForgotSpinner, true);
+            
+            const formData = new FormData(this);
+            const forgotData = {
+                email: formData.get('email')
+            };
+            
+            try {
+                const response = await fetch('/v1/api/forgotPassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(forgotData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data?.success) {
+                    showAlert(staffForgotAlert, staffForgotAlertMessage, data.message || 'Failed to send reset code. Please check your email or staff ID.');
+                    toggleLoading(staffForgotBtn, staffForgotSpinner, false);
+                    return;
+                }
+                
+                showAlert(staffForgotAlert, staffForgotAlertMessage, 'Reset code has been sent to your registered email.', 'success');
+                
+                resetUserId.value = data.staffId || forgotData.email;
+                resetUserType.value = 'staff';
+                
+                this.reset();
+                
+                passwordResetModal.show();
+                
+                resetOtpInputs[0].focus();
+                
+                toggleLoading(staffForgotBtn, staffForgotSpinner, false);
+                
+            } catch (error) {
+                console.error('Forgot password error:', error);
+                showAlert(staffForgotAlert, staffForgotAlertMessage, 'An unexpected error occurred. Please try again later.');
+                toggleLoading(staffForgotBtn, staffForgotSpinner, false);
+            }
+        });
+        
+        studentForgotPasswordFormElement.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            hideAlert(studentForgotAlert);
+            
+            toggleLoading(studentForgotBtn, studentForgotSpinner, true);
+            
+            const formData = new FormData(this);
+            const forgotData = {
+                studentId: formData.get('studentId')
+            };
+            
+            try {
+                const response = await fetch('/v1/api/student/forgotPassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(forgotData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data?.success) {
+                    showAlert(studentForgotAlert, studentForgotAlertMessage, data.message || 'Failed to send reset code. Please check your student ID.');
+                    toggleLoading(studentForgotBtn, studentForgotSpinner, false);
+                    return;
+                }
+                
+                showAlert(studentForgotAlert, studentForgotAlertMessage, 'Reset code has been sent to your registered email.', 'success');
+                
+                resetUserId.value = forgotData.studentId;
+                resetUserType.value = 'student';
+                
+                this.reset();
+                
+                passwordResetModal.show();
+                
+                resetOtpInputs[0].focus();
+                
+                toggleLoading(studentForgotBtn, studentForgotSpinner, false);
+                
+            } catch (error) {
+                console.error('Forgot password error:', error);
+                showAlert(studentForgotAlert, studentForgotAlertMessage, 'An unexpected error occurred. Please try again later.');
+                toggleLoading(studentForgotBtn, studentForgotSpinner, false);
+            }
+        });
+        
+        resetPasswordBtn.addEventListener('click', async function() {
+            hideAlert(resetPasswordAlert);
+        
+            const otp = getOtpValue(resetOtpInputs);
+            
+            console.log("Reset OTP Value:", otp);
+            console.log("Reset OTP Length:", otp.length);
+            
+            let isComplete = Array.from(resetOtpInputs).every(input => input.value.trim() !== '');
+            
+            if (!isComplete || otp.length !== 6) {
+                showAlert(resetPasswordAlert, resetPasswordAlertMessage, 'Please enter a valid 6-digit OTP.');
+                return;
+            }
+                
+            if (newPassword.value.length < 8) {
+                showAlert(resetPasswordAlert, resetPasswordAlertMessage, 'Password must be at least 8 characters long.');
+                return;
+            }
+            
+            if (newPassword.value !== confirmPassword.value) {
+                showAlert(resetPasswordAlert, resetPasswordAlertMessage, 'Passwords do not match.');
+                return;
+            }
+            
+            toggleLoading(resetPasswordBtn, resetPasswordSpinner, true);
+            
+            try {
+                const endpoint = resetUserType.value === 'staff' 
+                    ? '/v1/api/resetPassword' 
+                    : '/v1/api/student/resetPassword';
+                
+                const resetData = {
+                    otp: otp,
+                    newPassword: newPassword.value
+                };
+                
+                if (resetUserType.value === 'staff') {
+                    resetData.staffId = resetUserId.value;
+                } else {
+                    resetData.studentId = resetUserId.value;
+                }
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(resetData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (!data?.success) {
+                    showAlert(resetPasswordAlert, resetPasswordAlertMessage, data.message || 'Failed to reset password. Please try again.');
+                    toggleLoading(resetPasswordBtn, resetPasswordSpinner, false);
+                    return;
+                }
+                
+                showAlert(resetPasswordAlert, resetPasswordAlertMessage, 'Password has been reset successfully. You can now login with your new password.', 'success');
+                
+                resetPasswordForm.reset();
+                
+                setTimeout(() => {
+                    passwordResetModal.hide();
+                    
+                    if (resetUserType.value === 'staff') {
+                        staffLoginForm.classList.add('active');
+                        studentLoginForm.classList.remove('active');
+                        staffForgotPasswordForm.classList.remove('active');
+                        studentForgotPasswordForm.classList.remove('active');
+                        otpVerificationForm.classList.remove('active');
+                    } else {
+                        studentLoginForm.classList.add('active');
+                        staffLoginForm.classList.remove('active');
+                        staffForgotPasswordForm.classList.remove('active');
+                        studentForgotPasswordForm.classList.remove('active');
+                        otpVerificationForm.classList.remove('active');
+                    }
+                    
+                    toggleLoading(resetPasswordBtn, resetPasswordSpinner, false);
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Reset password error:', error);
+                showAlert(resetPasswordAlert, resetPasswordAlertMessage, 'An unexpected error occurred. Please try again later.');
+                toggleLoading(resetPasswordBtn, resetPasswordSpinner, false);
+            }
+        });
+        
+        document.getElementById('passwordResetModal').addEventListener('hidden.bs.modal', function () {
+            resetPasswordForm.reset();
+            hideAlert(resetPasswordAlert);
+            toggleLoading(resetPasswordBtn, resetPasswordSpinner, false);
+            
+            passwordStrengthMeter.style.width = '0';
+            passwordStrengthMeter.className = '';
+            passwordStrengthText.textContent = '';
         });
     </script>
 </body>
