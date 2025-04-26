@@ -8,7 +8,7 @@ exports.getChatroom = async (req, res) => {
 
     res.render("chatroom", { username: decoded.name });
   } catch (err) {
-    res.redirect("/ssm/mca/signin");
+    res.redirect("/v1/api/signin");
   }
 };
 

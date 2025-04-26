@@ -6,7 +6,7 @@ const path = require("path");
 const hbs = require("hbs");
 const http = require("http");
 const { Server } = require("socket.io");
-const mongoose = require("mongoose");
+const moment = require("moment");
 const Message = require("./models/messageModel");
 require("./config/mongo");
 
@@ -24,9 +24,61 @@ app.set("views", path.join(__dirname, "view"));
 app.use(express.static("public"));
 
 hbs.registerHelper("eq", (v1, v2) => v1 === v2);
+
+hbs.registerHelper('formatDateForInput', function(dateString) {
+    return moment(dateString, 'DD-MM-YYYY').format('YYYY-MM-DD');
+});
+
+hbs.registerHelper('formatDate', function (date, format) {
+    // Ensure format is a string or fallback to a default
+    const fmt = typeof format === 'string' ? format : 'DD-MM-YYYY';
+    return moment(date).format(fmt);
+});
+
+hbs.registerHelper('subtract', function (a, b) {
+    return a - b;
+});
+
 hbs.registerHelper("inc", (value) => parseInt(value) + 1);
 
-app.use("/ssm/mca", require("./routes/index"));
+hbs.registerHelper("groupBySemester", function (examResults) {
+    const groupedResults = {};
+
+    examResults.forEach(result => {
+        if (!groupedResults[result.semester]) {
+            groupedResults[result.semester] = [];
+        }
+        groupedResults[result.semester].push(result);
+    });
+
+    let resultHtml = "";
+    for (const semester in groupedResults) {
+        resultHtml += `<h4 class="mt-3 text-primary">Semester ${semester}</h4>
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th width="15%">Subject Code</th>
+                        <th width="65%">Subject Name</th>
+                        <th width="10%" class="text-center">Grade</th>
+                        <th width="10%" class="text-center">Result</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+        groupedResults[semester].forEach(item => {
+            resultHtml += `<tr>
+                <td>${item.subjectCode}</td>
+                <td>${item.subjectName || "N/A"}</td>
+                <td class="text-center"><span class="grade-${item.grade}">${item.grade}</span></td>
+                <td class="text-center"><span class="result-${item.result.toLowerCase()}">${item.result}</span></td>
+            </tr>`;
+        });
+        resultHtml += `</tbody></table>`;
+    }
+
+    return new hbs.handlebars.SafeString(resultHtml);
+});
+
+app.use("/v1/api", require("./routes/index"));
 
 app.get("/", (req, res) => {
   res.render("newHome");
@@ -46,14 +98,14 @@ const rooms = {};
 io.on('connection', async (socket) => {
     console.log('A user connected');
   
-    socket.on('joinChat', async ({ username, year }) => {
+    socket.on('joinChat', async ({ username, year, course, senderId }) => {
         if (!year) {
             socket.emit('error', 'Year information is required to join the chat.');
             return;
         }
 
         if (!users[socket.id]) { 
-            users[socket.id] = { username, year };
+            users[socket.id] = { username, year, course, senderId };
 
             if (!rooms[year]) {
                 rooms[year] = new Set();
@@ -65,7 +117,9 @@ io.on('connection', async (socket) => {
             try {
                 const joinMessage = new Message({
                     senderName: username,
+                    senderId: senderId,
                     year: year,
+                    course: course,
                     message: `${username} joined the chat`,
                     type: 'join'
                 });
@@ -80,9 +134,9 @@ io.on('connection', async (socket) => {
         }
     });
   
-    socket.on("loadOlderMessages", async ({ skip, limit, year }) => {
+    socket.on("loadOlderMessages", async ({ skip, limit, year, course }) => {
         try {
-            const olderMessages = await Message.find({ year: year })
+            const olderMessages = await Message.find({ year: year, course: course })
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -104,6 +158,8 @@ io.on('connection', async (socket) => {
           senderName: data.username,
           year: user.year,
           message: data.message,
+          course: data.course,
+          senderId: data.senderId,
           type: 'message'
         });
   
@@ -143,6 +199,7 @@ io.on('connection', async (socket) => {
                 const leaveMessage = new Message({
                     senderName: user.username,
                     year: user.year,
+                    course: user.course,
                     message: `${user.username} left the chat`,
                     type: 'leave'
                 });

@@ -32,6 +32,7 @@
     "firebase": "^10.10.0",
     "firebase-admin": "^13.0.1",
     "fs": "^0.0.1-security",
+    "googleapis": "^146.0.0",
     "hbs": "^4.2.0",
     "html-pdf": "^3.0.1",
     "jsonwebtoken": "^9.0.2",
@@ -43,7 +44,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "pdfkit": "^0.15.0",
     "puppeteer": "^22.6.3",
-    "razorpay": "^2.9.5",
+    "razorpay": "^2.9.6",
     "socket.io": "^4.8.1",
     "stripe": "^17.5.0"
   }

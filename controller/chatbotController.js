@@ -133,6 +133,34 @@ exports.chatbotHistory = async (req, res) => {
     }
 };
 
+exports.deleteChatbotHisstory = async (req, res) => {
+    let body = req.body;
+    try {
+        let userId = body?.user;
+
+        let chatbotData = await chatbotModel.deleteMany({ user: userId });
+
+        if (chatbotData) {
+            return res.json({
+                success: true,
+                message: "Chat history was cleared."
+            });
+        } else {
+            return res.json({
+                success: false,
+                message: "Failed to delete history!"
+            });
+        }
+
+    } catch (err) {
+        console.log("Error in deleteChatbotHisstory: " + err);
+        res.json({
+            success: false,
+            message: "Internal Server Error. Please try again later."
+        })
+    }
+};
+
 exports.jobs = async (req, res) => {
     try {
         res.render("jobs")

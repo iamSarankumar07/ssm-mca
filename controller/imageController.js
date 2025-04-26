@@ -3,6 +3,7 @@ const cloudinary = require('cloudinary').v2;
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 let bucket = require("../middleware/adminCredentials");
+const moment = require('moment');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -16,6 +17,27 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY
 );
 
+
+exports.gallery = async (req, res) => {
+  try {
+    const apiUrl = "/v1/api/dashboard#gallery";
+    res.render("gallery", { apiUrl });
+  } catch (err) {
+    console.log(err);
+    res.status(500).render('error', { message: "Internal Server Error. Please try again later" });
+  }
+};
+
+exports.homeGallery = async (req, res) => {
+  try {
+    const apiUrl = "/";
+    res.render("gallery", { apiUrl });
+  } catch (err) {
+    console.log(err);
+    res.status(500).render('error', { message: "Internal Server Error. Please try again later" });
+  }
+};
+
 exports.uploadImageFireBase = async (req, res) => {
   try {
     if (!req.file) {
@@ -24,8 +46,9 @@ exports.uploadImageFireBase = async (req, res) => {
 
     let fileName = req?.body?.title ?? req.file.originalname;
     let description = req?.body?.description ?? "";
+    let date = moment().format('YYYY-MM-DD');
 
-    const blob = bucket.file(`saran/${fileName}`);
+    const blob = bucket.file(`gallery/${fileName}`);
     const blobStream = blob.createWriteStream({
       metadata: {
         contentType: req.file.mimetype,
@@ -46,6 +69,8 @@ exports.uploadImageFireBase = async (req, res) => {
           const image = new Image({
             title: fileName,
             description: description,
+            date: date,
+            type: "gallery",
             imageUrl: publicUrl,
           });
 
@@ -137,7 +162,7 @@ exports.uploadImageFireBase = async (req, res) => {
           
             <script>
               function redirect() {
-                window.location.href = "/ssm/mca/imageUpload";
+                window.location.href = "/v1/api/imageUpload";
               }
           
               window.onload = function() {
@@ -160,7 +185,7 @@ exports.uploadImageFireBase = async (req, res) => {
       } catch (err) {
         console.log("Error in uploadImage:", err);
         res.status(500).send(
-          '<script>alert("Error while uploading image!"); window.location="/ssm/mca/uploadImage";</script>'
+          '<script>alert("Error while uploading image!"); window.location="/v1/api/uploadImage";</script>'
         );
       }
     });
@@ -203,6 +228,7 @@ exports.uploadImageCloudinary = async (req, res) => {
 
     let fileName = req?.body?.title ?? req.file.originalname;
     let description = req?.body?.description ?? "";
+    let date = moment().format('YYYY-MM-DD');
 
     cloudinary.uploader.upload_stream({
       public_id: fileName,
@@ -219,6 +245,8 @@ exports.uploadImageCloudinary = async (req, res) => {
       const image = new Image({
         title: fileName,
         description: description,
+        date: date,
+        type: "gallery",
         imageUrl: result.secure_url,
       });
 
@@ -310,7 +338,7 @@ exports.uploadImageCloudinary = async (req, res) => {
           
             <script>
               function redirect() {
-                window.location.href = "/ssm/mca/imageUpload";
+                window.location.href = "/v1/api/imageUpload";
               }
           
               window.onload = function() {
@@ -485,7 +513,7 @@ exports.uploadImageSupabase = async (req, res) => {
 
           <script>
             function redirect() {
-              window.location.href = "/ssm/mca/imageUpload";
+              window.location.href = "/v1/api/imageUpload";
             }
 
             window.onload = function() {
@@ -534,6 +562,7 @@ exports.imageEditFirebase = async (req, res) => {
 
     let fileName = body?.title ?? req.file.originalname;
     let description = body?.description ?? "";
+    let date = moment().format('YYYY-MM-DD');
 
     if (req.file) {
       const blob = bucket.file(`saran/${fileName}`);
@@ -558,6 +587,7 @@ exports.imageEditFirebase = async (req, res) => {
               title: fileName,
               description: description,
               imageUrl: publicUrl,
+              date: date,
               createdAt: Date.now(),
             });
   
@@ -648,7 +678,7 @@ exports.imageEditFirebase = async (req, res) => {
             
               <script>
                 function redirect() {
-                  window.location.href = "/ssm/mca/imageList";
+                  window.location.href = "/v1/api/imageList";
                 }
             
                 window.onload = function() {
@@ -671,7 +701,7 @@ exports.imageEditFirebase = async (req, res) => {
         } catch (err) {
           console.log("Error in uploadImage:", err);
           res.status(500).send(
-            '<script>alert("Error while uploading image!"); window.location="/ssm/mca/imageList";</script>'
+            '<script>alert("Error while uploading image!"); window.location="/v1/api/imageList";</script>'
           );
         }
       });
@@ -766,7 +796,7 @@ exports.imageEditFirebase = async (req, res) => {
         
           <script>
             function redirect() {
-              window.location.href = "/ssm/mca/imageList";
+              window.location.href = "/v1/api/imageList";
             }
         
             window.onload = function() {
@@ -800,6 +830,7 @@ exports.imageEditCloudinary = async (req, res) => {
 
     let fileName = body?.title ?? req.file.originalname;
     let description = body?.description ?? "";
+    let date = moment().format('YYYY-MM-DD');
 
     if (req.file) {
       cloudinary.uploader.upload_stream({
@@ -817,13 +848,12 @@ exports.imageEditCloudinary = async (req, res) => {
         await Image.findByIdAndUpdate(imageId, {
           title: fileName,
           description: description,
+          date: date,
           imageUrl: result.secure_url,
           createdAt: Date.now(),
         });
   
         try {
-          const imageDBdata = await image.save();
-          console.log("Image saved successfully to DB:", imageDBdata);
   
           return res.send(
             `<!DOCTYPE html>
@@ -909,7 +939,7 @@ exports.imageEditCloudinary = async (req, res) => {
             
               <script>
                 function redirect() {
-                  window.location.href = "/ssm/mca/imageList";
+                  window.location.href = "/v1/api/imageList";
                 }
             
                 window.onload = function() {
@@ -1024,7 +1054,7 @@ exports.imageEditCloudinary = async (req, res) => {
         
           <script>
             function redirect() {
-              window.location.href = "/ssm/mca/imageList";
+              window.location.href = "/v1/api/imageList";
             }
         
             window.onload = function() {
@@ -1055,13 +1085,410 @@ exports.imageDelete = async (req, res) => {
   try {
     const imageId = req.params.imageId;
     const imageData = await Image.findByIdAndUpdate(imageId, { isDelete: true });
-    res.redirect("/ssm/mca/imageList");
+    res.redirect("/v1/api/imageList");
   } catch (err) {
     console.error(err);
     res.send("Error");
   }
-}
+};
 
+exports.fetchImagesForGallery = async (req, res) => {
+  try {
+    let matchStr = {
+      isDelete: false,
+      type: "gallery"
+    }
+
+    if (req?.body?.category) matchStr.category = req.body.category;
+    let imageData = await Image.find(matchStr).sort({ createdAt: -1 });
+    res.json(imageData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json([]);
+  }
+};
+
+exports.fetchNews = async (req, res) => {
+  try {
+    let imageData = await Image.find({ isDelete: false, type: "news" }).sort({ createdAt: -1 });
+    res.json(imageData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json([]);
+  }
+};
+
+exports.fetchEvents = async (req, res) => {
+  try {
+    let imageData = await Image.find({ isDelete: false, type: "events" }).sort({ createdAt: -1 });
+    res.json(imageData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json([]);
+  }
+};
+
+exports.newsAndEvents = async (req, res) => {
+  try {
+    res.render("newsAndEvents");
+  } catch (err) {
+    res.status(500).render('error', { message: "Internal Server Error. Please try again later" });
+  }
+};
+
+exports.imageDelete = async (req, res) => {
+  try {
+    const imageId = req.params.imageId;
+    const imageData = await Image.findByIdAndUpdate(imageId, { isDelete: true });
+    res.redirect("/v1/api/imageList");
+  } catch (err) {
+    console.error(err);
+    res.send("Error");
+  }
+};
+
+exports.getAdminNews = async (req, res) => {
+  try {
+    let imageData = await Image.find({ isDelete: false, type: "news" }).sort({ createdAt: -1 });
+    res.json(imageData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json([]);
+  }
+};
+
+exports.getAdminEvents = async (req, res) => {
+  try {
+    let imageData = await Image.find({ isDelete: false, type: "events" }).sort({ createdAt: -1 });
+    res.json(imageData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json([]);
+  }
+};
+
+exports.adminUploadGallery = async (req, res) => {
+  try {
+    let body = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded." });
+    }
+
+    let fileName = req.body.title || req.file.originalname;
+    let description = req.body.description || "";
+
+    const uploadToCloudinary = (fileBuffer) => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            public_id: fileName,
+            resource_type: "auto",
+            folder: "gallery",
+          },
+          (error, result) => {
+            if (error) {
+              console.error("Cloudinary Upload Error:", error);
+              return reject("Error uploading file to Cloudinary.");
+            }
+            resolve(result);
+          }
+        );
+        uploadStream.end(fileBuffer);
+      });
+    };
+
+    const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+
+    let newsData = new Image({
+      title: fileName,
+      description: description,
+      date: body.date,
+      type: "gallery",
+      category: body.category,
+      imageUrl: cloudinaryResult.secure_url,
+    });
+
+    let savedData = await newsData.save();
+
+    return res.json({
+      success: true,
+      message: "News uploaded successfully!",
+      data: savedData,
+    });
+
+  } catch (err) {
+    console.log("Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!"
+    });
+  }
+};
+
+exports.adminUploadNews = async (req, res) => {
+  try {
+    let body = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded." });
+    }
+
+    let fileName = req.body.title || req.file.originalname;
+    let description = req.body.description || "";
+
+    const uploadToCloudinary = (fileBuffer) => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            public_id: fileName,
+            resource_type: "auto",
+            folder: "news",
+          },
+          (error, result) => {
+            if (error) {
+              console.error("Cloudinary Upload Error:", error);
+              return reject("Error uploading file to Cloudinary.");
+            }
+            resolve(result);
+          }
+        );
+        uploadStream.end(fileBuffer);
+      });
+    };
+
+    const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+
+    let newsData = new Image({
+      title: fileName,
+      description: description,
+      date: body.date,
+      type: "news",
+      status: body.status,
+      imageUrl: cloudinaryResult.secure_url,
+    });
+
+    let savedData = await newsData.save();
+
+    return res.json({
+      success: true,
+      message: "News uploaded successfully!",
+      data: savedData,
+    });
+
+  } catch (err) {
+    console.log("Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!"
+    });
+  }
+};
+
+exports.adminUploadEvents = async (req, res) => {
+  try {
+    let body = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded." });
+    }
+
+    let fileName = req.body.title || req.file.originalname;
+    let description = req.body.description || "";
+
+    const uploadToCloudinary = (fileBuffer) => {
+      return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            public_id: fileName,
+            resource_type: "auto",
+            folder: "events",
+          },
+          (error, result) => {
+            if (error) {
+              console.error("Cloudinary Upload Error:", error);
+              return reject("Error uploading file to Cloudinary.");
+            }
+            resolve(result);
+          }
+        );
+        uploadStream.end(fileBuffer);
+      });
+    };
+
+    // Await Cloudinary Upload
+    const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+
+    // Save news data in the database
+    let eventsData = new Image({
+      title: fileName,
+      description: description,
+      date: body.date,
+      type: "events",
+      status: body.status,
+      imageUrl: cloudinaryResult.secure_url,
+    });
+
+    let savedData = await eventsData.save();
+
+    return res.json({
+      success: true,
+      message: "News uploaded successfully!",
+      data: savedData,
+    });
+
+  } catch (err) {
+    console.log("Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!"
+    });
+  }
+};
+
+exports.adminUpdateNews = async (req, res) => {
+  try {
+    const newsId = req.params.id;
+
+    const existingNews = await Image.findById(newsId);
+    
+    if (!existingNews) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "News item not found." 
+      });
+    }
+
+    if (existingNews.type !== "news") {
+      return res.status(400).json({ 
+        success: false, 
+        message: "This is not a news item." 
+      });
+    }
+
+    existingNews.title = req.body.title || existingNews.title;
+    existingNews.description = req.body.description || existingNews.description;
+    existingNews.date = req.body.date || existingNews.date;
+    existingNews.status = req.body.status || existingNews.status;
+    
+    existingNews.featured = req.body.featured === 'on' || req.body.featured === true;
+
+    if (req.file) {
+      const uploadToCloudinary = (fileBuffer) => {
+        return new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              public_id: existingNews.title,
+              resource_type: "auto",
+              folder: "news",
+            },
+            (error, result) => {
+              if (error) {
+                console.error("Cloudinary Upload Error:", error);
+                return reject("Error uploading file to Cloudinary.");
+              }
+              resolve(result);
+            }
+          );
+          uploadStream.end(fileBuffer);
+        });
+      };
+
+      const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+      existingNews.imageUrl = cloudinaryResult.secure_url;
+    }
+
+    const updatedNews = await existingNews.save();
+
+    return res.json({
+      success: true,
+      message: "News updated successfully!",
+      data: updatedNews,
+    });
+
+  } catch (err) {
+    console.log("Error updating news:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!"
+    });
+  }
+};
+
+exports.adminUpdateEvents = async (req, res) => {
+  try {
+    const eventId = req.params.id;
+
+    const existingEvent = await Image.findById(eventId);
+    
+    if (!existingEvent) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Event item not found." 
+      });
+    }
+
+    if (existingEvent.type !== "events") {
+      return res.status(400).json({ 
+        success: false, 
+        message: "This is not an event item." 
+      });
+    }
+
+    existingEvent.title = req.body.title || existingEvent.title;
+    existingEvent.description = req.body.description || existingEvent.description;
+    existingEvent.date = req.body.date || existingEvent.date;
+    existingEvent.status = req.body.status || existingEvent.status;
+    
+    existingEvent.registration = req.body.registration === 'on' || req.body.registration === true;
+    
+    if (existingEvent.registration && req.body.registrationUrl) {
+      existingEvent.registrationUrl = req.body.registrationUrl;
+    } else if (!existingEvent.registration) {
+      existingEvent.registrationUrl = undefined;
+    }
+
+    if (req.file) {
+      const uploadToCloudinary = (fileBuffer) => {
+        return new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              public_id: existingEvent.title,
+              resource_type: "auto",
+              folder: "events",
+            },
+            (error, result) => {
+              if (error) {
+                console.error("Cloudinary Upload Error:", error);
+                return reject("Error uploading file to Cloudinary.");
+              }
+              resolve(result);
+            }
+          );
+          uploadStream.end(fileBuffer);
+        });
+      };
+
+      const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+      existingEvent.imageUrl = cloudinaryResult.secure_url;
+    }
+
+    const updatedEvent = await existingEvent.save();
+
+    return res.json({
+      success: true,
+      message: "Event updated successfully!",
+      data: updatedEvent,
+    });
+
+  } catch (err) {
+    console.log("Error updating event:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error!"
+    });
+  }
+};
 
 
 module.exports = exports;
