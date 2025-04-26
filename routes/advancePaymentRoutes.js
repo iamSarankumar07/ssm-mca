@@ -22,6 +22,33 @@ app.get(
 );
 
 app.get(
+  "/createRazorPayPaymentByMail",
+  (req, res, next) => {
+    const studentId = req.query.studentId;
+    const signature = req.query.signature;
+    const paymentType = req.query.paymentType;
+
+    req.body.studentId = studentId;
+    req.body.signature = signature;
+    req.body.paymentType = paymentType;
+    req.headers["signature"] = req.headers["signature"] || signature;
+    next();
+  },
+  authonticationController.validateHeaderSignature,
+  advancePaymentController.createRazorPayPaymentByMail
+);
+
+app.post("/payFromEmail",
+  authonticationController.validateHeaderSignature,
+  advancePaymentController.payFromEmail
+);
+
+app.post("/verifyRazorPaySignatureForEmail",
+  authonticationController.validateHeaderSignature,
+  advancePaymentController.verifyAndSavePayment
+);
+
+app.get(
   "/examCreatePaymentRazor",
   authonticationController.sValidateToken,
   (req, res, next) => {
@@ -159,6 +186,31 @@ app.post("/stripe/webhook",
 app.get("/getStripeStatus", 
   // authonticationController.sValidateToken,
   advancePaymentController.stripePaymentResponse
+);
+
+app.get("/employee/getSingleSalary",
+  authonticationController.validateToken,
+  advancePaymentController.getEmployeeSingleSalaryList
+);
+
+app.get("/employee/getSalaryData",
+  authonticationController.validateToken,
+  advancePaymentController.getSalaryData
+);
+
+app.get("/employee/getBulkSalary",
+  authonticationController.validateToken,
+  advancePaymentController.getEmployeeBulkSalaryList
+);
+
+app.post("/employee/paySingleSalary/:id",
+  authonticationController.validateToken,
+  advancePaymentController.employeePaySingleSalary
+);
+
+app.post("/employee/payBulkSalary",
+  authonticationController.validateToken,
+  advancePaymentController.employeePayBulkSalary
 );
 
 module.exports = app;

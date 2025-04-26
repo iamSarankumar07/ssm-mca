@@ -34,6 +34,11 @@ app.get("/chatbot/history/:user",
     chatBotController.chatbotHistory
 );
 
+app.post(
+    "/deleteChatbotHisstory",
+    chatBotController.deleteChatbotHisstory
+);
+
 app.get("/jobs",
     authonticationController.sValidateToken,
     chatBotController.jobs
