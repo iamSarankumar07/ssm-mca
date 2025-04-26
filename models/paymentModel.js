@@ -45,6 +45,10 @@ const paymentsSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    course: {
+        type: String,
+        required: false,
+    },
     year: {
         type: String,
         required: false,
@@ -54,7 +58,7 @@ const paymentsSchema = new mongoose.Schema({
         required: false,
     },
     txnDate: {
-        type: String,
+        type: Date,
         required: false,
     },
     createdAt: {

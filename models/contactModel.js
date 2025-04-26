@@ -13,7 +13,7 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  createdAt: {
+  date: {
     type: Date,
     default: Date.now
   }
