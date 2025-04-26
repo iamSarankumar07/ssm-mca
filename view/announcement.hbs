@@ -86,7 +86,7 @@
     </style>
 </head>
 <body>
-    <form id="emailForm" action="/ssm/mca/sendMailById" method="post">
+    <form id="emailForm" action="/v1/api/sendMailById" method="post">
         <h1>Send Mail to Student</h1>
         <label for="studentId">Student ID:</label>
         <input type="text" id="studentId" name="studentId" oninput="this.value = this.value.replace(/\s/g, '').toUpperCase()" required>
@@ -109,7 +109,7 @@
     <script>
 function goBack() {
   window.history.back();
-  window.location.href = '/ssm/mca/dashboard#announcements';
+  window.location.href = '/v1/api/dashboard#announcements';
 };
 
 </script>

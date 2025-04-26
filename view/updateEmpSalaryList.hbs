@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Salary Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    :root {
+      --primary-color: #4338ca;
+      --primary-hover: #4f46e5;
+      --secondary-color: #f5f5f5;
+      --text-primary: #333;
+      --text-secondary: #666;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      --transition: all 0.2s ease;
+    }
+    
+    html, body {
+      height: 100%;
+      background-color: #f9fafb;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+    
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .header-section {
+      padding: 1.5rem 2rem;
+      background-color: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      z-index: 10;
+    }
+    
+    .back-button {
+      color: var(--text-secondary);
+      transition: var(--transition);
+      cursor: pointer;
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    .back-button:hover {
+      color: var(--primary-color);
+      background-color: rgba(0, 112, 243, 0.1);
+    }
+    
+    .content-section {
+      flex: 1;
+      overflow: hidden;
+      padding: 0.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card {
+      border-radius: var(--border-radius);
+      border: none;
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .card-header {
+      background-color: white;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1.5rem 2rem;
+      z-index: 5;
+    }
+    
+    .table-container {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .table-responsive {
+      flex: 1;
+      overflow: auto;
+    }
+    
+    .table {
+      margin-bottom: 0;
+    }
+    
+    .table thead {
+      position: sticky;
+      top: 0;
+      background-color: white;
+      z-index: 4;
+    }
+    
+    .table th {
+      border-top: none;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      padding: 1.25rem 1.5rem;
+      background-color: white;
+    }
+    
+    .table td {
+      vertical-align: middle;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .salary-input {
+      max-width: 150px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      padding: 0.6rem 0.75rem;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+    
+    .salary-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.15);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 112, 243, 0.2);
+    }
+    
+    .btn-outline-secondary {
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .btn-outline-secondary:hover {
+      background-color: #f5f5f5;
+      transform: translateY(-1px);
+    }
+    
+    .employee-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .employee-email {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    
+    .position-badge {
+      background-color: #f0f4ff;
+      color: #3b5bdb;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 50rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+    
+    .current-salary {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 1.05rem;
+    }
+    
+    .alert {
+      border-radius: var(--border-radius);
+      display: none;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.25rem;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .alert-success {
+      background-color: #ecfdf5;
+      color: #065f46;
+    }
+    
+    .alert-danger {
+      background-color: #fef2f2;
+      color: #b91c1c;
+    }
+    
+    .spinner-border {
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.5rem;
+    }
+    
+    .loading-btn {
+      pointer-events: none;
+    }
+    
+    .card-footer {
+      background-color: white;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1.5rem 2rem;
+      z-index: 5;
+    }
+    
+    .badge-count {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 50rem;
+    }
+    
+    .skeleton-row td {
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .skeleton-line {
+      height: 20px;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+    
+    .skeleton-line.sm {
+      width: 80px;
+    }
+    
+    .skeleton-line.md {
+      width: 120px;
+    }
+    
+    .skeleton-line.lg {
+      width: 150px;
+    }
+    
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+    
+    /* Highlight changed values */
+    .salary-input.changed {
+      border-color: var(--primary-color);
+      background-color: rgba(0, 112, 243, 0.05);
+    }
+    
+    /* Empty state */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      text-align: center;
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+    }
+    
+    .empty-state-text {
+      color: #64748b;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .toastify {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 250px;
+    }
+    
+    .toast-success {
+      background: #10b981;
+    }
+    
+    @media (max-width: 767.98px) {
+      .header-section {
+        padding: 1rem 1.25rem;
+      }
+      
+      .content-section {
+        padding: 1rem;
+      }
+      
+      .card-header {
+        padding: 1.25rem;
+      }
+      
+      .card-footer {
+        padding: 1.25rem;
+      }
+      
+      .table th, .table td {
+        padding: 1rem;
+      }
+      
+      .table th {
+        font-size: 0.7rem;
+      }
+      
+      .employee-name {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid main-container">
+    <div class="header-section">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-arrow-left back-button" id="backButton"></i>
+        <div class="d-flex justify-content-between align-items-center flex-grow-1">
+          <h1 class="h4 mb-0 fw-bold">Staff Salary Management</h1>
+          <span class="badge-count" id="employeeCount">0 Employees</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <div class="alert alert-success alert-dismissible fade show" id="successAlert" role="alert">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          <span>Salaries updated successfully!</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      
+      <div class="alert alert-danger alert-dismissible fade show" id="errorAlert" role="alert">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <span id="errorMessage">An error occurred while updating salaries.</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0 fw-bold">Update Staff Salaries</h5>
+          <button type="button" class="btn btn-sm btn-outline-secondary" id="resetBtn">
+            <i class="bi bi-arrow-counterclockwise me-1"></i>Reset Changes
+          </button>
+        </div>
+        
+        <div class="table-container">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Employee</th>
+                  <th scope="col">Employee ID</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Current Salary</th>
+                  <th scope="col">New Salary</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+              </tbody>
+            </table>
+            
+            <div class="empty-state d-none" id="emptyState">
+              <i class="bi bi-people empty-state-icon"></i>
+              <h4 class="empty-state-text">No employees found</h4>
+              <button class="btn btn-primary" id="refreshBtn">
+                <i class="bi bi-arrow-clockwise me-2"></i>Refresh Data
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-footer">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted small">
+              <i class="bi bi-info-circle me-1"></i>
+              All changes will be effective from the next pay cycle
+            </div>
+            <button type="button" class="btn btn-primary" id="updateBtn">
+              <span id="btnText">Update All Salaries</span>
+              <span id="btnLoading" class="d-none">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Updating...
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const updateBtn = document.getElementById('updateBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const refreshBtn = document.getElementById('refreshBtn');
+      const backButton = document.getElementById('backButton');
+      const successAlert = document.getElementById('successAlert');
+      const errorAlert = document.getElementById('errorAlert');
+      const errorMessage = document.getElementById('errorMessage');
+      const btnText = document.getElementById('btnText');
+      const btnLoading = document.getElementById('btnLoading');
+      const tableBody = document.getElementById('tableBody');
+      const employeeCount = document.getElementById('employeeCount');
+      const emptyState = document.getElementById('emptyState');
+      
+      let staffData = [];
+      
+      function showSuccessToast() {
+        Toastify({
+          text: "Salaries updated successfully!",
+          className: "toast-success",
+          duration: 3000,
+          close: false,
+          gravity: "top",
+          position: "right",
+          stopOnFocus: true,
+          style: {
+            background: "#10b981",
+          }
+        }).showToast();
+      }
+      
+      backButton.addEventListener('click', function() {
+        window.history.back();
+      });
+      
+      function createSkeletonRows() {
+        const rowCount = 5;
+        let skeletonHTML = '';
+        
+        for (let i = 0; i < rowCount; i++) {
+          skeletonHTML += `
+            <tr class="skeleton-row">
+              <td><div class="skeleton-line md"></div></td>
+              <td><div class="skeleton-line sm"></div></td>
+              <td><div class="skeleton-line sm"></div></td>
+              <td><div class="skeleton-line md"></div></td>
+              <td><div class="skeleton-line lg"></div></td>
+            </tr>
+          `;
+        }
+        
+        tableBody.innerHTML = skeletonHTML;
+      }
+      
+      function renderStaffData(data) {
+        if (!data || data.length === 0) {
+          tableBody.innerHTML = '';
+          emptyState.classList.remove('d-none');
+          employeeCount.textContent = '0 Employees';
+          return;
+        }
+        
+        emptyState.classList.add('d-none');
+        employeeCount.textContent = `${data.length} Employees`;
+        
+        let html = '';
+        data.forEach(staff => {
+          html += `
+            <tr>
+              <td>
+                <div class="employee-name">${staff.fullName}</div>
+              </td>
+              <td>
+                <div>${staff.employeeId}</div>
+              </td>
+              <td>
+                <span class="position-badge">${staff.designation}</span>
+              </td>
+              <td>
+                <div class="current-salary">₹${staff.salary.toLocaleString()}</div>
+              </td>
+              <td>
+                <input type="hidden" name="employeeIds[]" value="${staff._id}">
+                <input type="number" 
+                       class="form-control salary-input" 
+                       name="salaries[]" 
+                       value="${staff.salary}" 
+                       data-original="${staff.salary}"
+                       min="0" 
+                       required>
+              </td>
+            </tr>
+          `;
+        });
+        
+        tableBody.innerHTML = html;
+        
+        document.querySelectorAll('.salary-input').forEach(input => {
+          input.addEventListener('input', function() {
+            if (this.value !== this.dataset.original) {
+              this.classList.add('changed');
+            } else {
+              this.classList.remove('changed');
+            }
+          });
+        });
+      }
+      
+      function fetchStaffData() {
+        createSkeletonRows();
+        
+        successAlert.style.display = 'none';
+        errorAlert.style.display = 'none';
+        
+        fetch('/v1/api/staff/salaryList')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Failed to fetch staff data');
+            }
+            return response.json();
+          })
+          .then(data => {
+            staffData = data.staffs || [];
+            renderStaffData(staffData);
+          })
+          .catch(error => {
+            console.error('Error fetching staff data:', error);
+            errorMessage.textContent = error.message || 'Failed to load staff data';
+            errorAlert.style.display = 'block';
+            tableBody.innerHTML = '';
+            emptyState.classList.remove('d-none');
+          });
+      }
+      
+      fetchStaffData();
+      
+      refreshBtn.addEventListener('click', fetchStaffData);
+      
+      resetBtn.addEventListener('click', function() {
+        const salaryInputs = document.querySelectorAll('.salary-input');
+        salaryInputs.forEach(input => {
+          input.value = input.dataset.original;
+          input.classList.remove('changed');
+        });
+      });
+      
+      updateBtn.addEventListener('click', function() {
+        btnText.classList.add('d-none');
+        btnLoading.classList.remove('d-none');
+        updateBtn.classList.add('loading-btn');
+        
+        successAlert.style.display = 'none';
+        errorAlert.style.display = 'none';
+        
+        const employeeIds = [];
+        const salaries = [];
+        
+        document.querySelectorAll('input[name="employeeIds[]"]').forEach(input => {
+          employeeIds.push(input.value);
+        });
+        
+        document.querySelectorAll('input[name="salaries[]"]').forEach(input => {
+          salaries.push(parseInt(input.value, 10));
+        });
+        
+        const data = {
+          employeeIds: employeeIds,
+          salaries: salaries
+        };
+        
+        fetch('/v1/api/staff/staffBulkSalaryUpdate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          showSuccessToast();
+          
+          const salaryInputs = document.querySelectorAll('.salary-input');
+          salaryInputs.forEach(input => {
+            input.dataset.original = input.value;
+            input.classList.remove('changed');
+          });
+          
+          staffData = staffData.map(staff => {
+            const index = employeeIds.findIndex(id => id === staff._id);
+            if (index !== -1) {
+              staff.salary = salaries[index];
+            }
+            return staff;
+          });
+        })
+        .catch(error => {
+          errorMessage.textContent = error.message || 'An error occurred while updating salaries.';
+          errorAlert.style.display = 'block';
+        })
+        .finally(() => {
+          btnText.classList.remove('d-none');
+          btnLoading.classList.add('d-none');
+          updateBtn.classList.remove('loading-btn');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

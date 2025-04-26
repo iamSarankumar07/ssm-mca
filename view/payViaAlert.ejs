@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .payment-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      max-width: 450px;
+      width: 100%;
+      transition: transform 0.3s ease;
+    }
+    
+    .payment-card:hover {
+      /* transform: translateY(-5px); */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+      background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+      color: white;
+      padding: 25px 20px;
+      position: relative;
+    }
+    
+    .card-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .card-header::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: white;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+    
+    .student-info {
+      background-color: #f8f9fa;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .student-info p {
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+      color: #495057;
+    }
+    
+    .student-info p:first-child {
+      font-weight: 600;
+      color: #212529;
+      font-size: 1.1rem;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      color: #495057;
+    }
+    
+    .form-control {
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #dee2e6;
+      transition: all 0.2s;
+    }
+    
+    .form-control:focus {
+      border-color: #4361ee;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+    
+    .form-control[readonly] {
+      background-color: #f8f9fa;
+    }
+    
+    .btn-pay {
+      background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s;
+      color: white;
+    }
+    
+    .btn-pay:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 97, 255, 0.2);
+      color: white;
+    }
+    
+    .btn-pay:active {
+      transform: translateY(0);
+    }
+    
+    .payment-icon {
+      margin-right: 8px;
+    }
+    
+    .card-body {
+      padding: 25px;
+    }
+    
+    /* Remove spinner from number inputs */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="payment-card mx-auto">
+      <div class="card-header text-center">
+        <h1><%= paymentType %> Fees Payment</h1>
+      </div>
+      <div class="card-body">
+        <div class="student-info mb-4">
+          <p><%= studentData.name %></p>
+          <p><i class="fas fa-envelope-open-text me-2"></i><%= studentData.email %></p>
+          <p><i class="fas fa-phone-alt me-2"></i><%= studentData.phone %></p>
+        </div>
+
+        <form id="payment-form">
+          <div class="mb-3">
+            <label for="pendingFee" class="form-label">Pending <%= paymentType %> Fees (INR):</label>
+            <div class="input-group">
+              <span class="input-group-text">₹</span>
+              <input type="number" class="form-control" name="pendingFee" id="pendingFee" 
+                value="<%= paymentType === 'Tuition' ? studentData.tuitionFees.pendingFee : studentData.examFees.pendingFee %>" 
+                readonly required />
+            </div>
+          </div>
+
+          <input type="hidden" name="paymentType" id="paymentType" value="<%= paymentType %>">
+          <input type="hidden" name="studentId" id="studentId" value="<%= studentData.studentId %>">
+          <input type="hidden" name="email" id="email" value="<%= studentData.email %>">
+          <input type="hidden" name="name" id="name" value="<%= studentData.name %>">
+          <input type="hidden" name="phone" id="phone" value="<%= studentData.phone %>">
+          <input type="hidden" name="year" id="year" value="<%= studentData.year %>">
+
+          <div class="mb-4">
+            <label for="amount" class="form-label">Enter Amount (₹):</label>
+            <div class="input-group">
+              <span class="input-group-text">₹</span>
+              <input type="number" 
+                class="form-control"
+                name="amount" 
+                id="amount" 
+                value="<%= paymentType === 'Tuition' ? studentData.tuitionFees.pendingFee : studentData.examFees.pendingFee %>" 
+                placeholder="Enter amount" 
+                required 
+                oninput="validateAmount()" 
+              />
+            </div>
+            <div class="form-text text-muted">Amount cannot exceed pending fees</div>
+          </div>
+
+          <input type="hidden" name="signature" id="signature" value="<%= signature %>">
+
+          <button type="button" id="pay-button" class="btn btn-pay w-100">
+            <i class="fas fa-credit-card payment-icon"></i>Pay with Razorpay
+          </button>
+          <input type="hidden" name="stripeToken" id="stripeToken">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('pay-button').onclick = function() {
+      var name = document.getElementById('name').value;
+      var email = document.getElementById('email').value;
+      var phone = document.getElementById('phone').value;
+      var studentId = document.getElementById('studentId').value;
+      var paymentType = document.getElementById('paymentType').value;
+      var year = document.getElementById('year').value;
+      var amount = document.getElementById('amount').value;
+      var signature = document.getElementById('signature').value;
+      let obj = {
+        name: name,
+        email: email,
+        phone: phone,
+        studentId: studentId,
+        paymentType: paymentType,
+        amount: amount
+      }
+      if (amount) {
+        fetch('/v1/api/payFromEmail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Signature': signature
+          },
+          body: JSON.stringify(obj),
+        })
+        .then(response => response.json())
+        .then(data => {
+          var options = {
+            key: data.key, 
+            amount: amount * 100,
+            currency: 'INR',
+            name: 'SSM COLLEGE OF ENGINEERING',
+            description: `College ${paymentType} Fees`,
+            order_id: data.orderId,
+            txnDate: data.txnDate,
+            txnId: data.txnId,
+            handler: function(response) {
+              fetch(`/v1/api/verifyRazorPaySignatureForEmail?studentId=${studentId}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Signature': signature
+                },
+                body: JSON.stringify({
+                  paymentId: response.razorpay_payment_id,
+                  orderId: data.orderId,
+                  signature: response.razorpay_signature,
+                  name: name,
+                  email: email,
+                  phone: phone,
+                  studentId: studentId,
+                  txnDate: data.txnDate,
+                  txnId: data.txnId,
+                  paymentType: paymentType,
+                  year: year,
+                  isEmailPay: true,
+                }),
+              })
+              .then(res => res.json())
+              .then(resJson => {
+                if (resJson.success && resJson.redirectUrl) {
+                    window.location.href = resJson.redirectUrl;
+                } else {
+                    showAlert("Payment verification failed!", "danger");
+                }
+              });
+            },
+            prefill: {
+              name: '<%= studentData.name %>',
+              email: '<%= studentData.email %>',
+              contact: '<%= studentData.phone %>',
+            },
+            theme: {
+              color: '#0061ff',
+            },
+          };
+
+          var rzp1 = new Razorpay(options);
+          rzp1.open();
+        })
+        .catch(error => {
+          showAlert("Error processing payment request", "danger");
+        });
+      } else {
+        showAlert('Please enter a valid amount', 'warning');
+      }
+    };
+
+    function validateAmount() {
+      const pendingFee = parseFloat(document.getElementById('pendingFee').value);
+      const amountInput = document.getElementById('amount');
+      const enteredAmount = parseFloat(amountInput.value);
+
+      if (enteredAmount > pendingFee) {
+        amountInput.value = pendingFee;
+        showAlert("Amount cannot exceed pending fees", "warning");
+      } else if (enteredAmount <= 0 || isNaN(enteredAmount)) {
+        amountInput.value = ''; 
+      }
+    }
+    
+    function showAlert(message, type) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.role = 'alert';
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      const form = document.getElementById('payment-form');
+      form.parentNode.insertBefore(alertDiv, form);
+      
+      setTimeout(() => {
+        alertDiv.classList.remove('show');
+        setTimeout(() => alertDiv.remove(), 150);
+      }, 5000);
+    }
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

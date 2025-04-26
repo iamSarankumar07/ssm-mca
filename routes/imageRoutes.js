@@ -3,9 +3,25 @@ const app = express();
 const authonticationController = require("../middleware/auth");
 const imageController = require("../controller/imageController");
 const multer = require("multer");
+const path = require("path");
+
+app.set("view engine", "hbs");
+const viewPath = path.join(__dirname, "../view");
+app.set("views", viewPath);
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
+app.get(
+  "/gallery",
+  authonticationController.validateToken,
+  imageController.gallery
+);
+
+app.get(
+  "/home/gallery",
+  imageController.homeGallery
+);
 
 app.post(
   "/uploadImageFireBase",
@@ -64,6 +80,79 @@ app.get(
   "/imageDelete/:imageId",
   authonticationController.validateToken,
   imageController.imageDelete
-)
+);
+
+app.get(
+  "/fetch/Images/gallery",
+  (req, res, next) => {
+    const category = req.query.category;
+
+    req.body.category = category;
+    next();
+  },
+  imageController.fetchImagesForGallery
+);
+
+app.get(
+  "/home/news",
+  imageController.fetchNews
+);
+
+app.get(
+  "/home/events",
+  imageController.fetchEvents
+);
+
+app.get(
+  "/newsAndEvents",
+  authonticationController.validateToken,
+  imageController.newsAndEvents
+);
+
+app.get(
+  "/admin/getNews",
+  authonticationController.validateToken,
+  imageController.getAdminNews
+);
+
+app.get(
+  "/admin/getEvents",
+  authonticationController.validateToken,
+  imageController.getAdminEvents
+);
+
+app.post(
+  "/admin/upload-gallery",
+  upload.single("image"),
+  authonticationController.validateToken,
+  imageController.adminUploadGallery
+);
+
+app.post(
+  "/admin/upload-news",
+  upload.single("image"),
+  authonticationController.validateToken,
+  imageController.adminUploadNews
+);
+
+app.post(
+  "/admin/upload-event",
+  upload.single("image"),
+  authonticationController.validateToken,
+  imageController.adminUploadEvents
+);
+
+app.put(
+  "/admin/updateNews/:id",
+  upload.single("image"),
+  authonticationController.validateToken,
+  imageController.adminUpdateNews
+);
+app.put(
+  "/admin/updateEvents/:id",
+  upload.single("image"),
+  authonticationController.validateToken,
+  imageController.adminUpdateEvents
+);
 
 module.exports = app;

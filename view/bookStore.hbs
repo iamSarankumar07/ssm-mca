@@ -1,0 +1,3076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Book Store</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #6366f1;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --light-bg: #f9fafb;
+            --dark-bg: #1e293b;
+            --border-radius: 0.5rem;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease-in-out;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            overflow-x: hidden;
+            padding-top: 76px;
+        }
+        
+        /* Header Styles */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 1.5rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .navbar-brand i {
+            font-size: 1.5rem;
+        }
+        
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            overflow: hidden;
+            background-color: #ffffff;
+            height: 100%;
+        }
+        
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            height: 3.1rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .card-text {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        
+        .card-footer {
+            background-color: #ffffff;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .book-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .book-price .original-price {
+            text-decoration: line-through;
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            font-weight: 400;
+        }
+        
+        /* Button Styles */
+        .btn {
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            padding: 0.625rem 1.25rem;
+            transition: var(--transition);
+            letter-spacing: 0.025em;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+        
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Badge Styles */
+        .badge {
+            padding: 0.35rem 0.65rem;
+            font-weight: 500;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            letter-spacing: 0.025em;
+        }
+        
+        .badge-discount {
+            background-color: var(--success-color);
+            color: white;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+        }
+        
+        .badge-bestseller {
+            background-color: var(--warning-color);
+            color: white;
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 10;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        
+        .badge-new {
+            background-color: var(--info-color);
+            color: white;
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 10;
+        }
+        
+        /* Category Pills */
+        .category-pill {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: #e5e7eb;
+            color: #4b5563;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .category-pill:hover, .category-pill.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .search-input {
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            width: 100%;
+            transition: var(--transition);
+            background-color: #f9fafb;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            border-color: var(--primary-color);
+            background-color: #ffffff;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        /* Cart Styles */
+        .cart-icon {
+            position: relative;
+            font-size: 1.25rem;
+            color: #4b5563;
+            transition: var(--transition);
+        }
+        
+        .cart-icon:hover {
+            color: var(--primary-color);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .cart-dropdown {
+            width: 320px;
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-right: 1rem;
+        }
+        
+        .cart-item-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            color: #1f2937;
+        }
+        
+        .cart-item-price {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+        
+        .cart-item-remove {
+            color: #9ca3af;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: auto;
+        }
+        
+        .cart-item-remove:hover {
+            color: var(--danger-color);
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin-top: 0.5rem;
+        }
+        
+        .cart-total-label {
+            font-weight: 500;
+            color: #4b5563;
+        }
+        
+        .cart-total-price {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* Book Detail Modal */
+        .book-detail-modal .modal-dialog {
+            max-width: 800px;
+        }
+        
+        .book-detail-img {
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+        
+        .book-detail-title {
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .book-detail-author {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+        
+        .book-detail-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .book-detail-description {
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .book-detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .book-detail-meta-item {
+            display: flex;
+            align-items: center;
+            color: #6b7280;
+        }
+        
+        .book-detail-meta-item i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        /* Loading Spinner */
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+        
+        .spinner-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .spinner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+        
+        /* Quantity Selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #f3f4f6;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 500;
+            margin: 0 0.5rem;
+        }
+        
+        .quantity-input:focus {
+            outline: none;
+        }
+        
+        /* Rating Stars */
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .rating-stars {
+            color: var(--warning-color);
+            margin-right: 0.5rem;
+        }
+        
+        .rating-count {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Featured Section */
+        .section-title {
+            position: relative;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-card {
+            height: 100%;
+        }
+
+        .skeleton-img {
+            height: 200px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .skeleton-title {
+            height: 20px;
+            margin-bottom: 10px;
+            width: 80%;
+            border-radius: 4px;
+        }
+
+        .skeleton-text {
+            height: 15px;
+            margin-bottom: 8px;
+            width: 90%;
+            border-radius: 4px;
+        }
+
+        .skeleton-text:last-child {
+            width: 60%;
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 3px solid var(--primary-color);
+        }
+
+        .testimonial-quote {
+            font-style: italic;
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .testimonial-role {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        /* Newsletter */
+        .newsletter-section {
+            background-color: #f9fafb;
+            padding: 3rem 0;
+            margin: 3rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex-grow: 1;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .newsletter-btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+            
+            .search-container {
+                max-width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
+        
+        /* Checkout Styles */
+        .checkout-section {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .checkout-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e5e7eb;
+            z-index: 0;
+        }
+        
+        .checkout-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .checkout-step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .checkout-step.active .checkout-step-number {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .checkout-step.completed .checkout-step-number {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .checkout-step-label {
+            font-weight: 500;
+            color: #6b7280;
+            transition: var(--transition);
+        }
+        
+        .checkout-step.active .checkout-step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .checkout-step.completed .checkout-step-label {
+            color: var(--success-color);
+        }
+        
+        .checkout-form-section {
+            display: none;
+        }
+        
+        .checkout-form-section.active {
+            display: block;
+        }
+        
+        .form-control {
+            border-radius: var(--border-radius);
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Order Summary */
+        .order-summary {
+            background-color: #f9fafb;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+        }
+        
+        .order-summary-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+        }
+        
+        .order-summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .order-summary-total-price {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        /* Payment Methods */
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .payment-method {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        .payment-method.active {
+            border-color: var(--primary-color);
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        .payment-method-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+        
+        .payment-method.active .payment-method-icon {
+            color: var(--primary-color);
+        }
+        
+        .payment-method-label {
+            font-weight: 500;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+        
+        .payment-method.active .payment-method-label {
+            color: var(--primary-color);
+        }
+        
+        /* Success/Error Messages */
+        .alert {
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+        }
+        
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+        
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+        
+        /* Profile Section Styles */
+        .profile-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .profile-nav {
+            margin-bottom: 2rem;
+        }
+
+        .profile-nav .nav-link {
+            color: #4b5563;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .profile-nav .nav-link:hover {
+            background-color: #f3f4f6;
+        }
+
+        .profile-nav .nav-link.active {
+            color: var(--primary-color);
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .profile-nav .nav-link i {
+            margin-right: 0.5rem;
+        }
+
+        .profile-content {
+            background-color: #ffffff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1.5rem;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-info h4 {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .profile-info p {
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-tab {
+            display: none;
+        }
+        
+        .profile-tab.active {
+            display: block;
+        }
+        
+        .order-card {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-card-title {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .order-card-status {
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+        }
+        
+        .order-card-status.delivered {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+        
+        .order-card-status.processing {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .order-card-status.shipped {
+            background-color: rgba(6, 182, 212, 0.1);
+            color: var(--info-color);
+        }
+        
+        .order-card-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .order-card-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-card-item-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-right: 1rem;
+        }
+        
+        .order-card-item-details {
+            flex-grow: 1;
+        }
+        
+        .order-card-item-title {
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .order-card-item-price {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .order-card-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-card-total {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .tracking-timeline {
+            position: relative;
+            margin-left: 1rem;
+            padding-left: 2rem;
+        }
+        
+        .tracking-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 2px;
+            background-color: #e5e7eb;
+        }
+        
+        .tracking-step {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+        
+        .tracking-step:last-child {
+            padding-bottom: 0;
+        }
+        
+        .tracking-step::before {
+            content: '';
+            position: absolute;
+            left: -2.25rem;
+            top: 0;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            border: 2px solid white;
+            z-index: 1;
+        }
+        
+        .tracking-step.completed::before {
+            background-color: var(--success-color);
+        }
+        
+        .tracking-step.current::before {
+            background-color: var(--primary-color);
+        }
+        
+        .tracking-step-date {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+        
+        .tracking-step-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .tracking-step-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        /* User dropdown */
+        .user-dropdown {
+            width: 280px;
+            padding: 1rem;
+        }
+        
+        .user-dropdown-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-dropdown-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .user-dropdown-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-dropdown-email {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .user-dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #4b5563;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .user-dropdown-item:hover {
+            background-color: #f3f4f6;
+            color: var(--primary-color);
+        }
+        
+        .user-dropdown-item i {
+            margin-right: 0.75rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="spinner-overlay" id="loadingSpinner">
+        <div class="spinner-container">
+            <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mb-0">Processing your request...</p>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-book"></i>
+                Academic BookStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="search-container me-3">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search for books...">
+                    </div>
+                    <div class="dropdown me-3">
+                        <a href="#" class="cart-icon" id="cartDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end cart-dropdown" aria-labelledby="cartDropdown">
+                            <div id="cartItems">
+                                <!-- Cart items will be dynamically added here -->
+                                <div class="text-center py-3">
+                                    <i class="fas fa-shopping-cart text-muted mb-2" style="font-size: 2rem;"></i>
+                                    <p class="mb-0">Your cart is empty</p>
+                                </div>
+                            </div>
+                            <div class="cart-total" id="cartTotalSection" style="display: none;">
+                                <span class="cart-total-label">Total:</span>
+                                <span class="cart-total-price" id="cartTotal">₹0.00</span>
+                            </div>
+                            <div class="d-grid gap-2 mt-2">
+                                <button class="btn btn-primary" id="checkoutBtn" disabled>Proceed to Checkout</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="btn btn-outline-primary" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i> Account
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end user-dropdown" aria-labelledby="userDropdown">
+                            <div class="user-dropdown-header">
+                                <img src="{{user.avatar}}" alt="User Avatar" class="user-dropdown-avatar">
+                                <div>
+                                    <div class="user-dropdown-name">{{user.firstName}} {{user.lastName}}</div>
+                                    <div class="user-dropdown-email">{{user.email}}</div>
+                                </div>
+                            </div>
+                            <a href="#" class="user-dropdown-item" id="profileLink">
+                                <i class="fas fa-user-circle"></i> My Profile
+                            </a>
+                            <a href="#" class="user-dropdown-item" id="ordersLink">
+                                <i class="fas fa-shopping-bag"></i> My Orders
+                            </a>
+                            <a href="#" class="user-dropdown-item" id="trackOrderLink">
+                                <i class="fas fa-truck"></i> Track Order
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="user-dropdown-item" id="logoutLink">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Hero Section -->
+        <section class="hero-section mb-5" data-aos="fade-up" id="heroSection">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 hero-content">
+                        <h1 class="hero-title">Academic Books for Every Course</h1>
+                        <p class="hero-subtitle">Find textbooks and reference materials for BCA, MCA, MBA, Engineering and more.</p>
+                        <button class="btn btn-light btn-lg">Explore Now</button>
+                    </div>
+                    <div class="col-lg-6 d-none d-lg-block">
+                        <!-- Decorative element -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Book Listing Section -->
+        <section id="bookListingSection">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title mb-0">Academic Books</h2>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sort By
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" href="#" data-sort="price-low">Price: Low to High</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort="price-high">Price: High to Low</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="category-pill active" data-category="all">All</div>
+                <div class="category-pill active" data-category="bca">BCA</div>
+                <div class="category-pill active" data-category="mca">MCA</div>
+                <div class="category-pill active" data-category="mba">MBA</div>
+                <div class="category-pill active" data-category="cse">CSE</div>
+                <div class="category-pill active" data-category="ece">ECE</div>
+                <div class="category-pill active" data-category="eee">EEE</div>
+                <div class="category-pill active" data-category="mtech">MTech</div>
+            </div>
+            
+            <div class="row" id="booksList">
+                <!-- Books will be dynamically loaded from API -->
+                <!-- Skeleton loading placeholders -->
+                <div class="col-md-3 col-sm-6 mb-4" id="skeletonTemplate" style="display: none;">
+                    <div class="card skeleton-card">
+                        <div class="skeleton skeleton-img"></div>
+                        <div class="card-body">
+                            <div class="skeleton skeleton-title"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- Newsletter Section -->
+            <section class="newsletter-section" data-aos="fade-up">
+                <div class="container text-center">
+                    <h2 class="mb-3">Subscribe to Our Newsletter</h2>
+                    <p class="mb-4">Get updates on new academic books, exam guides, and special student discounts.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="form-control newsletter-input" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </section>
+        </section>
+        
+        <!-- Profile Section -->
+        <section id="profileSection" class="profile-section">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav flex-column profile-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" id="profileTabLink">
+                                        <i class="fas fa-user"></i> My Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="ordersTabLink">
+                                        <i class="fas fa-shopping-bag"></i> My Orders
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="trackingTabLink">
+                                        <i class="fas fa-truck"></i> Order Tracking
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="addressesTabLink">
+                                        <i class="fas fa-map-marker-alt"></i> Addresses
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="profile-content">
+                        <!-- Profile Tab -->
+                        <div class="profile-tab active" id="profileTab">
+                            <h3 class="mb-4">My Profile</h3>
+                            <div class="profile-header">
+                                <img src="{{user.avatar}}" alt="Profile Avatar" class="profile-avatar">
+                                <div class="profile-info">
+                                    <h4>{{user.firstName}} {{user.lastName}}</h4>
+                                    <p><i class="fas fa-envelope me-2"></i> {{user.email}}</p>
+                                    <p><i class="fas fa-phone me-2"></i> {{user.phone}}</p>
+                                    <p><i class="fas fa-map-marker-alt me-2"></i> {{user.address}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="profileFirstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="profileFirstName" value="{{user.firstName}}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="profileLastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="profileLastName" value="{{user.lastName}}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="profileEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="profileEmail" value="{{user.email}}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="profilePhone" class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="profilePhone" value="{{user.phone}}">
+                                </div>
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Orders Tab -->
+                        <div class="profile-tab" id="ordersTab">
+                            <h3 class="mb-4">My Orders</h3>
+                            <div id="ordersList">
+                                <!-- Orders will be dynamically loaded here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Order Tracking Tab -->
+                        <div class="profile-tab" id="trackingTab">
+                            <h3 class="mb-4">Order Tracking</h3>
+                            <div class="mb-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter Order ID" id="trackingOrderId">
+                                    <button class="btn btn-primary" type="button" id="trackOrderBtn">Track Order</button>
+                                </div>
+                            </div>
+                            <div id="trackingResult" style="display: none;">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="card-title mb-0">Order #<span id="trackingOrderNumber"></span></h5>
+                                            <span class="badge bg-primary" id="trackingOrderStatus"></span>
+                                        </div>
+                                        <p class="text-muted mb-0">Ordered on <span id="trackingOrderDate"></span></p>
+                                    </div>
+                                </div>
+                                
+                                <h5 class="mb-3">Tracking Information</h5>
+                                <div class="tracking-timeline" id="trackingTimeline">
+                                    <!-- Tracking steps will be dynamically loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Addresses Tab -->
+                        <div class="profile-tab" id="addressesTab">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="mb-0">My Addresses</h3>
+                                <button class="btn btn-primary btn-sm" id="addAddressBtn">
+                                    <i class="fas fa-plus me-1"></i> Add New Address
+                                </button>
+                            </div>
+                            <div class="row" id="addressesList">
+                                <!-- Addresses will be dynamically loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Checkout Section -->
+        <section id="checkoutSection" class="checkout-section">
+            <h2 class="mb-4">Checkout</h2>
+            
+            <div class="checkout-steps">
+                <div class="checkout-step active" data-step="1">
+                    <div class="checkout-step-number">1</div>
+                    <div class="checkout-step-label">Shipping</div>
+                </div>
+                <div class="checkout-step" data-step="2">
+                    <div class="checkout-step-number">2</div>
+                    <div class="checkout-step-label">Payment</div>
+                </div>
+                <div class="checkout-step" data-step="3">
+                    <div class="checkout-step-number">3</div>
+                    <div class="checkout-step-label">Confirmation</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Shipping Information Form -->
+                    <div class="checkout-form-section active" id="shippingSection">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Shipping Information</h5>
+                                <form id="shippingForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="address" required>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="city" class="form-label">City</label>
+                                            <input type="text" class="form-control" id="city" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="state" class="form-label">State</label>
+                                            <select class="form-select" id="state" required>
+                                                <option value="">Select State</option>
+                                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                                <option value="Assam">Assam</option>
+                                                <option value="Bihar">Bihar</option>
+                                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                                <option value="Goa">Goa</option>
+                                                <option value="Gujarat">Gujarat</option>
+                                                <option value="Haryana">Haryana</option>
+                                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                                <option value="Jharkhand">Jharkhand</option>
+                                                <option value="Karnataka">Karnataka</option>
+                                                <option value="Kerala">Kerala</option>
+                                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                                <option value="Maharashtra">Maharashtra</option>
+                                                <option value="Manipur">Manipur</option>
+                                                <option value="Meghalaya">Meghalaya</option>
+                                                <option value="Mizoram">Mizoram</option>
+                                                <option value="Nagaland">Nagaland</option>
+                                                <option value="Odisha">Odisha</option>
+                                                <option value="Punjab">Punjab</option>
+                                                <option value="Rajasthan">Rajasthan</option>
+                                                <option value="Sikkim">Sikkim</option>
+                                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                                <option value="Telangana">Telangana</option>
+                                                <option value="Tripura">Tripura</option>
+                                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                <option value="Uttarakhand">Uttarakhand</option>
+                                                <option value="West Bengal">West Bengal</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="zipCode" class="form-label">Zip Code</label>
+                                            <input type="text" class="form-control" id="zipCode" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary" id="backToShoppingBtn">
+                                            <i class="fas fa-arrow-left me-1"></i> Back to Shopping
+                                        </button>
+                                        <button type="submit" class="btn btn-primary" id="continueToPaymentBtn">
+                                            Continue to Payment <i class="fas fa-arrow-right ms-1"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Section -->
+                    <div class="checkout-form-section" id="paymentSection">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Payment Method</h5>
+                                
+                                <div class="payment-methods">
+                                    <div class="payment-method active" data-method="razorpay">
+                                        <div class="payment-method-icon">
+                                            <i class="fas fa-credit-card"></i>
+                                        </div>
+                                        <div class="payment-method-label">Razorpay</div>
+                                    </div>
+                                </div>
+                                
+                                <div id="razorpayInfo">
+                                    <p class="text-muted mb-4">You will be redirected to Razorpay's secure payment gateway to complete your purchase.</p>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary" id="backToShippingBtn">
+                                        <i class="fas fa-arrow-left me-1"></i> Back to Shipping
+                                    </button>
+                                    <button type="button" class="btn btn-primary" id="placeOrderBtn">
+                                        Place Order <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Confirmation Section -->
+                    <div class="checkout-form-section" id="confirmationSection">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="order-confirmation">
+                                    <div class="order-confirmation-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <h4 class="order-confirmation-title">Thank You for Your Order!</h4>
+                                    <p class="order-confirmation-message">Your order has been placed successfully. We've sent a confirmation email with your order details.</p>
+                                    
+                                    <div class="order-details">
+                                        <h5 class="mb-3">Order Details</h5>
+                                        <div class="order-detail-item">
+                                            <span class="order-detail-label">Order Number:</span>
+                                            <span id="orderNumber"></span>
+                                        </div>
+                                        <div class="order-detail-item">
+                                            <span class="order-detail-label">Date:</span>
+                                            <span id="orderDate"></span>
+                                        </div>
+                                        <div class="order-detail-item">
+                                            <span class="order-detail-label">Payment Method:</span>
+                                            <span>Razorpay</span>
+                                        </div>
+                                        <div class="order-detail-item">
+                                            <span class="order-detail-label">Total Amount:</span>
+                                            <span id="orderTotal"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-primary" id="continueShoppingBtn">
+                                        Continue Shopping
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="order-summary">
+                        <h5 class="order-summary-title">Order Summary</h5>
+                        <div id="orderSummaryItems">
+                            <!-- Order summary items will be dynamically added here -->
+                        </div>
+                        <div class="order-summary-item">
+                            <span>Subtotal</span>
+                            <span id="summarySubtotal">₹0.00</span>
+                        </div>
+                        <div class="order-summary-item">
+                            <span>Shipping</span>
+                            <span id="summaryShipping">₹50.00</span>
+                        </div>
+                        <div class="order-summary-item">
+                            <span>Tax (18% GST)</span>
+                            <span id="summaryTax">₹0.00</span>
+                        </div>
+                        <div class="order-summary-total">
+                            <span>Total</span>
+                            <span class="order-summary-total-price" id="summaryTotal">₹0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Book Detail Modal -->
+    <div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered book-detail-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookDetailModalLabel">Book Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img src="/placeholder.svg" alt="Book Cover" class="book-detail-img" id="modalBookImage">
+                        </div>
+                        <div class="col-md-8">
+                            <h4 class="book-detail-title" id="modalBookTitle"></h4>
+                            <p class="book-detail-author" id="modalBookAuthor"></p>
+                            <div class="rating mb-3" id="modalBookRating"></div>
+                            <h5 class="book-detail-price" id="modalBookPrice"></h5>
+                            <p class="book-detail-description" id="modalBookDescription"></p>
+                            
+                            <div class="book-detail-meta">
+                                <div class="book-detail-meta-item">
+                                    <i class="fas fa-book"></i>
+                                    <span id="modalBookPages"></span> pages
+                                </div>
+                                <div class="book-detail-meta-item">
+                                    <i class="fas fa-language"></i>
+                                    <span id="modalBookLanguage"></span>
+                                </div>
+                                <div class="book-detail-meta-item">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Published: <span id="modalBookPublished"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="quantity-selector">
+                                <button class="quantity-btn" id="decreaseQuantity">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" class="quantity-input" id="bookQuantity" value="1" min="1" max="10">
+                                <button class="quantity-btn" id="increaseQuantity">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            
+                            <button class="btn btn-primary" id="modalAddToCart">
+                                <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Razorpay JS -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // API URLs
+        const API_URL = {
+            BOOKS: 'https://api.example.com/academic-books',
+            BOOKS_BY_CATEGORY: 'https://api.example.com/academic-books/category',
+            CATEGORIES: 'https://api.example.com/academic-categories',
+            PLACE_ORDER: 'https://api.example.com/orders',
+            CREATE_PAYMENT: 'https://api.example.com/payments',
+            VERIFY_PAYMENT: 'https://api.example.com/payments/verify',
+            USER_PROFILE: 'https://api.example.com/user/profile',
+            USER_ORDERS: 'https://api.example.com/user/orders',
+            ORDER_TRACKING: 'https://api.example.com/order/track',
+            USER_ADDRESSES: 'https://api.example.com/user/addresses',
+        };
+        
+        // Cart functionality
+        let cart = [];
+        let currentStep = 1;
+        let orderDetails = {};
+        let books = [];
+        let categories = [];
+        let userProfile = {};
+        let userOrders = [];
+        let userAddresses = [];
+        let currentSection = 'bookListing';
+        
+        // DOM Elements
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotalSection = document.getElementById('cartTotalSection');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const bookListingSection = document.getElementById('bookListingSection');
+        const checkoutSection = document.getElementById('checkoutSection');
+        const profileSection = document.getElementById('profileSection');
+        const heroSection = document.getElementById('heroSection');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const booksListContainer = document.getElementById('booksList');
+        const categoryPillsContainer = document.getElementById('categoryPills');
+        const searchInput = document.getElementById('searchInput');
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+        
+            // Setup event listeners
+            setupEventListeners();
+            setupProfileEventListeners();
+
+            // Setup category pill event listeners
+            document.querySelectorAll('.category-pill').forEach(pill => {
+                pill.addEventListener('click', function() {
+                    document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    if (category) {
+                        // Filter books by category
+                        const filteredBooks = category === 'all' ? 
+                            books : 
+                            books.filter(book => book.category === category);
+                        renderBooks(filteredBooks);
+                    }
+                });
+            });
+        
+            // Load books
+            fetchBooks();
+        });
+        
+        // Fetch books from API
+        function fetchBooks(category = 'all') {
+            // Show skeleton loading for books
+            showBooksLoading();
+            
+            const url = '/v1/api/getBooks';
+            
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    books = data;
+                    renderBooks(books);
+                    hideLoadingSpinner();
+                })
+                .catch(error => {
+                    console.error('Error fetching books:', error);
+                    showToast('Error', 'Failed to load books.', 'warning');
+                    hideLoadingSpinner();
+                    
+                    // Load mock data as fallback
+                    loadMockBooks();
+                });
+        }
+
+        // Load mock books data as fallback
+        function loadMockBooks() {
+            books = [
+                {
+                    id: 1,
+                    title: "Introduction to Computer Science",
+                    author: "John Smith",
+                    price: 499,
+                    originalPrice: 599,
+                    discount: 17,
+                    coverImage: "/placeholder.svg?height=200&width=150",
+                    category: "bca",
+                    rating: 4.5,
+                    ratingCount: 120,
+                    isBestseller: true,
+                    isNew: false,
+                    description: "A comprehensive introduction to computer science principles and programming concepts.",
+                    pages: 450,
+                    language: "English",
+                    published: "2022"
+                },
+                {
+                    id: 2,
+                    title: "Data Structures and Algorithms",
+                    author: "Jane Doe",
+                    price: 599,
+                    originalPrice: 699,
+                    discount: 14,
+                    coverImage: "/placeholder.svg?height=200&width=150",
+                    category: "mca",
+                    rating: 4.7,
+                    ratingCount: 85,
+                    isBestseller: false,
+                    isNew: true,
+                    description: "Learn essential data structures and algorithms with practical examples.",
+                    pages: 520,
+                    language: "English",
+                    published: "2023"
+                },
+                {
+                    id: 3,
+                    title: "Database Management Systems",
+                    author: "Robert Johnson",
+                    price: 549,
+                    originalPrice: 649,
+                    discount: 15,
+                    coverImage: "/placeholder.svg?height=200&width=150",
+                    category: "bca",
+                    rating: 4.3,
+                    ratingCount: 95,
+                    isBestseller: false,
+                    isNew: false,
+                    description: "A complete guide to database design, implementation, and management.",
+                    pages: 480,
+                    language: "English",
+                    published: "2021"
+                },
+                {
+                    id: 4,
+                    title: "Software Engineering Principles",
+                    author: "Michael Brown",
+                    price: 649,
+                    originalPrice: 749,
+                    discount: 13,
+                    coverImage: "/placeholder.svg?height=200&width=150",
+                    category: "mca",
+                    rating: 4.6,
+                    ratingCount: 110,
+                    isBestseller: true,
+                    isNew: false,
+                    description: "Learn modern software engineering practices and methodologies.",
+                    pages: 550,
+                    language: "English",
+                    published: "2022"
+                }
+            ];
+            renderBooks(books);
+        }
+        
+        // Populate categories dropdown in navbar
+        function populateCategoriesDropdown(categories) {
+            const dropdownMenu = document.getElementById('categoriesDropdownMenu');
+            
+            // Clear existing items except the first one (All Categories)
+            while (dropdownMenu.children.length > 1) {
+                dropdownMenu.removeChild(dropdownMenu.lastChild);
+            }
+            
+            // Add categories to dropdown
+            categories.forEach(category => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.className = 'dropdown-item';
+                a.href = '#';
+                a.dataset.category = category.slug;
+                a.textContent = category.name;
+                
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetchBooks(category.slug);
+                });
+                
+                li.appendChild(a);
+                dropdownMenu.appendChild(li);
+            });
+        }
+        
+        // Show skeleton loading for books
+        function showBooksLoading() {
+            booksListContainer.innerHTML = '';
+            const skeletonTemplate = document.getElementById('skeletonTemplate');
+            
+            for (let i = 0; i < 8; i++) {
+                const clone = skeletonTemplate.cloneNode(true);
+                clone.style.display = 'block';
+                clone.id = '';
+                booksListContainer.appendChild(clone);
+            }
+        }
+        
+        // Render categories
+        function renderCategories(categories) {
+            categoryPillsContainer.innerHTML = '';
+            
+            categories.forEach(category => {
+                const pill = document.createElement('div');
+                pill.className = 'category-pill';
+                pill.dataset.category = category.slug;
+                pill.textContent = category.name;
+                
+                pill.addEventListener('click', function() {
+                    document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Call API to fetch books by category
+                    showLoadingSpinner();
+                    fetchBooks(category.slug)
+                        .then(() => {
+                            hideLoadingSpinner();
+                        })
+                        .catch(error => {
+                            console.error('Error fetching books by category:', error);
+                            showToast('Error', 'Failed to load books. Using mock data instead.', 'warning');
+                            hideLoadingSpinner();
+                        });
+                });
+                
+                categoryPillsContainer.appendChild(pill);
+            });
+        }
+        
+        // Render books function
+        function renderBooks(books) {
+            booksListContainer.innerHTML = '';
+            
+            books.forEach(book => {
+                const bookElement = document.createElement('div');
+                bookElement.className = 'col-md-3 col-sm-6 mb-4';
+                bookElement.dataset.category = book.category;
+                bookElement.dataset.aos = 'fade-up';
+                
+                let discountBadge = '';
+                if (book.discount > 0) {
+                    discountBadge = `<span class="badge badge-discount">${book.discount}% OFF</span>`;
+                }
+                
+                let statusBadge = '';
+                if (book.isBestseller) {
+                    statusBadge = `<span class="badge badge-bestseller">Bestseller</span>`;
+                } else if (book.isNew) {
+                    statusBadge = `<span class="badge badge-new">New</span>`;
+                }
+                
+                let stars = '';
+                for (let i = 0; i < Math.floor(book.rating); i++) {
+                    stars += '<i class="fas fa-star"></i>';
+                }
+                if (book.rating % 1 > 0) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                }
+                for (let i = 0; i < (5 - Math.ceil(book.rating)); i++) {
+                    stars += '<i class="far fa-star"></i>';
+                }
+                
+                let originalPrice = '';
+                if (book.discount > 0) {
+                    originalPrice = `<span class="original-price">₹${book.originalPrice.toFixed(2)}</span>`;
+                }
+                
+                bookElement.innerHTML = `
+                    <div class="card h-100">
+                        ${discountBadge}
+                        ${statusBadge}
+                        <img src="${book.coverImage}" class="card-img-top" alt="${book.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${book.title}</h5>
+                            <p class="card-text">${book.author}</p>
+                            <div class="rating">
+                                <div class="rating-stars">
+                                    ${stars}
+                                </div>
+                                <span class="rating-count">(${book.ratingCount})</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="book-price">
+                                ${originalPrice}
+                                ₹${book.price.toFixed(2)}
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart" data-id="${book.id}">
+                                <i class="fas fa-shopping-cart me-1"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                booksListContainer.appendChild(bookElement);
+                
+                // Add click event to show book details
+                bookElement.querySelector('.card').addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('add-to-cart') && !e.target.closest('.add-to-cart')) {
+                        showBookDetails(book);
+                    }
+                });
+                
+                // Add to cart button click
+                bookElement.querySelector('.add-to-cart').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    addToCart(book, 1);
+                });
+            });
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            
+            // Category filter
+            document.querySelector('.category-pill[data-category="all"]').addEventListener('click', function() {
+                document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Fetch all books from API
+                showLoadingSpinner();
+                fetchBooks()
+                    .then(() => {
+                        hideLoadingSpinner();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching all books:', error);
+                        showToast('Error', 'Failed to load books. Using mock data instead.', 'warning');
+                        hideLoadingSpinner();
+                    });
+            });
+            
+            // Sort dropdown
+            document.querySelectorAll('[data-sort]').forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sortBy = this.dataset.sort;
+                    sortBooks(sortBy);
+                    document.getElementById('sortDropdown').textContent = this.textContent;
+                });
+            });
+            
+            // Search input
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                searchBooks(searchTerm);
+            });
+            
+            // Checkout button
+            checkoutBtn.addEventListener('click', function() {
+                startCheckout();
+            });
+            
+            // Back to shopping button
+            document.getElementById('backToShoppingBtn').addEventListener('click', function() {
+                showSection('bookListing');
+            });
+            
+            // Continue to payment button
+            document.getElementById('shippingForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                goToStep(2);
+            });
+            
+            // Back to shipping button
+            document.getElementById('backToShippingBtn').addEventListener('click', function() {
+                goToStep(1);
+            });
+            
+            // Place order button
+            document.getElementById('placeOrderBtn').addEventListener('click', function() {
+                initiatePayment();
+            });
+            
+            // Continue shopping button (after order)
+            document.getElementById('continueShoppingBtn').addEventListener('click', function() {
+                resetCheckout();
+                showSection('bookListing');
+            });
+            
+            // Book detail modal quantity buttons
+            document.getElementById('decreaseQuantity').addEventListener('click', function() {
+                const quantityInput = document.getElementById('bookQuantity');
+                if (parseInt(quantityInput.value) > 1) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1;
+                }
+            });
+            
+            document.getElementById('increaseQuantity').addEventListener('click', function() {
+                const quantityInput = document.getElementById('bookQuantity');
+                if (parseInt(quantityInput.value) < 10) {
+                    quantityInput.value = parseInt(quantityInput.value) + 1;
+                }
+            });
+            
+            // Add to cart from modal
+            document.getElementById('modalAddToCart').addEventListener('click', function() {
+                const bookId = this.dataset.bookId;
+                const quantity = parseInt(document.getElementById('bookQuantity').value);
+                const book = books.find(b => b.id == bookId);
+                
+                if (book) {
+                    addToCart(book, quantity);
+                    
+                    // Close the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('bookDetailModal'));
+                    modal.hide();
+                }
+            });
+            
+            // Newsletter form
+            document.querySelector('.newsletter-form').addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input').value;
+                if (email) {
+                    showToast('Success', 'Thank you for subscribing to our newsletter!', 'success');
+                    this.reset();
+                }
+            });
+            
+            // User profile link
+            document.getElementById('profileLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('profile');
+                showProfileTab('profile');
+                loadUserProfile();
+            });
+            
+            // User orders link
+            document.getElementById('ordersLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('profile');
+                showProfileTab('orders');
+                loadUserOrders();
+            });
+            
+            // Track order link
+            document.getElementById('trackOrderLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showSection('profile');
+                showProfileTab('tracking');
+            });
+        }
+        
+        // Setup profile event listeners
+        function setupProfileEventListeners() {
+            // Profile tab links
+            document.getElementById('profileTabLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showProfileTab('profile');
+            });
+            
+            document.getElementById('ordersTabLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showProfileTab('orders');
+                loadUserOrders();
+            });
+            
+            document.getElementById('trackingTabLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showProfileTab('tracking');
+            });
+            
+            document.getElementById('addressesTabLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showProfileTab('addresses');
+                loadUserAddresses();
+            });
+            
+            document.getElementById('settingsTabLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                showProfileTab('settings');
+            });
+            
+            // Save profile button
+            document.getElementById('saveProfileBtn').addEventListener('click', function() {
+                // In a real app, you would send the updated profile to the server
+                showToast('Success', 'Profile updated successfully!', 'success');
+            });
+            
+            // Track order button
+            document.getElementById('trackOrderBtn').addEventListener('click', function() {
+                const orderId = document.getElementById('trackingOrderId').value.trim();
+                if (orderId) {
+                    trackOrder(orderId);
+                } else {
+                    showToast('Error', 'Please enter an order ID', 'danger');
+                }
+            });
+        }
+        
+        // Show section (bookListing, checkout, profile)
+        function showSection(section) {
+            currentSection = section;
+            
+            // Hide all sections
+            bookListingSection.style.display = 'none';
+            checkoutSection.style.display = 'none';
+            profileSection.style.display = 'none';
+            heroSection.style.display = 'none';
+            
+            // Show selected section
+            if (section === 'bookListing') {
+                bookListingSection.style.display = 'block';
+                heroSection.style.display = 'block';
+            } else if (section === 'checkout') {
+                checkoutSection.style.display = 'block';
+            } else if (section === 'profile') {
+                profileSection.style.display = 'block';
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Show profile tab
+        function showProfileTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.profile-tab').forEach(t => {
+                t.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(`${tab}Tab`).classList.add('active');
+            
+            // Update active tab in nav
+            document.querySelectorAll('.profile-nav .nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(`${tab}TabLink`).classList.add('active');
+        }
+        
+        // Load user profile
+        function loadUserProfile() {
+            showLoadingSpinner();
+        
+            fetch(API_URL.USER_PROFILE)
+                .then(response => response.json())
+                .then(data => {
+                    userProfile = data;
+                    renderUserProfile();
+                    hideLoadingSpinner();
+                })
+                .catch(error => {
+                    console.error('Error loading user profile:', error);
+                    hideLoadingSpinner();
+                    showToast('Error', 'Failed to load user profile.', 'danger');
+                });
+        }
+        
+        // Render user profile
+        function renderUserProfile() {
+            document.getElementById('profileFirstName').value = userProfile.firstName;
+            document.getElementById('profileLastName').value = userProfile.lastName;
+            document.getElementById('profileEmail').value = userProfile.email;
+            document.getElementById('profilePhone').value = userProfile.phone;
+            
+            // Update profile header
+            const profileAvatar = document.querySelector('.profile-avatar');
+            profileAvatar.src = userProfile.avatar;
+            
+            const profileInfo = document.querySelector('.profile-info');
+            profileInfo.querySelector('h4').textContent = `${userProfile.firstName} ${userProfile.lastName}`;
+            profileInfo.querySelectorAll('p')[0].innerHTML = `<i class="fas fa-envelope me-2"></i> ${userProfile.email}`;
+            profileInfo.querySelectorAll('p')[1].innerHTML = `<i class="fas fa-phone me-2"></i> ${userProfile.phone}`;
+        }
+        
+        // Load user orders
+        function loadUserOrders() {
+            showLoadingSpinner();
+            
+            // In a real app, you would fetch the user orders from the server
+            // fetch(API_URL.USER_ORDERS)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         userOrders = data;
+            //         renderUserOrders();
+            //         hideLoadingSpinner();
+            //     })
+            //     .catch(error => {
+            //         console.error('Error loading user orders:', error);
+            //         loadMockUserProfile(); // This also loads mock orders
+            //         renderUserOrders();
+            //         hideLoadingSpinner();
+            //     });
+            
+            // For demo purposes, we'll use mock data
+            setTimeout(() => {
+                if (!userOrders.length) {
+                    userOrders = [];
+                }
+                renderUserOrders();
+                hideLoadingSpinner();
+            }, 500);
+        }
+        
+        // Render user orders
+        function renderUserOrders() {
+            const ordersListContainer = document.getElementById('ordersList');
+            ordersListContainer.innerHTML = '';
+            
+            if (userOrders.length === 0) {
+                ordersListContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-shopping-bag text-muted mb-3" style="font-size: 3rem;"></i>
+                        <h5>No Orders Yet</h5>
+                        <p class="text-muted">You haven't placed any orders yet.</p>
+                        <button class="btn btn-primary" id="startShoppingBtn">Start Shopping</button>
+                    </div>
+                `;
+                
+                document.getElementById('startShoppingBtn').addEventListener('click', function() {
+                    showSection('bookListing');
+                });
+                
+                return;
+            }
+            
+            userOrders.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.className = 'order-card';
+                
+                let statusClass = '';
+                if (order.status === 'delivered') {
+                    statusClass = 'delivered';
+                } else if (order.status === 'shipped') {
+                    statusClass = 'shipped';
+                } else if (order.status === 'processing') {
+                    statusClass = 'processing';
+                }
+                
+                let orderItems = '';
+                order.items.forEach(item => {
+                    orderItems += `
+                        <div class="order-card-item">
+                            <img src="${item.image}" alt="${item.title}" class="order-card-item-img">
+                            <div class="order-card-item-details">
+                                <div class="order-card-item-title">${item.title}</div>
+                                <div class="order-card-item-price">₹${item.price.toFixed(2)} × ${item.quantity}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                orderCard.innerHTML = `
+                    <div class="order-card-header">
+                        <div>
+                            <div class="order-card-title">Order #${order.id}</div>
+                            <div class="text-muted">Placed on ${new Date(order.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                        </div>
+                        <div class="order-card-status ${statusClass}">
+                            ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        </div>
+                    </div>
+                    <div class="order-card-items">
+                        ${orderItems}
+                    </div>
+                    <div class="order-card-footer">
+                        <div class="order-card-total">Total: ₹${order.total.toFixed(2)}</div>
+                        <button class="btn btn-outline-primary btn-sm track-order-btn" data-order-id="${order.id}">
+                            <i class="fas fa-truck me-1"></i> Track Order
+                        </button>
+                    </div>
+                `;
+                
+                ordersListContainer.appendChild(orderCard);
+                
+                // Add track order button event
+                orderCard.querySelector('.track-order-btn').addEventListener('click', function() {
+                    showProfileTab('tracking');
+                    document.getElementById('trackingOrderId').value = this.dataset.orderId;
+                    trackOrder(this.dataset.orderId);
+                });
+            });
+        }
+        
+        // Track order
+        function trackOrder(orderId) {
+            showLoadingSpinner();
+            
+            // In a real app, you would fetch the order tracking from the server
+            // fetch(`${API_URL.ORDER_TRACKING}/${orderId}`)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         renderOrderTracking(data);
+            //         hideLoadingSpinner();
+            //     })
+            //     .catch(error => {
+            //         console.error('Error tracking order:', error);
+            //         // Try to find the order in mock data
+            //         const order = userOrders.find(o => o.id === orderId);
+            //         if (order) {
+            //             renderOrderTracking(order);
+            //         } else {
+            //             showToast('Error', 'Order not found', 'danger');
+            //         }
+            //         hideLoadingSpinner();
+            //     });
+            
+            // For demo purposes, we'll use mock data
+            setTimeout(() => {
+                if (!userOrders.length) {
+                    userOrders = [];
+                }
+                
+                const order = userOrders.find(o => o.id === orderId);
+                if (order) {
+                    renderOrderTracking(order);
+                } else {
+                    showToast('Error', 'Order not found', 'danger');
+                }
+                
+                hideLoadingSpinner();
+            }, 500);
+        }
+        
+        // Render order tracking
+        function renderOrderTracking(order) {
+            const trackingResult = document.getElementById('trackingResult');
+            trackingResult.style.display = 'block';
+            
+            document.getElementById('trackingOrderNumber').textContent = order.id;
+            document.getElementById('trackingOrderDate').textContent = new Date(order.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('trackingOrderStatus').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+            
+            const trackingTimeline = document.getElementById('trackingTimeline');
+            trackingTimeline.innerHTML = '';
+            
+            order.tracking.forEach((step, index) => {
+                const isCompleted = index < order.tracking.length - 1;
+                const isCurrent = index === order.tracking.length - 1;
+                
+                const trackingStep = document.createElement('div');
+                trackingStep.className = `tracking-step ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
+                
+                trackingStep.innerHTML = `
+                    <div class="tracking-step-date">${new Date(step.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                    <div class="tracking-step-title">${step.status}</div>
+                    <div class="tracking-step-description">${step.description}</div>
+                `;
+                
+                trackingTimeline.appendChild(trackingStep);
+            });
+        }
+        
+        // Load user addresses
+        function loadUserAddresses() {
+            showLoadingSpinner();
+            
+            // In a real app, you would fetch the user addresses from the server
+            // fetch(API_URL.USER_ADDRESSES)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         userAddresses = data;
+            //         renderUserAddresses();
+            //         hideLoadingSpinner();
+            //     })
+            //     .catch(error => {
+            //         console.error('Error loading user addresses:', error);
+            //         loadMockUserProfile(); // This also loads mock addresses
+            //         renderUserAddresses();
+            //         hideLoadingSpinner();
+            //     });
+            
+            // For demo purposes, we'll use mock data
+            setTimeout(() => {
+                if (!userAddresses.length) {
+                    userAddresses = [];
+                }
+                renderUserAddresses();
+                hideLoadingSpinner();
+            }, 500);
+        }
+        
+        // Render user addresses
+        function renderUserAddresses() {
+            const addressesListContainer = document.getElementById('addressesList');
+            addressesListContainer.innerHTML = '';
+            
+            if (userAddresses.length === 0) {
+                addressesListContainer.innerHTML = `
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <i class="fas fa-map-marker-alt text-muted mb-3" style="font-size: 3rem;"></i>
+                            <h5>No Addresses Yet</h5>
+                            <p class="text-muted">You haven't added any addresses yet.</p>
+                            <button class="btn btn-primary" id="addFirstAddressBtn">Add Address</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('addFirstAddressBtn').addEventListener('click', function() {
+                    // In a real app, you would show an address form
+                    showToast('Info', 'Address form would be shown here', 'info');
+                });
+                
+                return;
+            }
+            
+            userAddresses.forEach(address => {
+                const addressCard = document.createElement('div');
+                addressCard.className = 'col-md-6 mb-4';
+                
+                addressCard.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title mb-0">${address.name}</h5>
+                                ${address.isDefault ? '<span class="badge bg-primary">Default</span>' : ''}
+                            </div>
+                            <p class="card-text">${address.address}</p>
+                            <p class="card-text">${address.city}, ${address.state} ${address.zipCode}</p>
+                            <p class="card-text">${address.phone}</p>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button class="btn btn-outline-primary btn-sm me-2 edit-address-btn" data-address-id="${address.id}">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm delete-address-btn" data-address-id="${address.id}">
+                                    <i class="fas fa-trash-alt me-1"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                addressesListContainer.appendChild(addressCard);
+                
+                // Add edit address button event
+                addressCard.querySelector('.edit-address-btn').addEventListener('click', function() {
+                    // In a real app, you would show an address form with the address data
+                    showToast('Info', 'Address edit form would be shown here', 'info');
+                });
+                
+                // Add delete address button event
+                addressCard.querySelector('.delete-address-btn').addEventListener('click', function() {
+                    // In a real app, you would confirm and delete the address
+                    showToast('Info', 'Address deletion confirmation would be shown here', 'info');
+                });
+            });
+        }
+                        
+        // Filter books by category
+        function filterBooksByCategory(category) {
+            if (category === 'all') {
+                document.querySelectorAll('#booksList > div').forEach(book => {
+                    book.style.display = 'block';
+                });
+            } else {
+                document.querySelectorAll('#booksList > div').forEach(book => {
+                    if (book.dataset.category === category) {
+                        book.style.display = 'block';
+                    } else {
+                        book.style.display = 'none';
+                    }
+                });
+            }
+        }
+        
+        // Search books
+        function searchBooks(searchTerm) {
+            if (searchTerm === '') {
+                document.querySelectorAll('#booksList > div').forEach(book => {
+                    book.style.display = 'block';
+                });
+                return;
+            }
+            
+            document.querySelectorAll('#booksList > div').forEach(book => {
+                const title = book.querySelector('.card-title').textContent.toLowerCase();
+                const author = book.querySelector('.card-text').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || author.includes(searchTerm)) {
+                    book.style.display = 'block';
+                } else {
+                    book.style.display = 'none';
+                }
+            });
+        }
+        
+        // Sort books
+        function sortBooks(sortBy) {
+            let sortedBooks = [...books];
+            
+            switch (sortBy) {
+                case 'price-low':
+                    sortedBooks.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    sortedBooks.sort((a, b) => b.price - a.price);
+                    break;
+                case 'newest':
+                    sortedBooks.sort((a, b) => a.isNew ? -1 : b.isNew ? 1 : 0);
+                    break;
+                case 'popularity':
+                default:
+                    sortedBooks.sort((a, b) => b.rating * b.ratingCount - a.rating * a.ratingCount);
+                    break;
+            }
+            
+            renderBooks(sortedBooks);
+        }
+        
+        // Add to cart function
+        function addToCart(book, quantity) {
+            const existingItem = cart.find(item => item.id === book.id);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: book.id,
+                    title: book.title,
+                    price: book.price,
+                    image: book.coverImage,
+                    quantity: quantity
+                });
+            }
+            
+            updateCart();
+            
+            // Show success message
+            showToast('Success', `${book.title} added to cart!`, 'success');
+        }
+        
+        // Update cart UI
+        function updateCart() {
+            // Update cart count
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Update cart items
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-center py-3">
+                        <i class="fas fa-shopping-cart text-muted mb-2" style="font-size: 2rem;"></i>
+                        <p class="mb-0">Your cart is empty</p>
+                    </div>
+                `;
+                cartTotalSection.style.display = 'none';
+                checkoutBtn.disabled = true;
+            } else {
+                cartItems.innerHTML = '';
+                let cartTotalAmount = 0;
+                
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    cartTotalAmount += itemTotal;
+                    
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.className = 'cart-item';
+                    cartItemElement.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" class="cart-item-img">
+                        <div>
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="d-flex align-items-center">
+                                <div class="cart-item-price">₹${item.price.toFixed(2)} × ${item.quantity}</div>
+                            </div>
+                        </div>
+                        <div class="cart-item-remove" data-id="${item.id}">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    `;
+                    
+                    cartItems.appendChild(cartItemElement);
+                    
+                    // Add remove item event
+                    cartItemElement.querySelector('.cart-item-remove').addEventListener('click', function() {
+                        removeFromCart(item.id);
+                    });
+                });
+                
+                cartTotal.textContent = `₹${cartTotalAmount.toFixed(2)}`;
+                cartTotalSection.style.display = 'flex';
+                checkoutBtn.disabled = false;
+                
+                // Update order summary if in checkout
+                updateOrderSummary();
+            }
+        }
+        
+        // Remove from cart
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            updateCart();
+        }
+        
+        // Show book details
+        function showBookDetails(book) {
+            const modal = new bootstrap.Modal(document.getElementById('bookDetailModal'));
+            
+            // Set book details in modal
+            document.getElementById('modalBookImage').src = book.coverImage;
+            document.getElementById('modalBookTitle').textContent = book.title;
+            document.getElementById('modalBookAuthor').textContent = `by ${book.author}`;
+            
+            // Set rating stars
+            let stars = '';
+            for (let i = 0; i < Math.floor(book.rating); i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            if (book.rating % 1 > 0) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            for (let i = 0; i < (5 - Math.ceil(book.rating)); i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            document.getElementById('modalBookRating').innerHTML = `
+                <div class="rating-stars">
+                    ${stars}
+                </div>
+                <span class="rating-count">(${book.ratingCount} reviews)</span>
+            `;
+            
+            // Set price
+            let priceHTML = `₹${book.price.toFixed(2)}`;
+            if (book.discount > 0) {
+                priceHTML = `<span class="original-price">₹${book.originalPrice.toFixed(2)}</span> ${priceHTML}`;
+            }
+            document.getElementById('modalBookPrice').innerHTML = priceHTML;
+            
+            // Set description and meta
+            document.getElementById('modalBookDescription').textContent = book.description;
+            document.getElementById('modalBookPages').textContent = book.pages;
+            document.getElementById('modalBookLanguage').textContent = book.language;
+            document.getElementById('modalBookPublished').textContent = book.published;
+            
+            // Reset quantity
+            document.getElementById('bookQuantity').value = 1;
+            
+            // Set book ID for add to cart button
+            document.getElementById('modalAddToCart').dataset.bookId = book.id;
+            
+            // Show modal
+            modal.show();
+        }
+        
+        // Start checkout process
+        function startCheckout() {
+            showSection('checkout');
+            updateOrderSummary();
+            goToStep(1);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Update order summary
+        function updateOrderSummary() {
+            const orderSummaryItems = document.getElementById('orderSummaryItems');
+            orderSummaryItems.innerHTML = '';
+            
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'order-summary-item';
+                itemElement.innerHTML = `
+                    <span>${item.title} × ${item.quantity}</span>
+                    <span>₹${itemTotal.toFixed(2)}</span>
+                `;
+                
+                orderSummaryItems.appendChild(itemElement);
+            });
+            
+            const shipping = 50.00;
+            const tax = subtotal * 0.18;
+            const total = subtotal + shipping + tax;
+            
+            document.getElementById('summarySubtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('summaryShipping').textContent = `₹${shipping.toFixed(2)}`;
+            document.getElementById('summaryTax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('summaryTotal').textContent = `₹${total.toFixed(2)}`;
+        }
+        
+        // Go to checkout step
+        function goToStep(step) {
+            currentStep = step;
+            
+            // Update step indicators
+            document.querySelectorAll('.checkout-step').forEach(stepEl => {
+                const stepNum = parseInt(stepEl.dataset.step);
+                
+                stepEl.classList.remove('active', 'completed');
+                
+                if (stepNum === currentStep) {
+                    stepEl.classList.add('active');
+                } else if (stepNum < currentStep) {
+                    stepEl.classList.add('completed');
+                }
+            });
+            
+            // Show appropriate section
+            document.querySelectorAll('.checkout-form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            if (step === 1) {
+                document.getElementById('shippingSection').classList.add('active');
+            } else if (step === 2) {
+                document.getElementById('paymentSection').classList.add('active');
+            } else if (step === 3) {
+                document.getElementById('confirmationSection').classList.add('active');
+            }
+        }
+        
+        // Initiate Razorpay payment
+        function initiatePayment() {
+            // Show loading spinner
+            showLoadingSpinner();
+            
+            // Get form data
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zipCode = document.getElementById('zipCode').value;
+            
+            // Calculate total amount
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const shipping = 50.00;
+            const tax = subtotal * 0.18;
+            const total = subtotal + shipping + tax;
+            
+            // Prepare order data
+            const orderData = {
+                customer: {
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    address,
+                    city,
+                    state,
+                    zipCode
+                },
+                items: cart.map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    price: item.price,
+                    quantity: item.quantity
+                })),
+                subtotal,
+                shipping,
+                tax,
+                total
+            };
+            
+            // Create order and initiate payment
+            fetch(API_URL.PLACE_ORDER, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Create Razorpay payment
+                return fetch(API_URL.CREATE_PAYMENT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderId: data.orderId,
+                        amount: total * 100 // Amount in paise
+                    })
+                });
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading spinner
+                hideLoadingSpinner();
+                
+                // Initialize Razorpay
+                const options = {
+                    key: data.razorpayKeyId,
+                    amount: data.amount,
+                    currency: data.currency,
+                    name: 'Academic BookStore',
+                    description: 'Purchase of Academic Books',
+                    order_id: data.razorpayOrderId,
+                    handler: function(response) {
+                        // Payment successful
+                        verifyPayment(response, data.orderId);
+                    },
+                    prefill: {
+                        name: firstName + ' ' + lastName,
+                        email: email,
+                        contact: phone
+                    },
+                    theme: {
+                        color: '#4f46e5'
+                    }
+                };
+                
+                const razorpay = new Razorpay(options);
+                razorpay.open();
+            })
+            .catch(error => {
+                console.error('Error creating order:', error);
+                hideLoadingSpinner();
+                showToast('Error', 'Failed to create order. Please try again.', 'danger');
+            });
+        }
+        
+        // Verify payment with server
+        function verifyPayment(response, orderId) {
+            showLoadingSpinner();
+            
+            fetch(API_URL.VERIFY_PAYMENT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature,
+                    order_id: orderId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoadingSpinner();
+                if (data.success) {
+                    paymentSuccessful(response, orderId, data.total);
+                } else {
+                    showToast('Error', 'Payment verification failed. Please contact support.', 'danger');
+                }
+            })
+            .catch(error => {
+                hideLoadingSpinner();
+                console.error('Error verifying payment:', error);
+                showToast('Error', 'Payment verification failed. Please contact support.', 'danger');
+            });
+        }
+        
+        // Handle successful payment
+        function paymentSuccessful(response, orderId, total) {
+            // Store order details
+            orderDetails = {
+                id: orderId,
+                date: new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }),
+                total: total,
+                paymentId: response.razorpay_payment_id
+            };
+            
+            // Update order confirmation details
+            document.getElementById('orderNumber').textContent = orderDetails.id;
+            document.getElementById('orderDate').textContent = orderDetails.date;
+            document.getElementById('orderTotal').textContent = `₹${orderDetails.total.toFixed(2)}`;
+            
+            // Go to confirmation step
+            goToStep(3);
+            
+            // Clear cart
+            cart = [];
+            updateCart();
+            
+            // Show success message
+            showToast('Success', 'Your order has been placed successfully!', 'success');
+        }
+        
+        // Reset checkout
+        function resetCheckout() {
+            // Reset form
+            document.getElementById('shippingForm').reset();
+            
+            // Reset steps
+            goToStep(1);
+        }
+        
+        // Show toast notification
+        function showToast(title, message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            // Create toast element
+            const toastElement = document.createElement('div');
+            toastElement.className = `toast align-items-center text-white bg-${type} border-0`;
+            toastElement.setAttribute('role', 'alert');
+            toastElement.setAttribute('aria-live', 'assertive');
+            toastElement.setAttribute('aria-atomic', 'true');
+            
+            toastElement.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>${title}:</strong> ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            
+            // Add to container
+            toastContainer.appendChild(toastElement);
+            
+            // Initialize and show toast
+            const toast = new bootstrap.Toast(toastElement, {
+                autohide: true,
+                delay: 3000
+            });
+            toast.show();
+            
+            // Remove from DOM after hidden
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                toastElement.remove();
+            });
+        }
+        
+        // Show loading spinner
+        function showLoadingSpinner() {
+            loadingSpinner.classList.add('show');
+        }
+        
+        // Hide loading spinner
+        function hideLoadingSpinner() {
+            loadingSpinner.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
+

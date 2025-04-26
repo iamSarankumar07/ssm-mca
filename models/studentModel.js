@@ -48,6 +48,18 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    imageUrl: {
+        type: String,
+        required: false,
+    },
+    course: {
+        type: String,
+        required: false,
+    },
+    courseDuration: {
+        type: String,
+        required: false,
+    },
     parentName: {
         type: String,
         required: false,
@@ -176,12 +188,39 @@ const studentSchema = new mongoose.Schema({
         type: String,
         default: false,
     },
-    editRequest: {
-        newName: String,
-        newEmail: String,
-        newDob: String,
-        newPhone: String,
-        status: String
+    tuitionFees: {
+        totalFee: Number,
+        paidFee: Number,
+        pendingFee: {
+            type: Number,
+            default: function() {
+                return this.totalFee && this.paidFee ? this.totalFee - this.paidFee : 0;
+            }
+        },
+        dueDate: String,
+        paidDate: String,
+        txnId: String,
+        payMode: String,
+        imageUrl: String,
+        status: String,
+        semester: String,
+    },
+    examFees: {
+        totalFee: Number,
+        paidFee: Number,
+        pendingFee: {
+            type: Number,
+            default: function() {
+                return this.totalFee && this.paidFee ? this.totalFee - this.paidFee : 0;
+            }
+        },
+        dueDate: String,
+        paidDate: String,
+        txnId: String,
+        payMode: String,
+        imageUrl: String,
+        status: String,
+        semester: String,
     },
     tuEditRequest: {
         newTuPending: String,
@@ -203,6 +242,14 @@ const studentSchema = new mongoose.Schema({
         paidDateEx: String,
         imageUrl: String
     },
+    examResults: [{
+        _id: mongoose.Schema.Types.ObjectId,
+        semester: Number,
+        subjectCode: String,
+        subjectName: String,
+        grade: String,
+        result: String
+    }],
     createdAt: {
         type: Date,
         immutable: true,

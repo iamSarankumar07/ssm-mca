@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSM College of Engineering Job Finder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #f9fafb;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --success-hover: #059669;
+            --warning: #f59e0b;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #e5e7eb;
+            --white: #ffffff;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 0.75rem;
+        }
+
+        html,
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f8;
+            color: var(--dark);
+            line-height: 1.6;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            padding: 0;
+        }
+
+        .card-header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            margin-right: 1rem;
+            background-color: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-button:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        .card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            background-color: var(--white);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 0;
+            padding: 1.5rem 1.5rem 1rem;
+            background-color: var(--white);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .data-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            height: calc(100vh - 200px);
+            position: relative;
+        }
+
+        .card-view {
+            height: auto;
+            min-height: 100%;
+        }
+
+        .form-control,
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: var(--success-hover);
+            border-color: var(--success-hover);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+            border-color: var(--danger-hover);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 600;
+            border-radius: 0.375rem;
+        }
+
+        .badge-fulltime {
+            background-color: var(--success);
+            color: #fff;
+        }
+
+        .badge-parttime {
+            background-color: var(--warning);
+            color: #fff;
+        }
+
+        .badge-contract {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        .job-card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+            background-color: var(--white);
+        }
+
+        .job-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .job-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .job-company {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .job-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .job-description {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .job-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-text {
+            color: var(--gray);
+            font-size: 1rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--light-gray);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--light-gray);
+            padding: 1.25rem 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .filter-item {
+                width: 100%;
+            }
+
+            .job-details {
+                grid-template-columns: 1fr;
+            }
+
+            .job-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .job-actions .btn {
+                width: 100%;
+            }
+
+            .view-toggle {
+                flex-wrap: wrap;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .card-header-content {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        .table-view .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table-view .table th {
+            background-color: var(--secondary);
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            border-bottom: 1px solid var(--light-gray);
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .table-view .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .table-view .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-view .table tr:hover {
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .view-toggle-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            background-color: var(--secondary);
+            border: 1px solid var(--light-gray);
+            color: var(--gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-toggle-btn:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+
+        .view-toggle-btn.active {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        .skeleton-card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background-color: var(--white);
+        }
+
+        .skeleton-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-text.sm {
+            width: 30%;
+            height: 0.8rem;
+        }
+
+        .skeleton-text.md {
+            width: 50%;
+        }
+
+        .skeleton-text.lg {
+            width: 80%;
+        }
+
+        .skeleton-badge {
+            width: 4rem;
+            height: 1.5rem;
+            border-radius: 0.375rem;
+        }
+
+        .skeleton-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skeleton-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        .skeleton-button {
+            width: 6rem;
+            height: 2rem;
+            border-radius: var(--border-radius);
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+
+        .toastify {
+            font-family: 'Inter', sans-serif;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .toastify-success {
+            background: linear-gradient(135deg, var(--success) 0%, var(--success-hover) 100%);
+        }
+
+        .toastify-error {
+            background: linear-gradient(135deg, var(--danger) 0%, var(--danger-hover) 100%);
+        }
+
+        .toastify-info {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pagination .page-item .page-link {
+            border-radius: 0.375rem;
+            margin: 0 0.2rem;
+            color: var(--primary);
+            border: 1px solid var(--light-gray);
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+        }
+
+        .pagination .page-item .page-link:hover:not(.active) {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: var(--gray);
+            pointer-events: none;
+            background-color: var(--white);
+        }
+
+        .job-details-section {
+            background-color: var(--secondary);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .job-details-section h6 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 0.5rem;
+        }
+
+        .job-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .table-view .table-responsive {
+            max-height: 100%;
+            overflow-y: auto;
+        }
+
+        .loading-more {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .loading-more .spinner {
+            width: 30px;
+            height: 30px;
+        }
+
+        .scroll-debug {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-content">
+                        <a href="javascript:history.back()" class="back-button">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <h2 class="card-title">SSM College of Engineering Job Finder</h2>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" data-view="card">
+                            <i class="fas fa-th-large me-1"></i> Card View
+                        </button>
+                        <button class="view-toggle-btn" data-view="table">
+                            <i class="fas fa-table me-1"></i> Table View
+                        </button>
+                        <button class="btn btn-primary" id="refreshBtn">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="filters">
+                        <div class="filter-item">
+                            <label for="titleFilter" class="form-label">Job Title</label>
+                            <input type="text" id="title" class="form-control" placeholder="e.g., Developer, Designer">
+                        </div>
+                        <div class="filter-item">
+                            <label for="locationFilter" class="form-label">Location</label>
+                            <input type="text" id="location" class="form-control" placeholder="e.g., Hyderabad, Mumbai">
+                        </div>
+                        <div class="filter-item d-flex align-items-end">
+                            <button type="button" id="searchBtn" class="btn btn-primary w-100">
+                                <i class="fas fa-search me-2"></i><span>Search Jobs</span>
+                                <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true" id="searchSpinner"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="data-container" id="dataContainer">
+                        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+
+                        <div id="skeletonLoading" style="display: none;">
+                            <div id="cardViewSkeleton" class="card-view">
+                            </div>
+
+                            <div id="tableViewSkeleton" class="table-view" style="display: none;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Job Title</th>
+                                                <th>Company</th>
+                                                <th>Location</th>
+                                                <th>Salary</th>
+                                                <th>Job Type</th>
+                                                <th>Posted Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableBodySkeleton">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="emptyState" class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="empty-state-text">
+                                Search for jobs to see results
+                            </div>
+                        </div>
+
+                        <div id="cardView" class="card-view" style="display: none;">
+                        </div>
+
+                        <div id="tableView" class="table-view" style="display: none;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Title</th>
+                                            <th>Company</th>
+                                            <th>Location</th>
+                                            <th>Salary</th>
+                                            <th>Job Type</th>
+                                            <th>Posted Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="loadingMore" class="loading-more" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="scrollDebug" class="scroll-debug" style="display: none;">
+        {{!-- Scroll: 0 / 0 --}}
+    </div>
+
+    <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="jobDetailsModalLabel">Job Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="jobDetailsContent">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="#" class="btn btn-primary" id="applyJobBtn" target="_blank">Apply Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadMoreButtonContainer" style="display: none; text-align: center; margin: 20px 0;">
+        <button id="loadMoreButton" class="btn btn-primary">
+            <i class="fas fa-sync-alt me-2"></i>Load More Jobs
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        let jobs = [];
+        let filteredJobs = [];
+        let currentView = 'card';
+        let isLoading = false;
+        let isLoadingMore = false;
+        let currentPage = 1;
+        let totalResults = 0;
+        let resultsPerPage = 10;
+        let currentSearchParams = {};
+        let hasMoreData = true;
+        let scrollDebounceTimer = null;
+        let isDebugMode = true; 
+
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const skeletonLoading = document.getElementById('skeletonLoading');
+        const cardViewSkeleton = document.getElementById('cardViewSkeleton');
+        const tableViewSkeleton = document.getElementById('tableViewSkeleton');
+        const tableBodySkeleton = document.getElementById('tableBodySkeleton');
+        const emptyState = document.getElementById('emptyState');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+        const tableBody = document.getElementById('tableBody');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const searchBtn = document.getElementById('searchBtn');
+        const titleInput = document.getElementById('title');
+        const locationInput = document.getElementById('location');
+        const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
+        const jobDetailsModal = new bootstrap.Modal(document.getElementById('jobDetailsModal'));
+        const searchSpinner = document.getElementById('searchSpinner');
+        const loadingMore = document.getElementById('loadingMore');
+        const dataContainer = document.getElementById('dataContainer');
+        const scrollDebug = document.getElementById('scrollDebug');
+        const loadMoreButton = document.getElementById('loadMoreButton');
+        const loadMoreButtonContainer = document.getElementById('loadMoreButtonContainer');
+
+        function showToast(message, type = 'info') {
+            const toastClass = type === 'success' ? 'toastify-success' :
+                type === 'error' ? 'toastify-error' : 'toastify-info';
+
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                className: `toastify ${toastClass}`,
+                stopOnFocus: true,
+            }).showToast();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            generateSkeletons();
+
+            searchBtn.addEventListener('click', searchJobs);
+            refreshBtn.addEventListener('click', searchJobs);
+            loadMoreButton.addEventListener('click', loadMoreJobs);
+
+            titleInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchJobs();
+                }
+            });
+            
+            locationInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchJobs();
+                }
+            });
+
+            viewToggleBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const view = this.getAttribute('data-view');
+                    setActiveView(view);
+                });
+            });
+
+            dataContainer.addEventListener('scroll', handleScroll);
+
+            if (isDebugMode) {
+                scrollDebug.style.display = 'block';
+            }
+        });
+
+        function handleScroll() {
+            if (isLoading || isLoadingMore || !hasMoreData) return;
+            
+            const scrollTop = dataContainer.scrollTop;
+            const scrollHeight = dataContainer.scrollHeight;
+            const clientHeight = dataContainer.clientHeight;
+            
+            if (isDebugMode && currentView !== 'card') {
+                scrollDebug.textContent = `Scroll: ${Math.round(scrollTop + clientHeight)} / ${scrollHeight}`;
+            }
+            
+            if (scrollTop + clientHeight >= scrollHeight - 200) {
+                console.log('Scroll triggered: Loading more jobs');
+                loadMoreJobs();
+            }
+        }
+
+        function generateSkeletons() {
+            cardViewSkeleton.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const skeletonCard = document.createElement('div');
+                skeletonCard.className = 'skeleton-card';
+                skeletonCard.innerHTML = `
+                    <div class="skeleton-header">
+                        <div>
+                            <div class="skeleton skeleton-text md mb-1"></div>
+                            <div class="skeleton skeleton-text sm"></div>
+                        </div>
+                        <div class="skeleton skeleton-badge"></div>
+                    </div>
+                    <div class="skeleton-details">
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton skeleton-text lg mb-3"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                `;
+                cardViewSkeleton.appendChild(skeletonCard);
+            }
+
+            tableBodySkeleton.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const skeletonRow = document.createElement('tr');
+                skeletonRow.innerHTML = `
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text sm"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                        </div>
+                    </td>
+                `;
+                tableBodySkeleton.appendChild(skeletonRow);
+            }
+        }
+
+        function searchJobs() {
+            if (isLoading) return;
+            
+            currentPage = 1;
+            hasMoreData = true;
+            
+            currentSearchParams = {
+                title: titleInput.value.trim(),
+                location: locationInput.value.trim(),
+                jobType: ''
+            };
+            
+            if (!currentSearchParams.title && !currentSearchParams.location) {
+                showToast('Please enter a job title or location', 'error');
+                return;
+            }
+            
+            jobs = [];
+            filteredJobs = [];
+            
+            cardView.innerHTML = '';
+            tableBody.innerHTML = '';
+            
+            fetchJobs(currentPage);
+        }
+
+        function loadMoreJobs() {
+            if (isLoading || isLoadingMore || !hasMoreData) return;
+            
+            console.log('Loading more jobs, page:', currentPage + 1);
+            currentPage++;
+            fetchMoreJobs(currentPage);
+        }
+
+        function fetchJobs(page = 1) {
+            showLoading();
+
+            loadingSpinner.style.display = 'flex';
+            skeletonLoading.style.display = 'block';
+
+            if (currentView === 'card') {
+                cardViewSkeleton.style.display = 'block';
+                tableViewSkeleton.style.display = 'none';
+            } else {
+                cardViewSkeleton.style.display = 'none';
+                tableViewSkeleton.style.display = 'block';
+            }
+
+            toggleSearchButton(true);
+
+            const { title, location, jobType } = currentSearchParams;
+            
+            fetch(`/v1/api/getJobsData?title=${encodeURIComponent(title)}&location=${encodeURIComponent(location)}&page=${page}${jobType ? `&job_type=${jobType}` : ''}`)
+                .then(response => response.json())
+                .then(data => {
+                    const jobResults = Array.isArray(data) ? data : (data.results || []);
+                    
+                    if (!jobResults || jobResults.length === 0) {
+                        showEmpty('No jobs found matching your search criteria');
+                        hasMoreData = false;
+                        return;
+                    }
+                    
+                    jobs = jobResults;
+                    filteredJobs = [...jobs];
+                    
+                    renderJobs(false);
+                    showToast("Job listings successfully retrieved.", 'success');
+                    
+                    if (hasMoreData && currentView === 'table') {
+                        loadMoreButtonContainer.style.display = 'block';
+                    } else {
+                        loadMoreButtonContainer.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching jobs:', error);
+                    showEmpty('Failed to load jobs. Please try again.');
+                    showToast('Failed to load jobs. Please try again.', 'error');
+                    hasMoreData = false;
+                })
+                .finally(() => {
+                    skeletonLoading.style.display = 'none';
+                    toggleSearchButton(false);
+                });
+        }
+
+        function fetchMoreJobs(page) {
+            if (isLoadingMore) return;
+            
+            isLoadingMore = true;
+            loadingMore.style.display = 'flex';
+            
+            const { title, location, jobType } = currentSearchParams;
+            
+            fetch(`/v1/api/getJobsData?title=${encodeURIComponent(title)}&location=${encodeURIComponent(location)}&page=${page}${jobType ? `&job_type=${jobType}` : ''}`)
+                .then(response => response.json())
+                .then(data => {
+                    const jobResults = Array.isArray(data) ? data : (data.results || []);
+                    
+                    if (!jobResults || jobResults.length === 0) {
+                        hasMoreData = false;
+                        showToast('No more jobs to load', 'info');
+                        loadMoreButtonContainer.style.display = 'none';
+                        return;
+                    }
+                    
+                    jobs = [...jobs, ...jobResults];
+                    filteredJobs = [...jobs];
+                    
+                    renderJobs(true);
+                })
+                .catch(error => {
+                    console.error('Error fetching more jobs:', error);
+                    showToast('Failed to load more jobs. Please try again.', 'error');
+                })
+                .finally(() => {
+                    isLoadingMore = false;
+                    loadingMore.style.display = 'none';
+                });
+        }
+
+        function toggleSearchButton(loading) {
+            isLoading = loading;
+            
+            if (loading) {
+                searchSpinner.classList.remove('d-none');
+                searchBtn.disabled = true;
+                searchBtn.querySelector('i').classList.add('d-none');
+                searchBtn.querySelector('span').textContent = 'Searching...';
+            } else {
+                searchSpinner.classList.add('d-none');
+                searchBtn.disabled = false;
+                searchBtn.querySelector('i').classList.remove('d-none');
+                searchBtn.querySelector('span').textContent = 'Search Jobs';
+            }
+        }
+
+        function renderJobs(isAppending = false) {
+            if (filteredJobs.length === 0) {
+                showEmpty('No jobs found matching your filters');
+                return;
+            }
+
+            hideLoading();
+            emptyState.style.display = 'none';
+
+            if (currentView === 'card') {
+                renderCardView(isAppending);
+                cardView.style.display = 'block';
+                tableView.style.display = 'none';
+            } else {
+                renderTableView(isAppending);
+                cardView.style.display = 'none';
+                tableView.style.display = 'block';
+            }
+        }
+
+        function renderCardView(isAppending = false) {
+            if (!isAppending) {
+                cardView.innerHTML = '';
+            }
+
+            const startIndex = isAppending ? cardView.children.length : 0;
+            const endIndex = filteredJobs.length;
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const job = filteredJobs[i];
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+                jobCard.style.animationDelay = `${(i - startIndex) * 0.1}s`;
+                
+                const salary = job?.salary_min ? 
+                    `${job.salary_min.toLocaleString()} - ${job.salary_max ? job.salary_max.toLocaleString() : 'Negotiable'}` : 
+                    'Salary not specified';
+                    
+                let jobType = 'Contract';
+                let badgeClass = 'badge-contract';
+                
+                if (job?.contract_time === 'full_time') {
+                    jobType = 'Full-time';
+                    badgeClass = 'badge-fulltime';
+                } else if (job?.contract_time === 'part_time') {
+                    jobType = 'Part-time';
+                    badgeClass = 'badge-parttime';
+                }
+                
+                jobCard.innerHTML = `
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">${job?.title || 'No Title Available'}</div>
+                            <div class="job-company">${job?.company?.display_name || 'Unknown Company'}</div>
+                        </div>
+                        <span class="badge ${badgeClass}">${jobType}</span>
+                    </div>
+                    <div class="job-details">
+                        <div class="job-detail">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                ${job?.location?.display_name || 'Location Not Available'}
+                            </span>
+                        </div>
+                        <div class="job-detail">
+                            <span class="detail-label">Salary</span>
+                            <span class="detail-value">
+                                <i class="fas fa-money-bill-wave me-1"></i>
+                                ${salary}
+                            </span>
+                        </div>
+                        <div class="job-detail">
+                            <span class="detail-label">Posted</span>
+                            <span class="detail-value">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                ${job?.created ? formatDate(new Date(job.created)) : 'Unknown'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="job-description">
+                        ${job?.description?.substring(0, 150) || 'No Description Available'}${job?.description?.length > 150 ? '...' : ''}
+                    </div>
+                    <div class="job-actions">
+                        <button class="btn btn-sm btn-primary view-details-btn" data-id="${i}">
+                            <i class="fas fa-eye me-1"></i> View Details
+                        </button>
+                        <a href="${job?.redirect_url}" class="btn btn-sm btn-success" target="_blank">
+                            <i class="fas fa-external-link-alt me-1"></i> Apply Now
+                        </a>
+                    </div>
+                `;
+                
+                cardView.appendChild(jobCard);
+                
+                const viewDetailsBtn = jobCard.querySelector('.view-details-btn');
+                viewDetailsBtn.addEventListener('click', () => showJobDetails(job, i));
+            }
+        }
+
+        function renderTableView(isAppending = false) {
+            if (!isAppending) {
+                tableBody.innerHTML = '';
+            }
+
+            const startIndex = isAppending ? tableBody.children.length : 0;
+            const endIndex = filteredJobs.length;
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const job = filteredJobs[i];
+                const salary = job?.salary_min ? 
+                    `${job.salary_min.toLocaleString()} - ${job.salary_max ? job.salary_max.toLocaleString() : 'Negotiable'}` : 
+                    'Not specified';
+                    
+                let jobType = 'Contract';
+                let badgeClass = 'badge-contract';
+                
+                if (job?.contract_time === 'full_time') {
+                    jobType = 'Full-time';
+                    badgeClass = 'badge-fulltime';
+                } else if (job?.contract_time === 'part_time') {
+                    jobType = 'Part-time';
+                    badgeClass = 'badge-parttime';
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${job?.title || 'No Title Available'}</td>
+                    <td>${job?.company?.display_name || 'Unknown Company'}</td>
+                    <td>${job?.location?.display_name || 'Location Not Available'}</td>
+                    <td>${salary}</td>
+                    <td><span class="badge ${badgeClass}">${jobType}</span></td>
+                    <td>${job?.created ? formatDate(new Date(job.created)) : 'Unknown'}</td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <button class="btn btn-sm btn-primary view-details-btn" data-id="${i}" data-bs-toggle="tooltip" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <a href="${job?.redirect_url}" class="btn btn-sm btn-success" target="_blank" data-bs-toggle="tooltip" title="Apply Now">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+                
+                const viewDetailsBtn = row.querySelector('.view-details-btn');
+                viewDetailsBtn.addEventListener('click', () => showJobDetails(job, i));
+                
+                const tooltips = row.querySelectorAll('[data-bs-toggle="tooltip"]');
+                tooltips.forEach(el => {
+                    new bootstrap.Tooltip(el);
+                });
+            }
+        }
+
+        function showJobDetails(job, index) {
+            const detailsContent = document.getElementById('jobDetailsContent');
+            const applyJobBtn = document.getElementById('applyJobBtn');
+            
+            applyJobBtn.href = job.redirect_url;
+            
+            const salary = job?.salary_min ? 
+                `${job.salary_min.toLocaleString()} - ${job.salary_max ? job.salary_max.toLocaleString() : 'Negotiable'}` : 
+                'Salary not specified';
+                
+            let jobType = 'Contract';
+            let badgeClass = 'badge-contract';
+            
+            if (job?.contract_time === 'full_time') {
+                jobType = 'Full-time';
+                badgeClass = 'badge-fulltime';
+            } else if (job?.contract_time === 'part_time') {
+                jobType = 'Part-time';
+                badgeClass = 'badge-parttime';
+            }
+            
+            document.getElementById('jobDetailsModalLabel').textContent = job.title;
+            
+            let modalContent = `
+                <div class="mb-4">
+                    <h4 class="mb-1">${job.title}</h4>
+                    <div class="text-primary fw-bold mb-2">${job.company?.display_name || 'Unknown Company'}</div>
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge ${badgeClass} me-2">${jobType}</span>
+                        <span class="text-muted">
+                            <i class="fas fa-map-marker-alt me-1"></i>
+                            ${job.location?.display_name || 'Location Not Available'}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="job-details-section">
+                    <h6>Job Details</h6>
+                    <div class="job-details-grid">
+                        <div class="mb-2">
+                            <strong>Salary:</strong> ${salary}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Job Type:</strong> ${jobType}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Posted On:</strong> ${job.created ? formatDate(new Date(job.created)) : 'Unknown'}
+                        </div>
+                        <div class="mb-2">
+                            <strong>Job ID:</strong> ${job.id || 'Not Available'}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="mb-2">Job Description</h6>
+                    <div class="p-3 bg-light rounded">
+                        ${job.description || 'No description available for this job.'}
+                    </div>
+                </div>
+            `;
+            
+            detailsContent.innerHTML = modalContent;
+            jobDetailsModal.show();
+        }
+
+        function formatDate(date) {
+            if (!date || isNaN(date.getTime())) return 'Unknown';
+
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+
+            return `${day}/${month}/${year}`;
+        }
+
+        function setActiveView(view) {
+            currentView = view;
+
+            viewToggleBtns.forEach(btn => {
+                if (btn.getAttribute('data-view') === view) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            if (view === 'card') {
+                scrollDebug.style.display = 'none';
+                loadMoreButtonContainer.style.display = 'none';
+            } else if (isDebugMode) {
+                scrollDebug.style.display = 'block';
+                if (hasMoreData && jobs.length > 0) {
+                    loadMoreButtonContainer.style.display = 'block';
+                }
+            }
+
+            if (isLoading) {
+                if (view === 'card') {
+                    cardViewSkeleton.style.display = 'block';
+                    tableViewSkeleton.style.display = 'none';
+                } else {
+                    cardViewSkeleton.style.display = 'none';
+                    tableViewSkeleton.style.display = 'block';
+                }
+            } else if (jobs.length > 0) {
+                renderJobs(false);
+            }
+        }
+
+        function showLoading() {
+            isLoading = true;
+            loadingSpinner.style.display = 'flex';
+            cardView.style.display = 'none';
+            tableView.style.display = 'none';
+            emptyState.style.display = 'none';
+        }
+
+        function hideLoading() {
+            isLoading = false;
+            loadingSpinner.style.display = 'none';
+        }
+
+        function showEmpty(message = 'Search for jobs to see results') {
+            hideLoading();
+            cardView.style.display = 'none';
+            tableView.style.display = 'none';
+            emptyState.style.display = 'flex';
+            emptyState.querySelector('.empty-state-text').textContent = message;
+        }
+    </script>
+</body>
+
+</html>

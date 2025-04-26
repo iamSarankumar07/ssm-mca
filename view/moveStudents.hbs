@@ -4,153 +4,632 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Move Students</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
+        * {
+            font-family: "Poppins", sans-serif;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e6f0ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-        }
-
-        h1 {
-            text-align: center;
-            color: #3d6ef5ff;
-        }
-
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            position: relative;
-        }
-        input, select {
+            min-height: 100vh;
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .button-container {
-            display: flex;
-            padding-top: 20px;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        button[type="submit"],
-        button[type="button"] {
-            width: 45%;
-            background-color: #3d6ef5ff;
-            color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px 14px;
-            border: none;
-            font-size: 12px;
-            border-radius: 5px;
-            border: 2px solid #3d6ef5ff;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button[type="submit"]:hover,
-        button[type="button"]:hover {
-            background-color: #f2f2f2;
-            color: #3d6ef5ff;
-            font-weight: bold;
+            padding: 0;
         }
         
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background-color: #3d6ef5;
+            width: 33%;
+            transition: width 0.3s ease;
+        }
+        
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #eaeaea;
+            padding: 1.5rem;
+        }
+        
+        .step-indicator {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .step-number {
+            color: #3d6ef5;
+            font-weight: 600;
+        }
+        
+        .step-description {
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .card-body {
+            padding: 0;
+        }
+        
+        .step-content {
+            padding: 1.5rem;
+            display: none;
+        }
+        
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .selection-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .selection-card:hover:not(.disabled) {
+            border-color: #c0c0c0;
+        }
+        
+        .selection-card.selected {
+            border-color: #3d6ef5;
+            background-color: rgba(61, 110, 245, 0.05);
+            box-shadow: 0 0 0 1px #3d6ef5;
+        }
+        
+        .selection-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .selection-card.selected .icon-wrapper {
+            background-color: rgba(61, 110, 245, 0.1);
+        }
+        
+        .selection-card-content {
+            flex: 1;
+        }
+        
+        .selection-card-title {
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+        
+        .selection-card-description {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+        
+        .review-box {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .review-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .review-detail {
+            display: flex;
+            align-items: center;
+        }
+        
+        .review-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(61, 110, 245, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+        
+        .review-text p {
+            margin-bottom: 0;
+        }
+        
+        .review-label {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .review-value {
+            font-weight: 500;
+        }
+        
+        .divider {
+            border-top: 1px solid #e0e0e0;
+            margin: 1rem 0;
+        }
+        
+        .card-footer {
+            background-color: #fff;
+            border-top: 1px solid #eaeaea;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: center; 
+        }
+        
+        .btn-primary {
+            background-color: #3d6ef5;
+            border-color: #3d6ef5;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2c5ce0;
+            border-color: #2c5ce0;
+        }
+        
+        .btn-outline-primary {
+            color: #3d6ef5;
+            border-color: #3d6ef5;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #3d6ef5;
+            color: #fff;
+        }
+        
+        .error-message {
+            background-color: #fff5f5;
+            color: #e53e3e;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-size: 14px;
+        }
+        
+        .course-info {
+            background-color: rgba(61, 110, 245, 0.05);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .course-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(61, 110, 245, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+        
+        .course-text {
+            font-weight: 500;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <form id="emailForm" action="/ssm/mca/moveStudents" method="post">
-        <h1>Move Students</h1>
-
-        <label for="title">Move From :</label>
-        <select id="year" name="year" required onchange="showYearInput()">
-            <option value="">Select</option>
-            <option value="I">MCA-I</option>
-            <option value="II">MCA-II</option>
-        </select>
-
-        <label for="title">Move To :</label>
-        <select id="type" name="type" required onchange="showYearInput()">
-            <option value="">Select</option>
-            <option value="I">MCA-I</option>
-            <option value="II">MCA-II</option>
-            <option value="alumni">Alumni</option>
-        </select>
-
-        <label for="graduationYear" id="graduationYearLabel" style="display: none;">Graduation Year :</label>
-        <input type="text" id="graduationYear" name="graduationYear" style="display: none;">
-
-        <div class="button-container">
-            <button type="button" onclick="window.location.href='/ssm/mca/dashboard#students'">Back</button>
-            <button type="submit" id="update">Update</button>
+    <div class="container">
+        <div class="card">
+            <div class="progress" style="height: 4px; border-radius: 0;">
+                <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Move Students</h3>
+                    <div class="step-indicator">
+                        <span class="step-number" id="currentStep">Step 1</span>
+                        <span>/</span>
+                        <span>3</span>
+                    </div>
+                </div>
+                <p class="step-description" id="stepDescription">Select where to move the students</p>
+                
+                <div class="course-info mt-2">
+                    <div class="course-icon">
+                        <i class="fas fa-graduation-cap text-primary"></i>
+                    </div>
+                    <div class="course-text">
+                        {{course}} - Year {{year}}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <form id="moveStudentsForm">
+                    <input type="hidden" name="course" value="{{course}}">
+                    <input type="hidden" id="yearInput" name="year" value="{{year}}">
+                    <input type="hidden" id="typeInput" name="type" value="">
+                    
+                    <div class="step-content active" id="step1">
+                        <h4 class="mb-3">Move To</h4>
+                        
+                        <div id="moveToOptions">
+                            {{#if moveToYear}}
+                                <div class="selection-card" data-value="{{moveToYear}}" onclick="selectMoveTo(this, '{{moveToYear}}')">
+                                    <div class="icon-wrapper">
+                                        {{#if isAlumni}}
+                                            <i class="fas fa-graduation-cap"></i>
+                                        {{else}}
+                                            <i class="fas fa-users"></i>
+                                        {{/if}}
+                                    </div>
+                                    <div class="selection-card-content">
+                                        {{#if isAlumni}}
+                                            <h5 class="selection-card-title">Alumni</h5>
+                                            <p class="selection-card-description">Graduated students</p>
+                                        {{else}}
+                                            <h5 class="selection-card-title">{{course}}-{{moveToYear}}</h5>
+                                            <p class="selection-card-description">Year {{moveToYear}} students</p>
+                                        {{/if}}
+                                    </div>
+                                    <div class="check-icon d-none">
+                                        <i class="fas fa-check-circle text-primary"></i>
+                                    </div>
+                                </div>
+                            {{/if}}
+                        </div>
+                        
+                        <div id="errorContainer" class="error-message d-none"></div>
+                    </div>
+                    
+                    <div class="step-content" id="step2">
+                        <h4 class="mb-3">Graduation Year</h4>
+                        
+                        <div class="mb-3">
+                            <label for="graduationYear" class="form-label">Enter Graduation Year</label>
+                            <input type="text" class="form-control" id="graduationYear" name="graduationYear" placeholder="YYYY">
+                            <div class="form-text">Please enter the 4-digit year when students graduated</div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary w-100 mt-3" onclick="validateGraduationYear()">
+                            Continue <i class="fas fa-chevron-right ms-1"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="step-content" id="step3">
+                        <h4 class="mb-3">Review & Confirm</h4>
+                        
+                        <div class="review-box">
+                            <div class="review-item">
+                                <div class="review-detail">
+                                    <div class="review-icon">
+                                        <i class="fas fa-users text-primary"></i>
+                                    </div>
+                                    <div class="review-text">
+                                        <p class="review-label">Move From</p>
+                                        <p class="review-value" id="reviewMoveFrom">{{course}}-{{year}}</p>
+                                    </div>
+                                </div>
+                                
+                                <i class="fas fa-arrow-right text-muted"></i>
+                                
+                                <div class="review-detail">
+                                    <div class="review-icon">
+                                        <i id="moveToIcon" class="fas fa-users text-primary"></i>
+                                    </div>
+                                    <div class="review-text">
+                                        <p class="review-label">Move To</p>
+                                        <p class="review-value" id="reviewMoveTo"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="graduationYearReview" class="d-none">
+                                <div class="divider"></div>
+                                <div class="review-detail">
+                                    <div class="review-icon">
+                                        <i class="fas fa-graduation-cap text-primary"></i>
+                                    </div>
+                                    <div class="review-text">
+                                        <p class="review-label">Graduation Year</p>
+                                        <p class="review-value" id="reviewGraduationYear"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="text-muted small">
+                            Please review the information above. Once confirmed, students will be moved accordingly.
+                        </p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card-footer">
+                <div class="d-flex justify-content-center w-100">
+                    <button type="button" class="btn btn-outline-primary me-2" id="backButton" onclick="goBack()">
+                        Back to Dashboard
+                    </button>
+                    
+                    <button type="button" class="btn btn-primary d-none" id="confirmButton" onclick="submitForm()">
+                        <span id="submitSpinner" class="spinner d-none"></span>
+                        <span id="submitText">Confirm & Update</span>
+                    </button>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
     <script>
-        function showYearInput() {
-            var yearSelect = document.getElementById("year");
-            var typeSelect = document.getElementById("type");
-            var alumniOption = typeSelect.options[3];
-            var graduationYearLabel = document.getElementById("graduationYearLabel");
-            var graduationYearInput = document.getElementById("graduationYear");
-
-            if (yearSelect.value === typeSelect.value) {
-                alert("Move From & Move To Cannot Be The Same.");
-                typeSelect.value = "";
-            }
-            if (yearSelect.value === "II" && typeSelect.value === "I") {
-                alert("Sorry, You Cannot Move students from MCA-II to MCA-I.");
-                typeSelect.value = "";
-            }
-
-            if (yearSelect.value === "I") {
-                alumniOption.style.display = "none";
-                if (typeSelect.value === "alumni") {
-                    typeSelect.value = ""; 
+        let currentStep = 1;
+        let moveFrom = "{{year}}"; 
+        let moveTo = "{{moveToYear}}";
+        let graduationYear = "";
+        let courseName = "{{course}}";
+        let isAlumni = {{#if isAlumni}}true{{else}}false{{/if}};
+        
+        const stepDescriptions = [
+            "Select where to move the students",
+            "Enter graduation year for alumni",
+            "Review and confirm your changes"
+        ];
+        
+        function initForm() {
+            document.getElementById('yearInput').value = moveFrom;
+            
+            if (moveTo) {
+                const moveToCard = document.querySelector(`.selection-card[data-value="${moveTo}"]`);
+                if (moveToCard) {
+                    moveToCard.classList.add('selected');
+                    moveToCard.querySelector('.check-icon').classList.remove('d-none');
+                    document.getElementById('typeInput').value = moveTo;
+                    
+                    if (isAlumni) {
+                        goToStep(2);
+                    }
                 }
-                graduationYearLabel.style.display = "none"; 
-                graduationYearInput.style.display = "none"; 
-            } else {
-                alumniOption.style.display = "block";
-                if (typeSelect.value === "alumni") {
-                    graduationYearLabel.style.display = "block"; 
-                    graduationYearInput.style.display = "block"; 
+            }
+            
+            updateStepUI();
+        }
+        
+        function updateStepUI() {
+            document.getElementById('progressBar').style.width = (currentStep * 33) + '%';
+            
+            document.getElementById('currentStep').textContent = 'Step ' + currentStep;
+            
+            document.getElementById('stepDescription').textContent = stepDescriptions[currentStep - 1];
+            
+            document.querySelectorAll('.step-content').forEach((el, index) => {
+                if (index + 1 === currentStep) {
+                    el.classList.add('active');
                 } else {
-                    graduationYearLabel.style.display = "none"; 
-                    graduationYearInput.style.display = "none"; 
+                    el.classList.remove('active');
                 }
+            });
+            
+            if (currentStep === 3) {
+                document.getElementById('confirmButton').classList.remove('d-none');
+            } else {
+                document.getElementById('confirmButton').classList.add('d-none');
+            }
+            
+            if (currentStep === 1) {
+                document.getElementById('backButton').textContent = 'Back to Dashboard';
+            } else {
+                document.getElementById('backButton').textContent = 'Back';
             }
         }
-        document.getElementById("graduationYear").addEventListener("input", function() {
-        this.value = this.value.replace(/\D/g, '');
-        if (this.value.length > 4) {
-            this.value = this.value.slice(0, 4);
+        
+        function selectMoveTo(element, value) {
+            document.querySelectorAll('#step1 .selection-card').forEach(card => {
+                card.classList.remove('selected');
+                card.querySelector('.check-icon').classList.add('d-none');
+            });
+            
+            element.classList.add('selected');
+            element.querySelector('.check-icon').classList.remove('d-none');
+            
+            moveTo = value;
+            document.getElementById('typeInput').value = value;
+            
+            hideError();
+            
+            if (isAlumni) {
+                goToStep(2);
+            } else {
+                updateReviewUI();
+                goToStep(3);
+            }
         }
-        });
-        document.getElementById("graduationYear").addEventListener("input", function() {
-        this.value = this.value.replace(/\D/g, '');
+        
+        function validateGraduationYear() {
+            const yearInput = document.getElementById('graduationYear');
+            const year = yearInput.value.trim();
+            
+            if (!year || year.length !== 4 || !/^\d{4}$/.test(year)) {
+                showError("Please enter a valid 4-digit graduation year.");
+                return;
+            }
+            
+            graduationYear = year;
+            
+            updateReviewUI();
+            goToStep(3);
+        }
+        
+        function updateReviewUI() {
+            document.getElementById('reviewMoveFrom').textContent = courseName + '-' + moveFrom;
+            
+            if (isAlumni) {
+                document.getElementById('reviewMoveTo').textContent = 'Alumni';
+                document.getElementById('moveToIcon').className = 'fas fa-graduation-cap text-primary';
+                
+                document.getElementById('graduationYearReview').classList.remove('d-none');
+                document.getElementById('reviewGraduationYear').textContent = graduationYear;
+            } else {
+                document.getElementById('reviewMoveTo').textContent = courseName + '-' + moveTo;
+                document.getElementById('moveToIcon').className = 'fas fa-users text-primary';
+                document.getElementById('graduationYearReview').classList.add('d-none');
+            }
+        }
+        
+        function goToStep(step) {
+            currentStep = step;
+            updateStepUI();
+        }
+        
+        function goBack() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepUI();
+                
+                if (currentStep === 1) {
+                    moveTo = "";
+                    document.getElementById('typeInput').value = "";
+                }
+            } else {
+                window.location.href = '/v1/api/dashboard#students';
+            }
+        }
+        
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.textContent = message;
+            errorContainer.classList.remove('d-none');
+        }
+        
+        function hideError() {
+            document.getElementById('errorContainer').classList.add('d-none');
+        }
+        
+        function showToast(message, isSuccess = true) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: isSuccess ? "#4CAF50" : "#F44336",
+                stopOnFocus: true
+            }).showToast();
+        }
+        
+        function submitForm() {
+            const submitButton = document.getElementById('confirmButton');
+            const submitSpinner = document.getElementById('submitSpinner');
+            const submitText = document.getElementById('submitText');
+            
+            submitButton.disabled = true;
+            submitSpinner.classList.remove('d-none');
+            
+            const form = document.getElementById('moveStudentsForm');
+            const formData = new FormData(form);
+            
+            if (isAlumni && graduationYear) {
+                formData.append('graduationYear', graduationYear);
+            }
+            
+            const urlEncodedData = new URLSearchParams(formData).toString();
+            
+            fetch('/v1/api/moveStudents', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: urlEncodedData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Internal server error. please try agin later.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showToast(data.message || 'Students moved successfully!', true);
+                
+                setTimeout(() => {
+                    window.location.href = '/v1/api/dashboard#students';
+                }, 1500);
+            })
+            .catch(error => {
+                showToast(error.message || 'Failed to move students. Please try again.', false);
+                
+                submitButton.disabled = false;
+                submitSpinner.classList.add('d-none');
+            });
+        }
+        
+        window.onload = initForm;
+        
+        document.getElementById('graduationYear').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 4) {
+                this.value = this.value.slice(0, 4);
+            }
         });
     </script>
 </body>

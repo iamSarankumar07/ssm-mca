@@ -1,729 +1,1247 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fee Information</title>
+    <title>Fee Information Dashboard</title>
     <link rel="icon" href="https://your-favicon-url.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #e0e7ff;
+            --secondary: #475569;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --male: #3b82f6;
+            --female: #ec4899;
+            --border-radius: 0.5rem;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.2s ease-in-out;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
         }
-    
+
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
-    
-        .container {
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: auto;
-        }
-    
-        h1 {
-            text-align: center;
-            color: #fff;
-            background-color: #3d6ef5ff;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 24px;
-            margin: 0;
-        }
-    
-        h2 {
-            color: #3d6ef5ff;
-            margin-top: 20px;
-        }
-    
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px auto;
-            font-size: 15px;
-        }
-    
-        th,
-        td {
-            padding: 8px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-    
-        .td {
-            text-align: center;
-        }
-    
-        th {
-            background-color: #3d6ef5ff;
-            color: #fff;
-        }
-    
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-    
-        .edit-icon,
-        .delete-icon {
-            text-decoration: none;
-            color: #3d6ef5ff;
-            transition: color 0.3s;
-        }
-    
-        .edit-icon:hover,
-        .delete-icon:hover {
-            color: #0056b3;
-        }
-    
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-    
-        .btn {
-            padding: 8px 14px;
-            color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.4s, color 0.4s;
-        }
-    
-        .btn:hover {
-            background: #fff;
-            color: #3d6ef5ff;
-        }
-    
-        .back-button {
-            position: absolute;
-            top: 3.5%;
-            left: 2%;
-            text-decoration: none;
-        }
-    
-        .back-button img {
-            width: 45px;
-            height: 45px;
-            margin-right: 16px;
-            margin-bottom: 30px;
-            vertical-align: middle;
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-    
-        .icon-img {
-            width: 25px;
-            height: 25px;
-            vertical-align: middle;
-        }
-    
-        .view-link {
-            text-decoration: none;
-            cursor: pointer;
-        }
-    
-        .view-link:hover .icon-img {
-            transform: scale(1.2);
-            filter: brightness(1.5);
-        }
-    
-        .responsive-search-bar {
-            padding: 6px;
-            width: 100%;
-            max-width: 300px;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-    
-        .fee-summary-container {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f7fa;
+            color: #334155;
+            line-height: 1.5;
             display: flex;
-            justify-content: center;
-            align-items: stretch;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
+            flex-direction: column;
         }
-    
-        .fee-box {
+
+        .container-fluid {
+            padding: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .main-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
             flex: 1;
-            min-width: 320px;
-            max-width: 450px;
-            height: 90px;
-            border-left: 5px solid black;
-            background-color: #fff;
-            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08);
-            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .page-header {
+            padding: 1.5rem;
+            position: relative;
             display: flex;
             align-items: center;
-            padding: 12px 18px;
-            transition: all 0.3s ease-in-out;
+            justify-content: space-between;
+            flex-shrink: 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .page-title i {
+            color: var(--primary);
+            margin-right: 0.75rem;
+            font-size: 1.75rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+            font-weight: 500;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+            margin-right: 1rem;
+        }
+
+        .back-button:hover {
+            color: var(--primary);
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            padding: 1.5rem;
+        }
+
+        .tools-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tools-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .tools-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 0;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background-color: white;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* Compact stats pills */
+        .compact-stats {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 50px;
+            padding: 0.4rem 0.8rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .stat-pill i {
+            margin-right: 0.4rem;
+        }
+
+        .stat-pill.total {
+            color: var(--success);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .stat-pill.paid {
+            color: var(--info);
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .stat-pill.pending {
+            color: var(--danger);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .table-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
             position: relative;
             overflow: hidden;
         }
-    
-        .fee-box:hover {
-            transform: translateY(-3px);
-            box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.15);
+
+        .table-responsive {
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            {{!-- border-radius: var(--border-radius); --}}
+            box-shadow: var(--box-shadow);
         }
-    
-        .fee-box i {
-            font-size: 30px;
-            min-width: 40px;
-            margin-right: 15px;
+
+        .table {
+            margin-bottom: 0;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
         }
-    
-        .fee-content {
-            display: flex;
-            flex-direction: column;
+
+        .table thead th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #e2e8f0;
+            color: var(--dark);
+            font-size: 0.875rem;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tbody tr {
+            transition: var(--transition);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 500;
+            border-radius: 0.25rem;
+            display: inline-block;
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .status-paid {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-partial {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-unpaid {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
-            flex-grow: 1;
+            color: #fff;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
-        .fee-heading {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 2px;
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(100%);
+            transition: transform 0.2s ease;
         }
-    
-        .fee-content .fee-amount {
-            font-size: 18px;
-            font-weight: bold;
-            color: #222;
+
+        .action-btn:hover::before {
+            transform: translateY(0);
         }
-    
-        .fee-content .fee-label {
-            font-size: 13px;
-            color: gray;
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-    
-        .fee-box.total {
-            border-left-color: #28a745;
+
+        .action-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
-        .fee-box.paid {
-            border-left-color: #007bff;
+
+        .edit-btn {
+            background-color: var(--warning);
         }
-    
-        .fee-box.pending {
-            border-left-color: #dc3545;
+
+        .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 500;
+            border-radius: 0.25rem;
         }
-    
-        .fee-box.total i {
-            color: #28a745;
+
+        .badge-male {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--male);
         }
-    
-        .fee-box.paid i {
-            color: #007bff;
+
+        .badge-female {
+            background-color: rgba(236, 72, 153, 0.1);
+            color: var(--female);
         }
-    
-        .fee-box.pending i {
-            color: #dc3545;
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-    
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 20px;
-                padding: 10px;
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+            background-color: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            gap: 1rem;
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid #e2e8f0;
+            padding: 1rem 1.5rem;
+        }
+
+        .student-info-card {
+            border-left: 4px solid var(--primary);
+            background-color: rgba(79, 70, 229, 0.05) !important;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            outline: none;
+        }
+
+        .input-group-text {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: var(--secondary);
+        }
+
+        .alert-checkbox-container {
+            background-color: rgba(79, 70, 229, 0.05);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border: 1px dashed rgba(79, 70, 229, 0.3);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        #skeletonLoading {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 20;
+            overflow-y: auto;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
             }
-    
-            h2 {
-                font-size: 18px;
-                margin: 10px;
-            }
-    
-            table {
-                font-size: 14px;
-            }
-    
-            th,
-            td {
-                padding: 8px;
-                font-size: 12px;
-            }
-    
-            input[type="text"] {
-                width: 100%;
-                max-width: none;
-            }
-    
-            .btn {
-                width: 100%;
-                font-size: 12px;
-                padding: 10px 0;
-            }
-    
-            .icon-img {
-                width: 20px;
-                height: 20px;
-            }
-    
-            .responsive-search-bar {
-                max-width: 250px;
-                font-size: 13px;
-            }
-    
-            .back-button {
-                position: absolute;
-                top: 3.6%;
-                left: 4%;
-                text-decoration: none;
-            }
-    
-            .back-button img {
-                width: 40px;
-                height: 40px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
-            }
-    
-            .fee-box {
-                min-width: 280px;
-                max-width: 350px;
-                height: 85px;
-                padding: 10px;
-            }
-    
-            .fee-box i {
-                font-size: 28px;
-            }
-    
-            .fee-content .fee-amount {
-                font-size: 16px;
+            100% {
+                background-position: -200% 0;
             }
         }
-    
-        @media (max-width: 480px) {
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
+
+        .skeleton-header {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .skeleton-header-cell {
+            padding: 0 1rem;
+        }
+
+        .skeleton-row {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .skeleton-cell {
+            padding: 0 1rem;
+        }
+
+        .skeleton-text {
+            height: 16px;
+            width: 100%;
+        }
+
+        .skeleton-text.sm {
+            width: 60%;
+        }
+
+        .skeleton-text.lg {
+            height: 24px;
+        }
+
+        .skeleton-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .empty-state {
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+            color: var(--secondary);
+            height: 100%;
+            width: 100%;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+
+        .empty-state h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .empty-state p {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .toastify {
+            padding: 12px 20px;
+            color: #ffffff;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            background: #353535;
+            position: fixed;
+            top: -150px;
+            right: 15px;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            max-width: 300px;
+            z-index: 10000;
+        }
+
+        .toastify.on {
+            opacity: 1;
+            transform: translateY(165px);
+        }
+
+        .toastify-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .toastify-error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .toastify-info {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .toastify-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .toastify-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toastify-icon {
+            font-size: 20px;
+        }
+
+        .toastify-text {
+            flex: 1;
+        }
+
+        @media (max-width: 992px) {
+            .container-fluid {
+                padding: 1rem;
             }
-    
-            th,
-            td {
-                font-size: 10px;
-                padding: 6px;
-            }
-    
-            h1,
-            h2 {
-                font-size: 16px;
-            }
-    
-            .responsive-search-bar {
-                max-width: 200px;
-                font-size: 12px;
-            }
-    
-            .back-button {
-                position: absolute;
-                top: 3.5%;
-                left: 7%;
-                text-decoration: none;
-            }
-    
-            .back-button img {
-                width: 35px;
-                height: 35px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
-            }
-    
-            .fee-summary-container {
+
+            .header-left {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
-    
-            .fee-box {
+
+            .back-button {
+                margin-right: 0.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tools-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .tools-left, .tools-right {
+                justify-content: space-between;
+            }
+            
+            .search-container {
+                max-width: 100%;
+            }
+
+            .table-responsive {
+                border-radius: var(--border-radius);
+            }
+
+            .header-right {
+                margin-top: 1rem;
+            }
+            
+            .compact-stats {
+                margin-top: 0.5rem;
+                justify-content: space-between;
                 width: 100%;
-                max-width: 320px;
-                height: 80px;
-                font-size: 12px;
-                padding: 8px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container-fluid {
+                padding: 0.75rem;
+            }
+
+            .page-header {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .page-title i {
+                font-size: 1.5rem;
+            }
+
+            .action-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.75rem;
+            }
+            
+            .stat-pill {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
             }
         }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h1>TUITION FEES DETAILS</h1>
-    <a href="/ssm/mca/dashboard#fees" class="back-button">
-        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
-    </a>
-    <div class="table-container">
-        <h2>MCA - I</h2>
+    <div class="container-fluid">
+        <div class="main-container">
+            <div class="page-header">
+                <div class="header-left">
+                    <a href="/v1/api/dashboard#fees" class="back-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 style="margin-left: 40px;" class="page-title">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span id="pageTitle">Tuition Fees Details</span>
+                    </h1>
+                </div>
+                <div class="header-right">
+                    <form id="downloadForm" action="/v1/api/studentTuitionDownload" method="post">
+                        <input type="hidden" name="year" id="yearInput" value="">
+                        <input type="hidden" name="course" id="courseInput" value="">
+                        <input type="hidden" name="isPdf" value="true">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Download Report
+                        </button>
+                    </form>
+                </div>
+            </div>
 
-        <div class="fee-summary-container">
-            <div class="fee-box total">
-                <i class="fas fa-money-bill-wave"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #28a745;">Total Amount</p>
-                    <p class="fee-amount">Rs. {{firstYearTotalFee}}</p>
-                    <p class="fee-label">{{firstYearStudentCount}} Students</p>
+            <div class="content-wrapper">
+                <div class="tools-bar">
+                    <div class="tools-left">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search by student name, ID or email...">
+                        </div>
+                    </div>
+                    
+                    <div class="compact-stats">
+                        <div class="stat-pill total">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Total: <span id="totalAmount">₹ 0</span></span>
+                        </div>
+                        <div class="stat-pill paid">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Paid: <span id="paidAmount">₹ 0</span></span>
+                        </div>
+                        <div class="stat-pill pending">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Pending: <span id="pendingAmount">₹ 0</span></span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="fee-box paid">
-                <i class="fas fa-check-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #007bff;">Paid Amount</p>
-                    <p class="fee-amount">Rs. {{firstYearPaidFee}}</p>
-                    <p class="fee-label">{{firstYearPaidStudents}} Students</p>
-                </div>
-            </div>
-            <div class="fee-box pending">
-                <i class="fas fa-exclamation-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #dc3545;">Pending Amount</p>
-                    <p class="fee-amount">Rs. {{firstYearPendingFee}}</p>
-                    <p class="fee-label">{{firstYearPendingStudents}} Students</p>
+
+                <div class="table-container">
+                    <div id="skeletonLoading">
+                        <div class="skeleton-header">
+                            <div class="skeleton-header-cell" style="width: 5%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 20%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 12%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 8%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 8%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 12%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 12%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 12%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 12%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                            <div class="skeleton-header-cell" style="width: 7%"><div class="skeleton skeleton-text" style="background: rgba(255,255,255,0.3);"></div></div>
+                        </div>
+                        
+                        <div class="skeleton-row">
+                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 20%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 7%">
+                                <div style="display: flex; gap: 5px; justify-content: center;">
+                                    <div class="skeleton skeleton-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skeleton-row">
+                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 20%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 7%">
+                                <div style="display: flex; gap: 5px; justify-content: center;">
+                                    <div class="skeleton skeleton-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skeleton-row">
+                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 20%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 7%">
+                                <div style="display: flex; gap: 5px; justify-content: center;">
+                                    <div class="skeleton skeleton-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skeleton-row">
+                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 20%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 8%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 12%"><div class="skeleton skeleton-text"></div></div>
+                            <div class="skeleton-cell" style="width: 7%">
+                                <div style="display: flex; gap: 5px; justify-content: center;">
+                                    <div class="skeleton skeleton-circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="emptyState" class="empty-state">
+                        <i class="fas fa-money-bill-slash"></i>
+                        <h4>No Fee Records Found</h4>
+                        <p>No fee records available for the selected criteria.</p>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;" width="5%">S.No</th>
+                                    <th width="20%">Name</th>
+                                    <th style="text-align: center;" width="12%">Student ID</th>
+                                    <th style="text-align: center;" width="8%">Gender</th>
+                                    <th style="text-align: center;" width="8%">Semester</th>
+                                    <th style="text-align: center;" width="12%">Total Fee</th>
+                                    <th style="text-align: center;" width="12%">Paid Fee</th>
+                                    <th style="text-align: center;" width="12%">Pending Fee</th>
+                                    <th style="text-align: center;" width="12%">Payment Status</th>
+                                    <th style="text-align: center;" width="7%">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody id="feeTableBody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div style="margin-bottom: 20px; text-align: right;">
-            <input
-                type="text"
-                id="searchInput1"
-                placeholder="Search by Student Name"
-                onkeyup="searchByRefNo('searchInput1', 'table1')"
-                class="responsive-search-bar"
-            />
-        </div>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">
+                        <i class="fas fa-pencil-alt me-2"></i>Update Tuition Fees Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFeeForm">
+                        <input type="hidden" id="studentId" name="studentId">
+                    
+                        <div class="student-info-card">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-user text-primary me-2"></i>
+                                <span class="fw-bold" id="studentName"></span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-id-card text-primary me-2"></i>
+                                <span id="studentIdNumber"></span>
+                            </div>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="totalFee" class="form-label">Total Fee (₹)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control" id="totalFee" name="totalFee">
+                            </div>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="paidFee" class="form-label">Paid Fee (₹)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control" id="paidFee" name="paidFee">
+                            </div>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="pendingFee" class="form-label">Pending Fee (₹)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" class="form-control bg-light" id="pendingFee" readonly>
+                            </div>
+                        </div>
 
-        <table>
-            <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Name</th>
-                <th>Student ID</th>
-                <th>Gender</th>
-                <th>Total Fee</th>
-                <th>Paid Fee</th>
-                <th>Pending Fee</th>
-                <th>Payment Status</th>
-                <th>Edit</th>
-            </tr>
-            </thead>
-            <tbody id="table1">
-            {{#each firstYearStudents}}
-            <tr>
-                <td class="td">{{inc @index}}</td>
-                <td style="text-align: left;">{{name}}</td>
-                <td class="td">{{studentId}}</td>
-                <td class="td">{{gender}}</td>
-                <td class="td">Rs.{{totalFee}}</td>
-                <td class="td">Rs.{{paidFeeTu}}</td>
-                <td class="td">Rs.{{pendingFee}}</td>
-                <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
-                    {{paymentStatus}}
-                </td>
-                <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/feeEdit/{{_id}}" class="view-link">
-                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
-                </a>
-            </td>
-            </tr>
-            {{/each}}
-            </tbody>
-        </table>
-
-        <div class="btn-container">
-                <button class="btn" style="margin-bottom: 10px;" onclick="printFirstYearFee()">Print</button>
-            <form id="downloadForm" action="/ssm/mca/studentTuitionDownload" method="post">
-                <input type="hidden" name="year" value="I">
-                <input type="hidden" name="isPdf" value="true">
-                <button type="submit" class="btn">Download</button>
-            </form>
-            {{!-- <div class="btn-container">
-                <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
-            </div> --}}
+                        <div class="mb-3">
+                            <label for="semester" class="form-label">Semester</label>
+                            <input type="text" class="form-control" id="semester" name="semester">
+                        </div>
+                        
+                        <div class="alert-checkbox-container">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="alertStudent" name="alertStudent">
+                                <label class="form-check-label" for="alertStudent">
+                                    <i class="fas fa-bell text-warning me-1"></i> Alert Student
+                                </label>
+                            </div>
+                            <small class="text-muted d-block mt-1">
+                                <i class="fas fa-info-circle me-1"></i> Student will be notified about fees updates
+                            </small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">
+                        <span id="saveSpinner" class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true"></span>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="table-container">
-        <h2>MCA - II</h2>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-        <div class="fee-summary-container">
-            <div class="fee-box total">
-                <i class="fas fa-money-bill-wave"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #28a745;">Total Amount</p>
-                    <p class="fee-amount">Rs. {{secondYearTotalFee}}</p>
-                    <p class="fee-label">{{secondYearStudentCount}} Students</p>
-                </div>
-            </div>
-            <div class="fee-box paid">
-                <i class="fas fa-check-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #007bff;">Paid Amount</p>
-                    <p class="fee-amount">Rs. {{secondYearPaidFee}}</p>
-                    <p class="fee-label">{{secondYearPaidStudents}} Students</p>
-                </div>
-            </div>
-            <div class="fee-box pending">
-                <i class="fas fa-exclamation-circle"></i>
-                <div class="fee-content">
-                    <p class="fee-heading" style="color: #dc3545;">Pending Amount</p>
-                    <p class="fee-amount">Rs. {{secondYearPendingFee}}</p>
-                    <p class="fee-label">{{secondYearPendingStudents}} Students</p>
-                </div>
-            </div>
-        </div>
-
-        <div style="margin-bottom: 20px; text-align: right;">
-            <input
-                type="text"
-                id="searchInput2"
-                placeholder="Search by Student Name"
-                onkeyup="searchByRefNo('searchInput2', 'table2')"
-                class="responsive-search-bar"
-            />
-        </div>
-
-        <table>
-            <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Name</th>
-                <th>Student ID</th>
-                <th>Gender</th>
-                <th>Total Fee</th>
-                <th>Paid Fee</th>
-                <th>Pending Fee</th>
-                <th>Payment Status</th>
-                <th>Edit</th>
-            </tr>
-            </thead>
-            <tbody id="table2">
-            {{#each secondYearStudents}}
-            <tr>
-                <td class="td">{{inc @index}}</td>
-                <td style="text-align: left;">{{name}}</td>
-                <td class="td">{{studentId}}</td>
-                <td class="td">{{gender}}</td>
-                <td class="td">Rs.{{totalFee}}</td>
-                <td class="td">Rs.{{paidFeeTu}}</td>
-                <td class="td">Rs.{{pendingFee}}</td>
-                <td class="td" style="color: {{#if (eq paymentStatus "Paid")}}green{{else if (eq paymentStatus "Partial")}}orange{{else}}red{{/if}};">
-                    {{paymentStatus}}
-                </td>
-                <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/feeEdit/{{_id}}" class="view-link">
-                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
-                </a>
-            </td>
-            </tr>
-            {{/each}}
-            </tbody>
-        </table>
-        <div class="btn-container">
-                <button class="btn" style="margin-bottom: 10px;" onclick="printSecondYearFee()">Print</button>
-            <form id="downloadForm" action="/ssm/mca/studentTuitionDownload" method="post">
-                <input type="hidden" name="year" value="II">
-                <input type="hidden" name="isPdf" value="true">
-                <button type="submit" class="btn">Download</button>
-            </form>
-        </div>
-    </div>
-    <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard#fees">< Go back!</a>
-    </div>
-</div>
-
-<div id="printDiv" style="display:none;"></div>
-
-<script>
-    function printFirstYearFee() {
-        var printWindow = window.open('', '_blank');
-        
-        var printContent = `
-            <html>
-            <head>
-                <style>
-                    body {
-                        font-family: 'Arial', sans-serif;
-                        background-color: #fff;
-                        margin: 0; 
-                        padding: 20px;
-                    }
-
-                    h1,h2,h3 {
-                        color: #000; 
-                        text-align: center;
-                        margin-top: 20px;
-                    }
-
-                    table {
-                        width: 100%; 
-                        border-collapse: collapse;
-                        margin-top: 20px;
-                    }
-
-                    th, td {
-                        border: 1px solid #000; 
-                        {{!-- text-align: center; --}}
-                        padding: 12px;
-                    }
-
-                    .td {
-                        text-align: center;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1>SSM COLLEGE OF ENGINEERING</h1>
-                <h2>Department Of MCA - I</h2>
-                <h3>Tution Fees Details</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Name</th>
-                            <th>Student ID</th>
-                            <th>Total Fee</th>
-                            <th>Pending Fee</th>
-                            <th>Payment Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each firstYearStudents}}
-                        <tr>
-                            <td class="td">{{inc @index}}</td>
-                            <td>{{name}}</td>
-                            <td class="td">{{studentId}}</td>
-                            <td class="td">Rs.{{totalFee}}</td>
-                            <td class="td">Rs.{{pendingFee}}</td>
-                            <td class="td">{{paymentStatus}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </body>
-            </html>
-        `;
-        
-        printWindow.document.write(printContent);
-        printWindow.document.title = 'MCA-I Tution Fees Details';
-        printWindow.document.close();
-        printWindow.print();
-    }
-
-    function printSecondYearFee() {
-        var printWindow = window.open('', '_blank');
-        
-        var printContent = `
-            <html>
-            <head>
-                <style>
-                    body {
-                        font-family: 'Arial', sans-serif;
-                        background-color: #fff; 
-                        margin: 0; 
-                        padding: 20px;
-                    }
-
-                    h1,h2,h3 {
-                        color: #000;
-                        text-align: center;
-                        margin-top: 20px;
-                    }
-
-                    table {
-                        width: 100%; 
-                        border-collapse: collapse;
-                        margin-top: 20px;
-                    }
-
-                    th, td {
-                        border: 1px solid #000;
-                        {{!-- text-align: center; --}}
-                        padding: 12px;
-                    }
-
-                    .td {
-                        text-align: center;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1>SSM COLLEGE OF ENGINEERING</h1>
-                <h2>Department Of MCA - II</h2>
-                <h3>Tution Fees Details</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Name</th>
-                            <th>Student ID</th>
-                            <th>Total Fee</th>
-                            <th>Pending Fee</th>
-                            <th>Payment Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each secondYearStudents}}
-                        <tr>
-                            <td class="td">{{inc @index}}</td>
-                            <td>{{name}}</td>
-                            <td class="td">{{studentId}}</td>
-                            <td class="td">Rs.{{totalFee}}</td>
-                            <td class="td">Rs.{{pendingFee}}</td>
-                            <td class="td">{{paymentStatus}}</td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </body>
-            </html>
-        `;
-        
-        printWindow.document.write(printContent);
-        printWindow.document.title = 'MCA-II Tution Fees Details';
-        printWindow.document.close();
-        printWindow.print();
-    }
-
-    function searchByRefNo(searchInput, tableId) {
-        const input = document.getElementById(searchInput);
-        const filter = input.value.toUpperCase();
-        const table = document.getElementById(tableId);
-        const rows = table.getElementsByTagName('tr');
-
-        for (let i = 0; i < rows.length; i++) {
-          const td = rows[i].getElementsByTagName('td')[1]; 
-          if (td) {
-            const textValue = td.textContent || td.innerText;
-            if (textValue.toUpperCase().indexOf(filter) > -1) {
-              rows[i].style.display = '';
-            } else {
-              rows[i].style.display = 'none';
-            }
-          }
+    <script>
+        function showToast(message, type = 'success') {
+            const iconMap = {
+                'success': '<i class="fas fa-check-circle"></i>',
+                'error': '<i class="fas fa-exclamation-circle"></i>',
+                'info': '<i class="fas fa-info-circle"></i>',
+                'warning': '<i class="fas fa-exclamation-triangle"></i>'
+            };
+            
+            const icon = iconMap[type] || iconMap.info;
+            
+            Toastify({
+                text: `<div class="toastify-content">
+                        <div class="toastify-icon">${icon}</div>
+                        <div class="toastify-text">${message}</div>
+                      </div>`,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                className: `toastify-${type}`,
+                escapeMarkup: false,
+                stopOnFocus: true,
+                onClick: function(){}
+            }).showToast();
         }
-      }
 
-</script>
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        async function fetchFeeData() {
+            try {
+                const year = getUrlParameter('year');
+                const course = getUrlParameter('course');
+                
+                document.getElementById('yearInput').value = year;
+                document.getElementById('courseInput').value = course;
+                document.getElementById('pageTitle').textContent = `${course} - ${year} Tuition Fees Details`;
+                
+                document.getElementById('skeletonLoading').style.display = 'block';
+                document.querySelector('.table-responsive').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'none';
+                
+                const response = await fetch(`/v1/api/students/fees/data?year=${year}&course=${course}&type=Tuition`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch fee data');
+                }
+                
+                const data = await response.json();
+                
+                document.getElementById('totalAmount').textContent = `₹ ${data.totalFees || '0'}`;
+                document.getElementById('paidAmount').textContent = `₹ ${data.paidFees || '0'}`;
+                document.getElementById('pendingAmount').textContent = `₹ ${data.pendingFees || '0'}`;
+                
+                if (data.studentsData && data.studentsData.length > 0) {
+                    populateFeeTable(data.studentsData);
+                    document.getElementById('emptyState').style.display = 'none';
+                    document.querySelector('.table-responsive').style.display = 'block';
+                } else {
+                    document.getElementById('emptyState').style.display = 'flex';
+                    document.getElementById('emptyState').querySelector('h4').textContent = 'No Fee Records Found';
+                    document.getElementById('emptyState').querySelector('p').textContent = 'No fee records available for the selected criteria.';
+                }
+                
+                document.getElementById('skeletonLoading').style.display = 'none';
+            } catch (error) {
+                console.error('Error fetching fee data:', error);
+                document.getElementById('skeletonLoading').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'flex';
+                document.getElementById('emptyState').querySelector('h4').textContent = 'Error Loading Data';
+                document.getElementById('emptyState').querySelector('p').textContent = 'Failed to load fee data. Please try again later.';
+                showToast('Failed to load fee data. Please try again later.', 'error');
+            }
+        }
+        
+        function populateFeeTable(studentsData) {
+            const tableBody = document.getElementById('feeTableBody');
+            tableBody.innerHTML = '';
+            
+            studentsData.forEach((student, index) => {
+                const row = document.createElement('tr');
+                
+                let statusClass = 'status-unpaid';
+                if (student.tuitionFees.status === 'Paid') {
+                    statusClass = 'status-paid';
+                } else if (student.tuitionFees.status === 'Partial') {
+                    statusClass = 'status-partial';
+                }
+                
+                const genderClass = student.gender === 'Male' ? 'badge-male' : 'badge-female';
+                
+                row.innerHTML = `
+                    <td class="text-center">${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td class="text-center">${student.studentId}</td>
+                    <td class="text-center">
+                        <span class="badge ${genderClass}">
+                            ${student.gender}
+                        </span>
+                    </td>
+                    <td class="text-center">${student.tuitionFees.semester || '-'}</td>
+                    <td class="text-center">₹ ${student.tuitionFees.totalFee || '0'}</td>
+                    <td class="text-center">₹ ${student.tuitionFees.paidFee || '0'}</td>
+                    <td class="text-center">₹ ${student.tuitionFees.pendingFee || '0'}</td>
+                    <td class="text-center">
+                        <span class="status-badge ${statusClass}">
+                            ${student.tuitionFees.status || 'Unpaid'}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <button class="action-btn edit-btn" title="Edit Student" data-id="${student._id}" data-name="${student.name}" 
+                            data-student-id="${student.studentId}" data-gender="${student.gender}" data-total-fee="${student.tuitionFees.totalFee || '0'}" 
+                            data-semester="${student.tuitionFees.semester || ''}" data-paid-fee="${student.tuitionFees.paidFee || '0'}" 
+                            data-pending-fee="${student.tuitionFees.pendingFee || '0'}" data-status="${student.tuitionFees.status || 'Unpaid'}"
+                            data-alert-student="${student.tuitionFees.alertStudent || false}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            setupEditButtons();
+        }
+        
+        function setupEditButtons() {
+            const editButtons = document.querySelectorAll('.edit-btn');
+            const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const studentId = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    const studentIdNumber = this.getAttribute('data-student-id');
+                    const totalFee = this.getAttribute('data-total-fee');
+                    const paidFee = this.getAttribute('data-paid-fee');
+                    const pendingFee = this.getAttribute('data-pending-fee');
+                    const semester = this.getAttribute('data-semester');
+                    const alertStudent = this.getAttribute('data-alert-student');
+                    
+                    document.getElementById('studentId').value = studentId;
+                    document.getElementById('studentName').textContent = name;
+                    document.getElementById('studentIdNumber').textContent = studentIdNumber;
+                    document.getElementById('totalFee').value = totalFee;
+                    document.getElementById('paidFee').value = paidFee;
+                    document.getElementById('pendingFee').value = pendingFee;
+                    document.getElementById('semester').value = semester;
+                    
+                    document.getElementById('alertStudent').checked = alertStudent === 'true';
+                    
+                    editModal.show();
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchFeeData();
+            
+            document.getElementById('searchInput').addEventListener('keyup', function () {
+                searchStudents();
+            });
+            
+            document.getElementById('totalFee').addEventListener('input', updatePendingFee);
+            document.getElementById('paidFee').addEventListener('input', updatePendingFee);
+            
+            function updatePendingFee() {
+                const totalFee = parseFloat(document.getElementById('totalFee').value) || 0;
+                const paidFee = parseFloat(document.getElementById('paidFee').value) || 0;
+                const pendingFee = totalFee - paidFee;
+                
+                document.getElementById('pendingFee').value = pendingFee > 0 ? pendingFee : 0;
+            }
+            
+            document.getElementById('saveChanges').addEventListener('click', function() {
+                const spinner = document.getElementById('saveSpinner');
+                spinner.classList.remove('d-none');
+                
+                const studentId = document.getElementById('studentId').value;
+                const totalFee = document.getElementById('totalFee').value;
+                const paidFee = document.getElementById('paidFee').value;
+                const semester = document.getElementById('semester').value;
+                const alertStudent = document.getElementById('alertStudent').checked;
+                
+                if (!totalFee || !paidFee) {
+                    showToast('Please fill in all required fields', 'error');
+                    spinner.classList.add('d-none');
+                    return;
+                }
+                
+                const data = {
+                    totalFee: totalFee,
+                    paidFee: paidFee,
+                    semester: semester,
+                    alertStudent: alertStudent,
+                    paymentType: "Tuition"
+                };
+                
+                fetch(`/v1/api/updateFee/${studentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    spinner.classList.add('d-none');
+                    
+                    bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                    
+                    showToast('Student fee details updated successfully!', 'success');
+                    
+                    fetchFeeData();
+                })
+                .catch(error => {
+                    spinner.classList.add('d-none');
+                    
+                    console.error('Error updating student fee details:', error);
+                    showToast('Error updating student fee details. Please try again.', 'error');
+                });
+            });
+        });
+
+        function searchStudents() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.trim().toUpperCase();
+            const tbody = document.getElementById('feeTableBody');
+            const rows = tbody.getElementsByTagName('tr');
+            let visibleCount = 0;
+
+            for (let i = 0; i < rows.length; i++) {
+                const nameCell = rows[i].getElementsByTagName('td')[1];
+                const idCell = rows[i].getElementsByTagName('td')[2];
+                
+                if (nameCell && idCell) {
+                    const nameValue = nameCell.textContent || nameCell.innerText;
+                    const idValue = idCell.textContent || idCell.innerText;
+                    
+                    if (nameValue.toUpperCase().includes(filter) || idValue.toUpperCase().includes(filter)) {
+                        rows[i].style.display = '';
+                        visibleCount++;
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+
+            if (visibleCount === 0) {
+                document.getElementById('emptyState').style.display = 'flex';
+                document.getElementById('emptyState').querySelector('h4').textContent = 'No Results Found';
+                document.getElementById('emptyState').querySelector('p').textContent = 'Try a different search term';
+            } else {
+                document.getElementById('emptyState').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -219,7 +219,6 @@
         margin-bottom: 1rem;
     }
 
-    /* Input Styles */
     textarea {
         width: 100%;
         border: 1px solid #d1d5db;
@@ -237,7 +236,6 @@
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
     }
 
-    /* Button Styles */
     .modal-actions {
         display: flex;
         justify-content: flex-end;
@@ -323,7 +321,7 @@
 <body>
     <div class="main-container">
         <h1>Exam Fees Update Request</h1>
-    <a href="/ssm/mca/dashboard#fees" class="back-button">
+    <a href="/v1/api/dashboard#fees" class="back-button">
         <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
     </a>
 
@@ -373,7 +371,7 @@
 
                 <div class="actions">
                     <button class="btn btn-reject" onclick="openRejectModal('{{studentId}}')">Reject</button>
-                    <form action="/ssm/mca/approveAndRejectEx" method="POST">
+                    <form action="/v1/api/approveAndRejectEx" method="POST">
                         <input type="hidden" name="studentId" value="{{studentId}}">
                         <input type="submit" name="action" value="Approve" class="btn btn-approve">
                     </form>
@@ -397,7 +395,7 @@
         <div class="modal-content">
             <h2 style="color:#1d4ed8;">Reject Request</h2>
             <p>Please provide the reason for rejecting this request:</p>
-            <form id="reject-form" action="/ssm/mca/approveAndRejectEx" method="POST">
+            <form id="reject-form" action="/v1/api/approveAndRejectEx" method="POST">
                 <input type="hidden" name="studentId" id="reject-studentId" value="">
                 <input type="hidden" name="action" id="reject-action" value="">
                 <textarea 

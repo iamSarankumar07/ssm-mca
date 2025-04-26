@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Gallery Management</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary-color: #4f46e5;
+        --primary-dark: #4338ca;
+        --secondary-color: #f72585;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --light-bg: #f8fafc;
+        --card-bg: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border-color: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        --radius-sm: 0.375rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: 'Inter', sans-serif;
+        background-color: var(--light-bg);
+        color: var(--text-primary);
+    }
+
+    .container {
+        height: 100%;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .admin-container {
+        background-color: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 2rem;
+        margin: 1rem;
+        height: calc(100% - 2rem);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin-header {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .admin-header h1 {
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .admin-header p {
+        color: var(--text-secondary);
+        margin-bottom: 0;
+    }
+
+    .back-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
+        transition: all 0.2s ease;
+    }
+
+    .nav-tabs {
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 1.5rem;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .nav-tabs .nav-link {
+        font-weight: 600;
+        color: var(--text-secondary);
+        border: none;
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        transition: all 0.2s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: var(--primary-color);
+        background-color: rgba(67, 97, 238, 0.05);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        border-bottom: 3px solid var(--primary-color);
+        background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .tab-content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tab-pane {
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #upload-content {
+        overflow-y: auto;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 200px;
+        border: 2px dashed var(--border-color);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        background-color: rgba(67, 97, 238, 0.05);
+        transition: all 0.2s ease;
+    }
+
+    .image-preview:hover {
+        border-color: var(--primary-color);
+    }
+
+    .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .image-preview-text {
+        color: var(--text-secondary);
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .image-preview-text i {
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    .btn {
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+    }
+
+    .btn-outline-primary {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover, .btn-outline-primary:focus {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-submit {
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .items-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0.5rem;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .gallery-item {
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .gallery-item .card-body {
+        padding: 1rem;
+    }
+
+    .gallery-item .card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .gallery-item .card-text {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .gallery-item-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+    }
+
+    .search-container {
+        position: relative;
+        margin-bottom: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .search-container i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+    }
+
+    .search-input {
+        padding-left: 2.75rem;
+        background-color: rgba(67, 97, 238, 0.05);
+        border: 1px solid var(--border-color);
+    }
+
+    .search-input:focus {
+        background-color: white;
+    }
+
+    .featured-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 0.35rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 10;
+    }
+
+    .modal-content {
+        border-radius: var(--radius-lg);
+        border: none;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.5rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color);
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .upload-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1050;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: var(--radius-lg);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .upload-progress {
+        margin: 1.5rem 0;
+    }
+
+    .progress {
+        height: 0.75rem;
+        border-radius: 1rem;
+        background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .progress-bar {
+        background-color: var(--primary-color);
+        border-radius: 1rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--text-secondary);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--border-color);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h4 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .filter-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .filter-pill {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+        border: 1px solid rgba(67, 97, 238, 0.2);
+        border-radius: 2rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .filter-pill:hover {
+        background-color: rgba(67, 97, 238, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .filter-pill.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 0;
+    }
+
+    .spinner-border {
+        color: var(--primary-color);
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .search-button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        padding: 0.75rem 1.25rem;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        transition: all 0.2s ease;
+    }
+
+    .search-button:hover {
+        background-color: var(--primary-dark);
+    }
+
+    @media (max-width: 768px) {
+        .admin-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .back-btn {
+            align-self: flex-start;
+        }
+        
+        .gallery-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .filter-pills {
+            gap: 0.35rem;
+        }
+
+        .filter-pill {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="admin-container">
+        <div class="admin-header">
+            <a href="/v1/api/dashboard" class="btn btn-outline-primary back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+            <div class="text-end">
+                <h1 class="h3">Image Gallery Management</h1>
+                <p class="text-muted">Upload and manage your image gallery</p>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs mb-4" id="contentTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload-content" type="button" role="tab" aria-controls="upload-content" aria-selected="true">
+                    <i class="fas fa-upload me-2"></i>Upload Image
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="manage-tab" data-bs-toggle="tab" data-bs-target="#manage-content" type="button" role="tab" aria-controls="manage-content" aria-selected="false">
+                    <i class="fas fa-images me-2"></i>Manage Gallery
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="contentTabsContent">
+            <div class="tab-pane fade show active" id="upload-content" role="tabpanel" aria-labelledby="upload-tab">
+                <form id="galleryForm">
+                    <div class="row g-4">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="imageTitle" class="form-label">Image Title</label>
+                                <input type="text" class="form-control" id="imageTitle" name="title" placeholder="Enter image title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newsDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="newsDate" name="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imageDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="imageDescription" name="description" rows="3" placeholder="Enter image description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imageCategory" class="form-label">Category</label>
+                                <select class="form-select" id="imageCategory" name="category">
+                                    <option value="">Select category</option>
+                                    <option value="events">Events</option>
+                                    <option value="cultural">Cultural</option>
+                                    <option value="academic">Academic</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="campus">Campus</option>
+                                    <option value="other">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="galleryImage" class="form-label">Upload Image</label>
+                                <div class="image-preview" id="galleryImagePreview">
+                                    <div class="image-preview-text">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Image Preview</span>
+                                    </div>
+                                </div>
+                                <input type="file" class="form-control" id="galleryImage" name="image" accept="image/*" required>
+                                <div class="form-text">Recommended size: 1200x800 pixels</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="imageFeatured" name="featured">
+                                    <label for="imageFeatured" class="form-check-label">
+                                        Featured Image
+                                    </label>
+                                    <div class="form-text">Featured images will be displayed prominently</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="reset" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-redo me-2"></i>Reset
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-upload me-2"></i>Upload Image
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="manage-content" role="tabpanel" aria-labelledby="manage-tab">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control search-input" id="searchGallery" placeholder="Search gallery...">
+                    <button type="button" class="search-button" id="searchButton">
+                        <i style="color: #ffffff;" class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="filter-pills" id="categoryPills">
+                    <div class="filter-pill active" data-category="">All Categories</div>
+                    <div class="filter-pill" data-category="events">Events</div>
+                    <div class="filter-pill" data-category="cultural">Cultural</div>
+                    <div class="filter-pill" data-category="academic">Academic</div>
+                    <div class="filter-pill" data-category="sports">Sports</div>
+                    <div class="filter-pill" data-category="campus">Campus</div>
+                    <div class="filter-pill" data-category="other">Other</div>
+                </div>
+                
+                <div class="items-container" id="galleryContainer">
+                    <div class="loading-spinner" id="galleryLoadingSpinner">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editImageModal" tabindex="-1" aria-labelledby="editImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editImageModalLabel">Edit Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editImageForm">
+                    <input type="hidden" id="editImageId" name="id">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="editImageTitle" class="form-label">Image Title</label>
+                                <input type="text" class="form-control" id="editImageTitle" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editImageDate" class="form-label">Date</label>
+                                <input type="date" class="form-control" id="editImageDate" name="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editImageDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="editImageDescription" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editImageCategory" class="form-label">Category</label>
+                                <select class="form-select" id="editImageCategory" name="category">
+                                    <option value="">Select category</option>
+                                    <option value="events">Events</option>
+                                    <option value="cultural">Cultural</option>
+                                    <option value="academic">Academic</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="campus">Campus</option>
+                                    <option value="other">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="editGalleryImage" class="form-label">Image</label>
+                                <div class="image-preview" id="editGalleryImagePreview">
+                                    <div class="image-preview-text">Current Image</div>
+                                </div>
+                                <input type="file" class="form-control" id="editGalleryImage" name="image" accept="image/*">
+                                <div class="form-text">Leave empty to keep current image</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="editImageFeatured" name="featured">
+                                    <label for="editImageFeatured" class="form-check-label">
+                                        Featured Image
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveImageChanges">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                    <h4>Are you sure?</h4>
+                    <p>You are about to delete this image. This action cannot be undone.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">
+                    <i class="fas fa-trash me-2"></i>Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="upload-modal" id="uploadModal">
+    <div class="upload-modal-content">
+        <h4 id="uploadModalTitle">Uploading...</h4>
+        <div class="upload-progress">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+            </div>
+        </div>
+        <p id="uploadModalMessage">Please wait while your image is being uploaded.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    const API_ENDPOINTS = {
+        uploadImage: '/v1/api/admin/upload-gallery',
+        fetchGallery: '/v1/api/fetch/Images/gallery',
+        updateImage: '/v1/api/admin/updateGallery/',
+        deleteImage: '/v1/api/admin/deleteGallery/'
+    };
+
+    let deleteItemId = '';
+    let currentGalleryItems = [];
+    let currentSearchTerm = '';
+    let currentCategory = '';
+    let isLoading = false;
+    
+    function safeGetElement(id) {
+        const element = document.getElementById(id);
+        if (!element) {
+            console.warn(`Element with ID ${id} not found`);
+        }
+        return element;
+    }
+
+    function showUploadModal(title = 'Uploading...', message = 'Please wait while your image is being uploaded.') {
+        try {
+            const titleElement = safeGetElement('uploadModalTitle');
+            const messageElement = safeGetElement('uploadModalMessage');
+            const modalElement = safeGetElement('uploadModal');
+            
+            if (titleElement) titleElement.textContent = title;
+            if (messageElement) messageElement.textContent = message;
+            if (modalElement) modalElement.style.display = 'flex';
+        } catch (error) {
+            console.error('Error showing upload modal:', error);
+        }
+    }
+
+    function hideUploadModal() {
+        try {
+            const modalElement = safeGetElement('uploadModal');
+            if (modalElement) modalElement.style.display = 'none';
+        } catch (error) {
+            console.error('Error hiding upload modal:', error);
+        }
+    }
+
+    function showToast(message, success = true) {
+        try {
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: success ? "#10b981" : "#ef4444",
+                stopOnFocus: true,
+                className: "toast-notification"
+            }).showToast();
+        } catch (error) {
+            console.error('Error showing toast:', error);
+            alert(message);
+        }
+    }
+
+    function truncateText(text, maxLength) {
+        if (!text) return '';
+        if (text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + '...';
+    }
+
+    function setupImagePreview(inputId, previewId) {
+        try {
+            const input = safeGetElement(inputId);
+            const preview = safeGetElement(previewId);
+            
+            if (!input || !preview) {
+                console.error(`Image preview setup failed: Element with ID ${inputId} or ${previewId} not found`);
+                return;
+            }
+            
+            input.addEventListener('change', function() {
+                try {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            try {
+                                const previewElement = safeGetElement(previewId);
+                                if (previewElement) {
+                                    previewElement.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                                }
+                            } catch (innerError) {
+                                console.error('Error in FileReader onload:', innerError);
+                            }
+                        };
+                        
+                        reader.onerror = function(e) {
+                            console.error('FileReader error:', e);
+                            showToast('Error loading image preview', false);
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    } else {
+                        const previewElement = safeGetElement(previewId);
+                        if (previewElement) {
+                            previewElement.innerHTML = `
+                                <div class="image-preview-text">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Image Preview</span>
+                                </div>
+                            `;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error handling file change:', error);
+                }
+            });
+        } catch (error) {
+            console.error('Error setting up image preview:', error);
+        }
+    }
+    
+    async function handleGallerySubmit(event) {
+        event.preventDefault();
+        
+        try {
+            const form = safeGetElement('galleryForm');
+            if (!form) {
+                showToast('Gallery form not found', false);
+                return;
+            }
+            
+            const formData = new FormData(form);
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            showUploadModal('Uploading Image', 'Please wait while your image is being uploaded.');
+            
+            const response = await fetch(API_ENDPOINTS.uploadImage, {
+                method: 'POST',
+                body: formData
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error('Failed to upload image');
+            }
+            
+            showToast('Image uploaded successfully!', true);
+            
+            form.reset();
+            const imagePreview = safeGetElement('galleryImagePreview');
+            if (imagePreview) {
+                imagePreview.innerHTML = `
+                    <div class="image-preview-text">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Image Preview</span>
+                    </div>
+                `;
+            }
+            
+            await fetchGalleryWithFilters();
+            
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error('Error uploading image:', error);
+            showToast('Error uploading image: ' + error.message, false);
+        }
+    }
+    
+    async function fetchGalleryWithFilters() {
+        if (isLoading) return;
+        
+        isLoading = true;
+        
+        try {
+            console.log('Fetching gallery items with filters...');
+            
+            const spinner = safeGetElement('galleryLoadingSpinner');
+            if (spinner) {
+                spinner.style.display = 'flex';
+            }
+            
+            const params = new URLSearchParams();
+            if (currentSearchTerm) {
+                params.append('search', currentSearchTerm);
+            }
+            if (currentCategory) {
+                params.append('category', currentCategory);
+            }
+            
+            const url = `${API_ENDPOINTS.fetchGallery}${params.toString() ? '?' + params.toString() : ''}`;
+            
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Failed to fetch gallery items');
+            }
+            const data = await response.json();
+            console.log('Gallery items fetched successfully:', data.length);
+            
+            currentGalleryItems = data;
+            
+            renderGalleryItems(data);
+        } catch (error) {
+            console.error('Error fetching gallery:', error);
+            showToast('Error fetching gallery: ' + error.message, false);
+            
+            const container = safeGetElement('galleryContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h4>Error Loading Gallery</h4>
+                        <p>There was a problem loading the gallery. Please try again later.</p>
+                    </div>
+                `;
+            }
+        } finally {
+            isLoading = false;
+            
+            const spinner = safeGetElement('galleryLoadingSpinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+            }
+        }
+    }
+    
+    function renderGalleryItems(galleryItems) {
+        try {
+            const container = safeGetElement('galleryContainer');
+            
+            if (!container) {
+                console.error('Gallery container not found');
+                return;
+            }
+            
+            if (!galleryItems || galleryItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <h4>No Images Found</h4>
+                        <p>No images match your current filters. Try adjusting your search criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div class="gallery-grid">';
+            galleryItems.forEach(item => {
+                try {
+                    if (!item || !item._id) {
+                        console.warn('Invalid gallery item:', item);
+                        return;
+                    }
+                    
+                    const featuredBadge = item.featured ? `<div class="featured-badge"><i class="fas fa-star me-1"></i>Featured</div>` : '';
+                    
+                    html += `
+                        <div class="card gallery-item" data-id="${item._id}" data-category="${item.category || ''}">
+                            ${featuredBadge}
+                            <img src="${item.imageUrl}" class="card-img-top" alt="${item.title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${item.title}</h5>
+                                <p class="card-text">${truncateText(item.description || '', 60)}</p>
+                                ${item.category ? `<span class="badge bg-primary mb-2">${item.category}</span>` : ''}
+                                <div class="gallery-item-actions">
+                                    <button class="btn btn-sm btn-outline-primary edit-image" data-id="${item._id}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger delete-item" data-id="${item._id}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } catch (itemError) {
+                    console.error('Error rendering gallery item:', itemError);
+                }
+            });
+            html += '</div>';
+            
+            container.innerHTML = html;
+            
+            document.querySelectorAll('.edit-image').forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const imageId = this.getAttribute('data-id');
+                        openImageEditModal(imageId, galleryItems);
+                    } catch (error) {
+                        console.error('Error in edit image button click handler:', error);
+                        showToast('Error opening edit modal', false);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.delete-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    try {
+                        const itemId = this.getAttribute('data-id');
+                        openDeleteModal(itemId);
+                    } catch (error) {
+                        console.error('Error in delete button click handler:', error);
+                        showToast('Error opening delete modal', false);
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Error rendering gallery items:', error);
+            showToast('Error displaying gallery items', false);
+        }
+    }
+    
+    function openImageEditModal(imageId, galleryItems) {
+        try {
+            const imageItem = galleryItems.find(item => item._id === imageId);
+            if (!imageItem) {
+                console.error('Image item not found:', imageId);
+                showToast('Image item not found', false);
+                return;
+            }
+            
+            const idField = safeGetElement('editImageId');
+            const titleField = safeGetElement('editImageTitle');
+            const dateField = safeGetElement('editImageDate');
+            const descriptionField = safeGetElement('editImageDescription');
+            const categoryField = safeGetElement('editImageCategory');
+            const featuredField = safeGetElement('editImageFeatured');
+            
+            if (idField) idField.value = imageItem._id;
+            if (titleField) titleField.value = imageItem.title;
+            if (dateField) dateField.value = imageItem.date;
+            if (descriptionField) descriptionField.value = imageItem.description || '';
+            if (categoryField) categoryField.value = imageItem.category || '';
+            if (featuredField) featuredField.checked = imageItem.featured || false;
+            
+            const imagePreview = safeGetElement('editGalleryImagePreview');
+            if (imagePreview) {
+                imagePreview.innerHTML = `<img src="${imageItem.imageUrl}" alt="Current Image">`;
+            }
+            
+            try {
+                const modalElement = safeGetElement('editImageModal');
+                if (modalElement) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                } else {
+                    throw new Error('Edit image modal element not found');
+                }
+            } catch (modalError) {
+                console.error('Error showing modal:', modalError);
+                showToast('Error opening edit modal', false);
+            }
+        } catch (error) {
+            console.error('Error opening image edit modal:', error);
+            showToast('Error opening edit modal', false);
+        }
+    }
+    
+    function openDeleteModal(itemId) {
+        try {
+            deleteItemId = itemId;
+            
+            const modalElement = safeGetElement('deleteModal');
+            if (modalElement) {
+                const deleteModal = new bootstrap.Modal(modalElement);
+                deleteModal.show();
+            } else {
+                throw new Error('Delete modal element not found');
+            }
+        } catch (error) {
+            console.error('Error opening delete modal:', error);
+            showToast('Error opening delete modal', false);
+        }
+    }
+    
+    async function saveImageChanges() {
+        try {
+            const form = safeGetElement('editImageForm');
+            if (!form) {
+                showToast('Edit image form not found', false);
+                return;
+            }
+            
+            const formData = new FormData(form);
+            const imageId = formData.get('id');
+            
+            if (!imageId) {
+                showToast('Image ID not found', false);
+                return;
+            }
+            
+            showUploadModal('Updating Image', 'Please wait while your image is being updated.');
+            
+            const response = await fetch(API_ENDPOINTS.updateImage + imageId, {
+                method: 'PUT',
+                body: formData
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error('Failed to update image');
+            }
+            
+            try {
+                const modalElement = safeGetElement('editImageModal');
+                if (modalElement) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+            } catch (modalError) {
+                console.error('Error hiding modal:', modalError);
+            }
+            
+            await fetchGalleryWithFilters();
+            
+            showToast('Image updated successfully!', true);
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error('Error updating image:', error);
+            showToast('Error updating image: ' + error.message, false);
+        }
+    }
+    
+    async function deleteItem(itemId) {
+        try {
+            if (!itemId) {
+                showToast('Invalid item information for deletion', false);
+                return;
+            }
+            
+            showUploadModal('Deleting Image', 'Please wait while the image is being deleted.');
+            
+            const response = await fetch(API_ENDPOINTS.deleteImage + itemId, {
+                method: 'DELETE'
+            });
+            
+            hideUploadModal();
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete image');
+            }
+            
+            try {
+                const modalElement = safeGetElement('deleteModal');
+                if (modalElement) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+            } catch (modalError) {
+                console.error('Error hiding delete modal:', modalError);
+            }
+            
+            await fetchGalleryWithFilters();
+            
+            showToast('Image deleted successfully!', true);
+        } catch (error) {
+            hideUploadModal();
+            
+            console.error('Error deleting image:', error);
+            showToast('Error deleting image: ' + error.message, false);
+        }
+    }
+    
+    function setupCategoryFilter() {
+        try {
+            const pills = document.querySelectorAll('.filter-pill');
+            
+            pills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    pills.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    currentCategory = category;
+                    
+                    fetchGalleryWithFilters();
+                });
+            });
+        } catch (error) {
+            console.error('Error setting up category filter:', error);
+        }
+    }
+    
+    function setupSearch() {
+        try {
+            const searchInput = safeGetElement('searchGallery');
+            const searchButton = safeGetElement('searchButton');
+            
+            if (searchButton) {
+                searchButton.addEventListener('click', function() {
+                    if (searchInput) {
+                        currentSearchTerm = searchInput.value.trim();
+                        fetchGalleryWithFilters();
+                    }
+                });
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        currentSearchTerm = this.value.trim();
+                        fetchGalleryWithFilters();
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error setting up search:', error);
+        }
+    }
+    
+    async function loadGalleryItems() {
+        try {
+            console.log('Loading gallery items...');
+            currentSearchTerm = '';
+            currentCategory = '';
+            
+            const searchInput = safeGetElement('searchGallery');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            const pills = document.querySelectorAll('.filter-pill');
+            pills.forEach(pill => {
+                if (pill.getAttribute('data-category') === '') {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+            
+            await fetchGalleryWithFilters();
+        } catch (error) {
+            console.error('Error loading gallery items:', error);
+            showToast('Error loading gallery items', false);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            console.log('DOM content loaded, initializing application...');
+            
+            setupImagePreview('galleryImage', 'galleryImagePreview');
+            setupImagePreview('editGalleryImage', 'editGalleryImagePreview');
+            
+            const galleryForm = safeGetElement('galleryForm');
+            
+            if (galleryForm) {
+                galleryForm.addEventListener('submit', handleGallerySubmit);
+            }
+            
+            setupCategoryFilter();
+            
+            setupSearch();
+            
+            const manageTab = safeGetElement('manage-tab');
+            if (manageTab) {
+                manageTab.addEventListener('click', function() {
+                    console.log('Manage tab clicked');
+                    loadGalleryItems();
+                });
+            }
+            
+            document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(event) {
+                    const targetId = event.target.getAttribute('data-bs-target');
+                    console.log('Tab shown:', targetId);
+                    
+                    if (targetId === '#manage-content') {
+                        loadGalleryItems();
+                    }
+                });
+            });
+            
+            const saveImageChangesBtn = safeGetElement('saveImageChanges');
+            if (saveImageChangesBtn) {
+                saveImageChangesBtn.addEventListener('click', saveImageChanges);
+            }
+            
+            const confirmDeleteBtn = safeGetElement('confirmDelete');
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (deleteItemId) {
+                        deleteItem(deleteItemId);
+                    } else {
+                        showToast('No item selected for deletion', false);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error initializing application:', error);
+            showToast('Error initializing application. Please refresh the page.', false);
+        }
+    });
+</script>
+</body>
+</html>

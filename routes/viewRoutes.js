@@ -22,9 +22,15 @@ app.use(express.static("images"));
 app.use(express.static(path.join(__dirname, "../Images")));
 
 app.get(
-  "/register",
+  "/getStudentRegister",
   authonticationController.validateToken,
-  viewController.register
+  (req, res, next) => {
+    const course = req.query.course;
+
+    req.body.course = course;
+    next();
+  },
+  viewController.getStudentRegister
 );
 
 app.get(
@@ -84,7 +90,15 @@ app.get(
 app.get(
   "/paymentAlert",
   authonticationController.validateToken,
-  viewController.paymentAlert
+  (req, res, next) => {
+    const course = req.query.course;
+    const year = req.query.year;
+
+    req.body.course = course;
+    req.body.year = year;
+    next();
+  },
+  viewController.getPaymentAlert
 );
 
 app.get(
@@ -139,8 +153,8 @@ app.get(
 
 // app.get('/studentList/secondYear', viewController.secondYearStudentList);
 
-app.get("/imageUpload", (req, res) => {
-  res.render("imageUpload");
+app.get("/getImageGallery", (req, res) => {
+  res.render("uploadImageGallery");
 });
 app.get(
   "/dashboard",
@@ -184,6 +198,14 @@ app.get(
 app.get(
   "/moveStudentsPage",
   authonticationController.validateToken,
+  (req, res, next) => {
+    const course = req.query.course;
+    const year = req.query.year;
+
+    req.body.course = course;
+    req.body.year = year;
+    next();
+  },
   viewController.moveStudents
 );
 
@@ -205,17 +227,17 @@ app.get(
   viewController.examFeeEdit
 );
 
-app.get(
-  "/gallery",
-  // authonticationController.validateToken,
-  viewController.gallery
-);
+// app.get(
+//   "/image/gallery",
+//   // authonticationController.validateToken,
+//   viewController.gallery
+// );
 
-app.get(
-  "/home/gallery",
-  // authonticationController.validateToken,
-  viewController.homeGallery
-);
+// app.get(
+//   "/home/image/gallery",
+//   // authonticationController.validateToken,
+//   viewController.homeGallery
+// );
 
 app.get(
   "/imageList",

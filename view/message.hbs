@@ -5,106 +5,926 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages</title>
     <link rel="icon" href="https://i.postimg.cc/Y9kpSNhL/live-chat.png">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
-    }
-body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    color: #333;
-    margin: 0;
-    background-color: #f9f9f9;
-}
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --surface: #ffffff;
+            --surface-hover: #f9fafb;
+            --surface-active: #f3f4f6;
+            --border: #e5e7eb;
+            --border-light: #f0f0f0;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-full: 9999px;
+        }
 
-.container {
-    width: 80%;
-    max-width: 960px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", sans-serif;
+        }
 
-.header {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #6610f2;
-}
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: #f9fafb;
+        }
 
-.chat-icon {
-    width: 50px;
-    height: 50px;
-    float: right;
-    margin-top: -30px;
-}
+        .app-container {
+            height: 100vh;
+            max-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-.message-list {
-    list-style: none;
-    padding: 0;
-}
+        .main-wrapper {
+            height: 100%;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
 
-.message {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
-}
+        .main-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
 
-.profile-image {
-    float: left;
-    margin-right: 15px;
-    margin-top: 15px;
-}
+        .header-container {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
 
-.user-profile-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
 
-.message-content {
-    overflow: hidden;
-    margin-top: 30px;
-}
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-strong {
-    font-weight: bold;
-    color: #6610f2;
-}
-.goback {
-        margin-top: -73px;
-        margin-left: -10px;
-        float: left;
-        width: 45px;
-        height: 45px;
-      }
-</style>
+        .header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        .header-badge {
+            background-color: #e0e7ff;
+            color: var(--primary-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+        }
+
+        .chat-icon {
+            width: 36px;
+            height: 36px;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            background-color: var(--surface);
+        }
+
+        .back-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-container {
+            padding: 1rem 1.5rem;
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border);
+            background-color: var(--surface-hover);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .search-input:focus {
+            background-color: var(--surface);
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 2.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 1rem;
+        }
+
+        .content-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem 1.5rem 1.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--text-tertiary) transparent;
+        }
+
+        .content-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content-container::-webkit-scrollbar-thumb {
+            background-color: var(--text-tertiary);
+            border-radius: var(--radius-full);
+        }
+
+        .message-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        .message-item {
+            margin-bottom: 1.25rem;
+        }
+
+        .message-card {
+            display: flex;
+            background-color: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: var(--primary);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border);
+        }
+
+        .message-card:hover::before {
+            opacity: 1;
+        }
+
+        .message-avatar {
+            margin-right: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .user-profile-img {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 2px solid var(--border);
+            background-color: #f3f4f6;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-card:hover .user-profile-img {
+            border-color: var(--primary-light);
+            transform: scale(1.05);
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .message-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .message-date {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            background-color: var(--surface-hover);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-weight: 500;
+        }
+
+        .message-email {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .message-email i {
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .message-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            background-color: var(--surface-hover);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .message-text::before {
+            content: '"';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.25rem;
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.2;
+            font-family: serif;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            gap: 0.25rem;
+        }
+
+        .status-new {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-new i {
+            font-size: 0.7rem;
+        }
+
+        .skeleton-message {
+            display: flex;
+            margin-bottom: 1.25rem;
+            padding: 1.25rem;
+            background-color: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+
+        .skeleton-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            background-color: #f3f4f6;
+            margin-right: 1.25rem;
+            flex-shrink: 0;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .skeleton-content {
+            flex: 1;
+        }
+
+        .skeleton-line {
+            height: 12px;
+            background-color: #f3f4f6;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .skeleton-line.short {
+            width: 30%;
+        }
+
+        .skeleton-line.medium {
+            width: 60%;
+        }
+
+        .skeleton-line.long {
+            width: 90%;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .pagination-container {
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-light);
+            margin-top: 0.5rem;
+        }
+
+        .pagination .page-link {
+            color: var(--primary);
+            border-radius: var(--radius-md);
+            margin: 0 0.2rem;
+            border: 1px solid var(--border);
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pagination .page-link:hover:not(.active) {
+            background-color: var(--surface-hover);
+            border-color: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .pagination .page-link:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+
+        .no-messages {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            background-color: var(--surface-hover);
+            border-radius: var(--radius-md);
+            border: 1px dashed var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .no-messages i {
+            font-size: 3rem;
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        .no-messages h5 {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                padding: 1rem;
+            }
+
+            .card-header {
+                padding: 1rem;
+            }
+
+            .search-container {
+                padding: 0.75rem 1rem;
+            }
+
+            .content-container {
+                padding: 0.5rem 1rem 1rem;
+            }
+
+            .message-card {
+                flex-direction: column;
+            }
+
+            .message-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+                align-self: center;
+            }
+
+            .user-profile-img {
+                width: 64px;
+                height: 64px;
+            }
+
+            .message-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .message-date {
+                align-self: flex-start;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header {
+                font-size: 1.25rem;
+            }
+
+            .header-badge {
+                display: none;
+            }
+        }
+
+        @keyframes highlight {
+            0% {
+                background-color: rgba(99, 102, 241, 0.1);
+            }
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        .highlight-new {
+            animation: highlight 2s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="header">Messages</h1>
-        <img src="https://i.postimg.cc/Y9kpSNhL/live-chat.png" alt="Chat icon" class="chat-icon">
-        <a href="/ssm/mca/dashboard#admission"><img src="https://i.postimg.cc/mD67M56k/back-button.png" alt="Go Back" class="goback"></a>
-        <ul class="message-list">
-            {{#each messages}}
-                <li class="message">
-                    <div class="profile-image">
-                        <img src="https://i.postimg.cc/4ddrMCpN/bussiness-man.png" alt="User profile" class="user-profile-img">
+    <div class="app-container">
+        <div class="main-wrapper">
+            <div class="main-card">
+                <div class="header-container">
+                    <div class="card-header">
+                        <div class="header-left">
+                            <a href="/v1/api/dashboard#admission" class="btn back-btn">
+                                <i class="bi bi-arrow-left"></i>
+                            </a>
+                            <h1 class="header">Messages <span class="header-badge">Inbox</span></h1>
+                        </div>
+                        <img src="https://i.postimg.cc/Y9kpSNhL/live-chat.png" alt="Chat icon" class="chat-icon">
                     </div>
-                    <div class="message-content">
-                        <strong>Name:</strong> {{this.name}}<br>
-                        <strong>Email:</strong> {{this.email}}<br>
-                        <strong>Message:</strong> {{this.message}}
+                    
+                    <div class="search-container">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" class="form-control search-input" placeholder="Search by name, email or message content...">
                     </div>
-                </li>
-            {{/each}}
-        </ul>
+                </div>
+                
+                <div class="content-container">
+                    <div id="messages-container">
+                        <div id="skeleton-loading">
+                            <div class="skeleton-message">
+                                <div class="skeleton-avatar"></div>
+                                <div class="skeleton-content">
+                                    <div class="skeleton-line short"></div>
+                                    <div class="skeleton-line medium"></div>
+                                    <div class="skeleton-line long"></div>
+                                </div>
+                            </div>
+                            <div class="skeleton-message">
+                                <div class="skeleton-avatar"></div>
+                                <div class="skeleton-content">
+                                    <div class="skeleton-line short"></div>
+                                    <div class="skeleton-line medium"></div>
+                                    <div class="skeleton-line long"></div>
+                                </div>
+                            </div>
+                            <div class="skeleton-message">
+                                <div class="skeleton-avatar"></div>
+                                <div class="skeleton-content">
+                                    <div class="skeleton-line short"></div>
+                                    <div class="skeleton-line medium"></div>
+                                    <div class="skeleton-line long"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <ul id="message-list" class="message-list list-unstyled d-none">
+                        </ul>
+                    </div>
+                    
+                    <div class="pagination-container">
+                        <nav aria-label="Message pagination">
+                            <ul id="pagination" class="pagination justify-content-center">
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Handlebars === 'undefined') {
+                console.error('Handlebars is not loaded');
+                return;
+            }
+            
+            Handlebars.registerHelper('formatDate', function(dateString) {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    if (isNaN(date.getTime())) {
+                        return dateString;
+                    }
+                    
+                    const now = new Date();
+                    const diffMs = now - date;
+                    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                    
+                    if (diffDays < 1) {
+                        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                        if (diffHours < 1) {
+                            const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                            return diffMinutes < 1 ? 'Just now' : `${diffMinutes}m ago`;
+                        }
+                        return `${diffHours}h ago`;
+                    } 
+                    else if (diffDays < 7) {
+                        return date.toLocaleDateString('en-US', { 
+                            weekday: 'short',
+                            hour: '2-digit', 
+                            minute: '2-digit'
+                        });
+                    } 
+                    else {
+                        return date.toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric',
+                            year: now.getFullYear() !== date.getFullYear() ? 'numeric' : undefined,
+                            hour: '2-digit', 
+                            minute: '2-digit'
+                        });
+                    }
+                } catch (e) {
+                    console.error('Error formatting date:', e);
+                    return dateString;
+                }
+            });
+            
+            const messageTemplateHtml = `
+                {{#each messages}}
+                    <li class="message-item {{#if this.isNew}}highlight-new{{/if}}">
+                        <div class="message-card">
+                            <div class="message-avatar">
+                                <img src="https://i.postimg.cc/4ddrMCpN/bussiness-man.png" alt="{{this.name}}" class="user-profile-img">
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <h5 class="message-name">
+                                        {{this.name}}
+                                        {{#if this.isNew}}
+                                            <span class="status-badge status-new">
+                                                <i class="bi bi-circle-fill"></i> New
+                                            </span>
+                                        {{/if}}
+                                    </h5>
+                                    <span class="message-date">
+                                        <i class="bi bi-clock"></i>
+                                        {{formatDate this.date}}
+                                    </span>
+                                </div>
+                                <div class="message-email">
+                                    <i class="bi bi-envelope-fill"></i>
+                                    <span title="{{this.email}}">{{this.email}}</span>
+                                </div>
+                                <div class="message-text">
+                                    {{this.message}}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {{else}}
+                    <div class="no-messages">
+                        <i class="bi bi-inbox-fill d-block mb-3"></i>
+                        <h5 class="mb-2">No messages found</h5>
+                        <p class="text-muted mb-0">Your inbox is empty at the moment</p>
+                    </div>
+                {{/each}}
+            `;
+            
+            const paginationTemplateHtml = `
+                <li class="page-item {{#if isPrevDisabled}}disabled{{/if}}">
+                    <a class="page-link" href="#" data-page="{{prevPage}}" aria-label="Previous">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+                
+                {{#each pages}}
+                    <li class="page-item {{#if this.isActive}}active{{/if}}">
+                        <a class="page-link" href="#" data-page="{{this.number}}">{{this.number}}</a>
+                    </li>
+                {{/each}}
+                
+                <li class="page-item {{#if isNextDisabled}}disabled{{/if}}">
+                    <a class="page-link" href="#" data-page="{{nextPage}}" aria-label="Next">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            const messageTemplate = Handlebars.compile(messageTemplateHtml);
+            const paginationTemplate = Handlebars.compile(paginationTemplateHtml);
+            
+            let currentPage = 1;
+            const messagesPerPage = 5;
+            let totalMessages = 0;
+            let allMessages = [];
+            let originalMessages = [];
+            
+            fetchMessages();
+            
+            function fetchMessages() {
+                document.getElementById('skeleton-loading').classList.remove('d-none');
+                document.getElementById('message-list').classList.add('d-none');
+                
+                setTimeout(() => {
+                    fetch('/api/messages')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            allMessages = data.messages || [];
+                            originalMessages = [...allMessages];
+                            totalMessages = allMessages.length;
+                            
+                            renderMessages();
+                            renderPagination();
+                            
+                            document.getElementById('skeleton-loading').classList.add('d-none');
+                            document.getElementById('message-list').classList.remove('d-none');
+                        })
+                        .catch(error => {
+                            console.error('Error fetching messages:', error);
+                            
+                            loadSampleData();
+                        });
+                }, 1500);
+            }
+            
+            function loadSampleData() {
+                allMessages = [
+                    {
+                        name: "John Doe",
+                        email: "john.doe@example.com",
+                        message: "Hello, I'm interested in your services. Can you provide more information about your pricing plans? I'd like to know if there are any discounts for annual subscriptions.",
+                        date: new Date(Date.now() - 30 * 60 * 1000).toISOString(), 
+                        isNew: true
+                    },
+                    {
+                        name: "Jane Smith",
+                        email: "jane.smith@example.com",
+                        message: "I have a question regarding your product features. Do you offer custom integrations with third-party tools? We're specifically looking to integrate with our CRM system.",
+                        date: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+                        isNew: true
+                    },
+                    {
+                        name: "Michael Johnson",
+                        email: "michael.j@example.com",
+                        message: "Thank you for your quick response. I would like to schedule a demo next week if possible. Tuesday or Wednesday afternoon would work best for our team.",
+                        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    },
+                    {
+                        name: "Emily Wilson",
+                        email: "emily.wilson@example.com",
+                        message: "I'm experiencing an issue with my account. Can someone from your support team help me resolve this? I'm unable to access the dashboard after the recent update.",
+                        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    },
+                    {
+                        name: "Robert Brown",
+                        email: "robert.brown@example.com",
+                        message: "I'm interested in your enterprise solution. Could you send me a detailed brochure with case studies? We're a team of 150+ people looking for a scalable solution.",
+                        date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+                    },
+                    {
+                        name: "Sarah Davis",
+                        email: "sarah.davis@example.com",
+                        message: "Just wanted to say that your product has been a game-changer for our team. Thank you for the excellent service! The new features you added last month have improved our workflow significantly.",
+                        date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+                    },
+                    {
+                        name: "David Miller",
+                        email: "david.miller@example.com",
+                        message: "I need assistance with setting up my account. The documentation is a bit confusing for me. Could you provide a step-by-step guide or perhaps schedule a quick call?",
+                        date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+                    },
+                    {
+                        name: "Lisa Taylor",
+                        email: "lisa.taylor@example.com",
+                        message: "Can you provide information about your data security measures? We're concerned about privacy compliance, especially with the new regulations coming into effect next quarter.",
+                        date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+                    }
+                ];
+                
+                originalMessages = [...allMessages]; 
+                totalMessages = allMessages.length;
+                
+                renderMessages();
+                renderPagination();
+                
+                document.getElementById('skeleton-loading').classList.add('d-none');
+                document.getElementById('message-list').classList.remove('d-none');
+            }
+            
+            function renderMessages() {
+                const startIndex = (currentPage - 1) * messagesPerPage;
+                const endIndex = startIndex + messagesPerPage;
+                const currentMessages = allMessages.slice(startIndex, endIndex);
+                
+                const messageListHtml = messageTemplate({ messages: currentMessages });
+                document.getElementById('message-list').innerHTML = messageListHtml;
+            }
+            
+            function renderPagination() {
+                const totalPages = Math.ceil(totalMessages / messagesPerPage);
+                
+                const pages = [];
+                for (let i = 1; i <= totalPages; i++) {
+                    pages.push({
+                        number: i,
+                        isActive: i === currentPage
+                    });
+                }
+                
+                const paginationHtml = paginationTemplate({
+                    pages: pages,
+                    prevPage: currentPage - 1,
+                    nextPage: currentPage + 1,
+                    isPrevDisabled: currentPage === 1,
+                    isNextDisabled: currentPage === totalPages || totalPages === 0
+                });
+                
+                document.getElementById('pagination').innerHTML = paginationHtml;
+                
+                const pageLinks = document.querySelectorAll('.page-link');
+                pageLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const page = parseInt(this.getAttribute('data-page'));
+                        if (page && page !== currentPage) {
+                            currentPage = page;
+                            renderMessages();
+                            renderPagination();
+                            document.getElementById('messages-container').scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'start' 
+                            });
+                        }
+                    });
+                });
+            }
+            
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                let debounceTimeout;
+                
+                searchInput.addEventListener('input', function(e) {
+                    clearTimeout(debounceTimeout);
+                    
+                    debounceTimeout = setTimeout(() => {
+                        const searchTerm = e.target.value.toLowerCase().trim();
+                        
+                        if (searchTerm === '') {
+                            allMessages = [...originalMessages];
+                            totalMessages = allMessages.length;
+                            currentPage = 1;
+                        } else {
+                            allMessages = originalMessages.filter(message => 
+                                message.name.toLowerCase().includes(searchTerm) || 
+                                message.email.toLowerCase().includes(searchTerm) || 
+                                message.message.toLowerCase().includes(searchTerm)
+                            );
+                            totalMessages = allMessages.length;
+                            currentPage = 1;
+                        }
+                        
+                        document.getElementById('skeleton-loading').classList.remove('d-none');
+                        document.getElementById('message-list').classList.add('d-none');
+                        
+                        setTimeout(() => {
+                            renderMessages();
+                            renderPagination();
+                            
+                            document.getElementById('skeleton-loading').classList.add('d-none');
+                            document.getElementById('message-list').classList.remove('d-none');
+                        }, 300);
+                    }, 300);
+                });
+            }
+            
+            document.addEventListener('click', function(e) {
+                const messageCard = e.target.closest('.message-card');
+                if (messageCard) {
+                    const messageItem = messageCard.closest('.message-item');
+                    if (messageItem) {
+                        const statusBadge = messageCard.querySelector('.status-badge.status-new');
+                        if (statusBadge) {
+                            statusBadge.remove();
+                            
+                            const index = Array.from(document.querySelectorAll('.message-item')).indexOf(messageItem);
+                            if (index !== -1) {
+                                const startIndex = (currentPage - 1) * messagesPerPage;
+                                const messageIndex = startIndex + index;
+                                
+                                if (allMessages[messageIndex]) {
+                                    allMessages[messageIndex].isNew = false;
+                                }
+                                
+                                const originalIndex = originalMessages.findIndex(m => 
+                                    m.name === allMessages[messageIndex].name && 
+                                    m.email === allMessages[messageIndex].email
+                                );
+                                
+                                if (originalIndex !== -1) {
+                                    originalMessages[originalIndex].isNew = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-

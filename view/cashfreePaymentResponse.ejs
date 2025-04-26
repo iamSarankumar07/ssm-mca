@@ -4,153 +4,271 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Status</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   <style>
     :root {
-      --primary-color: #4a90e2;
-      --success-color: #28a745;
-      --error-color: #dc3545;
-      --pending-color: #ffc107;
-      --text-color: #333;
-      --background-color: #f8f9fa;
+      --primary-color: #6366f1;
+      --primary-hover: #4f46e5;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --pending-color: #f59e0b;
+      --text-color: #374151;
+      --light-text: #6b7280;
+      --background-color: #f9fafb;
       --card-background: #ffffff;
-      --border-color: #e0e0e0;
+      --border-color: #e5e7eb;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background-color: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 0;
       margin: 0;
-      padding: 0;
+    }
+
+    .main-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      color: var(--text-color);
-    }
-
-    .container {
-      background: var(--card-background);
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
       width: 100%;
+      min-height: 80%;
     }
 
-    .header {
+    .status-card {
+      background: var(--card-background);
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .status-header {
+      padding: 2rem;
       text-align: center;
-      margin-bottom: 2rem;
+      color: white;
     }
 
-    .header h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
+    .success-header {
+      background: linear-gradient(135deg, var(--success-color), #34d399);
     }
 
-    .header p {
-      font-size: 1rem;
-      margin: 0;
+    .error-header {
+      background: linear-gradient(135deg, var(--error-color), #f87171);
     }
 
-    .transaction-details {
-      margin-top: 1.5rem;
-      border-top: 1px solid var(--border-color);
-      padding-top: 1.5rem;
+    .pending-header {
+      background: linear-gradient(135deg, var(--pending-color), #fbbf24);
     }
 
-    .detail-item {
+    .status-icon {
+      background: white;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
       display: flex;
-      justify-content: space-between;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+    }
+
+    .success-icon {
+      color: var(--success-color);
+    }
+
+    .error-icon {
+      color: var(--error-color);
+    }
+
+    .pending-icon {
+      color: var(--pending-color);
+    }
+
+    .status-body {
+      padding: 2rem;
+    }
+
+    .transaction-details .row {
       margin-bottom: 1rem;
-      font-size: 0.9rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
     }
 
-    .detail-item i {
-      color: var(--primary-color);
-      width: 20px;
-      margin-right: 10px;
+    .transaction-details .row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
     }
 
-    .btn {
-      display: block;
-      width: fit-content;
-      margin: 1.5rem auto 0;
+    .detail-label {
+      color: var(--light-text);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+
+    .detail-label i {
+      margin-right: 0.5rem;
+    }
+
+    .detail-value {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
       padding: 0.75rem 1.5rem;
-      background: var(--primary-color);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      text-align: center;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
     }
 
-    .btn:hover {
-      background: #3a7bc8;
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-2px);
     }
 
-    @media (max-width: 600px) {
-      .container {
-        margin: 1rem;
-        padding: 1.5rem;
+    @media (max-width: 768px) {
+      .status-card {
+        width: 95%;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .detail-value {
+        text-align: left;
+        margin-top: 0.25rem;
+      }
+      
+      .status-body {
+        padding: 1.25rem;
+      }
+      
+      .status-header {
+        padding: 1.25rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
+  <div class="main-container">
+    <div class="status-card">
       <% if (paymentStatus === "SUCCESS") { %>
-        <h1 style="color: var(--success-color);">
-          <i class="fas fa-check-circle"></i> Payment Successful!
-        </h1>
-        <p>Thank you, <%= name %>. Your payment was processed successfully ✔️.</p>
+        <div class="status-header success-header">
+          <div class="status-icon success-icon">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <h1 class="h4 mb-2">Payment Successful!</h1>
+          <p class="mb-0">Thank you, <%= name %>. Your payment was processed successfully.</p>
+        </div>
       <% } else if (paymentStatus === "FAILED") { %>
-        <h1 style="color: var(--error-color);">
-          <i class="fas fa-times-circle"></i> Payment Failed!
-        </h1>
-        <p>Sorry, <%= name %>. Your payment could not be processed.</p>
+        <div class="status-header error-header">
+          <div class="status-icon error-icon">
+            <i class="bi bi-x-lg"></i>
+          </div>
+          <h1 class="h4 mb-2">Payment Failed!</h1>
+          <p class="mb-0">Sorry, <%= name %>. Your payment could not be processed.</p>
+        </div>
       <% } else if (paymentStatus === "PENDING") { %>
-        <h1 style="color: var(--pending-color);">
-          <i class="fas fa-hourglass-half"></i> Payment Pending!
-        </h1>
-        <p>Hello, <%= name %>. Your payment is currently being processed. Please wait.</p>
+        <div class="status-header pending-header">
+          <div class="status-icon pending-icon">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+          <h1 class="h4 mb-2">Payment Pending!</h1>
+          <p class="mb-0">Hello, <%= name %>. Your payment is currently being processed. Please wait.</p>
+        </div>
       <% } %>
-    </div>
 
-    <div class="transaction-details">
-      <div class="detail-item">
-        <span class="detail-label"><i class="fas fa-hashtag"></i> Transaction ID:</span>
-        <span class="detail-value"><%= txnId %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="fas fa-rupee-sign"></i> Amount Paid:</span>
-        <span class="detail-value">₹<%= amount %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="far fa-calendar-alt"></i> Payment Date:</span>
-        <span class="detail-value"><%= txnDate %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="far fa-envelope"></i> Email:</span>
-        <span class="detail-value"><%= email %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="fas fa-phone"></i> Phone:</span>
-        <span class="detail-value"><%= phone %></span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label"><i class="fas fa-info-circle"></i> Description:</span>
-        <span class="detail-value"><%= description %></span>
+      <div class="status-body">
+        <div class="transaction-details">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-label">
+                <i class="bi bi-hash"></i> Transaction ID
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-value"><%= txnId %></div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-label">
+                <i class="bi bi-currency-rupee"></i> Amount Paid
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-value">₹<%= amount %></div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-label">
+                <i class="bi bi-calendar-date"></i> Payment Date
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-value"><%= txnDate %></div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-label">
+                <i class="bi bi-envelope"></i> Email
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-value"><%= email %></div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-label">
+                <i class="bi bi-telephone"></i> Phone
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-value"><%= phone %></div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-label">
+                <i class="bi bi-info-circle"></i> Description
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="detail-value"><%= description %></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-4">
+          <a href="/v1/api/studentProfile" class="btn btn-primary">
+            <i class="bi bi-person me-2"></i> Back to Profile
+          </a>
+        </div>
       </div>
     </div>
-
-    <a href="/ssm/mca/studentProfile" class="btn">
-      <i class="fas fa-user"></i> Back to Profile
-    </a>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

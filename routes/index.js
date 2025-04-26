@@ -11,11 +11,13 @@ router.use(require("./imageRoutes"));
 router.use(require("./announcementRoutes"));
 router.use(require("./feeRoutes"));
 router.use(require("./loginRoutes"));
-router.use(require("./subjectRoutes"));
+router.use(require("./studyMaterialRoutes"));
 router.use(require("./paymentRoutes"));
 router.use(require("./advancePaymentRoutes"));
 router.use(require("./attendanceRoutes"));
 router.use(require("./chatRoutes"));
 router.use(require("./chatbotRoutes"));
+router.use(require("./academicRoutes"));
+router.use(require("./eCommerceRoutes"));
 
 module.exports = router;

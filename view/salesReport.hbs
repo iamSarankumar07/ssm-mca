@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Reports | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --light-bg: #f8f9fa;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .sidebar {
+            background-color: #ffffff;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        
+        .sidebar .nav-link {
+            color: #495057;
+            border-radius: 0.25rem;
+            margin: 0.25rem 0;
+            padding: 0.75rem 1rem;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 0.5rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 240px;
+            padding: 2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            padding: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .top-bar {
+            background-color: white;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        
+        .metric-card {
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            height: 100%;
+        }
+        
+        .metric-card .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-card .value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-card .label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        .metric-card .trend {
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .metric-card .trend i {
+            margin-right: 0.25rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .table-product-performance th {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .date-range-picker {
+            border-radius: 0.25rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-2 sidebar d-none d-lg-block p-0">
+                <div class="d-flex flex-column p-3">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+                        <i class="fas fa-shopping-cart fs-4 me-2" style="color: var(--primary-color);"></i>
+                        <span class="fs-4 fw-bold">ShopDash</span>
+                    </a>
+                    <hr>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-home"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-box"></i>
+                                Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-shopping-bag"></i>
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="fas fa-chart-line"></i>
+                                Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-users"></i>
+                                Customers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://via.placeholder.com/32" alt="Admin" width="32" height="32" class="rounded-circle me-2">
+                            <strong>Admin User</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-10 main-content">
+                <!-- Top Bar -->
+                <div class="top-bar d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Sales Reports</h4>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown me-3">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bell"></i>
+                                <span class="badge bg-danger rounded-pill">3</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                                <li><a class="dropdown-item" href="#">New order received</a></li>
+                                <li><a class="dropdown-item" href="#">Sales target reached</a></li>
+                                <li><a class="dropdown-item" href="#">New product added</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown d-lg-none">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown  aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Date Range Filter -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <label for="dateRange" class="form-label">Date Range</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <input type="text" class="form-control date-range-picker" id="dateRange" value="Mar 1, 2023 - Mar 21, 2023">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="compareWith" class="form-label">Compare With</label>
+                                <select class="form-select" id="compareWith">
+                                    <option>Previous Period</option>
+                                    <option>Previous Year</option>
+                                    <option>No Comparison</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="reportType" class="form-label">Report Type</label>
+                                <select class="form-select" id="reportType">
+                                    <option>Sales Overview</option>
+                                    <option>Product Performance</option>
+                                    <option>Category Analysis</option>
+                                    <option>Customer Insights</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button class="btn btn-primary w-100">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Metrics -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body metric-card">
+                                <div class="icon bg-primary-subtle text-primary">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="value">$24,568</div>
+                                <div class="label">Total Revenue</div>
+                                <div class="trend text-success">
+                                    <i class="fas fa-arrow-up"></i> 12.5% vs previous period
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body metric-card">
+                                <div class="icon bg-success-subtle text-success">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="value">1,248</div>
+                                <div class="label">Total Orders</div>
+                                <div class="trend text-success">
+                                    <i class="fas fa-arrow-up"></i> 8.2% vs previous period
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body metric-card">
+                                <div class="icon bg-info-subtle text-info">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="value">$19.65</div>
+                                <div class="label">Average Order Value</div>
+                                <div class="trend text-success">
+                                    <i class="fas fa-arrow-up"></i> 3.7% vs previous period
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body metric-card">
+                                <div class="icon bg-warning-subtle text-warning">
+                                    <i class="fas fa-undo"></i>
+                                </div>
+                                <div class="value">3.2%</div>
+                                <div class="label">Return Rate</div>
+                                <div class="trend text-success">
+                                    <i class="fas fa-arrow-down"></i> 1.5% vs previous period
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sales Charts -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Revenue Trend</h5>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary active">Daily</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Weekly</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Monthly</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="revenueChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Sales by Category</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="categoryChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Performance -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Top Selling Products</h5>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download me-1"></i> Export
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle table-product-performance">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Category</th>
+                                                <th>Units Sold</th>
+                                                <th>Revenue</th>
+                                                <th>Avg. Price</th>
+                                                <th>Trend</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each topProducts}}
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{this.image}}" alt="{{this.name}}" class="me-2" width="40" height="40" style="object-fit: cover; border-radius: 4px;">
+                                                        <span>{{this.name}}</span>
+                                                    </div>
+                                                </td>
+                                                <td>{{this.category}}</td>
+                                                <td>{{this.unitsSold}}</td>
+                                                <td>${{this.revenue}}</td>
+                                                <td>${{this.avgPrice}}</td>
+                                                <td>
+                                                    <div style="width: 80px; height: 30px;">
+                                                        <canvas class="sparkline-chart" data-values="{{this.trend}}"></canvas>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sales by Location -->
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Sales by Location</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="locationChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Sales by Channel</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="channelChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample data for charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mar 1', 'Mar 2', 'Mar 3', 'Mar 4', 'Mar 5', 'Mar 6', 'Mar 7', 'Mar 8', 'Mar 9', 'Mar 10', 'Mar 11', 'Mar 12', 'Mar 13', 'Mar 14', 'Mar 15', 'Mar 16', 'Mar 17', 'Mar 18', 'Mar 19', 'Mar 20', 'Mar 21'],
+                    datasets: [{
+                        label: 'Current Period',
+                        data: [1200, 1350, 1250, 1420, 1550, 1250, 1300, 1450, 1700, 1600, 1550, 1650, 1750, 1850, 1950, 1850, 1750, 1900, 2050, 2150, 2250],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Previous Period',
+                        data: [1000, 1150, 1050, 1220, 1350, 1050, 1100, 1250, 1500, 1400, 1350, 1450, 1550, 1650, 1750, 1650, 1550, 1700, 1850, 1950, 2050],
+                        borderColor: '#a5b4fc',
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Category Chart
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            const categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electronics', 'Clothing', 'Home & Kitchen', 'Beauty', 'Books'],
+                    datasets: [{
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: ['#4361ee', '#3a0ca3', '#4cc9f0', '#f72585', '#7209b7'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Location Chart
+            const locationCtx = document.getElementById('locationChart').getContext('2d');
+            const locationChart = new Chart(locationCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia'],
+                    datasets: [{
+                        label: 'Sales by Location',
+                        data: [4500, 3800, 3200, 2900, 2600, 2300],
+                        backgroundColor: '#4361ee'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Channel Chart
+            const channelCtx = document.getElementById('channelChart').getContext('2d');
+            const channelChart = new Chart(channelCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Website', 'Mobile App', 'Marketplace', 'Social Media', 'In-store'],
+                    datasets: [{
+                        data: [40, 25, 20, 10, 5],
+                        backgroundColor: ['#4361ee', '#3a0ca3', '#4cc9f0', '#f72585', '#7209b7'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Sparkline charts for product trends
+            const sparklineCharts = document.querySelectorAll('.sparkline-chart');
+            sparklineCharts.forEach(function(chart) {
+                const ctx = chart.getContext('2d');
+                const values = chart.getAttribute('data-values').split(',').map(Number);
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array(values.length).fill(''),
+                        datasets: [{
+                            data: values,
+                            borderColor: values[0] < values[values.length - 1] ? '#28a745' : '#dc3545',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: false
+                            },
+                            y: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -113,7 +113,7 @@
 <body>
     <div class="container">
         <h1>Subject and Link List</h1>
-        <a href="/ssm/mca/dashboard" class="back-button">
+        <a href="/v1/api/dashboard" class="back-button">
             <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
         </a>
         <h2>MCA - I</h2>
@@ -132,7 +132,7 @@
                     <td>{{code}}</td>
                     <td>{{title}}</td>
                     <td style="font-weight: bold;"><a href="{{link}}" target="_blank">Download</a></td>
-                    <td><a href="/ssm/mca/deleteSubject/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')" style="color: red;">Delete</a></td>
+                    <td><a href="/v1/api/deleteSubject/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')" style="color: red;">Delete</a></td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -154,7 +154,7 @@
                     <td>{{code}}</td>
                     <td>{{title}}</td>
                     <td><a href="{{link}}" target="_blank">Download</a></td>
-                    <td><a href="/ssm/mca/deleteSubject/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')" style="color: red;">Delete</a></td>
+                    <td><a href="/v1/api/deleteSubject/{{_id}}" class="delete-icon" onclick="return confirm('Are You Sure You Want To Delete ?')" style="color: red;">Delete</a></td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -162,7 +162,7 @@
         <br><br>
 
         <div class="btn-container">
-            <a class="btn" href="/ssm/mca/dashboard#materials">< Go back!</a>
+            <a class="btn" href="/v1/api/dashboard#materials">< Go back!</a>
         </div>
     </div>
 </body>

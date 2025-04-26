@@ -125,7 +125,7 @@
 </head>
 <body>
 
-    <form action="/ssm/mca/imageEdit/fireBase/{{imageData._id}}" method="post" enctype="multipart/form-data">
+    <form action="/v1/api/imageEdit/fireBase/{{imageData._id}}" method="post" enctype="multipart/form-data">
         <h1>Image Edit</h1>
 
         <img id="previewImage" src="{{imageData.imageUrl}}" alt="{{imageData.title}}">
@@ -142,7 +142,7 @@
 
         <button type="submit" id="signupButton" class="btn">Update</button>
 
-        <p><a href="/ssm/mca/imageList">&lt; Back</a></p>
+        <p><a href="/v1/api/imageList">&lt; Back</a></p>
     </form>
 
     <script>

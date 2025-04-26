@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Alert</title>
+    <link rel="icon" href="https://i.postimg.cc/kGVvWqPn/edit-user-1.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #eef2ff;
+            --secondary: #6b7280;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --light: #f9fafb;
+            --dark: #1f2937;
+            --white: #ffffff;
+            --body-bg: #f5f8ff;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --input-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", sans-serif;
+        }
+        
+        body {
+            background-color: var(--body-bg);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .card {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: none;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 25px 30px;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header h3 {
+            font-weight: 600;
+            margin: 0;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-header::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-header::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-body {
+            padding: 35px;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .form-control, .form-select {
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            box-shadow: var(--input-shadow);
+            background-color: var(--light);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background-color: var(--white);
+        }
+        
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%234f46e5' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-position: right 15px center;
+        }
+        
+        .input-group-text {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            padding: 0 16px;
+        }
+        
+        .btn {
+            padding: 14px 24px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: var(--transition);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-outline-secondary {
+            color: var(--secondary);
+            border-color: #e5e7eb;
+            background-color: var(--white);
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--light);
+            color: var(--dark);
+            border-color: #d1d5db;
+            transform: translateY(-2px);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 25px;
+            display: none;
+            border-left: 4px solid;
+        }
+        
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
+        .icon-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+        
+        .payment-type-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .payment-type-option {
+            position: relative;
+            height: 100px;
+        }
+        
+        .payment-type-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .payment-type-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+        
+        .payment-type-option input:checked + label {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        
+        .payment-type-option .icon {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .payment-type-option .text {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .card-header {
+                padding: 20px;
+            }
+            
+            .card-body {
+                padding: 25px 20px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-bell"></i>{{course}} - {{year}} Payment Alert</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success" id="successAlert" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> Payment alert sent successfully!
+                </div>
+                <div class="alert alert-danger" id="errorAlert" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> <span id="errorMessage">Something went wrong. Please try again.</span>
+                </div>
+                
+                <form id="paymentAlertForm">
+                    <div class="form-group">
+                        <label class="form-label">Select Payment Type</label>
+                        <div class="payment-type-container">
+                            <div class="payment-type-option">
+                                <input type="radio" id="tuition" name="type" value="Tuition" required>
+                                <label for="tuition">
+                                    <i class="fas fa-graduation-cap icon"></i>
+                                    <span class="text">Tuition</span>
+                                </label>
+                            </div>
+                            <div class="payment-type-option">
+                                <input type="radio" id="exam" name="type" value="Exam" required>
+                                <label for="exam">
+                                    <i class="fas fa-file-alt icon"></i>
+                                    <span class="text">Exam</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/v1/api/dashboard#alerts'">
+                            <i class="fas fa-arrow-left me-2"></i>Back
+                        </button>
+                        <button type="submit" id="submitBtn" class="btn btn-primary">
+                            <span id="loadingSpinner" class="loading-spinner"></span>
+                            <i class="fas fa-paper-plane me-2" id="sendIcon"></i>Send Alert
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('paymentAlertForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const sendIcon = document.getElementById('sendIcon');
+            const successAlert = document.getElementById('successAlert');
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                submitBtn.disabled = true;
+                loadingSpinner.style.display = 'inline-block';
+                sendIcon.style.display = 'none';
+                
+                successAlert.style.display = 'none';
+                errorAlert.style.display = 'none';
+                
+                const type = document.querySelector('input[name="type"]:checked')?.value;
+                const year = `{{year}}`;
+                const course = `{{course}}`;
+                
+                if (!type) {
+                    errorMessage.textContent = 'Please select a payment type.';
+                    errorAlert.style.display = 'block';
+                    submitBtn.disabled = false;
+                    loadingSpinner.style.display = 'none';
+                    sendIcon.style.display = 'inline-block';
+                    return;
+                }
+                
+                const formData = {
+                    type: type,
+                    year: year,
+                    course: course
+                };
+                
+                fetch('/v1/api/paymentAlert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    successAlert.style.display = 'block';
+                    
+                    form.reset();
+                    
+                    submitBtn.disabled = false;
+                    loadingSpinner.style.display = 'none';
+                    sendIcon.style.display = 'inline-block';
+                    
+                    {{!-- // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/v1/api/dashboard#alerts';
+                    }, 2000); --}}
+                })
+                .catch(error => {
+                    errorMessage.textContent = 'Failed to send payment alert. Please try again.';
+                    errorAlert.style.display = 'block';
+                    
+                    submitBtn.disabled = false;
+                    loadingSpinner.style.display = 'none';
+                    sendIcon.style.display = 'inline-block';
+                    
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

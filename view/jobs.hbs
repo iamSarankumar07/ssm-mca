@@ -140,7 +140,7 @@
             searchingPopup.style.display = "block";
 
             try {
-                const response = await fetch(`/ssm/mca/jobs/search?query=${query}&location=${location}`);
+                const response = await fetch(`/v1/api/jobs/search?query=${query}&location=${location}`);
                 const data = await response.json();
 
                 searchingPopup.style.display = "none";

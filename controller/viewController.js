@@ -5,7 +5,7 @@ const Admin = require("../models/adminModel");
 const mongoose = require('mongoose');
 const Student = require("../models/studentModel");
 const studentController = require("../controller/studentController")
-const Subject = require("../models/subjectModel");
+const Subject = require("../models/studyMaterial");
 const admissionModel = require("../models/admissionModel");
 const Contact = require("../models/contactModel");
 const Image = require("../models/imageModel");
@@ -16,6 +16,7 @@ const app = express();
 const { verify } = require("jsonwebtoken");
 app.use(express.static(path.join(__dirname, "../Images")));
 const moment = require("moment");
+const studyMaterialModel = require("../models/studyMaterial");
 
 app.use(express.static("Images"));
 
@@ -42,7 +43,8 @@ exports.dashboard = async (req, res) => {
 
     const user = await Admin.findOne({ _id: new mongoose.Types.ObjectId(userId) });
 
-    res.render("admin", { user });
+    // res.render("admin", { user });
+    res.render("dashboard", { user });
   } catch (err) {
     console.error("Error fetching user details:", err);
     res.status(500).send("Failed to fetch user details");
@@ -127,8 +129,8 @@ exports.studentProfileExEdit = async (req, res) => {
       }
 };
 
-exports.register = async (req, res) => {
-  res.render("register");
+exports.getStudentRegister = async (req, res) => {
+  res.render("register", { course: req.body.course });
 };
 
 exports.announcement = async (req, res) => {
@@ -139,8 +141,14 @@ exports.commonAnnouncement = async (req, res) => {
   res.render("commonAnnouncement");
 };
 
-exports.paymentAlert = async (req, res) => {
-  res.render("paymentAlert");
+exports.getPaymentAlert = async (req, res) => {
+  let body = req.body;
+  try {
+    res.render('paymentsAlert', { year: body.year, course: body.course });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).render('error', { message: "Internal Server Error! Please try again later." });
+  }
 };
 
 exports.updateDueDatesForAll = async (req, res) => {
@@ -156,7 +164,39 @@ exports.subject = async (req, res) => {
 };
 
 exports.moveStudents = async (req, res) => {
-  res.render("moveStudents");
+  const { course, year } = req.body;
+  
+  const courseDurations = {
+    'MCA': 2,
+    'BCA': 3,
+    'MBA': 2,
+    'EEE': 4,
+    'CSE': 4,
+    'ECE': 4,
+    'Civil': 4,
+    'Mechanical': 4,
+    'BTech': 4
+  };  
+
+  const yearMapping = {
+    "I": 1,
+    "II": 2,
+    "III": 3,
+    "IV": 4
+  };
+
+  const currentYear = yearMapping[year];
+  const courseDuration = courseDurations[course];
+
+  let moveToYear;
+  if (currentYear >= courseDuration) {
+    moveToYear = "Alumni";
+  } else {
+    const nextYear = currentYear + 1;
+    moveToYear = Object.keys(yearMapping).find(key => yearMapping[key] === nextYear);
+  }
+
+  res.render("moveStudents", { course: course, year: year, moveToYear: moveToYear, isAlumni: moveToYear === "Alumni"});
 };
 
 exports.message = async (req, res) => {
@@ -217,8 +257,9 @@ exports.studentList = async (req, res) => {
 exports.studentEdit = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const student = await Student.findById(userId);
-    res.render("studentEdit", { student });
+    const student = await Student.findById(userId).lean();
+    const backUrl = `/v1/api/getStudentsList?course=${encodeURIComponent(student.course)}&year=${encodeURIComponent(student.year)}`;
+    res.render("studentEdit", { student, backUrl });
   } catch (err) {
     console.error(err);
     res.send("Error");
@@ -241,6 +282,8 @@ exports.alumniList = async (req, res) => {
     let filterYear = req.query.year || null;
     let searchName = req.query.name || "";
     let searchId = req.query.studentId || "";
+    let course = req.query.course || "";
+    let gender = req.query.gender || "";
     
     if (req.query.download) {
       req.body.isPdf = true;
@@ -263,6 +306,14 @@ exports.alumniList = async (req, res) => {
       
       if (searchName) {
         query.name = { $regex: new RegExp(searchName, "i") };
+      }
+
+      if (gender) {
+        query.gender = { $regex: new RegExp(gender, "i") };
+      }
+
+      if (course) {
+        query.course = { $regex: new RegExp(course, "i") };
       }
 
       if (searchId) {
@@ -470,7 +521,8 @@ exports.examFeeEdit = async (req, res) => {
   try {
     const userId = req.params.userId;
     const fee = await Student.findById(userId);
-    res.render("examFeeEdit", { fee });
+    const backUrl = `/v1/api/getStudentsExamFeesList?course=${encodeURIComponent(fee.course)}&year=${encodeURIComponent(fee.year)}`;
+    res.render("examFeeEdit", { fee, backUrl });
   } catch (err) {
     console.error(err);
     res.send("Error");
@@ -481,7 +533,8 @@ exports.feeEdit = async (req, res) => {
   try {
     const userId = req.params.userId;
     const fee = await Student.findById(userId);
-    res.render("feeEdit", { fee });
+    const backUrl = `/v1/api/getStudentsTuitionFeesList?course=${encodeURIComponent(fee.course)}&year=${encodeURIComponent(fee.year)}`;
+    res.render("feeEdit", { fee, backUrl });
   } catch (err) {
     console.error(err);
     res.send("Error");
@@ -490,8 +543,9 @@ exports.feeEdit = async (req, res) => {
 
 exports.gallery = async (req, res) => {
   try {
-    const apiUrl = "/ssm/mca/dashboard";
+    const apiUrl = "/v1/api/dashboard";
     const images = await Image.find({ isDelete: false}).sort({ createdAt: -1 });
+    
     res.render("gallery", { images, apiUrl });
   } catch (err) {
     console.log(err);
@@ -547,14 +601,15 @@ exports.getStudentDetails = async (req, res) => {
 
     const student = await Student.findOne({ studentId, isAlumni: false, isDelete: false });
 
-    let subject;
+    let studyMaterial;
     if (student) {
-      subject = await Subject.find({ year: student.year, isDelete: false });
+      // subject = await Subject.find({ year: student.year, isDelete: false });
+      studyMaterial = await studyMaterialModel.find({ course: student.course, year: student.year, isDelete: false })
     }
 
     if (!student) {
       return res.send(
-        '<script>alert("Student not Found!"); window.location.href = "/ssm/mca/signin";</script>'
+        '<script>alert("Student not Found!"); window.location.href = "/v1/api/signin";</script>'
       );
     }
 
@@ -571,7 +626,7 @@ exports.getStudentDetails = async (req, res) => {
       attendanceSummary[item._id] = item.count;
     });
 
-    res.render("studentProfile", { student, subject, attendanceSummary });
+    res.render("studentProfile", { student, studyMaterial, attendanceSummary });
   } catch (err) {
     console.error("Error fetching user details:", err);
     res.status(500).send("Failed to fetch user details");

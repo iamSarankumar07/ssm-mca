@@ -1,169 +1,893 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Sender</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-      * {
-      font-family: "Poppins", sans-serif;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Announcement System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --primary-dark: #4338ca;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #4caf50;
+      --danger-color: #f44336;
     }
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        h1 {
-            text-align: center;
-            color: #3d6ef5ff;
-        }
-
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            position: relative;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .form-group select,
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            font-family: sans-serif;
-            border-radius: 4px;
-            font-size: 14px;
-            max-height: 150px; 
-            resize: none;
-        }
-
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            appearance: none;
-            background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 16px;
-            cursor: pointer;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        button[type="submit"],
-        button[type="button"] {
-            width: 30%;
-            background-color: #3d6ef5ff;
-            color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px 14px;
-            border: none;
-            font-size: 12px;
-            border-radius: 5px;
-            border: 2px solid #3d6ef5ff;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button[type="submit"]:hover,
-        button[type="button"]:hover {
-            background-color: #f2f2f2;
-            color: #3d6ef5ff;
-            font-weight: bold;
-        }
-        
-    </style>
+    
+    body {
+      background-color: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    .card-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border-bottom: none;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    
+    .form-container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 15px;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-select, .form-control {
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      border: 1px solid #ced4da;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .form-select:focus, .form-control:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover, .btn-primary:focus {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover, .btn-secondary:focus {
+      background-color: #5a6268;
+      border-color: #5a6268;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .course-checkbox {
+      margin-bottom: 0.75rem;
+    }
+    
+    .form-step {
+      display: none;
+    }
+    
+    .form-step.active {
+      display: block;
+    }
+    
+    .form-step-animation {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .card-icon {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+    
+    .gender-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .spinner-border {
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.5rem;
+    }
+    
+    .course-years-container {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary-color);
+      display: none;
+    }
+    
+    .course-years-container.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .year-checkbox {
+      margin-bottom: 0.5rem;
+    }
+    
+    .year-group {
+      margin-bottom: 1rem;
+    }
+    
+    .year-group-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    .back-button {
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: transform 0.2s ease;
+      position: absolute;
+      left: 1.5rem;
+    }
+    
+    .back-button:hover {
+      transform: translateX(-3px);
+    }
+    
+    .recipient-card {
+      border-radius: 10px;
+      border: 2px solid #e9ecef;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+    }
+    
+    .recipient-card:hover {
+      border-color: var(--accent-color);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+    
+    .recipient-card.selected {
+      border-color: var(--primary-color);
+      background-color: rgba(67, 97, 238, 0.05);
+    }
+    
+    .recipient-card.selected::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background-color: var(--primary-color);
+    }
+    
+    .recipient-card-icon {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .recipient-card h5 {
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    
+    .recipient-card p {
+      color: #6c757d;
+      margin-bottom: 0;
+      font-size: 0.8rem;
+    }
+    
+    .recipient-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .recipient-selection-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+      border-bottom: 2px solid #e9ecef;
+      padding-bottom: 0.5rem;
+    }
+    
+    .optional-label {
+      font-size: 0.8rem;
+      color: #6c757d;
+      font-weight: normal;
+      margin-left: 0.5rem;
+      display: inline-block;
+    }
+    
+    .required-label {
+      font-size: 0.8rem;
+      color: var(--danger-color);
+      font-weight: normal;
+      margin-left: 0.5rem;
+    }
+    
+    .alumni-fields {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--primary-color);
+      display: none;
+    }
+    
+    .alumni-fields.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .header-title {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .header-title h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0;
+    }
+    
+    .selection-indicator {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background-color: var(--primary-color);
+      color: white;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+    
+    @media (max-width: 767px) {
+      .form-container {
+        padding: 0 10px;
+        margin: 10px auto;
+      }
+      
+      .card-header {
+        padding: 1rem;
+      }
+      
+      .header-title h3 {
+        font-size: 1.25rem;
+      }
+      
+      .card-body {
+        padding: 1rem !important;
+      }
+      
+      .recipient-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .gender-options {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .back-button {
+        left: 0.75rem;
+      }
+      
+      .recipient-selection-title {
+        font-size: 1.1rem;
+      }
+      
+      .optional-label, .required-label {
+        display: block;
+        margin-left: 0;
+        margin-top: 0.25rem;
+      }
+      
+      .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .recipient-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      
+      .d-flex.justify-content-between .btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <form id="emailForm" action="/ssm/mca/commonAnnouncement" method="post">
-        <h1>Common Announcement</h1>
-
-        <label for="year">To:</label>
-        <select id="type" name="type" required onchange="toggleGraduationYear()">
-            <option value="">Select</option>
-            <option value="first">MCA-I</option>
-            <option value="second">MCA-II</option>
-            <option value="mca">MCA I & II</option>
-            <option value="alumni">Alumni</option>
-            <option value="alumniAll">Alumni All</option>
-        <option value="staff">Staff</option>
-        </select>
-
-        <div id="graduationYearDiv" style="display:none;">
-            <label for="graduationYear">Graduation Year:</label>
-            <input type="text" id="graduationYear" name="graduationYear" pattern="\d{4}" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g, '').slice(0,4)" />
+  <div class="container form-container">
+    <div class="card">
+      <div class="card-header d-flex align-items-center justify-content-center position-relative">
+        <i class="bi bi-arrow-left back-button" onclick="goBack()"></i>
+        <div class="header-title">
+          <i class="bi bi-megaphone-fill card-icon"></i>
+          <h3 class="mb-0">Campus Announcement System</h3>
         </div>
+      </div>
+      <div class="card-body p-4">
+        <form id="announcementForm">
+          <div id="filtersStep" class="form-step active form-step-animation">
+            <h4 class="recipient-selection-title">Select Recipients <span class="optional-label">Optional - Select multiple if needed</span></h4>
+            
+            <div class="recipient-grid mb-3">
+              <div class="recipient-card" data-recipient="students">
+                <div class="recipient-card-icon">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <h5>Students</h5>
+                <p>Current students</p>
+                <div class="selection-indicator" style="display: none;"><i class="bi bi-check"></i></div>
+              </div>
+              
+              <div class="recipient-card" data-recipient="faculty">
+                <div class="recipient-card-icon">
+                  <i class="bi bi-person-workspace"></i>
+                </div>
+                <h5>Faculty</h5>
+                <p>Teaching staff</p>
+                <div class="selection-indicator" style="display: none;"><i class="bi bi-check"></i></div>
+              </div>
+              
+              <div class="recipient-card" data-recipient="staff">
+                <div class="recipient-card-icon">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <h5>Staff</h5>
+                <p>Admin personnel</p>
+                <div class="selection-indicator" style="display: none;"><i class="bi bi-check"></i></div>
+              </div>
+              
+              <div class="recipient-card" data-recipient="alumni">
+                <div class="recipient-card-icon">
+                  <i class="bi bi-award-fill"></i>
+                </div>
+                <h5>Alumni</h5>
+                <p>Former students</p>
+                <div class="selection-indicator" style="display: none;"><i class="bi bi-check"></i></div>
+              </div>
+              
+              <div class="recipient-card" data-recipient="all">
+                <div class="recipient-card-icon">
+                  <i class="bi bi-building-fill"></i>
+                </div>
+                <h5>Everyone</h5>
+                <p>All members</p>
+                <div class="selection-indicator" style="display: none;"><i class="bi bi-check"></i></div>
+              </div>
+            </div>
+            
+            <input type="hidden" id="selectedRecipients" name="types" value="">
+            
+            <div id="alumniFields" class="alumni-fields">
+              <h5 class="mb-3">Alumni Details <span class="required-label">Required for alumni</span></h5>
+              
+              <div class="mb-3">
+                <label for="graduationYear" class="form-label">Graduation Year:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="graduationYear"
+                  name="graduationYear"
+                  placeholder="e.g. 2023"
+                  pattern="\d{4}"
+                  maxlength="4"
+                  oninput="this.value=this.value.replace(/[^0-9]/g, '').slice(0,4)"
+                >
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Alumni Course:</label>
+                <select class="form-select" id="alumniCourse" name="alumniCourse">
+                  <option value="" selected disabled>Select course</option>
+                  <option value="bca">BCA</option>
+                  <option value="mca">MCA</option>
+                  <option value="mba">MBA</option>
+                  <option value="cse">CSE</option>
+                  <option value="ece">ECE</option>
+                  <option value="eee">EEE</option>
+                  <option value="mechanical">Mechanical</option>
+                  <option value="civil">Civil</option>
+                  <option value="btech">BTech</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label">Gender Filter: <span class="optional-label">Optional</span></label>
+              <div class="gender-options">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="genderAll" value="all" checked>
+                  <label class="form-check-label" for="genderAll">All</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male">
+                  <label class="form-check-label" for="genderMale">Male</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female">
+                  <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="genderOther" value="other">
+                  <label class="form-check-label" for="genderOther">Other</label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label">Course Filter: <span class="optional-label">Optional</span></label>
+              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2">
+                <div class="col">
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseBCA" value="bca">
+                    <label class="form-check-label" for="courseBCA">BCA</label>
+                  </div>
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseMCA" value="mca">
+                    <label class="form-check-label" for="courseMCA">MCA</label>
+                  </div>
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseMBA" value="mba">
+                    <label class="form-check-label" for="courseMBA">MBA</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseCSE" value="cse">
+                    <label class="form-check-label" for="courseCSE">CSE</label>
+                  </div>
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseECE" value="ece">
+                    <label class="form-check-label" for="courseECE">ECE</label>
+                  </div>
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseEEE" value="eee">
+                    <label class="form-check-label" for="courseEEE">EEE</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseMechanical" value="mechanical">
+                    <label class="form-check-label" for="courseMechanical">Mechanical</label>
+                  </div>
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseCivil" value="civil">
+                    <label class="form-check-label" for="courseCivil">Civil</label>
+                  </div>
+                  <div class="form-check course-checkbox">
+                    <input class="form-check-input course-checkbox-input" type="checkbox" name="courses" id="courseBTech" value="btech">
+                    <label class="form-check-label" for="courseBTech">BTech</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="courseYearsContainer" class="course-years-container">
+              <h5 class="mb-3">Select Course Years: <span class="optional-label">Optional if courses selected</span></h5>
+              <div id="courseYearsContent">
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary" onclick="goBack()">
+                <i class="bi bi-arrow-left me-2"></i>Back
+              </button>
+              <button type="button" class="btn btn-primary" id="nextButton">
+                Next<i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div id="messageStep" class="form-step">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title:</label>
+              <input type="text" class="form-control" id="title" name="title" required placeholder="Announcement title">
+            </div>
+            
+            <div class="mb-3">
+              <label for="subject" class="form-label">Subject:</label>
+              <input type="text" class="form-control" id="subject" name="subject" required placeholder="Email subject line">
+            </div>
+            
+            <div class="mb-4">
+              <label for="message" class="form-label">Message:</label>
+              <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Type your announcement message here..."></textarea>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary" id="backButton">
+                <i class="bi bi-arrow-left me-2"></i>Back to Filters
+              </button>
+              <button type="submit" class="btn btn-primary" id="sendButton">
+                <span id="sendButtonText">
+                  <i class="bi bi-send-fill me-2"></i>Send Announcement
+                </span>
+                <span id="sendButtonLoading" style="display: none;">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Sending...
+                </span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const courseYearsMap = {
+      bca: [
+        { id: 'bca-1', label: 'BCA-I (First Year)' },
+        { id: 'bca-2', label: 'BCA-II (Second Year)' },
+        { id: 'bca-3', label: 'BCA-III (Third Year)' }
+      ],
+      mca: [
+        { id: 'mca-1', label: 'MCA-I (First Year)' },
+        { id: 'mca-2', label: 'MCA-II (Second Year)' }
+      ],
+      mba: [
+        { id: 'mba-1', label: 'MBA-I (First Year)' },
+        { id: 'mba-2', label: 'MBA-II (Second Year)' }
+      ],
+      cse: [
+        { id: 'cse-1', label: 'CSE-I (First Year)' },
+        { id: 'cse-2', label: 'CSE-II (Second Year)' },
+        { id: 'cse-3', label: 'CSE-III (Third Year)' },
+        { id: 'cse-4', label: 'CSE-IV (Fourth Year)' }
+      ],
+      ece: [
+        { id: 'ece-1', label: 'ECE-I (First Year)' },
+        { id: 'ece-2', label: 'ECE-II (Second Year)' },
+        { id: 'ece-3', label: 'ECE-III (Third Year)' },
+        { id: 'ece-4', label: 'ECE-IV (Fourth Year)' }
+      ],
+      eee: [
+        { id: 'eee-1', label: 'EEE-I (First Year)' },
+        { id: 'eee-2', label: 'EEE-II (Second Year)' },
+        { id: 'eee-3', label: 'EEE-III (Third Year)' },
+        { id: 'eee-4', label: 'EEE-IV (Fourth Year)' }
+      ],
+      mechanical: [
+        { id: 'mech-1', label: 'Mechanical-I (First Year)' },
+        { id: 'mech-2', label: 'Mechanical-II (Second Year)' },
+        { id: 'mech-3', label: 'Mechanical-III (Third Year)' },
+        { id: 'mech-4', label: 'Mechanical-IV (Fourth Year)' }
+      ],
+      civil: [
+        { id: 'civil-1', label: 'Civil-I (First Year)' },
+        { id: 'civil-2', label: 'Civil-II (Second Year)' },
+        { id: 'civil-3', label: 'Civil-III (Third Year)' },
+        { id: 'civil-4', label: 'Civil-IV (Fourth Year)' }
+      ],
+      btech: [
+        { id: 'btech-1', label: 'BTech-I (First Year)' },
+        { id: 'btech-2', label: 'BTech-II (Second Year)' },
+        { id: 'btech-3', label: 'BTech-III (Third Year)' },
+        { id: 'btech-4', label: 'BTech-IV (Fourth Year)' }
+      ]
+    };
 
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required>
-
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
-
-        <div class="button-container">
-            <button type="button" onclick="goBack()">Back</button>
-            <button type="submit" id="firstYrMail">Send</button>
-        </div>
-    </form>
-    <script>
-        function goBack() {
-            window.location.href = '/ssm/mca/dashboard#announcements';
-        }
-
-        function toggleGraduationYear() {
-            var yearSelect = document.getElementById('type');
-            var graduationYearDiv = document.getElementById('graduationYearDiv');
-            if (yearSelect.value === 'alumni') {
-                graduationYearDiv.style.display = 'block';
-            } else {
-                graduationYearDiv.style.display = 'none';
+    document.addEventListener('DOMContentLoaded', function() {
+      const filtersStep = document.getElementById('filtersStep');
+      const messageStep = document.getElementById('messageStep');
+      const nextButton = document.getElementById('nextButton');
+      const backButton = document.getElementById('backButton');
+      const alumniFields = document.getElementById('alumniFields');
+      const courseYearsContainer = document.getElementById('courseYearsContainer');
+      const courseYearsContent = document.getElementById('courseYearsContent');
+      const courseCheckboxes = document.querySelectorAll('.course-checkbox-input');
+      const recipientCards = document.querySelectorAll('.recipient-card');
+      const selectedRecipientsInput = document.getElementById('selectedRecipients');
+      
+      let selectedRecipients = [];
+      
+      recipientCards.forEach(card => {
+        card.addEventListener('click', function() {
+          const recipientType = this.dataset.recipient;
+          const indicator = this.querySelector('.selection-indicator');
+          
+          this.classList.toggle('selected');
+          
+          if (this.classList.contains('selected')) {
+            if (!selectedRecipients.includes(recipientType)) {
+              selectedRecipients.push(recipientType);
+              indicator.style.display = 'flex';
             }
+          } else {
+            selectedRecipients = selectedRecipients.filter(type => type !== recipientType);
+            indicator.style.display = 'none';
+          }
+          
+          selectedRecipientsInput.value = selectedRecipients.join(',');
+          
+          updateAlumniFields();
+        });
+      });
+      
+      function updateAlumniFields() {
+        if (selectedRecipients.includes('alumni')) {
+          alumniFields.classList.add('active');
+        } else {
+          alumniFields.classList.remove('active');
         }
-    </script>
+      }
+      
+      courseCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          updateCourseYears();
+        });
+      });
+      
+      function updateCourseYears() {
+        const selectedCourses = [];
+        courseCheckboxes.forEach(checkbox => {
+          if (checkbox.checked) {
+            selectedCourses.push(checkbox.value);
+          }
+        });
+        
+        if (selectedCourses.length === 0) {
+          courseYearsContainer.classList.remove('active');
+          return;
+        }
+        
+        courseYearsContent.innerHTML = '';
+        
+        selectedCourses.forEach(course => {
+          if (courseYearsMap[course]) {
+            const courseYearsDiv = document.createElement('div');
+            courseYearsDiv.className = 'year-group';
+            
+            const courseTitle = document.createElement('div');
+            courseTitle.className = 'year-group-title';
+            courseTitle.textContent = course.toUpperCase() + ' Years';
+            courseYearsDiv.appendChild(courseTitle);
+            
+            courseYearsMap[course].forEach(year => {
+              const yearDiv = document.createElement('div');
+              yearDiv.className = 'form-check year-checkbox';
+              
+              const yearInput = document.createElement('input');
+              yearInput.className = 'form-check-input';
+              yearInput.type = 'checkbox';
+              yearInput.name = 'courseYears';
+              yearInput.id = year.id;
+              yearInput.value = year.id;
+              
+              const yearLabel = document.createElement('label');
+              yearLabel.className = 'form-check-label';
+              yearLabel.htmlFor = year.id;
+              yearLabel.textContent = year.label;
+              
+              yearDiv.appendChild(yearInput);
+              yearDiv.appendChild(yearLabel);
+              courseYearsDiv.appendChild(yearDiv);
+            });
+            
+            courseYearsContent.appendChild(courseYearsDiv);
+          }
+        });
+        
+        courseYearsContainer.classList.add('active');
+      }
+      
+      nextButton.addEventListener('click', function() {
+        if (selectedRecipients.includes('alumni')) {
+          const graduationYear = document.getElementById('graduationYear').value;
+          const alumniCourse = document.getElementById('alumniCourse').value;
+          
+          if (graduationYear === '' || graduationYear.length !== 4) {
+            showToastMessage('Please enter a valid graduation year (4 digits) for alumni', false);
+            return;
+          }
+          
+          if (alumniCourse === '') {
+            showToastMessage('Please select a course for alumni', false);
+            return;
+          }
+        }
+        
+        filtersStep.classList.remove('active');
+        messageStep.classList.add('active', 'form-step-animation');
+      });
+      
+      backButton.addEventListener('click', function() {
+        messageStep.classList.remove('active');
+        filtersStep.classList.add('active', 'form-step-animation');
+      });
+      
+      document.getElementById('announcementForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const title = document.getElementById('title').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
+        
+        if (!title) {
+          showToastMessage('Please enter an announcement title', false);
+          return;
+        }
+        
+        if (!subject) {
+          showToastMessage('Please enter an email subject', false);
+          return;
+        }
+        
+        if (!message) {
+          showToastMessage('Please enter an announcement message', false);
+          return;
+        }
+        
+        document.getElementById('sendButtonText').style.display = 'none';
+        document.getElementById('sendButtonLoading').style.display = 'inline-block';
+        
+        const selectedCourses = [];
+        document.querySelectorAll('input[name="courses"]:checked').forEach(function(checkbox) {
+          selectedCourses.push(checkbox.value);
+        });
+        
+        const selectedYears = [];
+        document.querySelectorAll('input[name="courseYears"]:checked').forEach(function(checkbox) {
+          selectedYears.push(checkbox.value);
+        });
+        
+        const selectedGender = document.querySelector('input[name="gender"]:checked').value;
+        
+        let alumniDetails = {};
+        if (selectedRecipients.includes('alumni')) {
+          alumniDetails = {
+            graduationYear: document.getElementById('graduationYear').value,
+            alumniCourse: document.getElementById('alumniCourse').value
+          };
+        }
+        
+        const formData = {
+          types: selectedRecipients,
+          alumniDetails: alumniDetails,
+          gender: selectedGender,
+          courses: selectedCourses,
+          courseYears: selectedYears,
+          title: title,
+          subject: subject,
+          message: message
+        };
+        
+        fetch('/v1/api/commonAnnouncement', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('sendButtonText').style.display = 'inline-block';
+          document.getElementById('sendButtonLoading').style.display = 'none';
+          
+          showToastMessage(data.message || 'Announcement sent successfully!', data.success);
+          
+          if (data.success) {
+            document.getElementById('announcementForm').reset();
+            messageStep.classList.remove('active');
+            filtersStep.classList.add('active', 'form-step-animation');
+            alumniFields.classList.remove('active');
+            courseYearsContainer.classList.remove('active');
+            recipientCards.forEach(c => {
+              c.classList.remove('selected');
+              c.querySelector('.selection-indicator').style.display = 'none';
+            });
+            selectedRecipients = [];
+            selectedRecipientsInput.value = '';
+          }
+        })
+        .catch(error => {
+          document.getElementById('sendButtonText').style.display = 'inline-block';
+          document.getElementById('sendButtonLoading').style.display = 'none';
+          
+          console.error('Error:', error);
+          showToastMessage('An error occurred. Please try again later.', false);
+        });
+      });
+    });
+    
+    function showToastMessage(message, success) {
+      Toastify({
+        text: message,
+        duration: 5000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: success ? "#4caf50" : "#f44336",
+        stopOnFocus: true,
+        className: success ? "toastify-success" : "toastify-error",
+        onClick: function(){}
+      }).showToast();
+    }
+    
+    function goBack() {
+      window.location.href = '/v1/api/dashboard#announcements';
+    }
+  </script>
 </body>
 </html>

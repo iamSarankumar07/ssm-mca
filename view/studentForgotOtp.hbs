@@ -128,7 +128,7 @@
   </style>
 </head>
 <body>
-  <form action="/ssm/mca/student/forgotOtp" method="post">
+  <form action="/v1/api/student/forgotOtp" method="post">
     <h2>Change Password</h2>
     <p>OTP has been sent to : <span class="email">{{studentData.email}}</span></p>
     <label for="password">OTP:</label>
@@ -141,7 +141,7 @@
     
     <button type="submit" id="signupButton" class="btn">Change Password</button>
     
-    <p class="note">Didn't receive OTP? <span class="resend" onclick="window.location.href = '/ssm/mca/student/forgotPassword'">Resend</span></p>
+    <p class="note">Didn't receive OTP? <span class="resend" onclick="window.location.href = '/v1/api/student/forgotPassword'">Resend</span></p>
   </form>
 
   <script>

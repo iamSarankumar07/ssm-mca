@@ -3,302 +3,1533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCA Staff List</title>
-    <link rel="icon" href="https://your-favicon-url.png"> 
+    <title>Staff Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #7c3aed;
+            --primary-hover: #6d28d9;
+            --secondary-color: #f9fafb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --transition: all 0.2s ease;
+            --border-radius: 16px;
+            --border-radius-sm: 12px;
+            --border-radius-xs: 8px;
+        }
+        
         * {
-            margin: 0;
-            padding: 0;
+            font-family: 'Inter', sans-serif;
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
-    
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
         }
-    
-        .container {
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: auto;
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: #f3f4f6;
+            color: var(--text-primary);
         }
-    
-        h1 {
-            text-align: center;
-            color: #fff;
-            background-color: #3d6ef5ff;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 24px;
-            margin: 0;
+        
+        .container-fluid {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
         }
-    
-        h2 {
-            color: #3d6ef5ff;
-            margin-top: 20px;
+        
+        .page-header {
+            background-color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--card-shadow);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            margin-bottom: 1.5rem;
         }
-    
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px auto;
-            font-size: 15px;
-        }
-    
-        th,
-        td {
-            padding: 8px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-    
-        .td {
-            text-align: center;
-        }
-    
-        th {
-            background-color: #3d6ef5ff;
-            color: #fff;
-        }
-    
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-    
-        .edit-icon,
-        .delete-icon {
-            text-decoration: none;
-            color: #3d6ef5ff;
-            transition: color 0.3s;
-        }
-    
-        .edit-icon:hover,
-        .delete-icon:hover {
-            color: #0056b3;
-        }
-    
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-    
-        .btn {
-            padding: 8px 14px;
-            color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.4s, color 0.4s;
-        }
-    
-        .btn:hover {
-            background: #fff;
-            color: #3d6ef5ff;
-        }
-    
+        
         .back-button {
-            position: absolute;
-            top: 3.5%;
-            left: 2%;
-            text-decoration: none;
-        }
-    
-        .back-button img {
-            width: 45px;
-            height: 45px;
-            margin-right: 16px;
-            margin-bottom: 30px;
-            vertical-align: middle;
-            transition: width 0.3s ease, height 0.3s ease;
-        }
-    
-        .icon-img {
-            width: 25px;
-            height: 25px;
-            vertical-align: middle;
-        }
-    
-        .view-link {
-            text-decoration: none;
+            margin-right: 1.5rem;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            color: var(--text-secondary);
             cursor: pointer;
+            transition: var(--transition);
         }
-    
-        .view-link:hover .icon-img {
-            transform: scale(1.2);
-            filter: brightness(1.5);
+        
+        .back-button:hover {
+            color: var(--primary-color);
+            background-color: rgba(124, 58, 237, 0.1);
+            transform: translateX(-2px);
         }
-    
-        .responsive-search-bar {
-            padding: 6px;
+        
+        .page-title-container {
+            flex: 1;
+        }
+        
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+        }
+        
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin: 0.25rem 0 0 0;
+            font-size: 1rem;
+        }
+        
+        .content-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: white;
+            flex-shrink: 0;
+        }
+        
+        .search-input {
+            flex: 1;
+            position: relative;
+        }
+        
+        .search-input i {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .search-input input {
+            padding: 0 1.25rem 0 3rem;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
             width: 100%;
-            max-width: 300px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            height: 54px;
+            font-size: 1rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            background-color: var(--secondary-color);
         }
-    
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 20px;
-                padding: 10px;
+        
+        .search-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+            background-color: white;
+        }
+        
+        .btn {
+            border-radius: var(--border-radius-sm);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            height: 54px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            box-shadow: 0 8px 16px rgba(124, 58, 237, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 8px 16px rgba(124, 58, 237, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #0ca678;
+            border-color: #0ca678;
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+            border-color: #dc2626;
+            box-shadow: 0 8px 16px rgba(239, 68, 68, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            border-radius: var(--border-radius-xs);
+            height: 38px;
+            width: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .table-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .table-header {
+            background-color: var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-right: 8px; /* For scrollbar width */
+        }
+        
+        .table-header table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .table-header th {
+            background-color: var(--secondary-color);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-align: left;
+            padding: 1.25rem 1.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .table-body {
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .staff-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .staff-table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            font-size: 0.95rem;
+        }
+        
+        .staff-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .staff-table tr {
+            transition: var(--transition);
+        }
+        
+        .staff-table tr:hover {
+            background-color: #f9f6fe;
+        }
+        
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(124, 58, 237, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 2px solid white;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .staff-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .staff-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        
+        .staff-email {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.85rem;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+        
+        .status-inactive {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.625rem;
+            align-items: center;
+        }
+        
+        .form-switch {
+            padding-left: 2.75em;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .form-check-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25);
+        }
+        
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            background-color: var(--secondary-color);
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            background-color: var(--secondary-color);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .modal-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            letter-spacing: -0.025em;
+        }
+        
+        .staff-detail-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .staff-detail-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .staff-detail-value {
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius-xs);
+        }
+        
+        .detail-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .detail-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .detail-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(124, 58, 237, 0.2);
+        }
+        
+        .spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        
+        .spinner-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(124, 58, 237, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+            background-color: var(--secondary-color);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .empty-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+        }
+        
+        .empty-description {
+            color: var(--text-secondary);
+            max-width: 450px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2), 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-info h4 {
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+            font-size: 1.75rem;
+            letter-spacing: -0.025em;
+        }
+        
+        .profile-info p {
+            margin: 0 0 0.375rem 0;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .modal-lg {
+            max-width: 900px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: var(--border-radius-sm);
+            padding: 0.75rem 1.25rem;
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background-color: var(--secondary-color);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+            background-color: white;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f3f4f6 25%, #f9fafb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: var(--border-radius-xs);
+        }
+        
+        .skeleton-row {
+            display: flex;
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .skeleton-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+        
+        .skeleton-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .skeleton-name {
+            height: 20px;
+            width: 150px;
+        }
+        
+        .skeleton-email {
+            height: 16px;
+            width: 200px;
+        }
+        
+        .skeleton-cell {
+            height: 20px;
+            width: 100px;
+        }
+        
+        .skeleton-badge {
+            height: 24px;
+            width: 80px;
+            border-radius: 9999px;
+        }
+        
+        .skeleton-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .skeleton-button {
+            height: 38px;
+            width: 38px;
+            border-radius: var(--border-radius-xs);
+        }
+        
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
             }
-    
-            h2 {
-                font-size: 18px;
-                margin: 10px;
+            100% {
+                background-position: -200% 0;
             }
-    
-            table {
-                font-size: 14px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--success-color);
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--success-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .btn-sm.btn-outline-primary {
+            background-color: rgba(124, 58, 237, 0.1);
+            border: none;
+        }
+        
+        .btn-sm.btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm.btn-outline-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border: none;
+        }
+        
+        .btn-sm.btn-outline-danger:hover {
+            background-color: var(--danger-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 992px) {
+            .container-fluid {
+                padding: 1rem;
             }
-    
-            th,
-            td {
-                padding: 8px;
-                font-size: 12px;
+            
+            .page-header {
+                padding: 1.25rem 1.5rem;
             }
-    
-            input[type="text"] {
-                width: 100%;
-                max-width: none;
+            
+            .search-container {
+                padding: 1.25rem 1.5rem;
+                flex-direction: column;
             }
-    
+            
             .btn {
                 width: 100%;
-                font-size: 12px;
-                padding: 10px 0;
             }
-    
-            .icon-img {
-                width: 20px;
-                height: 20px;
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
             }
-    
-            .responsive-search-bar {
-                max-width: 250px;
-                font-size: 13px;
+            
+            .profile-avatar {
+                margin: 0 auto;
             }
-    
-            .back-button {
-                position: absolute;
-                top: 3.6%;
-                left: 4%;
-                text-decoration: none;
-            }
-    
-            .back-button img {
-                width: 40px;
-                height: 40px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
+            
+            .modal-body {
+                padding: 1.5rem;
             }
         }
-    
-        @media (max-width: 480px) {
-            table {
-                display: block;
+        
+        @media (max-width: 768px) {
+            .table-container {
                 overflow-x: auto;
-                white-space: nowrap;
             }
-    
-            th,
-            td {
-                font-size: 10px;
-                padding: 6px;
+            
+            .staff-table, .table-header table {
+                min-width: 900px;
             }
-    
-            h1,
-            h2 {
-                font-size: 16px;
-            }
-    
-            .responsive-search-bar {
-                max-width: 200px;
-                font-size: 12px;
-            }
-    
-            .back-button {
-                position: absolute;
-                top: 3.5%;
-                left: 7%;
-                text-decoration: none;
-            }
-    
-            .back-button img {
-                width: 35px;
-                height: 35px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
+            
+            .action-buttons {
+                flex-wrap: wrap;
             }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>MCA STAFF LIST</h1>
-    <a href="/ssm/mca/dashboard#staff" class="back-button">
-        <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
-    </a>
-    <table>
-        <thead>
-        <tr>
-            <th>S.No</th>
-            <th>Name</th>
-            <th>Staff ID</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Gender</th>
-            <th>Status</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each staffData}}
-        <tr>
-            <td class="td">{{inc @index}}</td>
-            <td>{{name}}</td>
-            <td class="td">{{staffId}}</td>
-            <td class="td">{{email}}</td>
-            <td class="td">{{phone}}</td>
-            <td class="td">{{gender}}</td>
-            <td class="td" style="color: {{#if (eq status "Active")}}green{{else}}red{{/if}};">{{status}}</td>
-            <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/staffEdit/{{_id}}" class="view-link">
-                    <img src="https://i.postimg.cc/W3JmZGw3/user-avatar.png" alt="Edit" class="icon-img">
-                </a>
-            </td>
-            <td class="td" style="font-weight: bold;">
-                <a href="/ssm/mca/staffDelete/{{_id}}" class="view-link" onclick="return confirm('Are You Sure You Want To Delete ?')">
-                    <img src="https://i.postimg.cc/J0VN5spQ/remove-1.png" alt="Delete" class="icon-img">
-                </a>
-            </td>
-        </tr>
-        {{/each}}
-        </tbody>
-    </table>
-
-
-    <div class="btn-container">
-        <a class="btn" href="/ssm/mca/dashboard#staff">< Go back!</a>
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="back-button" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="page-title-container">
+                <h1 class="page-title">Staff Management</h1>
+                <p class="page-subtitle">View and manage staff members</p>
+            </div>
+        </div>
+        
+        <div class="content-card">
+            <div class="search-container">
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search staff by name, email, department or designation...">
+                </div>
+                <button class="btn btn-primary" id="addStaffBtn" onclick="redirectToRegistration()">
+                    <i class="fas fa-plus"></i>
+                    Add New Staff
+                </button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 25%">Staff</th>
+                                <th style="width: 10%">Staff ID</th>
+                                <th style="width: 15%">Department</th>
+                                <th style="width: 15%">Designation</th>
+                                <th style="width: 10%">Contact</th>
+                                <th style="width: 10%">Status</th>
+                                <th style="width: 15%">Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                
+                <div class="table-body">
+                    <table class="staff-table">
+                        <tbody id="staffTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-user-slash"></i>
+                </div>
+                <h3 class="empty-title">No staff members found</h3>
+                <p class="empty-description">There are no staff members matching your search criteria or no staff has been added yet.</p>
+            </div>
+        </div>
     </div>
-</div>
+    
+    <div class="modal fade" id="viewStaffModal" tabindex="-1" aria-labelledby="viewStaffModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewStaffModalLabel">Staff Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img id="viewStaffImage" src="/placeholder.svg" alt="Staff Photo">
+                        </div>
+                        <div class="profile-info">
+                            <h4 id="viewStaffName"></h4>
+                            <p id="viewStaffDesignation"></p>
+                            <p id="viewStaffDepartment"></p>
+                            <div id="viewStaffStatusBadge" class="profile-badge"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <i class="fas fa-user"></i> Personal Information
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Staff ID</div>
+                                    <div class="staff-detail-value" id="viewStaffId"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Date of Birth</div>
+                                    <div class="staff-detail-value" id="viewStaffDob"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Gender</div>
+                                    <div class="staff-detail-value" id="viewStaffGender"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Nationality</div>
+                                    <div class="staff-detail-value" id="viewStaffNationality"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Aadhaar Number</div>
+                                    <div class="staff-detail-value" id="viewStaffAadhaar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <i class="fas fa-envelope"></i> Contact Information
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Email</div>
+                                    <div class="staff-detail-value" id="viewStaffEmail"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Phone</div>
+                                    <div class="staff-detail-value" id="viewStaffPhone"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Emergency Contact</div>
+                                    <div class="staff-detail-value" id="viewStaffEmergencyContact"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Emergency Phone</div>
+                                    <div class="staff-detail-value" id="viewStaffEmergencyPhone"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="staff-detail-item">
+                            <div class="staff-detail-label">Address</div>
+                            <div class="staff-detail-value" id="viewStaffAddress"></div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">City</div>
+                                    <div class="staff-detail-value" id="viewStaffCity"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">State</div>
+                                    <div class="staff-detail-value" id="viewStaffState"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Pin Code</div>
+                                    <div class="staff-detail-value" id="viewStaffPinCode"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <i class="fas fa-briefcase"></i> Professional Information
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Joining Date</div>
+                                    <div class="staff-detail-value" id="viewStaffJoiningDate"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Experience (Years)</div>
+                                    <div class="staff-detail-value" id="viewStaffExperience"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Specialization</div>
+                                    <div class="staff-detail-value" id="viewStaffSpecialization"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Salary</div>
+                                    <div class="staff-detail-value" id="viewStaffSalary"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <i class="fas fa-graduation-cap"></i> Educational Information
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Highest Qualification</div>
+                                    <div class="staff-detail-value" id="viewStaffQualification"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">University</div>
+                                    <div class="staff-detail-value" id="viewStaffUniversity"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Year of Passing</div>
+                                    <div class="staff-detail-value" id="viewStaffYearOfPassing"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <i class="fas fa-university"></i> Bank Details
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Account Holder Name</div>
+                                    <div class="staff-detail-value" id="viewStaffAccountName"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Bank Name</div>
+                                    <div class="staff-detail-value" id="viewStaffBankName"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Account Number</div>
+                                    <div class="staff-detail-value" id="viewStaffAccountNumber"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">IFSC Code</div>
+                                    <div class="staff-detail-value" id="viewStaffIfscCode"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">UPI ID</div>
+                                    <div class="staff-detail-value" id="viewStaffUpiId"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <div class="detail-section-title">
+                            <i class="fas fa-shield-alt"></i> Role Information
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Role</div>
+                                    <div class="staff-detail-value" id="viewStaffRole"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Admin Access</div>
+                                    <div class="staff-detail-value" id="viewStaffIsAdmin"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Super Admin Access</div>
+                                    <div class="staff-detail-value" id="viewStaffIsSuperAdmin"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="staff-detail-item">
+                                    <div class="staff-detail-label">Faculty Access</div>
+                                    <div class="staff-detail-value" id="viewStaffIsFaculty"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="deleteStaffModal" tabindex="-1" aria-labelledby="deleteStaffModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteStaffModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong id="deleteStaffName"></strong>? This action cannot be undone.</p>
+                    <input type="hidden" id="deleteStaffId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="spinner-overlay" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <script>
+        let staffData = [];
+        
+        const staffTableBody = document.getElementById('staffTableBody');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const tableBody = document.querySelector('.table-body');
+        
+        const viewStaffModal = new bootstrap.Modal(document.getElementById('viewStaffModal'));
+        const deleteStaffModal = new bootstrap.Modal(document.getElementById('deleteStaffModal'));
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            showSkeletonLoading();
+            loadStaffData();
+            setupEventListeners();
+        });
+        
+        function goBack() {
+            window.location.href = '/v1/api/dashboard';
+        }
+        
+        function redirectToRegistration() {
+            window.location.href = '/v1/api/staffRegistration';
+        }
+        
+        function setupEventListeners() {
+            searchInput.addEventListener('input', function() {
+                renderStaffTable(filterStaffData(this.value));
+            });
+            
+            document.getElementById('confirmDeleteBtn').addEventListener('click', deleteStaff);
+        }
+        
+        function showSpinner() {
+            loadingSpinner.classList.add('show');
+        }
+        
+        function hideSpinner() {
+            loadingSpinner.classList.remove('show');
+        }
+        
+        function showSkeletonLoading() {
+            staffTableBody.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const skeletonRow = document.createElement('tr');
+                skeletonRow.innerHTML = `
+                    <td>
+                        <div class="staff-info">
+                            <div class="skeleton skeleton-avatar"></div>
+                            <div class="skeleton-text">
+                                <div class="skeleton skeleton-name"></div>
+                                <div class="skeleton skeleton-email"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><div class="skeleton skeleton-cell"></div></td>
+                    <td><div class="skeleton skeleton-cell"></div></td>
+                    <td><div class="skeleton skeleton-cell"></div></td>
+                    <td><div class="skeleton skeleton-cell"></div></td>
+                    <td><div class="skeleton skeleton-badge"></div></td>
+                    <td>
+                        <div class="skeleton-actions">
+                            <div class="skeleton skeleton-button"></div>
+                            <div class="skeleton skeleton-button"></div>
+                            <div class="skeleton skeleton-button"></div>
+                        </div>
+                    </td>
+                `;
+                staffTableBody.appendChild(skeletonRow);
+            }
+        }
+        
+        function showToast(message, type = 'info') {
+            const backgroundColor = type === 'success' ? '#10b981' : 
+                                   type === 'error' ? '#ef4444' : 
+                                   type === 'warning' ? '#f59e0b' : '#7c3aed';
+            
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: backgroundColor,
+                stopOnFocus: true,
+                className: "rounded-lg",
+                style: {
+                    borderRadius: "12px",
+                    padding: "14px 18px",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                }
+            }).showToast();
+        }
+        
+        async function loadStaffData() {
+            try {
+                showSkeletonLoading();
+                
+                const response = await fetch('/v1/api/getStaffData');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch staff data');
+                }
+                
+                const data = await response.json();
+                staffData = data;
+                
+                setTimeout(() => {
+                    renderStaffTable(staffData);
+                    showToast('Staff data loaded successfully', 'success');
+                }, 800);
+            } catch (error) {
+                console.error('Error loading staff data:', error);
+                showToast('Failed to load staff data: ' + error.message, 'error');
+                
+                emptyState.style.display = 'block';
+                staffTableBody.innerHTML = '';
+            }
+        }
+        
+        function filterStaffData(searchTerm) {
+            if (!searchTerm) {
+                return staffData;
+            }
+            
+            searchTerm = searchTerm.toLowerCase();
+            
+            return staffData.filter(staff => 
+                (staff.firstName + ' ' + staff.lastName).toLowerCase().includes(searchTerm) ||
+                staff.email.toLowerCase().includes(searchTerm) ||
+                staff.department.toLowerCase().includes(searchTerm) ||
+                staff.designation.toLowerCase().includes(searchTerm) ||
+                staff.staffId.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        function renderStaffTable(data) {
+            staffTableBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+                tableBody.style.display = 'none';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            tableBody.style.display = 'block';
+            
+            data.forEach(staff => {
+                const row = document.createElement('tr');
+                
+                const staffInfoCell = document.createElement('td');
+                staffInfoCell.style.width = '25%';
+                staffInfoCell.innerHTML = `
+                    <div class="staff-info">
+                        <div class="avatar">
+                            ${staff.imageUrl ? `<img src="${staff.imageUrl}" alt="${staff.firstName}">` : getInitials(staff.firstName + ' ' + staff.lastName)}
+                        </div>
+                        <div>
+                            <h5 class="staff-name">${staff.firstName} ${staff.lastName}</h5>
+                            <p class="staff-email">${staff.email}</p>
+                        </div>
+                    </div>
+                `;
+                
+                const staffIdCell = document.createElement('td');
+                staffIdCell.style.width = '10%';
+                staffIdCell.textContent = staff.staffId;
+                
+                const departmentCell = document.createElement('td');
+                departmentCell.style.width = '15%';
+                departmentCell.textContent = staff.department;
+                
+                const designationCell = document.createElement('td');
+                designationCell.style.width = '15%';
+                designationCell.textContent = staff.designation;
+                
+                const contactCell = document.createElement('td');
+                contactCell.style.width = '10%';
+                contactCell.textContent = staff.phone;
+                
+                const statusCell = document.createElement('td');
+                statusCell.style.width = '10%';
+                const statusBadge = document.createElement('span');
+                statusBadge.className = `status-badge ${staff.isActive ? 'status-active' : 'status-inactive'}`;
+                statusBadge.textContent = staff.isActive ? 'Active' : 'Inactive';
+                statusCell.appendChild(statusBadge);
+                
+                const actionsCell = document.createElement('td');
+                actionsCell.style.width = '15%';
+                actionsCell.innerHTML = `
+                    <div class="action-buttons">
+                        <button class="btn btn-sm btn-outline-primary view-btn" data-id="${staff._id}" title="View Details">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary edit-btn" data-id="${staff._id}" title="Edit Staff">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${staff._id}" title="Delete Staff">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <label class="switch ms-2" title="${staff.isActive ? 'Deactivate' : 'Activate'} Staff">
+                            <input type="checkbox" class="status-toggle" data-id="${staff._id}" ${staff.isActive ? 'checked' : ''}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                `;
+                
+                row.appendChild(staffInfoCell);
+                row.appendChild(staffIdCell);
+                row.appendChild(departmentCell);
+                row.appendChild(designationCell);
+                row.appendChild(contactCell);
+                row.appendChild(statusCell);
+                row.appendChild(actionsCell);
+                
+                staffTableBody.appendChild(row);
+            });
+            
+            addActionButtonListeners();
+        }
+        
+        function addActionButtonListeners() {
+            document.querySelectorAll('.view-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const staffId = this.getAttribute('data-id');
+                    viewStaffDetails(staffId);
+                });
+            });
+            
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const staffId = this.getAttribute('data-id');
+                    redirectToEditPage(staffId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const staffId = this.getAttribute('data-id');
+                    openDeleteConfirmation(staffId);
+                });
+            });
+            
+            document.querySelectorAll('.status-toggle').forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const staffId = this.getAttribute('data-id');
+                    const newStatus = this.checked;
+                    updateStaffStatus(staffId, newStatus);
+                });
+            });
+        }
+        
+        function getInitials(name) {
+            return name
+                .split(' ')
+                .map(part => part.charAt(0))
+                .join('')
+                .toUpperCase();
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+        
+        function viewStaffDetails(staffId) {
+            const staff = staffData.find(s => s._id === staffId);
+            
+            if (!staff) {
+                showToast('Staff member not found', 'error');
+                return;
+            }
+            
+            document.getElementById('viewStaffName').textContent = staff.firstName + ' ' + staff.lastName;
+            document.getElementById('viewStaffDesignation').textContent = staff.designation;
+            document.getElementById('viewStaffDepartment').textContent = staff.department;
+            
+            const statusBadge = document.getElementById('viewStaffStatusBadge');
+            statusBadge.textContent = staff.isActive ? 'Active' : 'Inactive';
+            statusBadge.className = `profile-badge ${staff.isActive ? 'status-active' : 'status-inactive'}`;
+            
+            document.getElementById('viewStaffId').textContent = staff.staffId;
+            document.getElementById('viewStaffDob').textContent = formatDate(staff.dob);
+            document.getElementById('viewStaffGender').textContent = staff.gender;
+            document.getElementById('viewStaffNationality').textContent = staff.nationality || 'N/A';
+            document.getElementById('viewStaffAadhaar').textContent = staff.aadhaarNum || 'N/A';
+            
+            document.getElementById('viewStaffEmail').textContent = staff.email;
+            document.getElementById('viewStaffPhone').textContent = staff.phone;
+            document.getElementById('viewStaffEmergencyContact').textContent = staff.emergencyContact || 'N/A';
+            document.getElementById('viewStaffEmergencyPhone').textContent = staff.emergencyPhone || 'N/A';
+            document.getElementById('viewStaffAddress').textContent = staff.address || 'N/A';
+            document.getElementById('viewStaffCity').textContent = staff.city || 'N/A';
+            document.getElementById('viewStaffState').textContent = staff.state || 'N/A';
+            document.getElementById('viewStaffPinCode').textContent = staff.pinCode || 'N/A';
+            
+            document.getElementById('viewStaffJoiningDate').textContent = formatDate(staff.joiningDate);
+            document.getElementById('viewStaffExperience').textContent = staff.experience ? `${staff.experience} years` : 'N/A';
+            document.getElementById('viewStaffSpecialization').textContent = staff.specialization || 'N/A';
+            document.getElementById('viewStaffSalary').textContent = staff.salary ? `₹${staff.salary}` : 'N/A';
+            
+            document.getElementById('viewStaffQualification').textContent = staff.highestQualification || 'N/A';
+            document.getElementById('viewStaffUniversity').textContent = staff.university || 'N/A';
+            document.getElementById('viewStaffYearOfPassing').textContent = staff.yearOfPassing || 'N/A';
+            
+            if (staff.bankDetails) {
+                document.getElementById('viewStaffAccountName').textContent = staff.bankDetails.accountHolderName || 'N/A';
+                document.getElementById('viewStaffBankName').textContent = staff.bankDetails.bankName || 'N/A';
+                document.getElementById('viewStaffAccountNumber').textContent = staff.bankDetails.accountNumber || 'N/A';
+                document.getElementById('viewStaffIfscCode').textContent = staff.bankDetails.ifscCode || 'N/A';
+                document.getElementById('viewStaffUpiId').textContent = staff.bankDetails.upiId || 'N/A';
+            } else {
+                document.getElementById('viewStaffAccountName').textContent = 'N/A';
+                document.getElementById('viewStaffBankName').textContent = 'N/A';
+                document.getElementById('viewStaffAccountNumber').textContent = 'N/A';
+                document.getElementById('viewStaffIfscCode').textContent = 'N/A';
+                document.getElementById('viewStaffUpiId').textContent = 'N/A';
+            }
+            
+            document.getElementById('viewStaffRole').textContent = staff.role || 'N/A';
+            document.getElementById('viewStaffIsAdmin').textContent = staff.isAdmin ? 'Yes' : 'No';
+            document.getElementById('viewStaffIsSuperAdmin').textContent = staff.isSuperAdmin ? 'Yes' : 'No';
+            document.getElementById('viewStaffIsFaculty').textContent = staff.isFaculty ? 'Yes' : 'No';
+            
+            const staffImage = document.getElementById('viewStaffImage');
+            if (staff.imageUrl) {
+                staffImage.src = staff.imageUrl;
+                staffImage.alt = staff.firstName + ' ' + staff.lastName;
+            } else {
+                staffImage.src = '/placeholder.svg?height=140&width=140';
+                staffImage.alt = 'No Image';
+            }
+            
+            viewStaffModal.show();
+        }
+        
+        function redirectToEditPage(staffId) {
+            window.location.href = `/v1/api/staffEdit/${staffId}`;
+        }
+        
+        function openDeleteConfirmation(staffId) {
+            const staff = staffData.find(s => s._id === staffId);
+            
+            if (!staff) {
+                showToast('Staff member not found', 'error');
+                return;
+            }
+            
+            document.getElementById('deleteStaffId').value = staffId;
+            document.getElementById('deleteStaffName').textContent = staff.firstName + ' ' + staff.lastName;
+            
+            deleteStaffModal.show();
+        }
+        
+        async function deleteStaff() {
+            const staffId = document.getElementById('deleteStaffId').value;
+            
+            try {
+                showSkeletonLoading();
+                
+                const response = await fetch(`/v1/api/staff/${staffId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete staff member');
+                }
+                
+                staffData = staffData.filter(s => s._id !== staffId);
+                
+                renderStaffTable(filterStaffData(searchInput.value));
+                
+                deleteStaffModal.hide();
+                
+                showToast('Staff member deleted successfully', 'success');
+            } catch (error) {
+                console.error('Error deleting staff:', error);
+                showToast('Failed to delete staff: ' + error.message, 'error');
+            }
+        }
+        
+        async function updateStaffStatus(staffId, newStatus) {
+            try {
+                showSkeletonLoading();
+
+                let userId = `${staffId}`;
+                
+                const response = await fetch(`/v1/api/staff/status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ isActive: newStatus, userId: userId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to update staff status');
+                }
+                
+                const index = staffData.findIndex(s => s._id === staffId);
+                if (index !== -1) {
+                    staffData[index].isActive = newStatus;
+                }
+                
+                renderStaffTable(filterStaffData(searchInput.value));
+                
+                showToast(`Staff status ${newStatus ? 'activated' : 'deactivated'} successfully`, 'success');
+            } catch (error) {
+                console.error('Error updating staff status:', error);
+                showToast('Failed to update staff status: ' + error.message, 'error');
+            }
+        }
+    </script>
 </body>
 </html>

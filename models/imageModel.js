@@ -13,6 +13,22 @@ const imageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: false
+  },
+  category: {
+    type: String,
+    required: false
+  },
   isDelete: {
     type: Boolean,
     default: false

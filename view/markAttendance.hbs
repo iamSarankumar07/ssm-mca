@@ -6,437 +6,903 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCA {{year}} Attendance</title>
     <link rel="icon" href="https://your-favicon-url.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-
-        * {
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #f3f4f6;
+            --light-bg: #f9fafb;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --font-size-base: 0.95rem;
+            --font-size-sm: 0.9rem;
+            --font-size-xs: 0.85rem;
+        }
+        
+        html, body {
+            height: 100%;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: #1f2937;
+            font-size: var(--font-size-base);
+            /* Remove overflow: hidden from here */
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            /* Remove overflow: hidden from here */
         }
 
         .container {
+            max-width: 100%;
             width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: #fff;
-            background-color: #3d6ef5ff;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 24px;
             margin: 0;
+            padding: 1rem;
+            flex: 1;
+            /* Remove overflow: hidden from here */
+            display: flex;
+            flex-direction: column;
         }
-
-        h2 {
-            color: #3d6ef5ff;
-            margin-top: 20px;
+        
+        .card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: none;
+            /* Remove overflow: hidden from here */
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px auto;
-            font-size: 15px;
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.25rem;
+            flex-shrink: 0;
         }
-
-        th,
-        td {
-            padding: 8px;
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .header-title {
+            flex-grow: 1;
             text-align: center;
-            border: 1px solid #ddd;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+            font-size: 1.25rem;
         }
-
-        .td {
-            text-align: center;
-        }
-
-        th {
-            background-color: #3d6ef5ff;
-            color: #fff;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .edit-icon,
-        .delete-icon {
-            text-decoration: none;
-            color: #3d6ef5ff;
-            transition: color 0.3s;
-        }
-
-        .edit-icon:hover,
-        .delete-icon:hover {
-            color: #0056b3;
-        }
-
-        .btn-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
+        
         .btn {
-            padding: 8px 14px;
-            color: #fff;
-            border: 2px solid #3d6ef5ff;
-            background: #3d6ef5ff;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 5px;
+            border-radius: 6px;
+            padding: 0.375rem 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: var(--font-size-base);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-primary:focus {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+        }
+        
+        .table {
+            vertical-align: middle;
+            margin-bottom: 0;
+            font-size: var(--font-size-base);
+        }
+        
+        .table thead th {
+            font-weight: 600;
+            color: #4b5563;
+            border-bottom-width: 1px;
+            padding: 0.75rem;
+            font-size: var(--font-size-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 10;
+        }
+        
+        .table tbody td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: var(--font-size-base);
+        }
+        
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .form-check-input {
+            width: 1em;
+            height: 1em;
             cursor: pointer;
-            transition: background 0.4s, color 0.4s;
+            border-width: 1.5px;
         }
-
-        .btn:hover {
-            background: #fff;
-            color: #3d6ef5ff;
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
         }
-
+        
+        .form-check-input:focus {
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+        }
+        
         .back-button {
-            position: absolute;
-            top: 3.5%;
-            left: 2%;
+            color: var(--primary-color);
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
             text-decoration: none;
+            font-size: 2.2rem;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-3px);
+            color: var(--primary-hover);
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+        
+        .attendance-cell {
+            min-width: 70px;
+        }
+        
+        .input-group-text {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            font-size: var(--font-size-sm);
+            padding: 0.375rem 0.625rem;
+        }
+        
+        .form-control {
+            font-size: var(--font-size-sm);
+            padding: 0.375rem 0.625rem;
         }
 
-        .back-button img {
-            width: 45px;
-            height: 45px;
-            margin-right: 16px;
-            margin-bottom: 30px;
-            vertical-align: middle;
-            transition: width 0.3s ease, height 0.3s ease;
+        th, td {
+            text-align: center;
         }
-
-        .icon-img {
-            width: 25px;
-            height: 25px;
-            vertical-align: middle;
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
         }
-
-        .view-link {
-            text-decoration: none;
-            cursor: pointer;
+        
+        .table-container {
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            overflow: auto; /* Changed from 'auto' to ensure scrolling works */
+            flex: 1;
+            /* Add max-height to ensure scrolling is enabled */
+            max-height: calc(100vh - 250px);
         }
-
-        .view-link:hover .icon-img {
-            transform: scale(1.2);
-            filter: brightness(1.5);
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            font-size: var(--font-size-xs);
+            font-weight: 500;
         }
-
-        .responsive-search-bar {
-            padding: 6px;
-            width: 100%;
-            max-width: 300px;
-            font-size: 14px;
-            border: 1px solid #ccc;
+        
+        .status-present {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-late {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-excused {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .status-absent {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .attendance-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
             border-radius: 4px;
-            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: var(--font-size-sm);
         }
-
-        .attendance-radio {
+        
+        .attendance-option i {
+            font-size: 1rem;
+        }
+        
+        .attendance-option:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .attendance-option.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .attendance-option.selected-present {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .attendance-option.selected-late {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .attendance-option.selected-excused {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .attendance-option.selected-absent {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .card-body {
+            padding: 1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden; /* Keep this to contain the table-container */
+        }
+        
+        .actions-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .date-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .date-label {
+            font-weight: 500;
+            color: #4b5563;
+            margin: 0;
+            font-size: var(--font-size-base);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
             display: flex;
             justify-content: center;
-            gap: 10px;
+            align-items: center;
+            z-index: 9999;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .loading-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .spinner {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 0.2rem solid var(--primary-color);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
-        .attendance-radio label {
-            margin: 0 5px;
+        .footer-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem 0 0.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-top: 1rem;
+            flex-shrink: 0;
         }
-
-        input[type="radio"] {
-            cursor: pointer;
+        
+        /* Skeleton Loading Styles */
+        .skeleton-container {
+            display: none;
         }
-
-        input[type="date"] {
-            padding: 6px;
-            border: 1px solid #ccc;
+        
+        .skeleton-container.active {
+            display: block;
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
             border-radius: 4px;
-            font-size: 14px;
-        }
-
-        input[type="checkbox"] {
-            width: 20px;
             height: 20px;
-            cursor: pointer;
+            margin-bottom: 8px;
         }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 20px;
-                padding: 10px;
+        
+        .skeleton-row {
+            display: flex;
+            margin-bottom: 16px;
+        }
+        
+        .skeleton-cell {
+            flex: 1;
+            margin-right: 8px;
+            height: 24px;
+        }
+        
+        .skeleton-cell:last-child {
+            margin-right: 0;
+        }
+        
+        .skeleton-header {
+            height: 32px;
+            margin-bottom: 16px;
+        }
+        
+        .skeleton-action {
+            height: 40px;
+            width: 120px;
+        }
+        
+        .skeleton-date {
+            height: 40px;
+            width: 200px;
+        }
+        
+        .skeleton-button {
+            height: 40px;
+            width: 160px;
+        }
+        
+        .skeleton-table {
+            width: 100%;
+        }
+        
+        .skeleton-th {
+            height: 32px;
+            margin-bottom: 16px;
+        }
+        
+        .skeleton-td {
+            height: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .skeleton-attendance {
+            height: 32px;
+            width: 100%;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
             }
-
-            h2 {
-                font-size: 18px;
-                margin: 10px;
+            100% {
+                background-position: 200% 0;
             }
-
-            table {
-                font-size: 14px;
+        }
+        
+        .content-container {
+            display: none;
+        }
+        
+        .content-container.active {
+            display: block;
+        }
+        
+        @media (max-width: 992px) {
+            .actions-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
             }
-
-            th,
-            td {
-                padding: 8px;
-                font-size: 12px;
-            }
-
-            input[type="text"] {
+            
+            .buttons-container {
                 width: 100%;
-                max-width: none;
-            }
-
-            .btn {
-                padding: 12px 20px;
-                font-size: 14px;
-                width: auto;
-                min-width: 150px;
-                color: #fff;
-                border: 2px solid #3d6ef5ff;
-                background: #3d6ef5ff;
-                font-weight: bold;
-                text-decoration: none;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background 0.4s, color 0.4s;
-            }
-
-            .btn:hover {
-                background: #fff;
-                color: #3d6ef5ff;
-            }
-
-            .icon-img {
-                width: 20px;
-                height: 20px;
-            }
-
-            .responsive-search-bar {
-                max-width: 250px;
-                font-size: 13px;
-            }
-
-            .back-button {
-                position: absolute;
-                top: 3.6%;
-                left: 4%;
-                text-decoration: none;
-            }
-
-            .back-button img {
-                width: 40px;
-                height: 40px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
-            }
-
-            .btn {
-                font-size: 14px;
-                padding: 10px 16px;
-                min-width: 130px;
+                display: flex;
+                justify-content: space-between;
             }
         }
-
-        @media (max-width: 480px) {
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
+        
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.125rem;
             }
-
-            th,
-            td {
-                font-size: 10px;
-                padding: 6px;
+            
+            .card-header {
+                padding: 0.75rem 1rem;
             }
-
-            h1,
-            h2 {
-                font-size: 16px;
+            
+            .card-body {
+                padding: 0.75rem 1rem;
             }
-
-            .responsive-search-bar {
-                max-width: 200px;
-                font-size: 12px;
+            
+            .table thead th, .table tbody td {
+                padding: 0.5rem;
             }
-
-            .back-button {
-                position: absolute;
-                top: 3.5%;
-                left: 7%;
-                text-decoration: none;
+            
+            .buttons-container {
+                flex-direction: column;
+                gap: 0.5rem;
             }
-
-            .back-button img {
-                width: 35px;
-                height: 35px;
-                margin-right: 16px;
-                margin-bottom: 30px;
-                vertical-align: middle;
-                transition: width 0.3s ease, height 0.3s ease;
-            }
-
+            
             .btn {
-                font-size: 12px;
-                padding: 8px 14px;
-                min-width: 120px;
+                width: 100%;
+            }
+            
+            /* Adjust table container height for mobile */
+            .table-container {
+                max-height: calc(100vh - 300px);
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>MCA-{{year}} Attendance</h1>
-        <a href="/ssm/mca/dashboard#attendance" class="back-button">
-            <img src="https://i.postimg.cc/Ghw7c3bx/back-button-white.png" alt="Go Back">
-        </a>
-        <form action="/ssm/mca/markAttendence" method="POST">
-            <div style="margin-bottom: 15px; margin-top: 15px;">
-                <label for="date"><strong>Date:</strong></label>
-                <input type="date" id="date" name="date" value="{{today}}" readonly required>
+    <div class="app-container">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <div class="header-container">
+                        <a href="/v1/api/dashboard#attendance" class="back-button">
+                            <i class="bi bi-arrow-left-circle"></i>
+                        </a>
+                        <h2 class="header-title">{{course}} - {{year}} Attendance</h2>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Skeleton Loading -->
+                    <div class="skeleton-container active" id="skeletonContainer">
+                        <div class="actions-container">
+                            <div class="skeleton skeleton-date"></div>
+                            <div class="skeleton skeleton-button"></div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="table skeleton-table">
+                                <thead>
+                                    <tr>
+                                        <th><div class="skeleton skeleton-th"></div></th>
+                                        <th><div class="skeleton skeleton-th"></div></th>
+                                        <th><div class="skeleton skeleton-th"></div></th>
+                                        <th><div class="skeleton skeleton-th"></div></th>
+                                        <th><div class="skeleton skeleton-th"></div></th>
+                                        <th><div class="skeleton skeleton-th"></div></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-td"></div></td>
+                                        <td><div class="skeleton skeleton-attendance"></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="footer-actions">
+                            <div class="skeleton skeleton-button"></div>
+                            <div class="skeleton skeleton-button"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actual Content -->
+                    <div class="content-container" id="contentContainer">
+                        <div class="actions-container">
+                            <div class="date-container">
+                                <h5 class="date-label">Date:</h5>
+                                <div class="input-group" style="width: auto;">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-calendar-date"></i>
+                                    </span>
+                                    <input type="date" id="date" name="date" value="{{date}}" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="buttons-container">
+                                <button type="button" class="btn btn-primary" id="markAllPresent">
+                                    <i class="bi bi-check-all me-1"></i> Mark All Present
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">#</th>
+                                        <th style="text-align: left;" scope="col">Student Name</th>
+                                        <th scope="col">Student ID</th>
+                                        <th scope="col">Course</th>
+                                        <th scope="col" class="text-center">Gender</th>
+                                        <th scope="col" class="text-center">Present</th>
+                                        <th scope="col" class="text-center">Late</th>
+                                        <th scope="col" class="text-center">Excused</th>
+                                        <th scope="col" class="text-center">Absent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each students}}
+                                    <tr data-student-id="{{this._id}}">
+                                        <td class="text-center">{{inc @index}}</td>
+                                        <td style="text-align: left;">
+                                            <div class="fw-medium">{{this.name}}</div>
+                                        </td>
+                                        <td>{{this.studentId}}</td>
+                                        <td>{{this.course}}</td>
+                                        <td class="text-center">
+                                            {{#if (eq this.gender "Male")}}
+                                            <i class="bi bi-gender-male text-primary"></i>
+                                            {{else}}
+                                            <i class="bi bi-gender-female text-danger"></i>
+                                            {{/if}}
+                                        </td>
+                                        <td>
+                                            <div class="attendance-option" data-value="present" data-student-id="{{this._id}}" 
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "present")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-check-circle"></i>
+                                                    <span>Present</span>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <div class="attendance-option" data-value="late" data-student-id="{{this._id}}"
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "late")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-clock"></i>
+                                                    <span>Late</span>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <div class="attendance-option" data-value="excused" data-student-id="{{this._id}}"
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "excused")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-calendar-check"></i>
+                                                    <span>Excused</span>
+                                                </div>
+                                        </td>
+                                        <td>
+                                            <div class="attendance-option" data-value="absent" data-student-id="{{this._id}}"
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "absent")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-x-circle"></i>
+                                                    <span>Absent</span>
+                                                </div>
+                                        </td>
+                                        {{!-- <td>
+                                            <div class="d-flex justify-content-center gap-1">
+                                                <div class="attendance-option" data-value="present" data-student-id="{{this._id}}" 
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "present")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-check-circle"></i>
+                                                    <span>Present</span>
+                                                </div>
+                                                <div class="attendance-option" data-value="late" data-student-id="{{this._id}}"
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "late")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-clock"></i>
+                                                    <span>Late</span>
+                                                </div>
+                                                <div class="attendance-option" data-value="excused" data-student-id="{{this._id}}"
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "excused")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-calendar-check"></i>
+                                                    <span>Excused</span>
+                                                </div>
+                                                <div class="attendance-option" data-value="absent" data-student-id="{{this._id}}"
+                                                     {{#if (eq (lookup ../attendanceMap this._id) "absent")}}data-selected="true"{{/if}}>
+                                                    <i class="bi bi-x-circle"></i>
+                                                    <span>Absent</span>
+                                                </div>
+                                            </div>
+                                        </td> --}}
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="footer-actions">
+                            <a class="btn btn-outline-primary px-4" href="/v1/api/dashboard#attendance">
+                                <i class="bi bi-arrow-left me-1"></i> Go Back
+                            </a>
+                            <button type="button" id="submitAttendance" class="btn btn-primary px-4">
+                                <i class="bi bi-save me-1"></i> Submit Attendance
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="btn-container">
-                <button type="button" class="btn" id="markAllPresent">Mark All Present</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Student Name</th>
-                        <th>Student ID</th>
-                        <th>Gender</th>
-                        <th>Present</th>
-                        <th>Late</th>
-                        <th>Excused</th>
-                        <th>Absent</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each students}}
-                    <tr>
-                        <td>{{inc @index}}</td>
-                        <td style="text-align: left;">{{this.name}}</td>
-                        <td>{{this.studentId}}</td>
-                        <td>{{this.gender}}</td>
-                        <td>
-                            <div class="attendance-radio">
-                                <label>
-                                    <input type="checkbox" name="attendance[{{this._id}}]" value="present" {{#if (eq
-                                        (lookup ../attendanceMap this._id) "present" )}}checked{{/if}}>
-
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-radio">
-                                <label>
-                                    <input type="checkbox" name="attendance[{{this._id}}]" value="late" {{#if (eq
-                                        (lookup ../attendanceMap this._id) "late" )}}checked{{/if}}>
-
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-radio">
-                                <label>
-                                    <input type="checkbox" name="attendance[{{this._id}}]" value="excused" {{#if (eq
-                                        (lookup ../attendanceMap this._id) "excused" )}}checked{{/if}}>
-
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-radio">
-                                <label>
-                                    <input type="checkbox" name="attendance[{{this._id}}]" value="absent" {{#if (eq
-                                        (lookup ../attendanceMap this._id) "absent" )}}checked{{/if}}>
-
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-
-            <div class="btn-container">
-                <button type="submit" class="btn">Submit Attendance</button>
-            </div>
-        </form>
-
-        <div class="btn-container">
-            <a class="btn" href="/ssm/mca/dashboard#attendance">
-                &lt; Go back!
-            </a>
         </div>
     </div>
-</body>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll("tbody tr").forEach(row => {
-            let checkboxes = row.querySelectorAll('input[type="checkbox"]');
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
 
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", function () {
-                    if (this.checked) {
-                        checkboxes.forEach(cb => {
-                            if (cb !== this) cb.checked = false;
-                        });
-                    }
-                });
-            });
-        });
-
-        document.getElementById("markAllPresent").addEventListener("click", function () {
-            document.querySelectorAll("tbody tr").forEach(row => {
-                let presentCheckbox = row.querySelector('input[value="present"]');
-                if (presentCheckbox) {
-                    presentCheckbox.checked = true;
-                    row.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-                        if (cb !== presentCheckbox) cb.checked = false;
-                    });
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Show skeleton loading and hide actual content initially
+            const skeletonContainer = document.getElementById('skeletonContainer');
+            const contentContainer = document.getElementById('contentContainer');
+            
+            // Simulate loading delay (remove this in production and use actual data loading event)
+            setTimeout(() => {
+                skeletonContainer.classList.remove('active');
+                contentContainer.classList.add('active');
+            }, 1500);
+            
+            const attendanceOptions = document.querySelectorAll('.attendance-option');
+            
+            attendanceOptions.forEach(option => {
+                if (option.dataset.selected === "true") {
+                    selectAttendanceOption(option);
                 }
             });
-        });
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll("tbody tr").forEach(row => {
-            let checkboxes = row.querySelectorAll('input[type="checkbox"]');
-
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener("change", function () {
-                    if (this.checked) {
-                        checkboxes.forEach(cb => {
-                            if (cb !== this) cb.checked = false;
-                        });
-                    }
+            
+            attendanceOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const studentId = this.dataset.studentId;
+                    const value = this.dataset.value;
+                    
+                    document.querySelectorAll(`.attendance-option[data-student-id="${studentId}"]`).forEach(opt => {
+                        opt.classList.remove('selected');
+                        opt.classList.remove('selected-present');
+                        opt.classList.remove('selected-late');
+                        opt.classList.remove('selected-excused');
+                        opt.classList.remove('selected-absent');
+                    });
+                    
+                    selectAttendanceOption(this);
                 });
             });
-        });
-    });
-</script>
+            
+            function selectAttendanceOption(option) {
+                const value = option.dataset.value;
+                option.classList.add('selected');
+                option.classList.add(`selected-${value}`);
+            }
+            
+            document.getElementById("markAllPresent").addEventListener("click", function () {
+                document.querySelectorAll('tr[data-student-id]').forEach(row => {
+                    const studentId = row.dataset.studentId;
+                    
+                    document.querySelectorAll(`.attendance-option[data-student-id="${studentId}"]`).forEach(opt => {
+                        opt.classList.remove('selected');
+                        opt.classList.remove('selected-present');
+                        opt.classList.remove('selected-late');
+                        opt.classList.remove('selected-excused');
+                        opt.classList.remove('selected-absent');
+                    });
+                    
+                    const presentOption = document.querySelector(`.attendance-option[data-student-id="${studentId}"][data-value="present"]`);
+                    if (presentOption) {
+                        selectAttendanceOption(presentOption);
+                    }
+                });
+                
+                showToast('All students marked as present', 'success');
+            });
+            
+            document.getElementById("submitAttendance").addEventListener("click", function() {
+                submitAttendance();
+            });
+            
+            document.getElementById('date').addEventListener('change', function() {
+                const selectedDate = this.value;
+                const currentUrl = new URL(window.location.href);
+                const course = currentUrl.searchParams.get('course') || 'MCA';
+                const year = currentUrl.searchParams.get('year') || 'II';
+                
+                document.getElementById('loadingOverlay').classList.add('active');
+                
+                window.location.href = `/v1/api/getMarkAttendence?course=${course}&year=${year}&date=${selectedDate}`;
+            });
+            
+            async function submitAttendance() {
+                document.getElementById('loadingOverlay').classList.add('active');
+                
+                const attendanceData = {};
+                document.querySelectorAll('tr[data-student-id]').forEach(row => {
+                    const studentId = row.dataset.studentId;
+                    const selectedOption = document.querySelector(`.attendance-option[data-student-id="${studentId}"].selected`);
+                    
+                    if (selectedOption) {
+                        attendanceData[studentId] = selectedOption.dataset.value;
+                    } else {
+                        attendanceData[studentId] = 'absent';
+                    }
+                });
+                
+                const date = document.getElementById('date').value;
+                const payload = {
+                    date: date,
+                    attendance: attendanceData
+                };
+                
+                try {
+                    const response = await fetch('/v1/api/markAttendence', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    document.getElementById('loadingOverlay').classList.remove('active');
 
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showToast('Attendance submitted successfully!', 'success');
+                        
+                        // Optional: Redirect after successful submission
+                        // setTimeout(() => {
+                        //     window.location.href = '/v1/api/dashboard#attendance';
+                        // }, 2000);
+                    } else {
+                        showToast(`Error: ${data.message || 'Failed to submit attendance'}`, 'error');
+                    }
+                } catch (error) {
+                    document.getElementById('loadingOverlay').classList.remove('active');
+                    showToast(`Error: ${error.message || 'Something went wrong'}`, 'error');
+                }
+            }
+            
+            function showToast(message, type = 'info') {
+                const backgroundColor = type === 'success' ? '#10b981' : 
+                                       type === 'error' ? '#ef4444' : 
+                                       type === 'warning' ? '#f59e0b' : '#3b82f6';
+                
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: backgroundColor,
+                    stopOnFocus: true,
+                    className: "rounded-lg",
+                    style: {
+                        borderRadius: "6px",
+                        padding: "10px 14px",
+                        fontSize: "13px",
+                        fontWeight: "500"
+                    }
+                }).showToast();
+            }
+        });
+    </script>
+</body>
 </html>

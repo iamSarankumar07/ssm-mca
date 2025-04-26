@@ -14,9 +14,19 @@ app.post(
     paymentController.createPaymentStripe
 );
 
-app.get('/paymentsList', 
+app.get('/getPayments', 
     authonticationController.validateToken,
     paymentController.getPayments
+);
+
+app.get('/getTransactionsData', 
+    authonticationController.validateToken,
+    paymentController.getTransactionsData
+);
+
+app.get('/getTransactionsDataById/:txnId', 
+    authonticationController.validateToken,
+    paymentController.getTransactionsDataById
 );
 
 app.get("/chatroom",
@@ -24,8 +34,16 @@ app.get("/chatroom",
     paymentController.getChatroom
 );
 
-app.get("/adminChatroomYear:year",
+app.get("/getAdminChatroom",
     authonticationController.validateToken,
+    (req, res, next) => {
+        const course = req.query.course;
+        const year = req.query.year
+    
+        req.body.course = course;
+        req.body.year = year;
+        next();
+    },
     paymentController.getAdminChatroom
 );
 

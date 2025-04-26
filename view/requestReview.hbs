@@ -181,7 +181,7 @@
         <div class="card">
             <div class="card-header">
                 <h1>Student Profile Update Request</h1>
-                <a href="/ssm/mca/dashboard#students" class="back-link">
+                <a href="/v1/api/dashboard#students" class="back-link">
                     <svg class="back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
@@ -240,11 +240,11 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <form action="/ssm/mca/approveAndReject" method="POST">
+                    <form action="/v1/api/approveAndReject" method="POST">
                         <input type="hidden" name="registerNumber" value="{{registerNumber}}">
                         <button type="submit" name="action" value="Reject" class="btn btn-reject">Reject</button>
                     </form>
-                    <form action="/ssm/mca/approveAndReject" method="POST">
+                    <form action="/v1/api/approveAndReject" method="POST">
                         <input type="hidden" name="registerNumber" value="{{registerNumber}}">
                         <button type="submit" name="action" value="Approve" class="btn btn-approve">Approve</button>
                     </form>
@@ -253,7 +253,7 @@
         {{/each}}
 
             <div class="card-footer">
-                <a href="/ssm/mca/dashboard#students" class="btn-back">← Go back</a>
+                <a href="/v1/api/dashboard#students" class="btn-back">← Go back</a>
             </div>
         </div>
     </div>
