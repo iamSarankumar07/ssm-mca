@@ -1,278 +1,541 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCA Student List</title>
-    <link rel="icon" href="https://your-favicon-url.png">
+    <title>Students Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         :root {
             --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --primary-light: #e0e7ff;
-            --secondary: #475569;
-            --success: #10b981;
+            --primary-hover: #4338ca;
+            --primary-light: rgba(79, 70, 229, 0.1);
+            --secondary: #f9fafb;
             --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --success-hover: #059669;
             --warning: #f59e0b;
-            --info: #3b82f6;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --male: #3b82f6;
-            --female: #ec4899;
-            --border-radius: 0.5rem;
-            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.2s ease-in-out;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #e5e7eb;
+            --white: #ffffff;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 0.75rem;
         }
-
-        * {
+        
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f8;
+            color: var(--dark);
+            line-height: 1.6;
+            height: 100%;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            overflow-x: hidden;
         }
-
-        html, body {
+        
+        .page-container {
+            display: flex;
+            flex-direction: column;
             height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
         }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: #f5f7fa;
-            color: #334155;
-            line-height: 1.5;
+        
+        .header {
             display: flex;
-            flex-direction: column;
-        }
-
-        .container-fluid {
-            padding: 1rem;
-            max-width: 1600px;
-            margin: 0 auto;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .main-container {
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .page-header {
-            padding: 1.5rem;
-            position: relative;
-            display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
             flex-shrink: 0;
-            border-bottom: 1px solid #e2e8f0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--light-gray);
         }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .page-title {
+        
+        .header h1 {
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--dark);
             margin: 0;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
         }
-
-        .page-title i {
-            color: var(--primary);
-            margin-right: 0.75rem;
-            font-size: 1.75rem;
-        }
-
-        .back-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary);
-            font-weight: 500;
-            font-size: 1.5rem;
-            text-decoration: none;
-            transition: var(--transition);
-            margin-right: 1rem;
-        }
-
-        .back-button:hover {
-            color: var(--primary);
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            color: var(--dark);
-            font-weight: 600;
-            font-size: 1.25rem;
-            margin: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .section-title i {
-            color: var(--primary);
-            margin-right: 0.5rem;
-        }
-
-        .search-container {
-            position: relative;
-            margin-bottom: 0;
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--border-radius);
-            font-size: 0.875rem;
-            transition: var(--transition);
-            background-color: white;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-        }
-
-        .card {
-            border: none;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 1.5rem;
-        }
-
-        .table-container {
+        
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 0;
-            position: relative;
             overflow: hidden;
+            position: relative;
+            padding: 0;
         }
-
-        .table-responsive {
-            overflow-y: auto;
-            flex: 1;
-            min-height: 0;
+        
+        .card-header-content {
+            display: flex;
+            align-items: center;
         }
-
-        .table {
-            margin-bottom: 0;
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        .table thead th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-            padding: 0.875rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            white-space: nowrap;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .table tbody td {
-            padding: 1rem;
-            vertical-align: middle;
-            border-bottom: 1px solid #e2e8f0;
+        
+        .back-button {
+            margin-right: 1rem;
+            background-color: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
             color: var(--dark);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .back-button:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--light-gray);
+            background-color: var(--white);
+            flex-shrink: 0;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .card-body {
+            padding: 1.25rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+        
+        .data-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        .form-control, .form-select {
+            padding: 0.6rem 0.75rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
             font-size: 0.875rem;
         }
-
-        .table tbody tr:last-child td {
-            border-bottom: none;
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
         }
-
-        .table tbody tr {
-            transition: var(--transition);
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
         }
-
-        .table tbody tr:hover {
-            background-color: #f8fafc;
+        
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
         }
-
+        
+        .btn-success:hover {
+            background-color: var(--success-hover);
+            border-color: var(--success-hover);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: var(--danger-hover);
+            border-color: var(--danger-hover);
+        }
+        
+        .btn-sm {
+            padding: 0.35rem 0.7rem;
+            font-size: 0.8rem;
+        }
+        
         .badge {
             padding: 0.35em 0.65em;
             font-size: 0.75em;
-            font-weight: 500;
-            border-radius: 0.25rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
         }
-
+        
         .badge-male {
             background-color: rgba(59, 130, 246, 0.1);
-            color: var(--male);
+            color: #3b82f6;
         }
-
+        
         .badge-female {
             background-color: rgba(236, 72, 153, 0.1);
-            color: var(--female);
+            color: #ec4899;
         }
-
+        
+        .student-card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+            background-color: var(--white);
+        }
+        
+        .student-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+        }
+        
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .student-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+        
+        .student-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .student-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .student-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .student-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .student-info-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .student-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+        
+        .student-position {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state-text {
+            color: var(--gray);
+            font-size: 1rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-bottom: none;
+        }
+        
+        .modal-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--light-gray);
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+        
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .table-view .table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            margin-bottom: 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Modern table header styling */
+        .table-view .table th {
+            background: linear-gradient(to right, var(--primary), var(--primary-hover));
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            color: white;
+            border: none;
+            white-space: nowrap;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-view .table th::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .table-view .table th:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .table-view .table th:first-child {
+            border-top-left-radius: var(--border-radius);
+        }
+        
+        .table-view .table th:last-child {
+            border-top-right-radius: var(--border-radius);
+        }
+        
+        .table-view .table td {
+            padding: 0.75rem 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--light-gray);
+            color: var(--dark);
+            font-size: 0.875rem;
+            background-color: var(--white);
+        }
+        
+        .table-view .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table-view .table tr:last-child td:first-child {
+            border-bottom-left-radius: var(--border-radius);
+        }
+        
+        .table-view .table tr:last-child td:last-child {
+            border-bottom-right-radius: var(--border-radius);
+        }
+        
+        .table-view .table tr:hover td {
+            background-color: var(--primary-light);
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 1rem;
+        }
+        
+        .view-toggle-btn {
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.375rem;
+            background-color: var(--secondary);
+            border: 1px solid var(--light-gray);
+            color: var(--gray);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .view-toggle-btn:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+        }
+        
+        .view-toggle-btn.active {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+        
         .actions-cell {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
         }
-
+        
         .action-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -284,7 +547,7 @@
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
+        
         .action-btn::before {
             content: '';
             position: absolute;
@@ -296,332 +559,43 @@
             transform: translateY(100%);
             transition: transform 0.2s ease;
         }
-
+        
         .action-btn:hover::before {
             transform: translateY(0);
         }
-
+        
         .action-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-
+        
         .action-btn:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
+        
         .view-btn {
-            background-color: var(--info);
+            background-color: var(--primary);
         }
-
+        
         .edit-btn {
             background-color: var(--warning);
         }
-
+        
         .delete-btn {
             background-color: var(--danger);
         }
-
-        .btn {
-            padding: 0.625rem 1.25rem;
-            font-weight: 500;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-            font-size: 0.875rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background-color: #e2e8f0;
-            border-color: #e2e8f0;
-            color: var(--secondary);
-        }
-
-        .btn-secondary:hover {
-            background-color: #cbd5e1;
-            border-color: #cbd5e1;
-            color: var(--dark);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary:active {
-            transform: translateY(0);
-        }
-
-        .btn-icon {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .btn-icon i {
-            margin-right: 0.5rem;
-        }
-
-        .modal-content {
-            border: none;
-            border-radius: var(--border-radius);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-        }
-
-        .modal-header {
-            background-color: var(--primary);
-            color: white;
-            padding: 1.25rem 1.5rem;
-            border-bottom: none;
-        }
-
-        .modal-title {
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .modal-footer {
-            border-top: 1px solid #e2e8f0;
-            padding: 1rem 1.5rem;
-        }
-
-        .student-info-card {
-            height: 100%;
-            border: none;
-            border-radius: var(--border-radius);
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .student-info-card:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transform: translateY(-2px);
-        }
-
-        .student-info-header {
-            background-color: #f8fafc;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .student-info-title {
-            margin: 0;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .student-info-title i {
-            color: var(--primary);
-        }
-
-        .student-info-body {
-            padding: 1rem;
-        }
-
-        .info-table {
-            width: 100%;
-            margin-bottom: 0;
-        }
-
-        .info-table tr {
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .info-table tr:last-child {
-            border-bottom: none;
-        }
-
-        .info-table th {
-            padding: 0.5rem 0;
-            font-weight: 500;
-            color: var(--secondary);
-            width: 40%;
-            font-size: 0.75rem;
-            vertical-align: top;
-        }
-
-        .info-table td {
-            padding: 0.5rem 0;
-            color: var(--dark);
-            font-size: 0.75rem;
-            vertical-align: top;
-        }
-
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
-        .pagination {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .pagination li {
-            margin: 0 0.25rem;
-        }
-
-        .pagination a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background-color: white;
-            color: var(--secondary);
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 0.875rem;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-        .pagination a:hover {
-            background-color: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .pagination .active a {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .stats-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .stats-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .stats-card.total::before {
-            background: var(--primary);
-        }
-
-        .stats-card.male::before {
-            background: var(--success);
-        }
-
-        .stats-card.female::before {
-            background: var(--female);
-        }
-
-        .stats-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        .stats-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .stats-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .stats-icon.total {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
-
-        .stats-icon.male {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-        }
-
-        .stats-icon.female {
-            background: linear-gradient(135deg, var(--female), #db2777);
-            color: white;
-        }
-
-        .stats-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--secondary);
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .stats-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin: 0;
-        }
-
+        
         .student-profile {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 1.5rem;
-            background-color: var(--primary-light);
+            background-color: rgba(79, 70, 229, 0.05);
             border-radius: 12px;
             margin-bottom: 1.5rem;
         }
-
-        a {
-            text-decoration: none;
-        }
-
+        
         .student-avatar {
             width: 120px;
             height: 120px;
@@ -631,269 +605,176 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin-bottom: 1rem;
         }
-
-        .student-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.25rem;
-        }
-
-        .student-id {
-            font-size: 0.875rem;
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .student-badge {
-            padding: 0.35em 0.75em;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .stats-card {
-            padding: 15px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            height: auto;
-        }
-
-        .stats-icon.small {
-            width: 40px;
-            height: 40px;
-            font-size: 1rem;
-            border-radius: 8px;
-        }
-
-        .stats-title {
-            font-size: 0.75rem;
-            margin-bottom: 2px;
-        }
-
-        .stats-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .content-wrapper {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 0;
-            overflow: hidden;
-            padding: 1.5rem;
-        }
-
-        .loading-spinner {
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: rgba(255, 255, 255, 0.8);
-            z-index: 1000;
-        }
-
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            color: var(--primary);
-        }
-
-        .empty-state {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem;
-            text-align: center;
-            color: var(--secondary);
-            height: 100%;
-            width: 100%;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #cbd5e1;
-        }
-
-        .empty-state h4 {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .empty-state p {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .stats-card-modern {
-            flex: 1;
-            min-width: 200px;
-            background: white;
+        
+        .student-info-card {
             border-radius: var(--border-radius);
-            padding: 1.25rem;
-            box-shadow: var(--box-shadow);
-            display: flex;
-            align-items: center;
-            position: relative;
+            border: 1px solid var(--light-gray);
             overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .stats-card-modern:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        .stats-card-modern::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 30%;
+            transition: all 0.2s ease;
+            background-color: var(--white);
             height: 100%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(79, 70, 229, 0.1));
-            z-index: 1;
         }
-
-        .stats-card-modern.male::after {
-            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(16, 185, 129, 0.1));
+        
+        .student-info-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
         }
-
-        .stats-card-modern.female::after {
-            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(236, 72, 153, 0.1));
+        
+        .student-info-header {
+            background-color: var(--secondary);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--light-gray);
         }
-
-        .stats-icon-modern {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .stats-icon-modern.total {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-        }
-
-        .stats-icon-modern.male {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
-        }
-
-        .stats-icon-modern.female {
-            background: linear-gradient(135deg, var(--female), #db2777);
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.3);
-        }
-
-        .stats-content {
-            flex: 1;
-            z-index: 2;
-        }
-
-        .stats-title-modern {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--secondary);
-            margin: 0 0 0.25rem 0;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .stats-value-modern {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--dark);
+        
+        .student-info-title {
             margin: 0;
-            line-height: 1.2;
-        }
-
-        .tools-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .tools-left, .tools-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        /* Compact stats for search row */
-        .compact-stats {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .stat-pill {
-            display: flex;
-            align-items: center;
-            background-color: white;
-            border-radius: 50px;
-            padding: 0.4rem 0.8rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            font-size: 0.8rem;
+            font-size: 0.875rem;
             font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-
-        .stat-pill i {
-            margin-right: 0.4rem;
-        }
-
-        .stat-pill.total {
+        
+        .student-info-title i {
             color: var(--primary);
-            background-color: rgba(79, 70, 229, 0.1);
         }
-
-        .stat-pill.male {
-            color: var(--success);
-            background-color: rgba(16, 185, 129, 0.1);
+        
+        .student-info-body {
+            padding: 1rem;
         }
-
-        .stat-pill.female {
-            color: var(--female);
-            background-color: rgba(236, 72, 153, 0.1);
+        
+        .info-table {
+            width: 100%;
+            margin-bottom: 0;
         }
-
+        
+        .info-table tr {
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .info-table tr:last-child {
+            border-bottom: none;
+        }
+        
+        .info-table th {
+            padding: 0.5rem 0;
+            font-weight: 500;
+            color: var(--gray);
+            width: 40%;
+            font-size: 0.75rem;
+            vertical-align: top;
+        }
+        
+        .info-table td {
+            padding: 0.5rem 0;
+            color: var(--dark);
+            font-size: 0.75rem;
+            vertical-align: top;
+        }
+        
+        .nav-tabs {
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--gray);
+            font-weight: 500;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: -1px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: var(--primary);
+            border-color: transparent;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary);
+            border-color: var(--primary);
+            background-color: transparent;
+        }
+        
         .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: skeleton-loading 1.5s infinite;
             border-radius: 4px;
-            display: inline-block;
         }
-
+        
+        .skeleton-card {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background-color: var(--white);
+        }
+        
+        .skeleton-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .skeleton-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+        }
+        
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .skeleton-text.sm {
+            width: 30%;
+            height: 0.8rem;
+        }
+        
+        .skeleton-text.md {
+            width: 50%;
+        }
+        
+        .skeleton-text.lg {
+            width: 80%;
+        }
+        
+        .skeleton-badge {
+            width: 4rem;
+            height: 1.5rem;
+            border-radius: 0.375rem;
+        }
+        
+        .skeleton-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .skeleton-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .skeleton-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        .skeleton-button {
+            width: 6rem;
+            height: 2rem;
+            border-radius: var(--border-radius);
+        }
+        
         @keyframes skeleton-loading {
             0% {
                 background-position: 200% 0;
@@ -902,460 +783,341 @@
                 background-position: -200% 0;
             }
         }
-
+        
         #skeletonLoading {
-            display: none; 
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            z-index: 20;
-            overflow-y: auto;
+            display: none;
         }
-
-        .skeleton-header {
-            display: flex;
-            align-items: center;
-            padding: 0.875rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            background-color: var(--primary);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+        
+        #cardViewSkeleton, #tableViewSkeleton {
+            display: none;
         }
-
-        .skeleton-header-cell {
-            padding: 0 1rem;
-        }
-
-        .skeleton-row {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .skeleton-cell {
-            padding: 0 1rem;
-        }
-
-        .skeleton-text {
-            height: 16px;
-            width: 100%;
-        }
-
-        .skeleton-text.sm {
-            width: 60%;
-        }
-
-        .skeleton-text.lg {
-            height: 24px;
-        }
-
-        .skeleton-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-        }
-
-        .skeleton-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-        }
-
-        .modal-xl {
-            max-width: 1140px;
-        }
-
-        .student-profile {
-            background: linear-gradient(to right, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
-            border-radius: 1rem;
-            padding: 2rem;
-        }
-
-        .nav-tabs {
-            border-bottom: 1px solid #e2e8f0;
-            margin-bottom: 1.5rem;
-        }
-
-        .nav-tabs .nav-link {
-            color: var(--secondary);
+        
+        .toastify {
+            font-family: 'Inter', sans-serif;
+            border-radius: 0.5rem;
             font-weight: 500;
-            border: none;
-            border-bottom: 2px solid transparent;
-            padding: 0.75rem 1.25rem;
-            margin-bottom: -1px;
-            transition: var(--transition);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-
-        .nav-tabs .nav-link:hover {
-            color: var(--primary);
-            border-color: transparent;
+        
+        .toastify-success {
+            background: linear-gradient(135deg, var(--success) 0%, var(--success-hover) 100%);
         }
-
-        .nav-tabs .nav-link.active {
-            color: var(--primary);
+        
+        .toastify-error {
+            background: linear-gradient(135deg, var(--danger) 0%, var(--danger-hover) 100%);
+        }
+        
+        .toastify-info {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 250px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background-color: white;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-input:focus {
+            outline: none;
             border-color: var(--primary);
-            background-color: transparent;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
         }
-
-        @media (max-width: 992px) {
-            .container-fluid {
-                padding: 1rem;
-            }
-
-            .header-left {
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+        
+        .compact-stats {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 50px;
+            padding: 0.3rem 0.6rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .stat-pill i {
+            margin-right: 0.3rem;
+            font-size: 0.7rem;
+        }
+        
+        .stat-pill.total {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+        
+        .stat-pill.male {
+            color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .stat-pill.female {
+            color: #ec4899;
+            background-color: rgba(236, 72, 153, 0.1);
+        }
+        
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            background-color: var(--white);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: var(--gray);
+            white-space: nowrap;
+        }
+        
+        .filter-select {
+            min-width: 120px;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .card-header {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 0.75rem;
+                padding: 0.75rem 1rem;
+            }
+            
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .view-toggle {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+            
+            .filters {
+                max-height: none;
+                overflow: visible;
+            }
+            
+            .filter-item {
+                max-width: 100%;
+            }
+            
+            .student-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .student-actions {
+                flex-direction: column;
                 gap: 0.5rem;
             }
-
-            .back-button {
-                margin-right: 0.5rem;
-            }
-
-            .stats-value-modern {
-                font-size: 1.5rem;
-            }
             
-            .stats-icon-modern {
-                width: 48px;
-                height: 48px;
-                font-size: 1.25rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .tools-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .tools-left, .tools-right {
-                justify-content: space-between;
+            .student-actions .btn {
+                width: 100%;
             }
             
             .search-container {
                 max-width: 100%;
             }
-
-            .table-responsive {
-                border-radius: var(--border-radius);
+            
+            .data-container {
+                padding-right: 0;
             }
             
-            .stats-card-modern {
-                min-width: 100%;
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.5rem;
+                gap: 0.5rem;
             }
-
-            .header-right {
-                margin-top: 1rem;
+            
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
             }
-
+            
             .compact-stats {
-                margin-top: 0.5rem;
-                justify-content: space-between;
+                justify-content: center;
                 width: 100%;
+                margin-top: 0.5rem;
             }
         }
-
-        @media (max-width: 576px) {
-            .container-fluid {
-                padding: 0.75rem;
+        
+        @media (max-width: 992px) {
+            .table-responsive {
+                overflow-x: auto;
             }
-
-            .page-header {
-                padding: 1rem;
-            }
-
-            .page-title {
-                font-size: 1.25rem;
-            }
-
-            .page-title i {
-                font-size: 1.5rem;
-            }
-
-            .section-title {
-                font-size: 1.125rem;
-            }
-
-            .action-btn {
-                width: 32px;
-                height: 32px;
-                font-size: 0.75rem;
-            }
-
-            .stat-pill {
-                font-size: 0.7rem;
-                padding: 0.3rem 0.6rem;
+            
+            .filter-row {
+                flex-wrap: wrap;
             }
         }
     </style>
 </head>
-
 <body>
-    <div class="container-fluid">
-        <div class="main-container">
-            <div class="page-header">
-                <div class="header-left">
-                    <a href="/v1/api/dashboard#students" class="back-button">
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-                    <h1 style="margin-left: 40px;" class="page-title">
-                        <i class="fas fa-user-graduate"></i>
-                        {{course}} - {{year}} Students List
-                    </h1>
-                </div>
-                <div class="header-right">
-                    <a href="/v1/api/getStudentRegister?course={{course}}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Add Student
-                    </a>
-                </div>
-            </div>
-
-            <div class="content-wrapper">
-                <div class="tools-bar">
-                    <div class="tools-left">
-                        <div class="search-container">
-                            <i class="fas fa-search search-icon"></i>
-                            <input type="text" class="search-input" id="searchInput" placeholder="Search by name, ID or email..." 
-                                onkeyup="searchStudents()">
-                        </div>
+    <div class="page-container">
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-content">
+                        <a href="/v1/api/dashboard#students" class="back-button">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <h2 class="card-title">{{course}} - {{year}} Students List</h2>
                     </div>
-                    <div class="compact-stats">
-                        <div class="stat-pill total">
-                            <i class="fas fa-users"></i>
-                            <span>Total: <span id="totalStudents">0</span></span>
+                    <div class="header-actions">
+                        <div class="view-toggle">
+                            <button class="view-toggle-btn active" data-view="card">
+                                <i class="fas fa-th-large me-1"></i> Card
+                            </button>
+                            <button class="view-toggle-btn" data-view="table">
+                                <i class="fas fa-table me-1"></i> Table
+                            </button>
                         </div>
-                        <div class="stat-pill male">
-                            <i class="fas fa-male"></i>
-                            <span>Male: <span id="maleStudents">0</span></span>
-                        </div>
-                        <div class="stat-pill female">
-                            <i class="fas fa-female"></i>
-                            <span>Female: <span id="femaleStudents">0</span></span>
-                        </div>
+                        <a href="/v1/api/getStudentRegister?course={{course}}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Add Student
+                        </a>
                     </div>
                 </div>
-
-                <div class="table-container">
-                    <div id="skeletonLoading">
-                        <div class="skeleton-header">
-                            <div class="skeleton-header-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-header-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
+                <div class="card-body">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <span class="filter-label">Gender:</span>
+                            <select id="genderFilter" class="form-select filter-select">
+                                <option value="">All Genders</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
                         </div>
                         
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
-                            </div>
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search students...">
                         </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
+                        
+                        <div class="compact-stats">
+                            <div class="stat-pill total">
+                                <i class="fas fa-users"></i>
+                                <span>Total: <span id="totalStudents">0</span></span>
                             </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
+                            <div class="stat-pill male">
+                                <i class="fas fa-male"></i>
+                                <span>Male: <span id="maleStudents">0</span></span>
                             </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="skeleton-row">
-                            <div class="skeleton-cell" style="width: 5%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 10%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%"><div class="skeleton skeleton-text"></div></div>
-                            <div class="skeleton-cell" style="width: 15%">
-                                <div style="display: flex; gap: 5px; justify-content: center;">
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                    <div class="skeleton skeleton-circle"></div>
-                                </div>
+                            <div class="stat-pill female">
+                                <i class="fas fa-female"></i>
+                                <span>Female: <span id="femaleStudents">0</span></span>
                             </div>
                         </div>
                     </div>
-                    
-                    <div id="loadingSpinner" class="loading-spinner">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+
+                    <div class="data-container">
+                        <div id="loadingSpinner" class="loading-spinner">
+                            <div class="spinner"></div>
                         </div>
-                    </div>
-                    
-                    <div class="table-responsive">
-                        <table class="table" id="table1">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th style="text-align: center;">Student ID</th>
-                                    <th style="text-align: center;">Register No</th>
-                                    <th style="text-align: center;">Gender</th>
-                                    <th style="text-align: center;">Date Of Birth</th>
-                                    <th style="text-align: center;">Phone</th>
-                                    <th style="text-align: center;">Email</th>
-                                    <th style="text-align: center;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="studentTableBody">
-                            </tbody>
-                        </table>
-                        <div id="emptyState" class="empty-state">
-                            <i class="fas fa-users-slash"></i>
-                            <h4>No Students Found</h4>
-                            <p>Loading student data...</p>
+
+                        <div id="skeletonLoading">
+                            <div id="cardViewSkeleton" class="card-view">
+                            </div>
+
+                            <div id="tableViewSkeleton" class="table-view" style="display: none;">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Student</th>
+                                                <th>Student ID</th>
+                                                <th>Register No</th>
+                                                <th>Gender</th>
+                                                <th>Date of Birth</th>
+                                                <th>Phone</th>
+                                                <th>Email</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableBodySkeleton">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="emptyState" class="empty-state" style="display: none;">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-users-slash"></i>
+                            </div>
+                            <div class="empty-state-text">
+                                No students found matching your filters.
+                            </div>
+                        </div>
+
+                        <div id="cardView" class="card-view" style="display: none;">
+                        </div>
+
+                        <div id="tableView" class="table-view" style="display: none;">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Student</th>
+                                            <th>Student ID</th>
+                                            <th>Register No</th>
+                                            <th>Gender</th>
+                                            <th>Date of Birth</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1366,66 +1128,151 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        function searchStudents() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toUpperCase();
-            const table = document.getElementById('table1');
-            const tbody = document.getElementById('studentTableBody');
-            const rows = tbody.getElementsByTagName('tr');
-            let visibleCount = 0;
-
-            for (let i = 0; i < rows.length; i++) {
-                const nameCell = rows[i].getElementsByTagName('td')[1];
-                const idCell = rows[i].getElementsByTagName('td')[2];
-                const regNoCell = rows[i].getElementsByTagName('td')[3];
-                const emailCell = rows[i].getElementsByTagName('td')[7];
-                
-                if (nameCell && idCell && emailCell) {
-                    const nameValue = nameCell.textContent || nameCell.innerText;
-                    const idValue = idCell.textContent || idCell.innerText;
-                    const regNoValue = regNoCell.textContent || regNoCell.innerText;
-                    const emailValue = emailCell.textContent || emailCell.innerText;
-                    
-                    if (
-                        nameValue.toUpperCase().indexOf(filter) > -1 || 
-                        idValue.toUpperCase().indexOf(filter) > -1 ||
-                        regNoValue.toUpperCase().indexOf(filter) > -1 ||
-                        emailValue.toUpperCase().indexOf(filter) > -1
-                    ) {
-                        rows[i].style.display = '';
-                        visibleCount++;
-                    } else {
-                        rows[i].style.display = 'none';
-                    }
-                }
+        let students = [];
+        let filteredStudents = [];
+        let currentView = 'card';
+        let isLoading = false;
+        
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const skeletonLoading = document.getElementById('skeletonLoading');
+        const cardViewSkeleton = document.getElementById('cardViewSkeleton');
+        const tableViewSkeleton = document.getElementById('tableViewSkeleton');
+        const tableBodySkeleton = document.getElementById('tableBodySkeleton');
+        const emptyState = document.getElementById('emptyState');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+        const tableBody = document.getElementById('tableBody');
+        const genderFilter = document.getElementById('genderFilter');
+        const searchInput = document.getElementById('searchInput');
+        const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
+        
+        function showToast(message, type = 'info') {
+            const toastClass = type === 'success' ? 'toastify-success' : 
+                              type === 'error' ? 'toastify-error' : 'toastify-info';
+            
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                className: `toastify ${toastClass}`,
+                stopOnFocus: true,
+            }).showToast();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            generateSkeletons();
+            
+            fetchStudentData();
+            
+            genderFilter.addEventListener('change', filterStudents);
+            searchInput.addEventListener('input', filterStudents);
+            
+            viewToggleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const view = this.getAttribute('data-view');
+                    setActiveView(view);
+                });
+            });
+        });
+        
+        function generateSkeletons() {
+            cardViewSkeleton.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const skeletonCard = document.createElement('div');
+                skeletonCard.className = 'skeleton-card';
+                skeletonCard.innerHTML = `
+                    <div class="skeleton-header">
+                        <div class="d-flex align-items-center">
+                            <div class="skeleton skeleton-avatar me-3"></div>
+                            <div>
+                                <div class="skeleton skeleton-text md mb-1"></div>
+                                <div class="skeleton skeleton-text sm"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton skeleton-badge"></div>
+                    </div>
+                    <div class="skeleton-details">
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                        <div class="skeleton-detail">
+                            <div class="skeleton skeleton-text sm mb-1"></div>
+                            <div class="skeleton skeleton-text md"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                `;
+                cardViewSkeleton.appendChild(skeletonCard);
             }
-
-            if (visibleCount === 0 && filter !== '') {
-                document.getElementById('emptyState').style.display = 'flex';
-                document.getElementById('emptyState').querySelector('h4').textContent = 'No Results Found';
-                document.getElementById('emptyState').querySelector('p').textContent = 'Try a different search term';
-            } else if (rows.length > 0) {
-                document.getElementById('emptyState').style.display = 'none';
+            
+            tableBodySkeleton.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const skeletonRow = document.createElement('tr');
+                skeletonRow.innerHTML = `
+                    <td>
+                        <div class="skeleton skeleton-text sm"></div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="skeleton skeleton-avatar me-3"></div>
+                            <div>
+                                <div class="skeleton skeleton-text md mb-1"></div>
+                                <div class="skeleton skeleton-text sm"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-badge"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td><div class="skeleton skeleton-text md"></div></td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                            <div class="skeleton skeleton-button" style="width: 2rem;"></div>
+                        </div>
+                    </td>
+                `;
+                tableBodySkeleton.appendChild(skeletonRow);
             }
         }
-
-        function showDetails(studentId) {
-            const modalElement = document.getElementById(`modal-${studentId}`);
-            if (modalElement) {
-                const modal = new bootstrap.Modal(modalElement);
-                modal.show();
-            }
-        }
-
+        
         async function fetchStudentData() {
+            showLoading();
+            
+            loadingSpinner.style.display = 'none';
+            skeletonLoading.style.display = 'block';
+            
+            if (currentView === 'card') {
+                cardViewSkeleton.style.display = 'block';
+                tableViewSkeleton.style.display = 'none';
+            } else {
+                cardViewSkeleton.style.display = 'none';
+                tableViewSkeleton.style.display = 'block';
+            }
+            
             try {
                 const year = '{{year}}';
                 const course = '{{course}}';
-                
-                document.getElementById('skeletonLoading').style.display = 'block';
-                document.getElementById('emptyState').style.display = 'none'; 
-                document.getElementById('table1').style.display = 'none';
                 
                 const response = await fetch(`/v1/api/students/data?year=${year}&course=${course}`);
                 
@@ -1440,54 +1287,166 @@
                 document.getElementById('femaleStudents').textContent = data.femaleStudentsCount || '0';
                 
                 if (data.sortedStudents && data.sortedStudents.length > 0) {
-                    populateStudentTable(data.sortedStudents);
-                    createStudentModals(data.sortedStudents);
-                    document.getElementById('emptyState').style.display = 'none';
-                    document.getElementById('table1').style.display = 'table';
+                    students = data.sortedStudents;
+                    filterStudents();
+                    showToast('Students data loaded successfully', 'success');
                 } else {
-                    document.getElementById('emptyState').style.display = 'flex';
-                    document.getElementById('emptyState').querySelector('h4').textContent = 'No Students Found';
-                    document.getElementById('emptyState').querySelector('p').textContent = 'No student data available.';
+                    showEmpty();
+                    showToast('No students found', 'info');
                 }
-                
-                document.getElementById('skeletonLoading').style.display = 'none';
             } catch (error) {
                 console.error('Error fetching student data:', error);
-                document.getElementById('skeletonLoading').style.display = 'none';
-                document.getElementById('emptyState').style.display = 'flex';
-                document.getElementById('emptyState').querySelector('h4').textContent = 'Error Loading Data';
-                document.getElementById('emptyState').querySelector('p').textContent = 'Failed to load student data. Please try again later.';
+                showEmpty();
+                showToast('Failed to load students data. Please try again.', 'error');
+            } finally {
+                skeletonLoading.style.display = 'none';
             }
         }
         
-        function populateStudentTable(students) {
-            const tableBody = document.getElementById('studentTableBody');
-            tableBody.innerHTML = ''; 
+        function filterStudents() {
+            const gender = genderFilter.value;
+            const search = searchInput.value.toLowerCase();
             
-            students.forEach((student, index) => {
+            filteredStudents = students.filter(student => {
+                const matchesGender = gender === '' || student.gender === gender;
+                const matchesSearch = search === '' || 
+                    student.name.toLowerCase().includes(search) || 
+                    student.studentId.toLowerCase().includes(search) ||
+                    student.registerNumber.toLowerCase().includes(search) ||
+                    student.email.toLowerCase().includes(search);
+                
+                return matchesGender && matchesSearch;
+            });
+            
+            renderStudents();
+        }
+        
+        function renderStudents() {
+            if (filteredStudents.length === 0) {
+                showEmpty();
+                return;
+            }
+            
+            hideLoading();
+            emptyState.style.display = 'none';
+            
+            if (currentView === 'card') {
+                renderCardView();
+                cardView.style.display = 'block';
+                tableView.style.display = 'none';
+            } else {
+                renderTableView();
+                cardView.style.display = 'none';
+                tableView.style.display = 'block';
+            }
+        }
+        
+        function renderCardView() {
+            cardView.innerHTML = '';
+            
+            filteredStudents.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                
+                const initials = getInitials(student.name);
+                
+                card.innerHTML = `
+                    <div class="student-header">
+                        <div class="student-info">
+                            <div class="avatar">
+                                ${student.imageUrl ? 
+                                    `<img src="${student.imageUrl}" alt="${student.name}">` : 
+                                    initials}
+                            </div>
+                            <div class="student-info-details">
+                                <div class="student-name">${student.name}</div>
+                                <div class="student-position">${student.course} - ${student.year} Year</div>
+                            </div>
+                        </div>
+                        <span class="badge ${student.gender === 'Male' ? 'badge-male' : 'badge-female'}">${student.gender}</span>
+                    </div>
+                    <div class="student-details">
+                        <div class="student-detail">
+                            <span class="detail-label">Student ID</span>
+                            <span class="detail-value">${student.studentId}</span>
+                        </div>
+                        <div class="student-detail">
+                            <span class="detail-label">Register No</span>
+                            <span class="detail-value">${student.registerNumber}</span>
+                        </div>
+                        <div class="student-detail">
+                            <span class="detail-label">Date of Birth</span>
+                            <span class="detail-value">${student.dob}</span>
+                        </div>
+                        <div class="student-detail">
+                            <span class="detail-label">Phone</span>
+                            <span class="detail-value">${student.phone}</span>
+                        </div>
+                        <div class="student-detail">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value">${student.email}</span>
+                        </div>
+                    </div>
+                    <div class="student-actions">
+                        <button class="btn btn-sm btn-primary view-details-btn" data-id="${student.studentId}">
+                            <i class="fas fa-eye me-1"></i> View Details
+                        </button>
+                        <a href="/v1/api/studentEdit/${student._id}" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </a>
+                        <a href="/v1/api/studentDelete/${student._id}" class="btn btn-sm btn-danger" 
+                           onclick="return confirm('Are you sure you want to delete this student?')">
+                            <i class="fas fa-trash me-1"></i> Delete
+                        </a>
+                    </div>
+                `;
+                
+                cardView.appendChild(card);
+                
+                const viewDetailsBtn = card.querySelector('.view-details-btn');
+                viewDetailsBtn.addEventListener('click', () => showDetails(student.studentId));
+            });
+        }
+        
+        function renderTableView() {
+            tableBody.innerHTML = '';
+            
+            filteredStudents.forEach((student, index) => {
                 const row = document.createElement('tr');
+                
+                const initials = getInitials(student.name);
                 
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${student.name}</td>
-                    <td style="text-align: center;">${student.studentId}</td>
-                    <td style="text-align: center;">${student.registerNumber}</td>
-                    <td style="text-align: center;">
-                        <span class="badge ${student.gender === 'Male' ? 'badge-male' : 'badge-female'}">${student.gender}</span>
+                    <td>
+                        <div class="student-info">
+                            <div class="avatar">
+                                ${student.imageUrl ? 
+                                    `<img src="${student.imageUrl}" alt="${student.name}">` : 
+                                    initials}
+                            </div>
+                            <div class="student-info-details">
+                                <div class="student-name">${student.name}</div>
+                                <div class="student-position">${student.course} - ${student.year} Year</div>
+                            </div>
+                        </div>
                     </td>
-                    <td style="text-align: center;">${student.dob}</td>
-                    <td style="text-align: center;">${student.phone}</td>
-                    <td style="text-align: center;">${student.email}</td>
+                    <td>${student.studentId}</td>
+                    <td>${student.registerNumber}</td>
+                    <td><span class="badge ${student.gender === 'Male' ? 'badge-male' : 'badge-female'}">${student.gender}</span></td>
+                    <td>${student.dob}</td>
+                    <td>${student.phone}</td>
+                    <td>${student.email}</td>
                     <td>
                         <div class="actions-cell">
-                            <button class="action-btn view-btn" onclick="showDetails('${student.studentId}')">
+                            <button class="action-btn view-btn" onclick="showDetails('${student.studentId}')" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <a href="/v1/api/studentEdit/${student._id}" class="action-btn edit-btn">
+                            <a href="/v1/api/studentEdit/${student._id}" class="action-btn edit-btn" title="Edit Student">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="/v1/api/studentDelete/${student._id}" class="action-btn delete-btn"
-                                onclick="return confirm('Are you sure you want to delete this student?')">
+                            <a href="/v1/api/studentDelete/${student._id}" class="action-btn delete-btn" 
+                               onclick="return confirm('Are you sure you want to delete this student?')" title="Delete Student">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -1498,278 +1457,341 @@
             });
         }
         
-        function createStudentModals(students) {
-            const modalsContainer = document.getElementById('modalsContainer');
-            modalsContainer.innerHTML = '';
+        function showDetails(studentId) {
+            const student = students.find(s => s.studentId === studentId);
+            if (!student) return;
             
-            students.forEach(student => {
-                const modalDiv = document.createElement('div');
-                modalDiv.className = 'modal fade';
-                modalDiv.id = `modal-${student.studentId}`;
-                modalDiv.setAttribute('tabindex', '-1');
-                modalDiv.setAttribute('aria-hidden', 'true');
-                
-                modalDiv.innerHTML = `
-                    <div class="modal-dialog modal-dialog-centered modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">
-                                    <i class="fas fa-user-graduate"></i>
-                                    Student Details
-                                </h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="student-profile">
-                                    <img src="${student.imageUrl}" alt="Student Image" class="student-avatar">
-                                    <h4 class="student-name">${student.name}</h4>
-                                    <p class="student-id">${student.studentId} | ${student.registerNumber}</p>
-                                    ${student.gender === 'Male' ? 
-                                        `<span class="student-badge" style="background-color: rgba(59, 130, 246, 0.1); color: var(--male);">
-                                            <i class="fas fa-male"></i> Male
-                                        </span>` : 
-                                        `<span class="student-badge" style="background-color: rgba(236, 72, 153, 0.1); color: var(--female);">
-                                            <i class="fas fa-female"></i> Female
-                                        </span>`
-                                    }
-                                </div>
-
-                                <!-- Tabs for better organization -->
-                                <ul class="nav nav-tabs" id="studentTabs-${student.studentId}" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="personal-tab-${student.studentId}" data-bs-toggle="tab" 
-                                                data-bs-target="#personal-${student.studentId}" type="button" role="tab" aria-selected="true">
-                                            <i class="fas fa-id-card me-1"></i> Personal Info
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="academic-tab-${student.studentId}" data-bs-toggle="tab" 
-                                                data-bs-target="#academic-${student.studentId}" type="button" role="tab" aria-selected="false">
-                                            <i class  role="tab" aria-selected="false">
-                                            <i class="fas fa-graduation-cap me-1"></i> Academic Info
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="contact-tab-${student.studentId}" data-bs-toggle="tab" 
-                                                data-bs-target="#contact-${student.studentId}" type="button" role="tab" aria-selected="false">
-                                            <i class="fas fa-address-book me-1"></i> Contact & Family
-                                        </button>
-                                    </li>
-                                </ul>
-
-                                <div class="tab-content p-3" id="studentTabContent-${student.studentId}">
-                                    <!-- Personal Information Tab -->
-                                    <div class="tab-pane fade show active" id="personal-${student.studentId}" role="tabpanel">
-                                        <div class="row g-4">
-                                            <div class="col-lg-6">
-                                                <div class="student-info-card">
-                                                    <div class="student-info-header">
-                                                        <h6 class="student-info-title">
-                                                            <i class="fas fa-id-card"></i>
-                                                            Personal Information
-                                                        </h6>
-                                                    </div>
-                                                    <div class="student-info-body">
-                                                        <table class="info-table">
-                                                            <tr>
-                                                                <th>Date of Birth</th>
-                                                                <td>${student.dob}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Year</th>
-                                                                <td>MCA - ${student.year}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Blood Group</th>
-                                                                <td>${student.bloodGroup}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Religion</th>
-                                                                <td>${student.religion}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Nationality</th>
-                                                                <td>${student.nationality}</td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="student-info-card">
-                                                    <div class="student-info-header">
-                                                        <h6 class="student-info-title">
-                                                            <i class="fas fa-info-circle"></i>
-                                                            Other Information
-                                                        </h6>
-                                                    </div>
-                                                    <div class="student-info-body">
-                                                        <table class="info-table">
-                                                            <tr>
-                                                                <th>Transportation</th>
-                                                                <td>${student.transportation}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Hostel Required</th>
-                                                                <td>${student.hostelRequired}</td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Academic Information Tab -->
-                                    <div class="tab-pane fade" id="academic-${student.studentId}" role="tabpanel">
-                                        <div class="student-info-card">
-                                            <div class="student-info-header">
-                                                <h6 class="student-info-title">
-                                                    <i class="fas fa-graduation-cap"></i>
-                                                    Academic Information
-                                                </h6>
-                                            </div>
-                                            <div class="student-info-body">
-                                                <table class="info-table">
-                                                    <tr>
-                                                        <th>Previous Institution</th>
-                                                        <td>${student.previousInstitution}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Previous Marks</th>
-                                                        <td>${student.previousMarks}%</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Total Fees</th>
-                                                        <td>₹${student.totalFee}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Scholarship</th>
-                                                        <td>${student.scholarship}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Bridge Course</th>
-                                                        <td>${student.bridgeCourse}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Admission Date</th>
-                                                        <td>${student.admissionDate}</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Contact & Family Information Tab -->
-                                    <div class="tab-pane fade" id="contact-${student.studentId}" role="tabpanel">
-                                        <div class="row g-4">
-                                            <div class="col-lg-6">
-                                                <div class="student-info-card">
-                                                    <div class="student-info-header">
-                                                        <h6 class="student-info-title">
-                                                            <i class="fas fa-address-book"></i>
-                                                            Contact Information
-                                                        </h6>
-                                                    </div>
-                                                    <div class="student-info-body">
-                                                        <table class="info-table">
-                                                            <tr>
-                                                                <th>Email</th>
-                                                                <td>${student.email}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Phone</th>
-                                                                <td>${student.phone}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Aadhaar Number</th>
-                                                                <td>${student.aadhaarNum}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Address</th>
-                                                                <td>${student.address?.address || ''}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>City</th>
-                                                                <td>${student.address?.city || ''}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>State</th>
-                                                                <td>${student.address?.state || ''}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Pin Code</th>
-                                                                <td>${student.address?.pinCode || ''}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Country</th>
-                                                                <td>${student.address?.country || ''}</td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="student-info-card">
-                                                    <div class="student-info-header">
-                                                        <h6 class="student-info-title">
-                                                            <i class="fas fa-users"></i>
-                                                            Family Information
-                                                        </h6>
-                                                    </div>
-                                                    <div class="student-info-body">
-                                                        <table class="info-table">
-                                                            <tr>
-                                                                <th>Parent Name</th>
-                                                                <td>${student.parentName}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Parent Phone</th>
-                                                                <td>${student.parentPhone}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Parental Income</th>
-                                                                <td>${student.parentalIncome}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Emergency Contact</th>
-                                                                <td>${student.emergencyContact}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Relationship</th>
-                                                                <td>${student.emergencyContactRelationship}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>Emergency Phone</th>
-                                                                <td>${student.emergencyPhone}</td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <a href="/v1/api/studentEdit/${student._id}" class="btn btn-primary">
-                                    <i class="fas fa-edit me-1"></i> Edit Student
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                modalsContainer.appendChild(modalDiv);
-            });
+            let modalElement = document.getElementById(`modal-${studentId}`);
+            
+            if (!modalElement) {
+                createStudentModal(student);
+                modalElement = document.getElementById(`modal-${studentId}`);
+            }
+            
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
         }
         
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchStudentData();
-        });
+        function createStudentModal(student) {
+            const modalsContainer = document.getElementById('modalsContainer');
+            
+            const modalDiv = document.createElement('div');
+            modalDiv.className = 'modal fade';
+            modalDiv.id = `modal-${student.studentId}`;
+            modalDiv.setAttribute('tabindex', '-1');
+            modalDiv.setAttribute('aria-hidden', 'true');
+            
+            const initials = getInitials(student.name);
+            
+            modalDiv.innerHTML = `
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="fas fa-user-graduate"></i>
+                                Student Details
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="student-profile">
+                                <img src="${student.imageUrl || '/placeholder.svg?height=120&width=120'}" alt="Student Image" class="student-avatar">
+                                <h4 class="student-name">${student.name}</h4>
+                                <p class="student-id">${student.studentId} | ${student.registerNumber}</p>
+                                ${student.gender === 'Male' ? 
+                                    `<span class="student-badge" style="background-color: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                                        <i class="fas fa-male"></i> Male
+                                    </span>` : 
+                                    `<span class="student-badge" style="background-color: rgba(236, 72, 153, 0.1); color: #ec4899;">
+                                        <i class="fas fa-female"></i> Female
+                                    </span>`
+                                }
+                            </div>
+
+                            <!-- Tabs for better organization -->
+                            <ul class="nav nav-tabs" id="studentTabs-${student.studentId}" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="personal-tab-${student.studentId}" data-bs-toggle="tab" 
+                                            data-bs-target="#personal-${student.studentId}" type="button" role="tab" aria-selected="true">
+                                        <i class="fas fa-id-card me-1"></i> Personal Info
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="academic-tab-${student.studentId}" data-bs-toggle="tab" 
+                                            data-bs-target="#academic-${student.studentId}" type="button" role="tab" aria-selected="false">
+                                        <i class="fas fa-graduation-cap me-1"></i> Academic Info
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="contact-tab-${student.studentId}" data-bs-toggle="tab" 
+                                            data-bs-target="#contact-${student.studentId}" type="button" role="tab" aria-selected="false">
+                                        <i class="fas fa-address-book me-1"></i> Contact & Family
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content p-3" id="studentTabContent-${student.studentId}">
+                                <!-- Personal Information Tab -->
+                                <div class="tab-pane fade show active" id="personal-${student.studentId}" role="tabpanel">
+                                    <div class="row g-4">
+                                        <div class="col-lg-6">
+                                            <div class="student-info-card">
+                                                <div class="student-info-header">
+                                                    <h6 class="student-info-title">
+                                                        <i class="fas fa-id-card"></i>
+                                                        Personal Information
+                                                    </h6>
+                                                </div>
+                                                <div class="student-info-body">
+                                                    <table class="info-table">
+                                                        <tr>
+                                                            <th>Date of Birth</th>
+                                                            <td>${student.dob}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Year</th>
+                                                            <td>${student.course} - ${student.year}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Blood Group</th>
+                                                            <td>${student.bloodGroup}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Religion</th>
+                                                            <td>${student.religion}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Nationality</th>
+                                                            <td>${student.nationality}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="student-info-card">
+                                                <div class="student-info-header">
+                                                    <h6 class="student-info-title">
+                                                        <i class="fas fa-info-circle"></i>
+                                                        Other Information
+                                                    </h6>
+                                                </div>
+                                                <div class="student-info-body">
+                                                    <table class="info-table">
+                                                        <tr>
+                                                            <th>Transportation</th>
+                                                            <td>${student.transportation}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Hostel Required</th>
+                                                            <td>${student.hostelRequired}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Academic Information Tab -->
+                                <div class="tab-pane fade" id="academic-${student.studentId}" role="tabpanel">
+                                    <div class="student-info-card">
+                                        <div class="student-info-header">
+                                            <h6 class="student-info-title">
+                                                <i class="fas fa-graduation-cap"></i>
+                                                Academic Information
+                                            </h6>
+                                        </div>
+                                        <div class="student-info-body">
+                                            <table class="info-table">
+                                                <tr>
+                                                    <th>Previous Institution</th>
+                                                    <td>${student.previousInstitution}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Previous Marks</th>
+                                                    <td>${student.previousMarks}%</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Total Fees</th>
+                                                    <td>₹${student.totalFee}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Scholarship</th>
+                                                    <td>${student.scholarship}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Bridge Course</th>
+                                                    <td>${student.bridgeCourse}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Admission Date</th>
+                                                    <td>${student.admissionDate}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Contact & Family Information Tab -->
+                                <div class="tab-pane fade" id="contact-${student.studentId}" role="tabpanel">
+                                    <div class="row g-4">
+                                        <div class="col-lg-6">
+                                            <div class="student-info-card">
+                                                <div class="student-info-header">
+                                                    <h6 class="student-info-title">
+                                                        <i class="fas fa-address-book"></i>
+                                                        Contact Information
+                                                    </h6>
+                                                </div>
+                                                <div class="student-info-body">
+                                                    <table class="info-table">
+                                                        <tr>
+                                                            <th>Email</th>
+                                                            <td>${student.email}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Phone</th>
+                                                            <td>${student.phone}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Aadhaar Number</th>
+                                                            <td>${student.aadhaarNum}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Address</th>
+                                                            <td>${student.address?.address || ''}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>City</th>
+                                                            <td>${student.address?.city || ''}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>State</th>
+                                                            <td>${student.address?.state || ''}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Pin Code</th>
+                                                            <td>${student.address?.pinCode || ''}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Country</th>
+                                                            <td>${student.address?.country || ''}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="student-info-card">
+                                                <div class="student-info-header">
+                                                    <h6 class="student-info-title">
+                                                        <i class="fas fa-users"></i>
+                                                        Family Information
+                                                    </h6>
+                                                </div>
+                                                <div class="student-info-body">
+                                                    <table class="info-table">
+                                                        <tr>
+                                                            <th>Parent Name</th>
+                                                            <td>${student.parentName}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Parent Phone</th>
+                                                            <td>${student.parentPhone}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Parental Income</th>
+                                                            <td>${student.parentalIncome}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Emergency Contact</th>
+                                                            <td>${student.emergencyContact}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Relationship</th>
+                                                            <td>${student.emergencyContactRelationship}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Emergency Phone</th>
+                                                            <td>${student.emergencyPhone}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="/v1/api/studentEdit/${student._id}" class="btn btn-primary">
+                                <i class="fas fa-edit me-1"></i> Edit Student
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modalsContainer.appendChild(modalDiv);
+        }
+        
+        function getInitials(name) {
+            if (!name) return '';
+            
+            return name
+                .split(' ')
+                .map(word => word.charAt(0))
+                .join('')
+                .toUpperCase()
+                .substring(0, 2);
+        }
+        
+        function setActiveView(view) {
+            currentView = view;
+            
+            viewToggleBtns.forEach(btn => {
+                if (btn.getAttribute('data-view') === view) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            if (isLoading) {
+                if (view === 'card') {
+                    cardViewSkeleton.style.display = 'block';
+                    tableViewSkeleton.style.display = 'none';
+                } else {
+                    cardViewSkeleton.style.display = 'none';
+                    tableViewSkeleton.style.display = 'block';
+                }
+            } else {
+                renderStudents();
+            }
+        }
+        
+        function showLoading() {
+            isLoading = true;
+            loadingSpinner.style.display = 'flex';
+            cardView.style.display = 'none';
+            tableView.style.display = 'none';
+            emptyState.style.display = 'none';
+        }
+        
+        function hideLoading() {
+            isLoading = false;
+            loadingSpinner.style.display = 'none';
+        }
+        
+        function showEmpty() {
+            hideLoading();
+            cardView.style.display = 'none';
+            tableView.style.display = 'none';
+            emptyState.style.display = 'flex';
+        }
     </script>
 </body>
-
 </html>

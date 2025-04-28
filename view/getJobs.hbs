@@ -379,17 +379,119 @@
         }
 
         @media (max-width: 768px) {
-            .filters {
+            .card-header {
+                padding: 0.75rem;
                 flex-direction: column;
-                gap: 0.75rem;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
 
-            .filter-item {
+            .card-header-content {
                 width: 100%;
+                justify-content: space-between;
+            }
+
+            .card-title {
+                font-size: 0.95rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .back-button {
+                padding: 0.25rem 0.5rem;
+                margin-right: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .view-toggle {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 0.5rem;
+            }
+
+            .view-toggle-btn {
+                flex: 1;
+                padding: 0.35rem 0.5rem;
+                font-size: 0.8rem;
+                text-align: center;
+            }
+
+            .filters {
+                padding: 0.75rem;
+                gap: 0.5rem;
+            }
+
+            .mobile-search-row {
+                display: flex;
+                width: 100%;
+                gap: 0.5rem;
+            }
+
+            .mobile-search-row .filter-item {
+                flex: 1;
+                min-width: unset;
+                margin: 0;
+            }
+
+            .mobile-search-btn {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+
+            .form-label {
+                font-size: 0.75rem;
+                margin-bottom: 0.25rem;
+                font-weight: 500;
+            }
+
+            .form-control {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.85rem;
+                height: 36px;
+            }
+
+            .data-container {
+                height: calc(100vh - 140px);
+                padding: 0.75rem;
+            }
+
+            .job-card {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+                border-radius: 0.5rem;
+            }
+
+            .job-header {
+                margin-bottom: 0.5rem;
+            }
+
+            .job-title {
+                font-size: 0.95rem;
+            }
+
+            .job-company {
+                font-size: 0.85rem;
             }
 
             .job-details {
                 grid-template-columns: 1fr;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .detail-label {
+                font-size: 0.7rem;
+                margin-bottom: 0.1rem;
+            }
+
+            .detail-value {
+                font-size: 0.85rem;
+            }
+
+            .job-description {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
             }
 
             .job-actions {
@@ -399,21 +501,22 @@
 
             .job-actions .btn {
                 width: 100%;
+                padding: 0.4rem 0.75rem;
+                font-size: 0.85rem;
             }
 
-            .view-toggle {
-                flex-wrap: wrap;
+            .modal-title {
+                font-size: 1.1rem;
             }
 
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
+            .modal-body {
+                padding: 1rem;
+                font-size: 0.9rem;
             }
 
-            .card-header-content {
-                width: 100%;
-                justify-content: space-between;
+            .modal-footer .btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.85rem;
             }
         }
 
@@ -667,6 +770,28 @@
             font-size: 12px;
             z-index: 9999;
         }
+
+        .desktop-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .mobile-filters {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-filters {
+                display: none;
+            }
+
+            .mobile-filters {
+                display: block;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -688,26 +813,44 @@
                         <button class="view-toggle-btn" data-view="table">
                             <i class="fas fa-table me-1"></i> Table View
                         </button>
-                        <button class="btn btn-primary" id="refreshBtn">
-                            <i class="fas fa-sync-alt me-2"></i>Refresh
-                        </button>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="filters">
-                        <div class="filter-item">
-                            <label for="titleFilter" class="form-label">Job Title</label>
-                            <input type="text" id="title" class="form-control" placeholder="e.g., Developer, Designer">
+                        <div class="desktop-filters">
+                            <div class="filter-item">
+                                <label for="title" class="form-label">Job Title</label>
+                                <input type="text" id="title" class="form-control" placeholder="e.g., Developer, Designer">
+                            </div>
+                            <div class="filter-item">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" id="location" class="form-control" placeholder="e.g., Hyderabad, Mumbai">
+                            </div>
+                            <div class="filter-item d-flex align-items-end">
+                                <button type="button" id="searchBtn" class="btn btn-primary w-100">
+                                    <i class="fas fa-search me-2"></i><span>Search Jobs</span>
+                                    <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true" id="searchSpinner"></span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="filter-item">
-                            <label for="locationFilter" class="form-label">Location</label>
-                            <input type="text" id="location" class="form-control" placeholder="e.g., Hyderabad, Mumbai">
-                        </div>
-                        <div class="filter-item d-flex align-items-end">
-                            <button type="button" id="searchBtn" class="btn btn-primary w-100">
-                                <i class="fas fa-search me-2"></i><span>Search Jobs</span>
-                                <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true" id="searchSpinner"></span>
-                            </button>
+
+                        <div class="mobile-filters">
+                            <div class="mobile-search-row">
+                                <div class="filter-item">
+                                    <label for="mobileTitle" class="form-label">Job Title</label>
+                                    <input type="text" id="mobileTitle" class="form-control" placeholder="e.g., Developer">
+                                </div>
+                                <div class="filter-item">
+                                    <label for="mobileLocation" class="form-label">Location</label>
+                                    <input type="text" id="mobileLocation" class="form-control" placeholder="e.g., Mumbai">
+                                </div>
+                            </div>
+                            <div class="mobile-search-btn">
+                                <button type="button" id="mobileSearchBtn" class="btn btn-primary w-100">
+                                    <i class="fas fa-search me-2"></i><span>Search Jobs</span>
+                                    <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true" id="mobileSearchSpinner"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -823,7 +966,7 @@
         let currentSearchParams = {};
         let hasMoreData = true;
         let scrollDebounceTimer = null;
-        let isDebugMode = true; 
+        let isDebugMode = false;
 
         const loadingSpinner = document.getElementById('loadingSpinner');
         const skeletonLoading = document.getElementById('skeletonLoading');
@@ -834,13 +977,16 @@
         const cardView = document.getElementById('cardView');
         const tableView = document.getElementById('tableView');
         const tableBody = document.getElementById('tableBody');
-        const refreshBtn = document.getElementById('refreshBtn');
         const searchBtn = document.getElementById('searchBtn');
+        const mobileSearchBtn = document.getElementById('mobileSearchBtn');
         const titleInput = document.getElementById('title');
         const locationInput = document.getElementById('location');
+        const mobileTitleInput = document.getElementById('mobileTitle');
+        const mobileLocationInput = document.getElementById('mobileLocation');
         const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
         const jobDetailsModal = new bootstrap.Modal(document.getElementById('jobDetailsModal'));
         const searchSpinner = document.getElementById('searchSpinner');
+        const mobileSearchSpinner = document.getElementById('mobileSearchSpinner');
         const loadingMore = document.getElementById('loadingMore');
         const dataContainer = document.getElementById('dataContainer');
         const scrollDebug = document.getElementById('scrollDebug');
@@ -866,8 +1012,24 @@
             generateSkeletons();
 
             searchBtn.addEventListener('click', searchJobs);
-            refreshBtn.addEventListener('click', searchJobs);
+            mobileSearchBtn.addEventListener('click', searchJobsMobile);
             loadMoreButton.addEventListener('click', loadMoreJobs);
+
+            titleInput.addEventListener('input', function() {
+                mobileTitleInput.value = this.value;
+            });
+            
+            mobileTitleInput.addEventListener('input', function() {
+                titleInput.value = this.value;
+            });
+            
+            locationInput.addEventListener('input', function() {
+                mobileLocationInput.value = this.value;
+            });
+            
+            mobileLocationInput.addEventListener('input', function() {
+                locationInput.value = this.value;
+            });
 
             titleInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
@@ -878,6 +1040,18 @@
             locationInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     searchJobs();
+                }
+            });
+            
+            mobileTitleInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchJobsMobile();
+                }
+            });
+            
+            mobileLocationInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchJobsMobile();
                 }
             });
 
@@ -894,6 +1068,13 @@
                 scrollDebug.style.display = 'block';
             }
         });
+
+        function searchJobsMobile() {
+            titleInput.value = mobileTitleInput.value;
+            locationInput.value = mobileLocationInput.value;
+            
+            searchJobs();
+        }
 
         function handleScroll() {
             if (isLoading || isLoadingMore || !hasMoreData) return;
@@ -1096,14 +1277,22 @@
             
             if (loading) {
                 searchSpinner.classList.remove('d-none');
+                mobileSearchSpinner.classList.remove('d-none');
                 searchBtn.disabled = true;
+                mobileSearchBtn.disabled = true;
                 searchBtn.querySelector('i').classList.add('d-none');
+                mobileSearchBtn.querySelector('i').classList.add('d-none');
                 searchBtn.querySelector('span').textContent = 'Searching...';
+                mobileSearchBtn.querySelector('span').textContent = 'Searching...';
             } else {
                 searchSpinner.classList.add('d-none');
+                mobileSearchSpinner.classList.add('d-none');
                 searchBtn.disabled = false;
+                mobileSearchBtn.disabled = false;
                 searchBtn.querySelector('i').classList.remove('d-none');
+                mobileSearchBtn.querySelector('i').classList.remove('d-none');
                 searchBtn.querySelector('span').textContent = 'Search Jobs';
+                mobileSearchBtn.querySelector('span').textContent = 'Search Jobs';
             }
         }
 
