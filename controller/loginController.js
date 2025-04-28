@@ -6,6 +6,7 @@ const authFile = require("../middleware/auth");
 const countModel = require("../models/countModel")
 const moment = require("moment");
 const attendanceController = require("../controller/attendanceController");
+const employeeSalaryModel = require("../models/employeeSalaryModel");
 
 
 const cloudinary = require('cloudinary').v2;
@@ -102,7 +103,7 @@ exports.staffRegister = async (req, res) => {
       additionalInfo: body.additionalInfo || null,
     });
     
-    await user.save();
+    let userData = await user.save();
 
     res.json({
       success: true,
@@ -224,6 +225,13 @@ exports.staffRegister = async (req, res) => {
         console.log('Email Sent Successfully....');
       }
     });
+
+    let empSalary = new employeeSalaryModel({
+      staffId: userData._id,
+      salaryAmount: Number(userData.salary)
+    });
+
+    await empSalary.save();
 
     // return res.render('signupSucces')
   } catch (error) {
@@ -1173,7 +1181,8 @@ exports.updateEmpSalaryList = async (req, res) => {
 
 exports.getStaffSalartList = async (req, res) => {
   try {
-    let staffs = await Admin.find({ isDelete: false, isActive: true, isFaculty: true }).sort({ createdAt: -1 });
+    // let staffs = await Admin.find({ isDelete: false, isActive: true, isFaculty: true }).sort({ createdAt: -1 });
+    let staffs = await employeeSalaryModel.find({ isActive: true }).populate("staffId");
     await new Promise(resolve => setTimeout(resolve, 1000));
     res.status(200).json({
       success: true,
@@ -1196,11 +1205,11 @@ exports.staffBulkSalaryUpdate = async (req, res) => {
       const updates = employeeIds.map((id, index) => ({
         updateOne: {
           filter: { _id: id },
-          update: { $set: { currentMonthSalary: salaries[index] } },
+          update: { $set: { salaryAmount: Number(salaries[index]) } },
         },
       }));
 
-      await Admin.bulkWrite(updates);
+      await employeeSalaryModel.bulkWrite(updates);
     }
 
     res.json({

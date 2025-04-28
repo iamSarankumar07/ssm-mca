@@ -504,24 +504,24 @@
           html += `
             <tr>
               <td>
-                <div class="employee-name">${staff.fullName}</div>
+                <div class="employee-name">${staff.staffId.fullName}</div>
               </td>
               <td>
-                <div>${staff.employeeId}</div>
+                <div>${staff.staffId.employeeId}</div>
               </td>
               <td>
-                <span class="position-badge">${staff.designation}</span>
+                <span class="position-badge">${staff.staffId.designation}</span>
               </td>
               <td>
-                <div class="current-salary">₹${staff.salary.toLocaleString()}</div>
+                <div class="current-salary">₹${staff.staffId.salary.toLocaleString()}</div>
               </td>
               <td>
                 <input type="hidden" name="employeeIds[]" value="${staff._id}">
                 <input type="number" 
                        class="form-control salary-input" 
                        name="salaries[]" 
-                       value="${staff.salary}" 
-                       data-original="${staff.salary}"
+                       value="${staff.salaryAmount}" 
+                       data-original="${staff.salaryAmount}"
                        min="0" 
                        required>
               </td>
@@ -565,7 +565,7 @@
             errorAlert.style.display = 'block';
             tableBody.innerHTML = '';
             emptyState.classList.remove('d-none');
-          });
+        });
       }
       
       fetchStaffData();
