@@ -41,7 +41,7 @@
         .page-container {
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: 100%;
             width: 100%;
             margin: 0 auto;
             padding: 0;
@@ -52,14 +52,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 0.75rem;
             flex-shrink: 0;
             background-color: var(--white);
             border-bottom: 1px solid var(--light-gray);
         }
         
         .header h1 {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--dark);
             margin: 0;
@@ -80,11 +80,11 @@
         }
         
         .back-button {
-            margin-right: 1rem;
+            margin-right: 0.75rem;
             background-color: var(--white);
             border: 1px solid var(--light-gray);
             border-radius: 0.5rem;
-            padding: 0.5rem 0.75rem;
+            padding: 0.4rem 0.6rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -120,21 +120,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.25rem 1.5rem;
+            padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--light-gray);
             background-color: var(--white);
             flex-shrink: 0;
         }
         
         .card-title {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--dark);
             margin: 0;
         }
         
         .card-body {
-            padding: 1.5rem;
+            padding: 1rem;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -161,10 +161,10 @@
         }
         
         .form-control, .form-select {
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.8rem;
             border: 1px solid var(--light-gray);
             border-radius: 0.5rem;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
         }
         
@@ -174,7 +174,7 @@
         }
         
         .btn {
-            padding: 0.6rem 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: var(--border-radius);
             font-weight: 500;
             transition: all 0.2s ease;
@@ -211,7 +211,7 @@
         }
         
         .btn-sm {
-            padding: 0.4rem 0.8rem;
+            padding: 0.35rem 0.7rem;
             font-size: 0.85rem;
         }
         
@@ -428,10 +428,42 @@
             color: var(--gray);
         }
         
+        .filters-toggle {
+            display: none;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.75rem;
+            background-color: var(--secondary);
+            border: 1px solid var(--light-gray);
+            border-radius: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            text-align: left;
+        }
+        
+        .filters-toggle i {
+            transition: transform 0.2s ease;
+        }
+        
+        .filters-toggle.collapsed i {
+            transform: rotate(-90deg);
+        }
+        
         @media (max-width: 768px) {
+            .filters-toggle {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
             .filters {
+                display: none;
                 flex-direction: column;
                 gap: 0.75rem;
+            }
+            
+            .filters.show {
+                display: flex;
             }
             
             .filter-item {
@@ -458,7 +490,7 @@
             .card-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
+                gap: 0.75rem;
             }
             
             .card-header-content {
@@ -677,13 +709,18 @@
                         <button class="view-toggle-btn" data-view="table">
                             <i class="fas fa-table me-1"></i> Table View
                         </button>
-                        <button class="btn btn-primary" id="refreshBtn">
+                        {{!-- <button class="btn btn-primary" id="refreshBtn">
                             <i class="fas fa-sync-alt me-2"></i>Refresh
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="filters">
+                    <!-- Filters toggle button for mobile -->
+                    <button class="filters-toggle collapsed" type="button" id="filtersToggle">
+                        <span>Filters</span> <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="filters" id="filtersContainer">
                         <div class="filter-item">
                             <label for="statusFilter" class="form-label">Status</label>
                             <select id="statusFilter" class="form-select">
@@ -861,6 +898,8 @@
         const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
         const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
         const leaveDetailsModal = new bootstrap.Modal(document.getElementById('leaveDetailsModal'));
+        const filtersToggle = document.getElementById('filtersToggle');
+        const filtersContainer = document.getElementById('filtersContainer');
         
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -887,7 +926,7 @@
             
             fetchLeaveRequests();
             
-            refreshBtn.addEventListener('click', fetchLeaveRequests);
+            {{!-- refreshBtn.addEventListener('click', fetchLeaveRequests); --}}
             
             statusFilter.addEventListener('change', filterLeaveRequests);
             departmentFilter.addEventListener('change', filterLeaveRequests);
@@ -902,6 +941,18 @@
             });
             
             document.getElementById('submitAction').addEventListener('click', submitLeaveAction);
+            
+            filtersToggle.addEventListener('click', function() {
+                filtersContainer.classList.toggle('show');
+                this.classList.toggle('collapsed');
+                
+                const icon = this.querySelector('i');
+                if (this.classList.contains('collapsed')) {
+                    icon.style.transform = 'rotate(-90deg)';
+                } else {
+                    icon.style.transform = 'rotate(0)';
+                }
+            });
         });
         
         function generateSkeletons() {

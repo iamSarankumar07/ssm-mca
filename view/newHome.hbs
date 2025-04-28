@@ -61,19 +61,19 @@
         }
 
         .navbar-brand img {
-            height: 50px;
+            height: 40px;
             transition: all 0.3s ease;
         }
 
         .navbar.scrolled .navbar-brand img {
-            height: 45px;
+            height: 35px;
         }
 
         .nav-link {
             font-weight: 500;
             color: var(--gray-800);
-            padding: 10px 15px !important;
-            margin: 0 5px;
+            padding: 8px 12px !important;
+            margin: 0 3px;
             border-radius: 8px;
             transition: all 0.3s ease;
         }
@@ -131,7 +131,7 @@
             background-position: center;
             background-attachment: fixed;
             color: white;
-            padding: 200px 0 120px;
+            padding: 270px 0 140px;
             overflow: hidden;
         }
 
@@ -154,18 +154,19 @@
             font-weight: 800;
             letter-spacing: -1px;
             margin-bottom: 1.5rem;
+            font-size: 2.5rem;
         }
 
         .hero-text {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 400;
             opacity: 0.9;
             max-width: 600px;
-            margin: 0 auto 2.5rem;
+            margin: 0 auto 2rem;
         }
 
         .btn {
-            padding: 12px 28px;
+            padding: 10px 20px;
             font-weight: 600;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -203,13 +204,13 @@
             background-color: white;
             border-radius: 16px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            margin-top: -70px;
+            margin-top: -50px;
             position: relative;
             z-index: 10;
         }
 
         .counter-item {
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
             border-right: 1px solid var(--gray-200);
         }
@@ -219,7 +220,7 @@
         }
 
         .counter-number {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 0.5rem;
@@ -227,24 +228,24 @@
         }
 
         .counter-text {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--secondary);
             font-weight: 500;
         }
 
         section {
-            padding: 100px 0;
+            padding: 60px 0;
             position: relative;
         }
 
         .section-heading {
             position: relative;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
         .section-heading h2 {
             font-weight: 700;
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
@@ -267,7 +268,7 @@
         }
 
         .section-heading p {
-            font-size: 1.125rem;
+            font-size: 1rem;
             color: var(--secondary);
             max-width: 700px;
             margin: 0 auto;
@@ -322,7 +323,7 @@
         }
 
         .facility-card .card-img-top {
-            height: 240px;
+            height: 200px;
             object-fit: cover;
             transition: all 0.5s ease;
         }
@@ -332,7 +333,7 @@
         }
 
         .facility-card .card-body {
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .testimonial-section {
@@ -342,7 +343,7 @@
         .testimonial-card {
             background-color: white;
             border-radius: 16px;
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             position: relative;
             margin-top: 40px;
@@ -362,8 +363,8 @@
         }
 
         .testimonial-img {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid white;
@@ -375,6 +376,7 @@
             font-style: italic;
             color: var(--secondary);
             margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
 
         .testimonial-name {
@@ -390,21 +392,30 @@
 
         .news-events-section {
             background-color: var(--light);
-            padding: 100px 0;
+            padding: 60px 0;
             position: relative;
             z-index: 1;
         }
 
         .scroll-container {
             position: relative;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
             padding: 20px 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none; 
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none; 
         }
 
         .scroll-wrapper {
             display: flex;
             transition: transform 0.5s ease-in-out;
             gap: 20px;
+            min-width: min-content;
         }
 
         .news-card,
@@ -413,7 +424,7 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            flex: 0 0 350px;
+            flex: 0 0 280px;
             transition: all 0.3s ease;
             margin-bottom: 10px;
         }
@@ -426,7 +437,7 @@
 
         .news-img-container,
         .event-img-container {
-            height: 200px;
+            height: 180px;
             overflow: hidden;
         }
 
@@ -445,7 +456,7 @@
 
         .news-content,
         .event-content {
-            padding: 1.5rem;
+            padding: 1.25rem;
         }
 
         .news-date,
@@ -457,14 +468,14 @@
             border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .news-title,
         .event-title {
             font-weight: 700;
             margin-bottom: 0.75rem;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
         }
 
         .news-description,
@@ -476,6 +487,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             line-height: 1.5;
+            font-size: 0.9rem;
         }
 
         .news-navigation,
@@ -518,7 +530,7 @@
         }
 
         .contact-section {
-            padding: 100px 0;
+            padding: 60px 0;
             background-color: var(--light);
             position: relative;
         }
@@ -542,25 +554,26 @@
             position: relative;
             z-index: 1;
             overflow: hidden;
+            padding: 2rem !important;
         }
 
         .contact-info-card {
             background-color: var(--primary);
             color: white;
             height: 100%;
-            padding: 3rem;
+            padding: 2rem;
         }
 
         .contact-info-card h3 {
             color: white;
             font-weight: 700;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .contact-info-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .contact-info-item:last-child {
@@ -631,10 +644,11 @@
 
         .contact-form-wrapper {
             background-color: white;
+            padding: 2rem;
         }
 
         .form-floating>.form-control {
-            padding: 1.5rem 1rem;
+            padding: 1.25rem 0.75rem;
             height: calc(3.5rem + 2px);
             line-height: 1.25;
             border-radius: 10px;
@@ -653,7 +667,7 @@
         }
 
         .form-floating>label {
-            padding: 1rem;
+            padding: 0.75rem;
             color: var(--secondary);
         }
 
@@ -670,13 +684,13 @@
         }
 
         .map-container {
-            height: 450px;
+            height: 350px;
             border: 1px solid var(--gray-200);
         }
 
         .contact-icon {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background-color: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: flex;
@@ -687,7 +701,7 @@
         }
 
         .contact-icon i {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: white;
         }
 
@@ -695,21 +709,23 @@
             font-weight: 600;
             color: white;
             margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
 
         .contact-text p {
             color: rgba(255, 255, 255, 0.8);
             margin-bottom: 0;
+            font-size: 0.9rem;
         }
 
         .contact-form-card {
-            padding: 3rem;
+            padding: 2rem;
             background-color: white;
         }
 
         .contact-form-card h3 {
             font-weight: 700;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-control {
@@ -734,7 +750,7 @@
         .footer {
             background-color: var(--dark);
             color: white;
-            padding: 80px 0 0;
+            padding: 60px 0 0;
             position: relative;
             z-index: 1;
         }
@@ -744,19 +760,20 @@
         }
 
         .footer-logo img {
-            height: 60px;
+            height: 50px;
             filter: brightness(0) invert(1);
         }
 
         .footer-text {
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
 
         .footer-heading {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             color: white;
         }
 
@@ -776,6 +793,7 @@
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
+            font-size: 0.9rem;
         }
 
         .footer-links a:hover {
@@ -794,8 +812,8 @@
         }
 
         .social-link {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
@@ -813,12 +831,13 @@
         .footer-bottom {
             padding: 1.5rem 0;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 3rem;
+            margin-top: 2rem;
         }
 
         .footer-bottom p {
             margin-bottom: 0;
             color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
         }
 
         .modal-content {
@@ -828,21 +847,21 @@
         }
 
         .modal-body {
-            padding: 3rem;
+            padding: 2rem;
             text-align: center;
         }
 
         .success-icon {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             background-color: #ecfdf5;
             color: var(--success);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 2rem;
-            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            font-size: 1.75rem;
         }
 
         .loading-spinner {
@@ -870,45 +889,143 @@
             animation: float 6s ease-in-out infinite;
         }
 
+        @media (max-width: 412px) {
+            .navbar-brand img {
+                height: 35px;
+            }
+            
+            .hero-section {
+                padding: 280px 0 220px;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-text {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+            
+            .stats-counter {
+                margin-top: -10px;
+            }
+            
+            .counter-number {
+                font-size: 1.75rem;
+            }
+            
+            .counter-text {
+                font-size: 0.8rem;
+            }
+            
+            .section-heading h2 {
+                font-size: 1.75rem;
+            }
+            
+            .section-heading p {
+                font-size: 0.9rem;
+            }
+            
+            .course-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .course-icon i {
+                font-size: 1.5rem;
+            }
+            
+            .news-card,
+            .event-card {
+                flex: 0 0 260px;
+            }
+            
+            .news-img-container,
+            .event-img-container {
+                height: 160px;
+            }
+            
+            .news-title,
+            .event-title {
+                font-size: 1rem;
+            }
+            
+            .contact-info {
+                padding: 1.5rem !important;
+            }
+            
+            .contact-form-wrapper {
+                padding: 1.5rem;
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+            
+            .footer {
+                padding: 40px 0 0;
+            }
+            
+            .footer-logo img {
+                height: 40px;
+            }
+        }
+
         @media (max-width: 991.98px) {
             .counter-item {
                 border-right: none;
                 border-bottom: 1px solid var(--gray-200);
+                padding: 1.25rem;
             }
 
             .counter-item:last-child {
                 border-bottom: none;
             }
-
-            .contact-info {
-                padding: 3rem !important;
-            }
         }
 
         @media (max-width: 767.98px) {
             .hero-section {
-                padding: 150px 0 100px;
+                padding: 130px 0 80px;
             }
 
             .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .section-heading h2 {
                 font-size: 2rem;
             }
 
+            .section-heading h2 {
+                font-size: 1.75rem;
+            }
+
             .stats-counter {
-                margin-top: -50px;
+                margin-top: -40px;
             }
 
             section {
-                padding: 60px 0;
+                padding: 50px 0;
             }
 
             .news-card,
             .event-card {
-                flex: 0 0 300px;
+                flex: 0 0 260px;
+            }
+            
+            .navbar-nav {
+                padding: 1rem 0;
+            }
+            
+            .nav-item {
+                margin-bottom: 0.5rem;
+            }
+            
+            .nav-item.ms-lg-3,
+            .nav-item.ms-lg-2 {
+                margin-top: 0.5rem;
             }
         }
     </style>
@@ -1691,7 +1808,7 @@
 
         let newsItems = [];
         let eventsItems = [];
-        const scrollAmount = 370;
+        const scrollAmount = 300; 
         let newsPosition = 0;
         let eventsPosition = 0;
         let newsAutoScrollInterval;
@@ -1794,6 +1911,15 @@
             newsContainer.addEventListener('mouseleave', function () {
                 isNewsHovered = false;
             });
+            
+            newsContainer.addEventListener('touchstart', function() {
+                isNewsHovered = true;
+            });
+            newsContainer.addEventListener('touchend', function() {
+                setTimeout(function() {
+                    isNewsHovered = false;
+                }, 3000); 
+            });
 
             updateNewsNavButtons();
         }
@@ -1845,6 +1971,15 @@
             eventsContainer.addEventListener('mouseleave', function () {
                 isEventsHovered = false;
             });
+            
+            eventsContainer.addEventListener('touchstart', function() {
+                isEventsHovered = true;
+            });
+            eventsContainer.addEventListener('touchend', function() {
+                setTimeout(function() {
+                    isEventsHovered = false;
+                }, 3000); 
+            });
 
             updateEventsNavButtons();
         }
@@ -1871,7 +2006,7 @@
 
         function autoScrollNews() {
             const container = document.getElementById('news-container');
-            const containerWidth = container.scrollWidth / 2; // Half because we duplicated the items
+            const containerWidth = container.scrollWidth / 2; 
 
             newsPosition += scrollAmount;
 
