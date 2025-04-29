@@ -38,6 +38,10 @@ const Loginschema = new mongoose.Schema({
         type: String,
         required: false
     },
+    bloodGroup: {
+        type: String,
+        required: false
+    },
     nationality: {
         type: String,
         required: false

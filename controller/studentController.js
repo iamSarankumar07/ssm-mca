@@ -13,6 +13,9 @@ const cloudinary = require('cloudinary').v2;
 const subjectCodeModel = require("../models/subjectCodeModel");
 const mongoose = require("mongoose");
 const axios = require("axios");
+const AttendanceModel = require("../models/attendanceModel");
+const { verify } = require("jsonwebtoken");
+const studyMaterialModel = require("../models/studyMaterial");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -223,8 +226,7 @@ exports.login = async (req, res) => {
     const student = await Student.findOne({ 
       studentId,
       isDelete: false,
-      isAlumni: false
-  });
+    });
 
     if (!student) {
       return res.status(200).json({
@@ -232,24 +234,35 @@ exports.login = async (req, res) => {
         message: "Please check your login credentials"
       });
     }
+
     const passwordMatch = await bcrypt.compare(password, student.password);
+
     if (!passwordMatch) {
       return res.status(200).json({
         success: false,
         message: "Incorrect Password!"
       });
     }
+
     const accessToken = await authFile.sToken(student);
+
     res.cookie("access-token-student", accessToken, {
       maxAge: 86400000
     });
 
     return res.status(200).json({
       success: true,
+      data: {
+        studentId: student.studentId,
+        name: student.name,
+        year: student.year,
+        course: student.course,
+        isAlumni: student.isAlumni,
+      },
       message: "Loggined Successfully!"
     });
   } catch (err) {
-    console.error("Error logging in:", err);
+    console.log("Error logging in:", err);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error!"
@@ -261,7 +274,7 @@ exports.studentForgotPassword = async (req, res) => {
   let body = req.body;
   try {
     let studentId = body.studentId;
-    let studentData = await Student.findOne({ studentId: studentId, isDelete: false, isAlumni: false });
+    let studentData = await Student.findOne({ studentId: studentId, isDelete: false });
     if (!studentData) {
       return res.status(500).json({
         success: false,
@@ -612,7 +625,6 @@ exports.moveStudents = async (req, res) => {
           examPendingFee: null,
           totalFee: null,
           pendingFee: null,
-          password: null,
         },
       });
       res.json({
@@ -631,6 +643,7 @@ exports.moveStudents = async (req, res) => {
           examPendingFee: null,
           totalFee: null,
           pendingFee: null,
+          updatedAt: Date.now(),
         },
       });
       res.json({
@@ -3198,6 +3211,67 @@ exports.renderJobPage = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(404).render('error', { message: "Internal Server Error! Please try again later." });
+  }
+};
+
+exports.getStudentDetails = async (req, res) => {
+  const accessToken = req.cookies["access-token-student"];
+  try {
+    const decodedToken = await verify(
+      accessToken,
+      "mnbvcxzlkjhgfdsapoiuytrewq"
+    );
+    const studentId = decodedToken.studentId;
+
+    const student = await Student.findOne({ studentId, isAlumni: false, isDelete: false });
+
+    let studyMaterial;
+    if (student) {
+      // subject = await Subject.find({ year: student.year, isDelete: false });
+      studyMaterial = await studyMaterialModel.find({ course: student.course, year: student.year, isDelete: false })
+    }
+
+    if (!student) {
+      return res.send(
+        '<script>alert("Student not Found!"); window.location.href = "/v1/api/signin";</script>'
+      );
+    }
+
+    const attendanceCounts = await AttendanceModel.aggregate([
+      { $match: { studentId: student._id } },
+      { $group: {
+          _id: "$status",
+          count: { $sum: 1 }
+      } }
+    ]);
+
+    let attendanceSummary = { present: 0, absent: 0, late: 0, excused: 0 };
+    attendanceCounts.forEach(item => {
+      attendanceSummary[item._id] = item.count;
+    });
+
+    res.render("studentProfile", { student, studyMaterial, attendanceSummary });
+  } catch (err) {
+    console.log("Error in getStudentDetails: " + err);
+    res.status(500).render('error', { message: "Internal Server Error. Please try again later" });
+  }
+};
+
+exports.getAlumniStudentDetails = async (req, res) => {
+  const accessToken = req.cookies["access-token-student"];
+  try {
+    const decodedToken = await verify(
+      accessToken,
+      "mnbvcxzlkjhgfdsapoiuytrewq"
+    );
+    const studentId = decodedToken.studentId;
+
+    const alumni = await Student.findOne({ studentId, isDelete: false });
+
+    res.render("alumniProfile", { alumni });
+  } catch (err) {
+    console.log("Error in getAlumniStudentDetails: " + err);
+    res.status(500).render('error', { message: "Internal Server Error. Please try again later" });
   }
 };
 

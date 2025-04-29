@@ -24,6 +24,10 @@
             --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --border-radius: 0.5rem;
         }
+
+        a {
+            text-decoration: none;
+        }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -314,6 +318,10 @@
             background-color: rgba(79, 70, 229, 0.1);
             border-radius: 50%;
         }
+
+        .text-primary {
+            color: var(--primary) !important;
+        }
         
         .service-icon:hover {
             color: var(--white);
@@ -358,7 +366,6 @@
             text-decoration: underline;
         }
         
-        /* Logout Modal Styles */
         .logout-modal {
             position: fixed;
             top: 0;
@@ -472,7 +479,6 @@
             background-color: var(--primary-hover);
         }
         
-        /* Experience Card Styles */
         .experience-item {
             padding: 0.75rem 0;
             border-bottom: 1px solid var(--light-gray);
@@ -511,7 +517,6 @@
             margin-top: 0.5rem;
         }
         
-        /* Education Card Styles */
         .education-item {
             padding: 0.75rem 0;
             border-bottom: 1px solid var(--light-gray);
@@ -697,7 +702,7 @@
                         <div class="details-grid">
                             <div class="detail-item">
                                 <div class="detail-label">Alumni ID</div>
-                                <div class="detail-value">{{ alumni.alumniId }}</div>
+                                <div class="detail-value">{{ alumni.studentId }}</div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Register Number</div>
@@ -887,7 +892,7 @@
                         <div class="fee-item">
                             <span class="fee-label">AI Chatbot</span>
                             <span class="fee-value">
-                                <a href="/v1/api/alumni/getChatBot?user={{alumni._id}}" class="service-link">
+                                <a href="/v1/api/student/getChatBot?user={{alumni._id}}" class="service-link">
                                     <i class="fas fa-robot service-icon"></i>
                                 </a>
                             </span>
@@ -895,19 +900,19 @@
                         <div class="fee-item">
                             <span class="fee-label">Job Board</span>
                             <span class="fee-value">
-                                <a href="/v1/api/alumni/jobs" class="service-link">
+                                <a href="/v1/api/getJobPage" class="service-link">
                                     <i class="fas fa-briefcase service-icon"></i>
                                 </a>
                             </span>
                         </div>
-                        <div class="fee-item">
+                        {{!-- <div class="fee-item">
                             <span class="fee-label">Events & Reunions</span>
                             <span class="fee-value">
                                 <a href="/v1/api/alumni/events" class="service-link">
                                     <i class="fas fa-calendar-alt service-icon"></i>
                                 </a>
                             </span>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -947,7 +952,7 @@
         }
         
         function confirmLogout() {
-            window.location.href = '/v1/api/alogout';
+            window.location.href = '/v1/api/slogout';
         }
 
         function addressUpdate() {

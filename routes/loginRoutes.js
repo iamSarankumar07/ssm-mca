@@ -95,7 +95,8 @@ app.post(
   loginController.updateStaffStatus
 );
 
-app.get('/staff/profile', 
+app.get(
+  '/staff/profile', 
   authonticationController.validateToken,
   loginController.getStaffProfilePage
 );

@@ -162,11 +162,11 @@ app.get(
   viewController.dashboard
 );
 
-app.get(
-  "/studentProfile",
-  authonticationController.sValidateToken,
-  viewController.getStudentDetails
-);
+// app.get(
+//   "/studentProfile",
+//   authonticationController.sValidateToken,
+//   viewController.getStudentDetails
+// );
 
 app.get(
   "/feeRegister",
