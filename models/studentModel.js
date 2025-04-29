@@ -254,6 +254,11 @@ const studentSchema = new mongoose.Schema({
         type: Date,
         immutable: true,
         default: () => Date.now(),
+    },
+    updatedAt: {
+        type: Date,
+        immutable: true,
+        default: () => Date.now(),
     }
 });
 

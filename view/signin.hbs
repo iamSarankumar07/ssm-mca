@@ -976,7 +976,7 @@
                         <label for="userName" class="form-label">Student ID</label>
                         <div class="input-group">
                             <i class="fas fa-id-card input-icon"></i>
-                            <input type="text" id="userName" name="studentId" class="form-control" placeholder="Enter your student ID" autocomplete="off" required>
+                            <input type="text" id="userName" name="studentId" class="form-control" placeholder="Enter your Student ID" autocomplete="off" required>
                         </div>
                     </div>
                     
@@ -1622,7 +1622,13 @@
                     return;
                 }
 
-                window.location.href = '/v1/api/studentProfile';
+                if (data?.data?.isAlumni) {
+                    window.location.href = '/v1/api/alumni/studentProfile';
+                } else {
+                    window.location.href = '/v1/api/studentProfile';
+                }
+
+                {{!-- window.location.href = '/v1/api/studentProfile'; --}}
 
                 {{!-- setTimeout(() => {
                     window.location.href = '/v1/api/studentProfile';

@@ -7,6 +7,7 @@ const countModel = require("../models/countModel")
 const moment = require("moment");
 const attendanceController = require("../controller/attendanceController");
 const employeeSalaryModel = require("../models/employeeSalaryModel");
+const staffAttendanceModel = require("../models/staffAttendanceModel");
 
 
 const cloudinary = require('cloudinary').v2;
@@ -1130,7 +1131,23 @@ exports.getStaffProfilePage = async (req, res) => {
     await attendanceController.carryForwardLeaves(userId);
 
     let staffData = await Admin.findById(userId);
-    res.render("staffProfile", { staff: staffData });
+
+    const attendanceCounts = await staffAttendanceModel.aggregate([
+      { $match: { staffId: staffData._id } },
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    let attendanceSummary = { present: 0, absent: 0, late: 0 };
+    attendanceCounts.forEach(item => {
+      attendanceSummary[item._id] = item.count;
+    });
+
+    res.render("staffProfile", { staff: staffData, attendanceSummary: attendanceSummary });
   } catch (err) {
     console.log("Error in getStaffProfilePage: " + err);
     return res.render('error', { message: "Internal Server Error!" });

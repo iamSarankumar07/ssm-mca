@@ -270,11 +270,29 @@ exports.studentSelfAttendance = async (req, res) => {
           return res.status(403).json({ success: false, message: "You are outside the college premises." });
       }
 
-      await AttendanceModel.updateOne(
-          { studentId, date: todayDate },
-          { $set: { status: "present" } },
-          { upsert: true }
-      );
+      let status = "present";
+      const attendanceDeadline = new Date();
+      attendanceDeadline.setHours(10, 30, 0, 0);
+      
+      if (now > attendanceDeadline) {
+        status = "late";
+      }
+
+      let isAttendanceExists = await AttendanceModel.findOne({studentId: studentId});
+
+      if (isAttendanceExists) {
+        await AttendanceModel.updateOne(
+            { studentId, date: todayDate },
+            { $set: { status: status } },
+            { upsert: true }
+        );
+      } else {
+        await AttendanceModel.create({
+            studentId: studentId,
+            date: todayDate,
+            status: status
+        });
+      }
 
       res.status(200).json({ success: true, message: "Attendance marked successfully." });
 
@@ -472,37 +490,55 @@ exports.getStaffAttendenceReport = async (req, res) => {
 
 exports.staffSelfAttendance = async (req, res) => {
   try {
-      const { latitude, longitude } = req.body;
-      if (!latitude || !longitude) {
-        
-        return res.status(400).json({ success: false, message: "Invalid location data." });
-      }
+    const { latitude, longitude } = req.body;
 
-      // const collegeLocation = { latitude: 17.4291935, longitude: 78.4595755 };
-      // const collegeLocation = { latitude: latitude, longitude: longitude };
-
-      const collegeLocation = { latitude: 17.4291935, longitude: 78.4595755 };
-      const radius = 0.5;
-
-      let staffId = req.user.id;
-      let todayDate = new Date().toISOString().split("T")[0];
-
-      let distance = getDistance(collegeLocation.latitude, collegeLocation.longitude, latitude, longitude);
-
-      if (distance > radius) {
-          return res.status(403).json({ success: false, message: "You are outside the college premises." });
-      }
-
-      await staffAttendanceModel.updateOne(
-          { staffId, date: todayDate },
-          { $set: { status: "present" } },
-          { upsert: true }
+    if (!latitude || !longitude) {
+      return res.status(400).json({ success: false, message: "Invalid location data." });
+    }
+    
+    const collegeLocation = { latitude: 17.4291935, longitude: 78.4595755 };
+    const radius = 0.5;
+    
+    let staffId = req.user.id;
+    let now = new Date();
+    let todayDate = now.toISOString().split("T")[0];
+    
+    let distance = getDistance(collegeLocation.latitude, collegeLocation.longitude, latitude, longitude);
+    
+    if (distance > radius) {
+      return res.status(403).json({ success: false, message: "You are outside the college premises." });
+    }
+    
+    let status = "present";
+    const attendanceDeadline = new Date();
+    attendanceDeadline.setHours(10, 30, 0, 0);
+    
+    if (now > attendanceDeadline) {
+      status = "late";
+    }
+    
+    let isAttendanceExists = await staffAttendanceModel.findOne({ staffId });
+    
+    let updatedDoc;
+    
+    if (isAttendanceExists) {
+      updatedDoc = await staffAttendanceModel.updateOne(
+        { staffId, date: todayDate },
+        { $set: { status: status } },
+        { upsert: true }
       );
+    } else {
+      updatedDoc = await staffAttendanceModel.create({
+        staffId: staffId,
+        date: todayDate,
+        status: status
+      });
+    }
 
-      res.status(200).json({ success: true, message: "Attendance marked successfully." });
+    res.status(200).json({ success: true, message: "Attendance marked successfully." });
 
   } catch (err) {
-      console.error("Error in studentSelfAttendance:", err);
+      console.error("Error in staffSelfAttendance:", err);
       res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 };

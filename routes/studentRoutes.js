@@ -295,4 +295,16 @@ app.get(
   studentController.renderJobPage
 );
 
+app.get(
+  "/studentProfile",
+  authonticationController.sValidateToken,
+  studentController.getStudentDetails
+);
+
+app.get(
+  "/alumni/studentProfile",
+  authonticationController.sValidateToken,
+  studentController.getAlumniStudentDetails
+);
+
 module.exports = app;
