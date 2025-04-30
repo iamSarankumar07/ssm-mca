@@ -39,6 +39,10 @@ hbs.registerHelper('subtract', function (a, b) {
     return a - b;
 });
 
+hbs.registerHelper('toJSON', function (object) {
+    return JSON.stringify(object);
+});
+
 hbs.registerHelper("inc", (value) => parseInt(value) + 1);
 
 hbs.registerHelper("groupBySemester", function (examResults) {

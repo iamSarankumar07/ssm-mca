@@ -273,6 +273,8 @@ exports.studentSelfAttendance = async (req, res) => {
       let status = "present";
       const attendanceDeadline = new Date();
       attendanceDeadline.setHours(10, 30, 0, 0);
+
+      let now = new Date();
       
       if (now > attendanceDeadline) {
         status = "late";

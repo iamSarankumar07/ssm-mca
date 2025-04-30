@@ -3275,5 +3275,141 @@ exports.getAlumniStudentDetails = async (req, res) => {
   }
 };
 
+exports.saveAchievement = async (req, res) => {
+  let { userId, isEdit, isDelete, achievementId, title, description, year } = req.body;
+
+  try {
+    let studentData = await Student.findById(userId);
+
+    if (!studentData) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
+
+    if (isEdit && achievementId) {
+      let achievement = studentData.achievements.id(achievementId);
+      if (achievement) {
+        achievement.title = title;
+        achievement.description = description;
+        achievement.year = year;
+      }
+    } else if (isDelete && achievementId) {
+      studentData.achievements = studentData.achievements.filter(
+        (ach) => ach._id.toString() !== achievementId
+      );
+    } else {
+      let achievement = {
+        _id: new mongoose.Types.ObjectId(),
+        title,
+        description,
+        year,
+      };
+      studentData.achievements.push(achievement);
+    }
+
+    await studentData.save();
+
+    res.status(200).json({ success: true, message: "Achievement saved successfully!" });
+  } catch (err) {
+    console.error("Error in saveAchievement:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
+
+exports.saveSkills = async (req, res) => {
+  let { userId, isEdit, isNew, skills } = req.body;
+
+  try {
+    let studentData = await Student.findById(userId);
+
+    if (!studentData) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
+
+    if (isEdit) {
+      studentData.skills = skills;
+    } else if (isNew) {
+      skills.forEach(skill => {
+        if (!studentData.skills.includes(skill)) {
+          studentData.skills.push(skill);
+        }
+      });
+    } else {
+
+    }
+
+    await studentData.save();
+
+    res.status(200).json({ success: true, message: "Skills saved successfully!" });
+  } catch (err) {
+    console.error("Error in saveSkills:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
+
+exports.saveExperience = async (req, res) => {
+  let { userId, isEdit, isDelete, experienceId, title, company, location, startDate, endDate, currentlyWorking, description, skills } = req.body;
+
+  try {
+    let studentData = await Student.findById(userId);
+
+    if (!studentData) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
+
+    if (isEdit && experienceId) {
+      let experience = studentData.experiences.id(experienceId);
+      if (experience) {
+        experience.title = title;
+        experience.company = company;
+        experience.location = location;
+        experience.startDate = startDate;
+        experience.endDate = endDate;
+        experience.currentlyWorking = currentlyWorking;
+        experience.description = description;
+        experience.skills = skills;
+      }
+    } else if (isDelete && experienceId) {
+      studentData.experiences = studentData.experiences.filter(
+        (exp) => exp._id.toString() !== experienceId
+      );
+    } else {
+      let experience = {
+        _id: new mongoose.Types.ObjectId(),
+        title,
+        company,
+        location,
+        startDate,
+        endDate,
+        currentlyWorking,
+        description,
+        skills,
+      };
+      studentData.experiences.push(experience);
+    }
+
+    await studentData.save();
+
+    res.status(200).json({ success: true, message: "Experience saved successfully!" });
+  } catch (err) {
+    console.error("Error in saveExperience:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
+
+exports.getExperience = async (req, res) => {
+  try {
+    let expId = req.params.expId;
+    let studentId = req.student._id;
+    let student = await Student.findById(studentId);
+    let experience = student.experiences.id(expId);
+    if (!experience) {
+      return res.status(404).json({ success: false, message: "Experience not found!" });
+    }
+    res.status(200).json({ success: true, experience });
+  } catch (err) {
+    console.log("Error in getExperience: " + err);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
 
 module.exports = exports;

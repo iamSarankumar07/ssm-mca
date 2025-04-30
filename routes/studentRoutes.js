@@ -307,4 +307,28 @@ app.get(
   studentController.getAlumniStudentDetails
 );
 
+app.post(
+  "/student/save/achievement",
+  authonticationController.sValidateToken,
+  studentController.saveAchievement
+);
+
+app.post(
+  "/student/save/skills",
+  authonticationController.sValidateToken,
+  studentController.saveSkills
+);
+
+app.post(
+  "/student/save/experience",
+  authonticationController.sValidateToken,
+  studentController.saveExperience
+);
+
+app.get(
+  "/student/get/experience/:expId",
+  authonticationController.sValidateToken,
+  studentController.getExperience
+);
+
 module.exports = app;

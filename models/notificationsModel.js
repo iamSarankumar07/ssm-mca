@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const NotificationSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "admin",
+        required: false,
+    },
     message: {
         title: {
             type: String,

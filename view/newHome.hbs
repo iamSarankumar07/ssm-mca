@@ -126,12 +126,14 @@
         .hero-section {
             position: relative;
             background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.8)),
-                url("https://i.postimg.cc/KvZrCPwQ/ssm-college-of-engineering-namakkal-280527.jpg");
+                {{!-- url("https://i.postimg.cc/J02F8pZc/AIRetouch-20250430-133504860.jpg"); --}}
+                {{!-- url("https://i.postimg.cc/Pttv9fNF/AIRetouch-20250430-134129989.jpg"); --}}
+                url("https://i.postimg.cc/54Xd2v6Y/AIRetouch-20250430-134102876.jpg");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             color: white;
-            padding: 270px 0 140px;
+            padding: 270px 0 145px;
             overflow: hidden;
         }
 
@@ -166,7 +168,7 @@
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 9px 18px;
             font-weight: 600;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -889,6 +891,56 @@
             animation: float 6s ease-in-out infinite;
         }
 
+        /* Hiring Partners Section Styles */
+        .hiring-partners-section {
+            background-color: white;
+            padding: 60px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hiring-partners-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 30px 0;
+        }
+
+        .hiring-partners-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 30s linear infinite;
+        }
+
+        .hiring-partners-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .partner-logo {
+            height: 80px;
+            width: auto;
+            margin: 0 40px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            filter: grayscale(0);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
         @media (max-width: 412px) {
             .navbar-brand img {
                 height: 35px;
@@ -974,6 +1026,11 @@
             
             .footer-logo img {
                 height: 40px;
+            }
+            
+            .partner-logo {
+                height: 60px;
+                margin: 0 20px;
             }
         }
 
@@ -1106,11 +1163,11 @@
                 <div class="counter-text">Students Enrolled</div>
             </div>
             <div class="col-md-4 col-sm-6 counter-item">
-                <div class="counter-number" data-count="150">0</div>
+                <div class="counter-number" data-count="100">0</div>
                 <div class="counter-text">Expert Faculty</div>
             </div>
             <div class="col-md-4 col-sm-12 counter-item">
-                <div class="counter-number" data-count="98">0</div>
+                <div class="counter-number" data-count="100">0</div>
                 <div class="counter-text">Placement Rate %</div>
             </div>
         </div>
@@ -1277,6 +1334,38 @@
         </div>
     </section>
 
+    <!-- Hiring Partners Section -->
+    <section class="hiring-partners-section" id="partners">
+        <div class="container">
+            <div class="section-heading text-center" data-aos="fade-up">
+                <h2>Our Hiring Partners</h2>
+                <p>We collaborate with leading companies to provide excellent career opportunities for our students.</p>
+            </div>
+            
+            <div class="hiring-partners-container" data-aos="fade-up" data-aos-delay="100">
+                <div class="hiring-partners-track">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" alt="Microsoft" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png" alt="Apple" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png" alt="IBM" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png" alt="Amazon" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="Netflix" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Infosys_logo.svg/2560px-Infosys_logo.svg.png" alt="Infosys" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Tata_Consultancy_Services_Logo.svg/2560px-Tata_Consultancy_Services_Logo.svg.png" alt="TCS" class="partner-logo">
+                    
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" alt="Microsoft" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png" alt="Apple" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png" alt="IBM" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png" alt="Amazon" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="Netflix" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Infosys_logo.svg/2560px-Infosys_logo.svg.png" alt="Infosys" class="partner-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Tata_Consultancy_Services_Logo.svg/2560px-Tata_Consultancy_Services_Logo.svg.png" alt="TCS" class="partner-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="facilities-section" id="facilities">
         <div class="container">
             <div class="section-heading text-center" data-aos="fade-up">
@@ -1397,7 +1486,7 @@
                             "The practical approach to education at SSM College prepared me well for the industry. The
                             placement support was exceptional and helped me secure my dream job."
                         </p>
-                        <h4 class="testimonial-name">Priya Patel</h4>
+                        <h4 class="testimonial-name">Sudhan</h4>
                         <p class="testimonial-position">M.Tech Electrical, 2021</p>
                     </div>
                 </div>

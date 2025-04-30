@@ -318,6 +318,26 @@
             cursor: not-allowed;
         }
         
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1rem;
+            height: 1rem;
+            margin-top: -0.5rem;
+            margin-left: -0.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
         .edit-button {
             display: flex;
             align-items: center;
@@ -786,18 +806,6 @@
             padding: 1.5rem;
         }
         
-        .history-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .history-filter-item {
-            flex: 1;
-            min-width: 200px;
-        }
-        
         .history-table-container {
             overflow-x: auto;
         }
@@ -976,6 +984,59 @@
             text-decoration: underline;
         }
         
+        /* New styles for leave history items */
+        .leave-history-item {
+            border: 1px solid var(--light-gray);
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        
+        .leave-history-item:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .leave-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .leave-history-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--dark);
+        }
+        
+        .leave-history-badge {
+            padding: 0.25em 0.5em;
+            font-size: 0.7em;
+            font-weight: 600;
+            border-radius: 0.25rem;
+        }
+        
+        .leave-history-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .leave-history-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .leave-history-comments {
+            margin-top: 0.75rem;
+            padding: 0.5rem;
+            background-color: var(--secondary);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+        
         @media (max-width: 768px) {
             .page-container {
                 padding: 0.5rem;
@@ -1035,13 +1096,8 @@
                 max-height: 90vh;
             }
             
-            .history-filters {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-            
-            .history-filter-item {
-                width: 100%;
+            .leave-history-details {
+                grid-template-columns: 1fr 1fr;
             }
             
             .card-body {
@@ -1070,7 +1126,7 @@
                 grid-template-columns: 1fr;
             }
             
-            .history-filter-item {
+            .leave-history-details {
                 grid-template-columns: 1fr;
             }
             
@@ -1604,37 +1660,6 @@
                 <button class="history-popup-close" id="closeHistoryPopup" aria-label="Close">&times;</button>
             </div>
             <div class="history-popup-body">
-                <div class="history-filters">
-                    <div class="history-filter-item">
-                        <label for="leaveTypeFilter" class="leave-form-label">Leave Type</label>
-                        <select id="leaveTypeFilter" class="leave-form-control" onchange="filterLeaveHistory()">
-                            <option value="">All Types</option>
-                            <option value="Casual">Casual Leave</option>
-                            <option value="Sick">Sick Leave</option>
-                            <option value="Earned">Earned Leave</option>
-                            <option value="Maternity">Maternity/Paternity Leave</option>
-                        </select>
-                    </div>
-                    <div class="history-filter-item">
-                        <label for="statusFilter" class="leave-form-label">Status</label>
-                        <select id="statusFilter" class="leave-form-control" onchange="filterLeaveHistory()">
-                            <option value="">All Status</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                    </div>
-                    <div class="history-filter-item">
-                        <label for="yearFilter" class="leave-form-label">Year</label>
-                        <select id="yearFilter" class="leave-form-control" onchange="filterLeaveHistory()">
-                            <option value="">All Years</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                        </select>
-                    </div>
-                </div>
-                
                 <div id="leaveHistoryLoading" class="loading-spinner">
                     <div class="spinner"></div>
                 </div>
@@ -1648,24 +1673,7 @@
                     </div>
                 </div>
                 
-                <div id="leaveHistoryTable" class="history-table-container" style="display: none;">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Leave Type</th>
-                                <th>From</th>
-                                <th>To</th>
-                                <th>Days</th>
-                                <th>Reason</th>
-                                <th>Applied On</th>
-                                <th>Status</th>
-                                <th>Comment</th>
-                                <th>Attachment</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaveHistoryTableBody">
-                        </tbody>
-                    </table>
+                <div id="leaveHistoryList" style="display: none;">
                 </div>
             </div>
         </div>
@@ -1674,7 +1682,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let leaveHistoryData = [];
-        let filteredLeaveHistory = [];
         let sensitiveData = {
             accountNumber: "{{ staff.bankDetails.accountNumber }}",
             upiId: "{{ staff.bankDetails.upiId }}"
@@ -1814,6 +1821,10 @@
         }
 
         function submitStaffAttendance() {
+            const attendanceBtn = document.getElementById('staffAttendanceBtn');
+            attendanceBtn.disabled = true;
+            attendanceBtn.classList.add('btn-loading');
+            
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(attendanceSuccess, attendanceError, {
                     enableHighAccuracy: true,
@@ -1822,12 +1833,15 @@
                 });
             } else {
                 showAttendancePopup("Geolocation is not supported by your browser.", false);
+                attendanceBtn.disabled = false;
+                attendanceBtn.classList.remove('btn-loading');
             }
         }
 
         function attendanceSuccess(position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
+            const attendanceBtn = document.getElementById('staffAttendanceBtn');
 
             fetch('/v1/api/staffSelfAttendance', {
                 method: 'POST',
@@ -1839,14 +1853,27 @@
                 showAttendancePopup(data.message, data.success);
 
                 if (data.success) {
-                    document.getElementById('staffAttendanceBtn').innerText = "Marked";
-                    document.getElementById('staffAttendanceBtn').disabled = true;
+                    attendanceBtn.innerText = "Marked";
+                    attendanceBtn.disabled = true;
+                    attendanceBtn.classList.remove('btn-loading');
+                } else {
+                    attendanceBtn.disabled = false;
+                    attendanceBtn.classList.remove('btn-loading');
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAttendancePopup("An error occurred. Please try again.", false);
+                attendanceBtn.disabled = false;
+                attendanceBtn.classList.remove('btn-loading');
             });
         }
 
         function attendanceError() {
             showAttendancePopup("Unable to retrieve location.", false);
+            const attendanceBtn = document.getElementById('staffAttendanceBtn');
+            attendanceBtn.disabled = false;
+            attendanceBtn.classList.remove('btn-loading');
         }
 
         function showAttendancePopup(message, success) {
@@ -1867,7 +1894,7 @@
             popup.classList.add('active');
             
             document.getElementById('leaveHistoryLoading').style.display = 'flex';
-            document.getElementById('leaveHistoryTable').style.display = 'none';
+            document.getElementById('leaveHistoryList').style.display = 'none';
             document.getElementById('leaveHistoryEmpty').style.display = 'none';
             
             fetchLeaveHistory();
@@ -1891,11 +1918,10 @@
                     
                     if (data.success && data.data && data.data.length > 0) {
                         leaveHistoryData = data.data;
-                        filteredLeaveHistory = [...leaveHistoryData];
                         
-                        populateLeaveHistoryTable(filteredLeaveHistory);
+                        populateLeaveHistoryList(leaveHistoryData);
                         
-                        document.getElementById('leaveHistoryTable').style.display = 'block';
+                        document.getElementById('leaveHistoryList').style.display = 'block';
                     } else {
                         document.getElementById('leaveHistoryEmpty').style.display = 'flex';
                     }
@@ -1909,22 +1935,20 @@
                 });
         }
         
-        function populateLeaveHistoryTable(data) {
-            const tableBody = document.getElementById('leaveHistoryTableBody');
-            tableBody.innerHTML = '';
+        function populateLeaveHistoryList(data) {
+            const listContainer = document.getElementById('leaveHistoryList');
+            listContainer.innerHTML = '';
             
             if (data.length === 0) {
-                document.getElementById('leaveHistoryTable').style.display = 'none';
+                document.getElementById('leaveHistoryList').style.display = 'none';
                 document.getElementById('leaveHistoryEmpty').style.display = 'flex';
                 return;
             }
             
-            document.getElementById('leaveHistoryTable').style.display = 'block';
+            document.getElementById('leaveHistoryList').style.display = 'block';
             document.getElementById('leaveHistoryEmpty').style.display = 'none';
             
             data.forEach(leave => {
-                const row = document.createElement('tr');
-                
                 const startDate = new Date(leave.startDate);
                 const endDate = new Date(leave.endDate);
                 const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
@@ -1942,45 +1966,51 @@
                     statusClass = 'badge-pending';
                 }
                 
-                row.innerHTML = `
-                    <td>${leave.type}</td>
-                    <td>${formattedStartDate}</td>
-                    <td>${formattedEndDate}</td>
-                    <td>${days}</td>
-                    <td>${leave.reason}</td>
-                    <td>${formattedAppliedDate}</td>
-                    <td><span class="badge ${statusClass}">${leave.status}</span></td>
-                    <td>${leave.adminComment || '-'}</td>
-                    <td>
-                        ${leave.attachment ? `
+                const leaveItem = document.createElement('div');
+                leaveItem.className = 'leave-history-item';
+                
+                leaveItem.innerHTML = `
+                    <div class="leave-history-header">
+                        <div class="leave-history-title">${leave.type} Leave</div>
+                        <span class="badge ${statusClass}">${leave.status}</span>
+                    </div>
+                    <div class="leave-history-details">
+                        <div class="leave-history-detail">
+                            <span class="detail-label">From</span>
+                            <span class="detail-value">${formattedStartDate}</span>
+                        </div>
+                        <div class="leave-history-detail">
+                            <span class="detail-label">To</span>
+                            <span class="detail-value">${formattedEndDate}</span>
+                        </div>
+                        <div class="leave-history-detail">
+                            <span class="detail-label">Days</span>
+                            <span class="detail-value">${days}</span>
+                        </div>
+                        <div class="leave-history-detail">
+                            <span class="detail-label">Applied On</span>
+                            <span class="detail-value">${formattedAppliedDate}</span>
+                        </div>
+                    </div>
+                    <div class="leave-history-comments">
+                        <strong>Reason:</strong> ${leave.reason}
+                    </div>
+                    ${leave.adminComment ? `
+                    <div class="leave-history-comments">
+                        <strong>Admin Comment:</strong> ${leave.adminComment}
+                    </div>
+                    ` : ''}
+                    ${leave.attachment ? `
+                    <div class="mt-3">
                         <a href="${leave.attachment}" class="attachment-link" target="_blank">
-                            <i class="fas fa-paperclip"></i> View
+                            <i class="fas fa-paperclip"></i> View Attachment
                         </a>
-                        ` : '-'}
-                    </td>
+                    </div>
+                    ` : ''}
                 `;
                 
-                tableBody.appendChild(row);
+                listContainer.appendChild(leaveItem);
             });
-        }
-        
-        function filterLeaveHistory() {
-            const leaveType = document.getElementById('leaveTypeFilter').value;
-            const status = document.getElementById('statusFilter').value;
-            const year = document.getElementById('yearFilter').value;
-            
-            filteredLeaveHistory = leaveHistoryData.filter(leave => {
-                const leaveDate = new Date(leave.startDate);
-                const leaveYear = leaveDate.getFullYear().toString();
-                
-                const matchesType = leaveType === '' || leave.type === leaveType;
-                const matchesStatus = status === '' || leave.status === status;
-                const matchesYear = year === '' || leaveYear === year;
-                
-                return matchesType && matchesStatus && matchesYear;
-            });
-            
-            populateLeaveHistoryTable(filteredLeaveHistory);
         }
         
         function formatDate(date) {
