@@ -22,6 +22,7 @@ const NotificationSchema = new mongoose.Schema({
     },
     readStatus: {
         type: Boolean,
+        default: false,
         required: false
     },
     createdAt: {

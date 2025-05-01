@@ -44,7 +44,8 @@ exports.dashboard = async (req, res) => {
     const user = await Admin.findOne({ _id: new mongoose.Types.ObjectId(userId) });
 
     // res.render("admin", { user });
-    res.render("dashboard", { user });
+    // res.render("dashboard", { user });
+    res.render("dashboardNew", { user });
   } catch (err) {
     console.error("Error fetching user details:", err);
     res.status(500).send("Failed to fetch user details");

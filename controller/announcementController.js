@@ -2,6 +2,7 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const Student = require("../models/studentModel");
 const Admin = require("../models/adminModel");
+const notificationModel = require("../models/notificationsModel");
 
 exports.sendMail = async (req, res) => {
   try {
@@ -748,6 +749,84 @@ exports.admissionForm = async (req, res) => {
       '<script>alert("Application sumit failed.."); window.location.href = "/";</script>'
     );
   }
-}
+};
+
+exports.fetchNotifications = async (req, res) => {
+  let { page = 1, limit = 10, userId } = req.body;
+  let skip = (page - 1) * limit;
+
+  try {
+    let [notifications, unreadCount] = await Promise.all([
+      notificationModel
+        .find({ userId })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit)),
+      notificationModel.countDocuments({ userId, readStatus: false })
+    ]);
+
+    res.status(200).json({
+      success: true,
+      notifications: notifications,
+      unreadCount: unreadCount,
+      currentPage: parseInt(page),
+      limit: parseInt(limit)
+    });
+  } catch (err) {
+    console.log("Error in fetchNotifications:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+exports.updateNotificationStatus = async (req, res) => {
+  let body = req.body;
+  try {
+    let userId = body.userId;
+    let updateStatus = await notificationModel.updateMany(
+      { userId, readStatus: false },
+      { $set: { readStatus: true } }
+    );
+    if (updateStatus) {
+      res.status(200).json({
+        success: true,
+        message: "Notification status updated successfully!",
+      });
+    } else {
+      res.status(200).json({
+        success: false,
+        message: "No unread notifications found.",
+      });
+    }
+
+  } catch (err) {
+    console.log("Error in updateNotificationStatus:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+exports.updateNotificationStatusById = async (req, res) => {
+  try {
+    let notificationId = req.params.notificationId;
+    let updateStatus = await notificationModel.findByIdAndUpdate(
+      notificationId,
+      { $set: { readStatus: true } },
+      { new: true }
+    );
+    if (updateStatus) {
+      res.status(200).json({
+        success: true,
+        message: "Notification status updated successfully!",
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Notification not found.",
+      });
+    }
+  } catch (err) {
+    console.log("Error in updateNotificationStatusById:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 module.exports = exports;
