@@ -16,6 +16,7 @@ const axios = require("axios");
 const AttendanceModel = require("../models/attendanceModel");
 const { verify } = require("jsonwebtoken");
 const studyMaterialModel = require("../models/studyMaterial");
+const helper = require("../helper");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -698,7 +699,7 @@ exports.updateStudent = async (req, res) => {
 
     await Student.findByIdAndUpdate(userId, {
       name: body.name,
-      studentId: body.studentId,
+      studentId: student.studentId,
       registerNumber: body.registerNumber,
       gender: body.gender,
       aadhaarNum: body.aadhaarNum,
@@ -872,6 +873,9 @@ exports.sendAddressUpdateReq = async (req, res) => {
       }
 
       sendMail(result.email, result.name);
+      let title = "Address Update Option Enabled";
+      let message = `Dear ${result.name} your address update option has been enabled. Please log in to your student portal and update your address information in your profile.`;
+      helper.sendNotification(title, message, result._id);
     } else if (selectedYear) {
       const query = { year: selectedYear };
       const result = await Student.updateMany(query, {
@@ -3232,9 +3236,7 @@ exports.getStudentDetails = async (req, res) => {
     }
 
     if (!student) {
-      return res.send(
-        '<script>alert("Student not Found!"); window.location.href = "/v1/api/signin";</script>'
-      );
+      return res.redirect("/v1/api/sessionExpired");
     }
 
     const attendanceCounts = await AttendanceModel.aggregate([
@@ -3266,7 +3268,11 @@ exports.getAlumniStudentDetails = async (req, res) => {
     );
     const studentId = decodedToken.studentId;
 
-    const alumni = await Student.findOne({ studentId, isDelete: false });
+    const alumni = await Student.findOne({ studentId, isAlumni: true, isDelete: false });
+
+    if (!alumni) {
+      return res.redirect("/v1/api/sessionExpired");
+    }
 
     res.render("alumniProfile", { alumni });
   } catch (err) {

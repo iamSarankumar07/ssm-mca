@@ -1794,6 +1794,7 @@
         let isLoading = false;
         let hasMoreNotifications = true;
         let notificationsPerPage = 10;
+        let userId = '{{user._id}}'
 
         const courseConfig = {
             bca: {
@@ -2383,7 +2384,7 @@
                         2: '/v1/api/feesUpdateRequestList?course=Mechanical&year=II',
                         3: '/v1/api/feesUpdateRequestList?course=Mechanical&year=III',
                         4: '/v1/api/feesUpdateRequestList?course=Mechanical&year=IV'
-                    },
+                    }
                 }
             },
             civil: {
@@ -2882,6 +2883,16 @@
                     });
                     renderNotifications();
                     updateNotificationCount();
+                    // Call the notification count API
+                    fetch(`/v1/api/getNotificationCount?userId=${userId}`)
+                      .then(response => response.json())
+                      .then(data => {
+                        if (data && typeof data.count !== 'undefined') {
+                          unreadCount = data.count;
+                          updateNotificationCountDisplay();
+                        }
+                      })
+                      .catch(error => console.error('Error fetching notification count:', error));
                     showToast('All notifications marked as read', 'success');
                 } else {
                     showToast('Failed to mark notifications as read', 'error');
@@ -2920,7 +2931,23 @@
                 hasMoreNotifications = data.notifications && data.notifications.length === notificationsPerPage;
                 
                 renderNotifications();
-                updateNotificationCount();
+                
+                if (data.unreadCount !== undefined) {
+                    unreadCount = data.unreadCount;
+                    updateNotificationCountDisplay();
+                    // Call the notification count API
+                    fetch(`/v1/api/getNotificationCount?userId=${userId}`)
+                      .then(response => response.json())
+                      .then(data => {
+                        if (data && typeof data.count !== 'undefined') {
+                          unreadCount = data.count;
+                          updateNotificationCountDisplay();
+                        }
+                      })
+                      .catch(error => console.error('Error fetching notification count:', error));
+                } else {
+                    updateNotificationCount();
+                }
                 
                 notificationFooter.textContent = hasMoreNotifications 
                     ? 'Scroll for more notifications' 
@@ -2942,7 +2969,17 @@
                 notificationLoader.style.display = 'none';
             }
         }
-        
+
+        function updateNotificationCountDisplay() {
+            notificationCount.textContent = unreadCount;
+            
+            if (unreadCount === 0) {
+                notificationCount.style.display = 'none';
+            } else {
+                notificationCount.style.display = 'flex';
+            }
+        }
+
         async function fetchNewNotifications() {
             if (!isLoading) {
                 try {
@@ -2961,7 +2998,23 @@
                         if (actuallyNew.length > 0) {
                             notifications = [...actuallyNew, ...notifications];
                             renderNotifications();
-                            updateNotificationCount();
+                            
+                            if (data.unreadCount !== undefined) {
+                                unreadCount = data.unreadCount;
+                                updateNotificationCountDisplay();
+                                // Call the notification count API
+                                fetch(`/v1/api/getNotificationCount?userId=${userId}`)
+                                  .then(response => response.json())
+                                  .then(data => {
+                                    if (data && typeof data.count !== 'undefined') {
+                                      unreadCount = data.count;
+                                      updateNotificationCountDisplay();
+                                    }
+                                  })
+                                  .catch(error => console.error('Error fetching notification count:', error));
+                            } else {
+                                updateNotificationCount();
+                            }
                             
                             if (actuallyNew.length === 1) {
                                 showToast('You have a new notification', 'success');
@@ -3137,6 +3190,24 @@
                     notifications[index].readStatus = true;
                     renderNotifications();
                     updateNotificationCount();
+                    // Call the notification count API
+                    fetch(`/v1/api/getNotificationCount?userId=${userId}`)
+                      .then(response => response.json())
+                      .then(data => {
+                        if (data && typeof data.count !== 'undefined') {
+                          unreadCount = data.count;
+                    fetch(`/v1/api/getNotificationCount?userId=${userId}`)
+                      .then(response => response.json())
+                      .then(data => {
+                        if (data && typeof data.count !== 'undefined') {
+                          unreadCount = data.count;
+                          updateNotificationCountDisplay();
+                        }
+                      })
+                      .catch(error => console.error('Error fetching notification count:', error));
+                        }
+                      })
+                      .catch(error => console.error('Error fetching notification count:', error));
                 } else {
                     showToast('Failed to mark notification as read', 'error');
                 }
@@ -3183,6 +3254,26 @@
                 });
             }
         });
+
+        // Function to periodically check for notification count updates
+        function checkNotificationCount() {
+          fetch(`/v1/api/getNotificationCount?userId=${userId}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data && typeof data.count !== 'undefined') {
+                unreadCount = data.count;
+                updateNotificationCountDisplay();
+              }
+            })
+            .catch(error => console.error('Error fetching notification count:', error))
+            .finally(() => {
+              // Check again after 30 seconds
+              setTimeout(checkNotificationCount, 30000);
+            });
+        }
+
+        // Start checking for notification count updates
+        checkNotificationCount();
     </script>
 
 </body>

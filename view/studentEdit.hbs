@@ -577,7 +577,7 @@
                             </div>
                             <div class="col-md-4 form-field">
                                 <label for="dob" class="form-label required-field">Date of Birth</label>
-                                <input type="date" id="dob" name="dob" class="form-control" value="{{formatDateForInput student.dob}}" required>
+                                <input type="date" id="dob" name="dob" class="form-control" value="{{student.dob}}" required>
                                 <div class="invalid-feedback">Please select date of birth</div>
                             </div>
                             <div class="col-md-4 form-field">
@@ -877,7 +877,7 @@
                             </div>
                             <div class="col-md-3 form-field">
                                 <label for="admissionDate" class="form-label required-field">Admission Date</label>
-                                <input type="date" id="admissionDate" name="admissionDate" class="form-control" value="{{formatDateForInput student.admissionDate}}" required>
+                                <input type="date" id="admissionDate" name="admissionDate" class="form-control" value="{{student.admissionDate}}" required>
                                 <div class="invalid-feedback">Please select admission date</div>
                             </div>
                         </div>
@@ -1245,8 +1245,8 @@
                     showToast(data.message || 'Student updated successfully!', 'success');
                     
                     setTimeout(() => {
-                        window.history.back();
-                    }, 2000);
+                        window.location.href = '/v1/api/getStudentsList?course=' + encodeURIComponent('{{student.course}}') + '&year=' + encodeURIComponent('{{student.year}}');
+                    }, 1000);
                 } else {
                     showToast(data.message || 'Failed to update student', 'error');
                 }

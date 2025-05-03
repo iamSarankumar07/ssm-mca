@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const Student = require("../models/studentModel");
 const Admin = require("../models/adminModel");
 const notificationModel = require("../models/notificationsModel");
+const helper = require("../helper");
 
 exports.sendMail = async (req, res) => {
   try {
@@ -314,9 +315,9 @@ exports.commonMail = async (req, res) => {
             isDelete: false,
             ...(genderFilter && { gender: genderFilter }),
           },
-          "email name"
+          "email name _id"
         );
-        recipientList.push(...students.map(({ email, name }) => ({ email, name })));
+        recipientList.push(...students.map(({ email, name, _id }) => ({ email, name, _id })));
       }
     } else if (types.includes("students")) {
       const students = await Student.find(
@@ -327,7 +328,7 @@ exports.commonMail = async (req, res) => {
         },
         "email name"
       );
-      recipientList.push(...students.map(({ email, name }) => ({ email, name })));
+      recipientList.push(...students.map(({ email, name, _id }) => ({ email, name, _id })));
     }
 
     if (types.includes("faculty") || types.includes("staff")) {
@@ -335,7 +336,7 @@ exports.commonMail = async (req, res) => {
         { isDelete: false, isActive: true, isFaculty: true },
         "email fullName"
       );
-      recipientList.push(...faculty.map(({ email, fullName }) => ({ email, name: fullName })));
+      recipientList.push(...faculty.map(({ email, fullName, _id }) => ({ email, name: fullName, _id })));
     }
 
     if (types.includes("alumni")) {
@@ -349,7 +350,7 @@ exports.commonMail = async (req, res) => {
         },
         "email name"
       );
-      recipientList.push(...alumni.map(({ email, name }) => ({ email, name })));
+      recipientList.push(...alumni.map(({ email, name, _id }) => ({ email, name, _id })));
     }
 
     if (types.includes("all")) {
@@ -357,7 +358,7 @@ exports.commonMail = async (req, res) => {
         { isDelete: false, ...(genderFilter && { gender: genderFilter }) },
         "email name"
       );
-      recipientList.push(...allUsers.map(({ email, name }) => ({ email, name })));
+      recipientList.push(...allUsers.map(({ email, name, _id }) => ({ email, name, _id })));
     }
 
     if (!recipientList.length) {
@@ -365,6 +366,14 @@ exports.commonMail = async (req, res) => {
     }
 
     res.json({ success: true, message: "Announcement Sent Successfully!" });
+
+    let promiseArr = [];
+
+    for (let recipient of recipientList) {
+      promiseArr.push(helper.sendNotification(title, message, recipient._id));
+    }
+
+    await Promise.all(promiseArr);
 
     const transporter = nodemailer.createTransport({
       pool: true,
@@ -825,6 +834,23 @@ exports.updateNotificationStatusById = async (req, res) => {
     }
   } catch (err) {
     console.log("Error in updateNotificationStatusById:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+exports.getNotificationCount = async (req, res) => {
+  let userId = req.query.userId;
+  try {
+    let unreadCount = await notificationModel.countDocuments({
+      userId,
+      readStatus: false,
+    });
+    res.status(200).json({
+      success: true,
+      count: unreadCount,
+    });
+  } catch (err) {
+    console.log("Error in getNotificationCount:", err);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };

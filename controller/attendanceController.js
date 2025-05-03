@@ -311,9 +311,9 @@ exports.getStudentAttendanceStatus = async (req, res) => {
 
     const record = await AttendanceModel.findOne({ studentId, date: today });
 
-    res.status(200).json({ attendanceMarked: !!record });
+    res.status(200).json({ success: true, attendanceMarked: !!record });
   } catch (err) {
-    res.status(500).json({ message: "Server error: " + err.message });
+    res.status(500).json({ success: false, message: "Server error: " + err.message });
   }
 };
 

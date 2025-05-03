@@ -50,9 +50,14 @@ app.post(
 );
 
 app.post(
-  "/notifications/:notificationId/markRead",
+  "/notifications/:notificationId/markAsRead",
   authonticationController.validateToken,
   announcementController.updateNotificationStatusById
+);
+
+app.get(
+  "/getNotificationCount",
+  announcementController.getNotificationCount
 );
 
 module.exports = app;
