@@ -10,10 +10,6 @@ const EmployeeSalarySchema = new mongoose.Schema({
         type: Number,
         required: false
     },
-    isActive: {
-        type: Boolean,
-        required: false
-    },
     createdAt: {
         type: Date,
         immutable: true,

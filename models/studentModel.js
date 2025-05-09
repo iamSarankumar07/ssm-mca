@@ -291,6 +291,35 @@ const studentSchema = new mongoose.Schema({
         }
     },
   ],
+  education: [
+    {
+        _id: mongoose.Schema.Types.ObjectId,
+        degree: {
+            type: String,
+            required: false,
+        },
+        institution: {
+            type: String,
+            required: false,
+        },
+        location: {
+            type: String,
+            required: false,
+        },
+        startYear: {
+            type: String,
+            required: false,
+        },
+        endYear: {
+            type: String,
+            required: false,
+        },
+        description: {
+            type: String,
+            required: false,
+        }
+    },
+  ],
   createdAt: {
     type: Date,
     immutable: true,

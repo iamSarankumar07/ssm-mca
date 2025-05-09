@@ -47,7 +47,7 @@ exports.validateToken = async (req, res, next) => {
 };
 
 exports.sValidateToken = async (req, res, next) => {
-  const accessToken = req.cookies["access-token-student"];
+  const accessToken = req.cookies["access-token-student"] || req.cookies["access-token-alumni"];
   if (!accessToken) return res.redirect("/v1/api/sessionExpired");
 
   try {

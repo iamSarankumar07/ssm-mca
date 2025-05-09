@@ -331,4 +331,22 @@ app.get(
   studentController.getExperience
 );
 
+app.post(
+  "/student/save/education",
+  authonticationController.sValidateToken,
+  studentController.saveEducation
+);
+
+app.get(
+  "/student/get/education/:eduId",
+  authonticationController.sValidateToken,
+  studentController.getEducation
+);
+
+app.get(
+  "/alumni/network",
+  authonticationController.sValidateToken,
+  studentController.alumniNetwork
+);
+
 module.exports = app;

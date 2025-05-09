@@ -29,7 +29,7 @@ app.post(
 
 app.get(
   "/notifications",
-  authonticationController.validateToken,
+  // authonticationController.validateToken,
   (req, res, next) => {
     const page = req.query.page;
     const limit = req.query.limit;
@@ -45,13 +45,13 @@ app.get(
 
 app.post(
   "/notifications/markAllRead",
-  authonticationController.validateToken,
+  // authonticationController.validateToken,
   announcementController.updateNotificationStatus
 );
 
 app.post(
   "/notifications/:notificationId/markAsRead",
-  authonticationController.validateToken,
+  // authonticationController.validateToken,
   announcementController.updateNotificationStatusById
 );
 

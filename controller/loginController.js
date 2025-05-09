@@ -1199,7 +1199,7 @@ exports.updateEmpSalaryList = async (req, res) => {
 exports.getStaffSalartList = async (req, res) => {
   try {
     // let staffs = await Admin.find({ isDelete: false, isActive: true, isFaculty: true }).sort({ createdAt: -1 });
-    let staffs = await employeeSalaryModel.find({ isActive: true }).populate("staffId");
+    let staffs = await employeeSalaryModel.find().populate("staffId");
     await new Promise(resolve => setTimeout(resolve, 1000));
     res.status(200).json({
       success: true,

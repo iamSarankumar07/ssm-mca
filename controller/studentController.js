@@ -247,9 +247,16 @@ exports.login = async (req, res) => {
 
     const accessToken = await authFile.sToken(student);
 
-    res.cookie("access-token-student", accessToken, {
-      maxAge: 86400000
-    });
+    if (student.isAlumni) {
+      res.cookie("access-token-alumni", accessToken, {
+        maxAge: 86400000
+      });
+    } else {
+      res.cookie("access-token-student", accessToken, {
+        maxAge: 86400000
+      });
+    }
+
 
     return res.status(200).json({
       success: true,
@@ -3260,7 +3267,7 @@ exports.getStudentDetails = async (req, res) => {
 };
 
 exports.getAlumniStudentDetails = async (req, res) => {
-  const accessToken = req.cookies["access-token-student"];
+  const accessToken = req.cookies["access-token-alumni"];
   try {
     const decodedToken = await verify(
       accessToken,
@@ -3402,6 +3409,52 @@ exports.saveExperience = async (req, res) => {
   }
 };
 
+exports.saveEducation = async (req, res) => {
+  let { userId, isEdit, isDelete, educationId, degree, institution, location, startYear, endYear, description } = req.body;
+
+  try {
+    let studentData = await Student.findById(userId);
+
+    if (!studentData) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
+
+    if (isEdit && educationId) {
+      let experience = studentData.education.id(educationId);
+      if (experience) {
+        experience.degree = degree;
+        experience.institution = institution;
+        experience.location = location;
+        experience.startYear = startYear;
+        experience.endYear = endYear;
+        experience.description = description;
+      }
+    } else if (isDelete && educationId) {
+      studentData.education = studentData.education.filter(
+        (exp) => exp._id.toString() !== educationId
+      );
+    } else {
+      let experience = {
+        _id: new mongoose.Types.ObjectId(),
+        degree,
+        institution,
+        location,
+        startYear,
+        endYear,
+        description,
+      };
+      studentData.education.push(experience);
+    }
+
+    await studentData.save();
+
+    res.status(200).json({ success: true, message: "Experience saved successfully!" });
+  } catch (err) {
+    console.error("Error in saveExperience:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
+
 exports.getExperience = async (req, res) => {
   try {
     let expId = req.params.expId;
@@ -3415,6 +3468,31 @@ exports.getExperience = async (req, res) => {
   } catch (err) {
     console.log("Error in getExperience: " + err);
     res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
+
+exports.getEducation = async (req, res) => {
+  try {
+    let expId = req.params.eduId;
+    let studentId = req.student._id;
+    let student = await Student.findById(studentId);
+    let education = student.education.id(expId);
+    if (!education) {
+      return res.status(404).json({ success: false, message: "Education not found!" });
+    }
+    res.status(200).json({ success: true, education });
+  } catch (err) {
+    console.log("Error in getEducation: " + err);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
+
+exports.alumniNetwork = async (req, res) => {
+  try {
+    res.render("alumniNetwork", { alumni: true });
+  } catch (err) {
+    console.log("Error in alumniNetwork: " + err);
+    res.status(500).render('error', { message: "Internal Server Error. Please try again later" });
   }
 };
 

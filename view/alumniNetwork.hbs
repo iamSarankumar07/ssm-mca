@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Network</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #f9fafb;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --dark: #111827;
+            --gray: #6b7280;
+            --light-gray: #e5e7eb;
+            --white: #ffffff;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --border-radius: 0.5rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f8;
+            color: var(--dark);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0.75rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            background-color: var(--white);
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 1.125rem;
+        }
+        
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-logout:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--light-gray);
+            background-color: var(--white);
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-title-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            font-size: 0.75rem;
+        }
+        
+        .card-body {
+            padding: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-outline-primary {
+            background-color: var(--white);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            transition: border-color 0.2s ease;
+            background-position: right 0.75rem center;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+        
+        .alumni-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .alumni-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .alumni-card-header {
+            position: relative;
+            padding-top: 100%;
+            overflow: hidden;
+            background-color: #f3f4f6;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+        
+        .alumni-card-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .alumni-card-body {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .alumni-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+        
+        .alumni-card-subtitle {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .alumni-card-text {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 0.75rem;
+            flex-grow: 1;
+        }
+        
+        .alumni-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        .alumni-card-location {
+            font-size: 0.75rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .alumni-card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+        
+        .badge-primary {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+        
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .skill-badge {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            display: inline-block;
+        }
+        
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-icon:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .search-input {
+            padding-left: 2.5rem;
+        }
+        
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--white);
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+        
+        .filter-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        .filter-value {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .filter-clear {
+            color: var(--primary);
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 0.25rem;
+        }
+        
+        .page-item {
+            display: inline-block;
+        }
+        
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            background-color: var(--white);
+            color: var(--dark);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .page-link:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+        
+        .page-item.disabled .page-link {
+            color: var(--light-gray);
+            pointer-events: none;
+        }
+        
+        .custom-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .custom-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .custom-modal-content {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .custom-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--light-gray);
+            position: sticky;
+            top: 0;
+            background-color: var(--white);
+            z-index: 1;
+        }
+        
+        .custom-modal-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        .custom-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-modal-close:hover {
+            color: var(--dark);
+        }
+        
+        .custom-modal-body {
+            padding: 1rem;
+        }
+        
+        .custom-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid var(--light-gray);
+            position: sticky;
+            bottom: 0;
+            background-color: var(--white);
+        }
+        
+        .btn-cancel {
+            background-color: var(--white);
+            color: var(--gray);
+            border: 1px solid var(--light-gray);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-cancel:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .profile-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-detail-avatar {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        .profile-detail-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-detail-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem 0;
+            color: var(--dark);
+        }
+        
+        .profile-detail-info p {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin: 0 0 0.25rem 0;
+        }
+        
+        .profile-detail-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .profile-detail-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-detail-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .profile-detail-section-title i {
+            color: var(--primary);
+        }
+        
+        .profile-detail-item {
+            margin-bottom: 0.75rem;
+        }
+        
+        .profile-detail-item-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+        
+        .profile-detail-item-value {
+            font-size: 0.875rem;
+            color: var(--dark);
+        }
+        
+        .experience-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .experience-item:last-child {
+            border-bottom: none;
+        }
+        
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+        
+        .experience-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+        
+        .experience-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .experience-company {
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .experience-description {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+        
+        .notification-bell {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            color: var(--gray);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .notification-bell:hover {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state-text {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            max-width: 400px;
+        }
+        
+        .network-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        .connection-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .connection-item:last-child {
+            border-bottom: none;
+        }
+        
+        .connection-avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;
+        }
+        
+        .connection-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .connection-info {
+            flex-grow: 1;
+        }
+        
+        .connection-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .connection-title {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .connection-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .tab-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 1rem;
+        }
+        
+        .nav-link {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        .nav-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            padding: 1rem 0;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1rem;
+            height: 1rem;
+            margin-top: -0.5rem;
+            margin-left: -0.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        .toastify {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+        
+        .toast-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .toast-error {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .toast-info {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .toast-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            flex-direction: column;
+        }
+        
+        .loading-spinner-large {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(79, 70, 229, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+        
+        .loading-text {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 0.5rem;
+            }
+            
+            .network-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .profile-detail-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .profile-detail-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .profile-detail-actions {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .network-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .alumni-card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .alumni-card-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header class="header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h1>Alumni Network</h1>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="notification-container" id="notificationContainer">
+                    <button class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count" id="notificationCount">0</span>
+                    </button>
+                </div>
+                <a href="/v1/api/alumni/profile" class="btn-logout">
+                    <span>Back to Profile</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </header>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="network-stats" id="networkStats">
+                    <div class="loading-container">
+                        <div class="loading-spinner-large"></div>
+                        <div class="loading-text">Loading network statistics...</div>
+                    </div>
+                </div>
+
+                <div class="tab-container">
+                    <div class="nav-tabs">
+                        <div class="nav-link active" data-tab="alumni-tab">Alumni Directory</div>
+                        <div class="nav-link" data-tab="connections-tab">My Connections</div>
+                        <div class="nav-link" data-tab="requests-tab">Connection Requests</div>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="alumni-tab">
+                            <div class="search-container">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="form-control search-input" id="alumniSearch" placeholder="Search by name, batch, company, or skills...">
+                            </div>
+                            
+                            <div class="filter-container">
+                                <div class="filter-item">
+                                    <div class="filter-label">Batch:</div>
+                                    <select class="form-select form-select-sm" id="batchFilter">
+                                        <option value="">All Batches</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2019">2019</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label">Course:</div>
+                                    <select class="form-select form-select-sm" id="courseFilter">
+                                        <option value="">All Courses</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Electrical Engineering">Electrical Engineering</option>
+                                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                        <option value="Civil Engineering">Civil Engineering</option>
+                                        <option value="Business Administration">Business Administration</option>
+                                    </select>
+                                </div>
+                                <div class="filter-item">
+                                    <div class="filter-label">Location:</div>
+                                    <select class="form-select form-select-sm" id="locationFilter">
+                                        <option value="">All Locations</option>
+                                        <option value="Bangalore">Bangalore</option>
+                                        <option value="Mumbai">Mumbai</option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Hyderabad">Hyderabad</option>
+                                        <option value="Chennai">Chennai</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary btn-sm" id="applyFilters">Apply Filters</button>
+                                <button class="btn btn-outline-primary btn-sm" id="clearFilters">Clear Filters</button>
+                            </div>
+                            
+                            <div class="row g-3" id="alumniDirectory">
+                                <div class="loading-container">
+                                    <div class="loading-spinner-large"></div>
+                                    <div class="loading-text">Loading alumni directory...</div>
+                                </div>
+                            </div>
+                            
+                            <div class="pagination-container" id="paginationContainer" style="display: none;">
+                                <ul class="pagination" id="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane" id="connections-tab">
+                            <div class="search-container">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="form-control search-input" id="connectionsSearch" placeholder="Search your connections...">
+                            </div>
+                            
+                            <div class="connection-list" id="connectionsList">
+                                <div class="loading-container">
+                                    <div class="loading-spinner-large"></div>
+                                    <div class="loading-text">Loading your connections...</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane" id="requests-tab">
+                            <div class="connection-list" id="requestsList">
+                                <div class="loading-container">
+                                    <div class="loading-spinner-large"></div>
+                                    <div class="loading-text">Loading connection requests...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Detail Modal -->
+    <div class="custom-modal" id="profileDetailModal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <h2>Alumni Profile</h2>
+                <button class="custom-modal-close" id="closeProfileModal" aria-label="Close">&times;</button>
+            </div>
+            <div class="custom-modal-body" id="profileDetailContent">
+                <div class="loading-container">
+                    <div class="loading-spinner-large"></div>
+                    <div class="loading-text">Loading profile details...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dummy data for fallback when API fails
+        const dummyAlumniData = [
+            {
+                id: 1,
+                name: "Rahul Sharma",
+                gender: "Male",
+                course: "Computer Science",
+                graduationYear: 2020,
+                currentPosition: "Senior Software Engineer",
+                company: "Google",
+                location: "Bangalore",
+                skills: ["Java", "Python", "Cloud Computing", "Algorithms", "System Design"],
+                experiences: [
+                    {
+                        title: "Senior Software Engineer",
+                        company: "Google",
+                        location: "Bangalore",
+                        startDate: "2022-01",
+                        currentlyWorking: true,
+                        description: "Working on Google Cloud Platform services and infrastructure."
+                    },
+                    {
+                        title: "Software Engineer",
+                        company: "Microsoft",
+                        location: "Hyderabad",
+                        startDate: "2020-06",
+                        endDate: "2021-12",
+                        description: "Worked on Azure cloud services and developer tools."
+                    }
+                ],
+                education: {
+                    degree: "B.Tech in Computer Science",
+                    institution: "Indian Institute of Technology",
+                    year: "2016-2020"
+                },
+                email: "rahul.sharma@example.com",
+                phone: "9876543210",
+                linkedin: "linkedin.com/in/rahulsharma",
+                connectionStatus: "not_connected"
+            },
+            {
+                id: 2,
+                name: "Priya Patel",
+                gender: "Female",
+                course: "Business Administration",
+                graduationYear: 2021,
+                currentPosition: "Product Manager",
+                company: "Amazon",
+                location: "Mumbai",
+                skills: ["Product Management", "Marketing", "Data Analysis", "Strategy", "User Research"],
+                experiences: [
+                    {
+                        title: "Product Manager",
+                        company: "Amazon",
+                        location: "Mumbai",
+                        startDate: "2022-03",
+                        currentlyWorking: true,
+                        description: "Managing e-commerce product features and customer experience."
+                    },
+                    {
+                        title: "Associate Product Manager",
+                        company: "Flipkart",
+                        location: "Bangalore",
+                        startDate: "2021-05",
+                        endDate: "2022-02",
+                        description: "Worked on mobile app features and user engagement."
+                    }
+                ],
+                education: {
+                    degree: "MBA in Marketing",
+                    institution: "Indian Institute of Management",
+                    year: "2019-2021"
+                },
+                email: "priya.patel@example.com",
+                phone: "9876543211",
+                linkedin: "linkedin.com/in/priyapatel",
+                connectionStatus: "not_connected"
+            },
+            {
+                id: 3,
+                name: "Arjun Kumar",
+                gender: "Male",
+                course: "Electrical Engineering",
+                graduationYear: 2019,
+                currentPosition: "Hardware Engineer",
+                company: "Intel",
+                location: "Bangalore",
+                skills: ["VLSI", "Embedded Systems", "Circuit Design", "PCB Design", "Microcontrollers"],
+                experiences: [
+                    {
+                        title: "Hardware Engineer",
+                        company: "Intel",
+                        location: "Bangalore",
+                        startDate: "2020-08",
+                        currentlyWorking: true,
+                        description: "Designing and testing processor components and circuits."
+                    },
+                    {
+                        title: "Associate Engineer",
+                        company: "Texas Instruments",
+                        location: "Bangalore",
+                        startDate: "2019-06",
+                        endDate: "2020-07",
+                        description: "Worked on analog circuit design and testing."
+                    }
+                ],
+                education: {
+                    degree: "B.Tech in Electrical Engineering",
+                    institution: "National Institute of Technology",
+                    year: "2015-2019"
+                },
+                email: "arjun.kumar@example.com",
+                phone: "9876543212",
+                linkedin: "linkedin.com/in/arjunkumar",
+                connectionStatus: "connected"
+            },
+            {
+                id: 4,
+                name: "Neha Singh",
+                gender: "Female",
+                course: "Computer Science",
+                graduationYear: 2022,
+                currentPosition: "Frontend Developer",
+                company: "Microsoft",
+                location: "Hyderabad",
+                skills: ["React", "JavaScript", "UI/UX", "HTML", "CSS"],
+                experiences: [
+                    {
+                        title: "Frontend Developer",
+                        company: "Microsoft",
+                        location: "Hyderabad",
+                        startDate: "2022-06",
+                        currentlyWorking: true,
+                        description: "Developing user interfaces for Microsoft products."
+                    },
+                    {
+                        title: "Web Developer Intern",
+                        company: "TCS",
+                        location: "Pune",
+                        startDate: "2021-12",
+                        endDate: "2022-05",
+                        description: "Worked on web application development using React."
+                    }
+                ],
+                education: {
+                    degree: "B.Tech in Computer Science",
+                    institution: "BITS Pilani",
+                    year: "2018-2022"
+                },
+                email: "neha.singh@example.com",
+                phone: "9876543213",
+                linkedin: "linkedin.com/in/nehasingh",
+                connectionStatus: "not_connected"
+            },
+            {
+                id: 5,
+                name: "Vikram Reddy",
+                gender: "Male",
+                course: "Mechanical Engineering",
+                graduationYear: 2020,
+                currentPosition: "Design Engineer",
+                company: "Tata Motors",
+                location: "Pune",
+                skills: ["CAD", "Product Design", "Automotive", "3D Modeling", "Simulation"],
+                experiences: [
+                    {
+                        title: "Design Engineer",
+                        company: "Tata Motors",
+                        location: "Pune",
+                        startDate: "2021-03",
+                        currentlyWorking: true,
+                        description: "Designing automotive components and systems."
+                    },
+                    {
+                        title: "Graduate Engineer Trainee",
+                        company: "Mahindra & Mahindra",
+                        location: "Mumbai",
+                        startDate: "2020-07",
+                        endDate: "2021-02",
+                        description: "Trained in various aspects of automotive design and manufacturing."
+                    }
+                ],
+                education: {
+                    degree: "B.Tech in Mechanical Engineering",
+                    institution: "VIT Vellore",
+                    year: "2016-2020"
+                },
+                email: "vikram.reddy@example.com",
+                phone: "9876543214",
+                linkedin: "linkedin.com/in/vikramreddy",
+                connectionStatus: "pending"
+            },
+            {
+                id: 6,
+                name: "Ananya Gupta",
+                gender: "Female",
+                course: "Civil Engineering",
+                graduationYear: 2021,
+                currentPosition: "Project Manager",
+                company: "L&T",
+                location: "Delhi",
+                skills: ["Project Management", "Construction", "Structural Design", "AutoCAD", "Estimation"],
+                experiences: [
+                    {
+                        title: "Project Manager",
+                        company: "L&T",
+                        location: "Delhi",
+                        startDate: "2022-04",
+                        currentlyWorking: true,
+                        description: "Managing construction projects and teams."
+                    },
+                    {
+                        title: "Site Engineer",
+                        company: "DLF",
+                        location: "Gurgaon",
+                        startDate: "2021-06",
+                        endDate: "2022-03",
+                        description: "Supervised construction activities and quality control."
+                    }
+                ],
+                education: {
+                    degree: "B.Tech in Civil Engineering",
+                    institution: "Delhi Technological University",
+                    year: "2017-2021"
+                },
+                email: "ananya.gupta@example.com",
+                phone: "9876543215",
+                linkedin: "linkedin.com/in/ananyagupta",
+                connectionStatus: "connected"
+            }
+        ];
+
+        const dummyConnectionsData = [
+            {
+                id: 3,
+                name: "Arjun Kumar",
+                gender: "Male",
+                currentPosition: "Hardware Engineer",
+                company: "Intel"
+            },
+            {
+                id: 6,
+                name: "Ananya Gupta",
+                gender: "Female",
+                currentPosition: "Project Manager",
+                company: "L&T"
+            },
+            {
+                id: 7,
+                name: "Karthik Menon",
+                gender: "Male",
+                currentPosition: "Data Scientist",
+                company: "Flipkart"
+            }
+        ];
+
+        const dummyRequestsData = [
+            {
+                id: 8,
+                name: "Rohit Verma",
+                gender: "Male",
+                currentPosition: "Software Developer",
+                company: "Infosys"
+            },
+            {
+                id: 9,
+                name: "Meera Desai",
+                gender: "Female",
+                currentPosition: "UX Designer",
+                company: "Wipro"
+            },
+            {
+                id: 10,
+                name: "Sanjay Mehta",
+                gender: "Male",
+                currentPosition: "Marketing Manager",
+                company: "Reliance"
+            }
+        ];
+
+        const dummyNetworkStats = {
+            totalAlumni: 1245,
+            connections: 42,
+            companies: 87,
+            countries: 32
+        };
+
+        // Function to show toast notifications
+        function showToast(message, type = 'info') {
+            const toastClasses = {
+                success: 'toast-success',
+                error: 'toast-error',
+                info: 'toast-info',
+                warning: 'toast-warning'
+            };
+            
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                className: toastClasses[type],
+                stopOnFocus: true
+            }).showToast();
+        }
+
+        // Function to handle API requests with fallback to dummy data
+        async function fetchWithFallback(url, fallbackData, errorMessage) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error(`Error fetching data from ${url}:`, error);
+                showToast(errorMessage || 'Failed to load data. Using cached data instead.', 'warning');
+                return fallbackData;
+            }
+        }
+
+        // Function to load network statistics
+        async function loadNetworkStats() {
+            const statsContainer = document.getElementById('networkStats');
+            
+            try {
+                const stats = await fetchWithFallback(
+                    '/v1/api/alumni/network/stats', 
+                    dummyNetworkStats, 
+                    'Failed to load network statistics'
+                );
+                
+                statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">${stats.totalAlumni}</div>
+                        <div class="stat-label">Total Alumni</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="stat-value">${stats.connections}</div>
+                        <div class="stat-label">Your Connections</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="stat-value">${stats.companies}</div>
+                        <div class="stat-label">Companies Represented</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="stat-value">${stats.countries}</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading network stats:', error);
+                statsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="empty-state-title">Failed to load statistics</div>
+                        <div class="empty-state-text">We couldn't load the network statistics. Please try again later.</div>
+                        <button class="btn btn-primary" onclick="loadNetworkStats()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to load alumni directory
+        async function loadAlumniDirectory(page = 1, filters = {}) {
+            const directoryContainer = document.getElementById('alumniDirectory');
+            const paginationContainer = document.getElementById('paginationContainer');
+            
+            directoryContainer.innerHTML = `
+                <div class="loading-container">
+                    <div class="loading-spinner-large"></div>
+                    <div class="loading-text">Loading alumni directory...</div>
+                </div>
+            `;
+            
+            try {
+                // Build query string from filters
+                const queryParams = new URLSearchParams();
+                queryParams.append('page', page);
+                
+                if (filters.search) queryParams.append('search', filters.search);
+                if (filters.batch) queryParams.append('batch', filters.batch);
+                if (filters.course) queryParams.append('course', filters.course);
+                if (filters.location) queryParams.append('location', filters.location);
+                
+                const url = `/v1/api/alumni/list?${queryParams.toString()}`;
+                
+                const data = await fetchWithFallback(
+                    url, 
+                    { alumni: dummyAlumniData, totalPages: 3, currentPage: 1 }, 
+                    'Failed to load alumni directory'
+                );
+                
+                if (data.alumni && data.alumni.length > 0) {
+                    directoryContainer.innerHTML = '';
+                    
+                    data.alumni.forEach(alumni => {
+                        const card = document.createElement('div');
+                        card.className = 'col-md-6 col-lg-4';
+                        
+                        let connectBtnHtml = '';
+                        if (alumni.connectionStatus === 'connected') {
+                            connectBtnHtml = `<button class="btn-icon connect-btn connected" data-id="${alumni.id}">
+                                <i class="fas fa-check"></i>
+                            </button>`;
+                        } else if (alumni.connectionStatus === 'pending') {
+                            connectBtnHtml = `<button class="btn-icon connect-btn pending" data-id="${alumni.id}">
+                                <i class="fas fa-clock"></i>
+                            </button>`;
+                        } else {
+                            connectBtnHtml = `<button class="btn-icon connect-btn" data-id="${alumni.id}">
+                                <i class="fas fa-user-plus"></i>
+                            </button>`;
+                        }
+                        
+                        card.innerHTML = `
+                            <div class="card alumni-card">
+                                <div class="alumni-card-header">
+                                    <img src="${alumni.gender === 'Male' ? 'https://i.ibb.co/6JxYzd3/man.png' : 'https://i.ibb.co/Bfrp572/woman.png'}" class="alumni-card-img" alt="${alumni.name}">
+                                </div>
+                                <div class="alumni-card-body">
+                                    <h5 class="alumni-card-title">${alumni.name}</h5>
+                                    <div class="alumni-card-subtitle">${alumni.course} - ${alumni.graduationYear}</div>
+                                    <div class="alumni-card-text">${alumni.currentPosition} at ${alumni.company}</div>
+                                    <div class="badge-container">
+                                        ${alumni.skills.slice(0, 3).map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+                                        ${alumni.skills.length > 3 ? `<span class="skill-badge">+${alumni.skills.length - 3} more</span>` : ''}
+                                    </div>
+                                    <div class="alumni-card-footer">
+                                        <div class="alumni-card-location">
+                                            <i class="fas fa-map-marker-alt"></i> ${alumni.location}
+                                        </div>
+                                        <div class="alumni-card-actions">
+                                            <button class="btn-icon view-profile" data-id="${alumni.id}">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            ${connectBtnHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        directoryContainer.appendChild(card);
+                    });
+                    
+                    // Set up pagination
+                    if (data.totalPages > 1) {
+                        const pagination = document.getElementById('pagination');
+                        pagination.innerHTML = '';
+                        
+                        // Previous button
+                        const prevItem = document.createElement('li');
+                        prevItem.className = `page-item ${data.currentPage === 1 ? 'disabled' : ''}`;
+                        prevItem.innerHTML = `
+                            <a class="page-link" href="#" aria-label="Previous" data-page="${data.currentPage - 1}">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        `;
+                        pagination.appendChild(prevItem);
+                        
+                        // Page numbers
+                        for (let i = 1; i <= data.totalPages; i++) {
+                            const pageItem = document.createElement('li');
+                            pageItem.className = `page-item ${i === data.currentPage ? 'active' : ''}`;
+                            pageItem.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+                            pagination.appendChild(pageItem);
+                        }
+                        
+                        // Next button
+                        const nextItem = document.createElement('li');
+                        nextItem.className = `page-item ${data.currentPage === data.totalPages ? 'disabled' : ''}`;
+                        nextItem.innerHTML = `
+                            <a class="page-link" href="#" aria-label="Next" data-page="${data.currentPage + 1}">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        `;
+                        pagination.appendChild(nextItem);
+                        
+                        paginationContainer.style.display = 'flex';
+                        
+                        // Add event listeners to pagination links
+                        document.querySelectorAll('.page-link').forEach(link => {
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                
+                                if (this.parentElement.classList.contains('disabled')) {
+                                    return;
+                                }
+                                
+                                const page = parseInt(this.getAttribute('data-page'));
+                                loadAlumniDirectory(page, filters);
+                            });
+                        });
+                    } else {
+                        paginationContainer.style.display = 'none';
+                    }
+                    
+                    // Add event listeners to the newly created buttons
+                    document.querySelectorAll('.view-profile').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            openProfileModal(id);
+                        });
+                    });
+                    
+                    document.querySelectorAll('.connect-btn:not(.connected):not(.pending)').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            connectWithAlumni(id);
+                        });
+                    });
+                } else {
+                    directoryContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="empty-state-title">No alumni found</div>
+                            <div class="empty-state-text">We couldn't find any alumni matching your search criteria. Try adjusting your filters.</div>
+                            <button class="btn btn-primary" id="clearFiltersBtn">Clear Filters</button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('clearFiltersBtn').addEventListener('click', function() {
+                        document.getElementById('batchFilter').value = '';
+                        document.getElementById('courseFilter').value = '';
+                        document.getElementById('locationFilter').value = '';
+                        document.getElementById('alumniSearch').value = '';
+                        
+                        loadAlumniDirectory(1, {});
+                    });
+                    
+                    paginationContainer.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading alumni directory:', error);
+                directoryContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="empty-state-title">Failed to load alumni</div>
+                        <div class="empty-state-text">We couldn't load the alumni directory. Please try again later.</div>
+                        <button class="btn btn-primary" onclick="loadAlumniDirectory()">Retry</button>
+                    </div>
+                `;
+                paginationContainer.style.display = 'none';
+            }
+        }
+
+        // Function to load connections
+        async function loadConnections() {
+            const connectionsContainer = document.getElementById('connectionsList');
+            
+            connectionsContainer.innerHTML = `
+                <div class="loading-container">
+                    <div class="loading-spinner-large"></div>
+                    <div class="loading-text">Loading your connections...</div>
+                </div>
+            `;
+            
+            try {
+                const connections = await fetchWithFallback(
+                    '/v1/api/alumni/connections', 
+                    dummyConnectionsData, 
+                    'Failed to load connections'
+                );
+                
+                if (connections && connections.length > 0) {
+                    connectionsContainer.innerHTML = '';
+                    
+                    connections.forEach(connection => {
+                        const item = document.createElement('div');
+                        item.className = 'connection-item';
+                        item.innerHTML = `
+                            <div class="connection-avatar">
+                                <img src="${connection.gender === 'Male' ? 'https://i.ibb.co/6JxYzd3/man.png' : 'https://i.ibb.co/Bfrp572/woman.png'}" alt="${connection.name}">
+                            </div>
+                            <div class="connection-info">
+                                <div class="connection-name">${connection.name}</div>
+                                <div class="connection-title">${connection.currentPosition} at ${connection.company}</div>
+                            </div>
+                            <div class="connection-actions">
+                                <button class="btn-icon view-profile" data-id="${connection.id}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon message-btn" data-id="${connection.id}">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </div>
+                        `;
+                        
+                        connectionsContainer.appendChild(item);
+                    });
+                    
+                    // Add event listeners to the newly created buttons
+                    document.querySelectorAll('.view-profile').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            openProfileModal(id);
+                        });
+                    });
+                    
+                    document.querySelectorAll('.message-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            messageAlumni(id);
+                        });
+                    });
+                } else {
+                    connectionsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="empty-state-title">No connections yet</div>
+                            <div class="empty-state-text">You haven't connected with any alumni yet. Browse the alumni directory to find and connect with your peers.</div>
+                            <button class="btn btn-primary" onclick="switchTab('alumni-tab')">Browse Alumni</button>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading connections:', error);
+                connectionsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="empty-state-title">Failed to load connections</div>
+                        <div class="empty-state-text">We couldn't load your connections. Please try again later.</div>
+                        <button class="btn btn-primary" onclick="loadConnections()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to load connection requests
+        async function loadConnectionRequests() {
+            const requestsContainer = document.getElementById('requestsList');
+            
+            requestsContainer.innerHTML = `
+                <div class="loading-container">
+                    <div class="loading-spinner-large"></div>
+                    <div class="loading-text">Loading connection requests...</div>
+                </div>
+            `;
+            
+            try {
+                const requests = await fetchWithFallback(
+                    '/v1/api/alumni/requests', 
+                    dummyRequestsData, 
+                    'Failed to load connection requests'
+                );
+                
+                if (requests && requests.length > 0) {
+                    requestsContainer.innerHTML = '';
+                    
+                    requests.forEach(request => {
+                        const item = document.createElement('div');
+                        item.className = 'connection-item';
+                        item.innerHTML = `
+                            <div class="connection-avatar">
+                                <img src="${request.gender === 'Male' ? 'https://i.ibb.co/6JxYzd3/man.png' : 'https://i.ibb.co/Bfrp572/woman.png'}" alt="${request.name}">
+                            </div>
+                            <div class="connection-info">
+                                <div class="connection-name">${request.name}</div>
+                                <div class="connection-title">${request.currentPosition} at ${request.company}</div>
+                            </div>
+                            <div class="connection-actions">
+                                <button class="btn btn-primary btn-sm accept-request" data-id="${request.id}">Accept</button>
+                                <button class="btn btn-outline-primary btn-sm decline-request" data-id="${request.id}">Decline</button>
+                            </div>
+                        `;
+                        
+                        requestsContainer.appendChild(item);
+                    });
+                    
+                    // Add event listeners to the newly created buttons
+                    document.querySelectorAll('.accept-request').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            acceptRequest(id);
+                        });
+                    });
+                    
+                    document.querySelectorAll('.decline-request').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const id = this.getAttribute('data-id');
+                            declineRequest(id);
+                        });
+                    });
+                } else {
+                    requestsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="empty-state-title">No pending requests</div>
+                            <div class="empty-state-text">You don't have any pending connection requests at the moment.</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading connection requests:', error);
+                requestsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="empty-state-title">Failed to load requests</div>
+                        <div class="empty-state-text">We couldn't load your connection requests. Please try again later.</div>
+                        <button class="btn btn-primary" onclick="loadConnectionRequests()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to handle tab switching
+        function switchTab(tabId) {
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll('.nav-link').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate the selected tab and pane
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            
+            // Load data for the selected tab if needed
+            if (tabId === 'connections-tab') {
+                loadConnections();
+            } else if (tabId === 'requests-tab') {
+                loadConnectionRequests();
+            }
+        }
+
+        // Function to open profile detail modal
+        async function openProfileModal(alumniId) {
+            const profileDetailModal = document.getElementById('profileDetailModal');
+            const profileDetailContent = document.getElementById('profileDetailContent');
+            
+            profileDetailContent.innerHTML = `
+                <div class="loading-container">
+                    <div class="loading-spinner-large"></div>
+                    <div class="loading-text">Loading profile details...</div>
+                </div>
+            `;
+            
+            profileDetailModal.classList.add('active');
+            
+            try {
+                const alumni = await fetchWithFallback(
+                    `/v1/api/alumni/profile/${alumniId}`, 
+                    dummyAlumniData.find(a => a.id === parseInt(alumniId)), 
+                    'Failed to load profile details'
+                );
+                
+                if (!alumni) {
+                    throw new Error('Alumni not found');
+                }
+                
+                // Generate HTML for profile details
+                let html = `
+                    <div class="profile-detail-header">
+                        <div class="profile-detail-avatar">
+                            <img src="${alumni.gender === 'Male' ? 'https://i.ibb.co/6JxYzd3/man.png' : 'https://i.ibb.co/Bfrp572/woman.png'}" alt="${alumni.name}">
+                        </div>
+                        <div class="profile-detail-info">
+                            <h3>${alumni.name}</h3>
+                            <p>${alumni.currentPosition} at ${alumni.company}</p>
+                            <p>${alumni.course} - Batch of ${alumni.graduationYear}</p>
+                            <div class="profile-detail-actions">
+                `;
+                
+                // Add appropriate action buttons based on connection status
+                if (alumni.connectionStatus === 'connected') {
+                    html += `
+                        <button class="btn btn-primary btn-sm message-btn" data-id="${alumni.id}">
+                            <i class="fas fa-envelope me-1"></i> Message
+                        </button>
+                    `;
+                } else if (alumni.connectionStatus === 'pending') {
+                    html += `
+                        <button class="btn btn-outline-primary btn-sm" disabled>
+                            <i class="fas fa-clock me-1"></i> Request Pending
+                        </button>
+                    `;
+                } else {
+                    html += `
+                        <button class="btn btn-primary btn-sm connect-btn-modal" data-id="${alumni.id}">
+                            <i class="fas fa-user-plus me-1"></i> Connect
+                        </button>
+                    `;
+                }
+                
+                html += `
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-detail-section">
+                        <h4 class="profile-detail-section-title">
+                            <i class="fas fa-info-circle"></i> Contact Information
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="profile-detail-item">
+                                    <div class="profile-detail-item-label">Email</div>
+                                    <div class="profile-detail-item-value">${alumni.email}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="profile-detail-item">
+                                    <div class="profile-detail-item-label">Phone</div>
+                                    <div class="profile-detail-item-value">+91 ${alumni.phone}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="profile-detail-item">
+                                    <div class="profile-detail-item-label">LinkedIn</div>
+                                    <div class="profile-detail-item-value">
+                                        <a href="https://${alumni.linkedin}" target="_blank" class="table-link">
+                                            <i class="fab fa-linkedin"></i> ${alumni.linkedin}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="profile-detail-item">
+                                    <div class="profile-detail-item-label">Location</div>
+                                    <div class="profile-detail-item-value">${alumni.location}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-detail-section">
+                        <h4 class="profile-detail-section-title">
+                            <i class="fas fa-briefcase"></i> Work Experience
+                        </h4>
+                `;
+                
+                // Add work experiences
+                if (alumni.experiences && alumni.experiences.length > 0) {
+                    alumni.experiences.forEach(exp => {
+                        html += `
+                            <div class="experience-item">
+                                <div class="experience-header">
+                                    <div class="experience-title">${exp.title}</div>
+                                    <div class="experience-date">${formatDate(exp.startDate)} - ${exp.currentlyWorking ? 'Present' : formatDate(exp.endDate)}</div>
+                                </div>
+                                <div class="experience-company">${exp.company}, ${exp.location}</div>
+                                <div class="experience-description">${exp.description}</div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html += `<p class="text-muted">No work experience information available.</p>`;
+                }
+                
+                html += `
+                    </div>
+                    
+                    <div class="profile-detail-section">
+                        <h4 class="profile-detail-section-title">
+                            <i class="fas fa-graduation-cap"></i> Education
+                        </h4>
+                `;
+                
+                if (alumni.education) {
+                    html += `
+                        <div class="experience-item">
+                            <div class="experience-header">
+                                <div class="experience-title">${alumni.education.degree}</div>
+                                <div class="experience-date">${alumni.education.year}</div>
+                            </div>
+                            <div class="experience-company">${alumni.education.institution}</div>
+                        </div>
+                    `;
+                } else {
+                    html += `<p class="text-muted">No education information available.</p>`;
+                }
+                
+                html += `
+                    </div>
+                    
+                    <div class="profile-detail-section">
+                        <h4 class="profile-detail-section-title">
+                            <i class="fas fa-cogs"></i> Skills
+                        </h4>
+                `;
+                
+                if (alumni.skills && alumni.skills.length > 0) {
+                    html += `
+                        <div class="badge-container">
+                            ${alumni.skills.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+                        </div>
+                    `;
+                } else {
+                    html += `<p class="text-muted">No skills information available.</p>`;
+                }
+                
+                html += `</div>`;
+                
+                profileDetailContent.innerHTML = html;
+                
+                // Add event listeners to the newly created buttons
+                document.querySelectorAll('.connect-btn-modal').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        connectWithAlumni(id);
+                    });
+                });
+                
+                document.querySelectorAll('.message-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        messageAlumni(id);
+                    });
+                });
+            } catch (error) {
+                console.error('Error loading profile details:', error);
+                profileDetailContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="empty-state-title">Failed to load profile</div>
+                        <div class="empty-state-text">We couldn't load the alumni profile. Please try again later.</div>
+                        <button class="btn btn-primary" onclick="openProfileModal('${alumniId}')">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to close profile detail modal
+        function closeProfileModal() {
+            document.getElementById('profileDetailModal').classList.remove('active');
+        }
+
+        // Function to connect with alumni
+        async function connectWithAlumni(alumniId) {
+            try {
+                const connectBtn = document.querySelector(`.connect-btn[data-id="${alumniId}"]`);
+                if (connectBtn) {
+                    connectBtn.disabled = true;
+                    connectBtn.innerHTML = '<div class="loading-spinner"></div>';
+                }
+                
+                const modalConnectBtn = document.querySelector(`.connect-btn-modal[data-id="${alumniId}"]`);
+                if (modalConnectBtn) {
+                    modalConnectBtn.disabled = true;
+                    modalConnectBtn.innerHTML = '<div class="loading-spinner"></div>';
+                }
+                
+                const response = await fetch(`/v1/api/alumni/connect`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ alumniId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to send connection request');
+                }
+                
+                showToast('Connection request sent successfully!', 'success');
+                
+                // Update UI to show pending status
+                if (connectBtn) {
+                    connectBtn.classList.add('pending');
+                    connectBtn.innerHTML = '<i class="fas fa-clock"></i>';
+                    connectBtn.disabled = false;
+                }
+                
+                if (modalConnectBtn) {
+                    modalConnectBtn.disabled = true;
+                    modalConnectBtn.innerHTML = '<i class="fas fa-clock me-1"></i> Request Pending';
+                    modalConnectBtn.classList.remove('btn-primary');
+                    modalConnectBtn.classList.add('btn-outline-primary');
+                }
+            } catch (error) {
+                console.error('Error connecting with alumni:', error);
+                showToast('Failed to send connection request. Please try again.', 'error');
+                
+                // Reset buttons
+                const connectBtn = document.querySelector(`.connect-btn[data-id="${alumniId}"]`);
+                if (connectBtn) {
+                    connectBtn.disabled = false;
+                    connectBtn.innerHTML = '<i class="fas fa-user-plus"></i>';
+                }
+                
+                const modalConnectBtn = document.querySelector(`.connect-btn-modal[data-id="${alumniId}"]`);
+                if (modalConnectBtn) {
+                    modalConnectBtn.disabled = false;
+                    modalConnectBtn.innerHTML = '<i class="fas fa-user-plus me-1"></i> Connect';
+                }
+            }
+        }
+
+        // Function to message alumni
+        function messageAlumni(alumniId) {
+            // In a real application, this would open a messaging interface
+            showToast('Messaging feature coming soon!', 'info');
+        }
+
+        // Function to accept connection request
+        async function acceptRequest(requestId) {
+            try {
+                const acceptBtn = document.querySelector(`.accept-request[data-id="${requestId}"]`);
+                if (acceptBtn) {
+                    acceptBtn.disabled = true;
+                    acceptBtn.innerHTML = '<div class="loading-spinner"></div>';
+                }
+                
+                const response = await fetch(`/v1/api/alumni/accept`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ requestId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to accept connection request');
+                }
+                
+                showToast('Connection request accepted!', 'success');
+                
+                // Remove the request from the list
+                const requestItem = acceptBtn.closest('.connection-item');
+                requestItem.remove();
+                
+                // Check if there are no more requests
+                const requestsList = document.querySelector('#requests-tab .connection-list');
+                if (requestsList.children.length === 0) {
+                    requestsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="empty-state-title">No pending requests</div>
+                            <div class="empty-state-text">You don't have any pending connection requests at the moment.</div>
+                        </div>
+                    `;
+                }
+                
+                // Refresh connections list if it's loaded
+                if (document.getElementById('connections-tab').classList.contains('active')) {
+                    loadConnections();
+                }
+            } catch (error) {
+                console.error('Error accepting connection request:', error);
+                showToast('Failed to accept connection request. Please try again.', 'error');
+                
+                // Reset button
+                const acceptBtn = document.querySelector(`.accept-request[data-id="${requestId}"]`);
+                if (acceptBtn) {
+                    acceptBtn.disabled = false;
+                    acceptBtn.innerHTML = 'Accept';
+                }
+            }
+        }
+
+        // Function to decline connection request
+        async function declineRequest(requestId) {
+            try {
+                const declineBtn = document.querySelector(`.decline-request[data-id="${requestId}"]`);
+                if (declineBtn) {
+                    declineBtn.disabled = true;
+                    declineBtn.innerHTML = '<div class="loading-spinner"></div>';
+                }
+                
+                const response = await fetch(`/v1/api/alumni/decline`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ requestId })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to decline connection request');
+                }
+                
+                showToast('Connection request declined', 'info');
+                
+                // Remove the request from the list
+                const requestItem = declineBtn.closest('.connection-item');
+                requestItem.remove();
+                
+                // Check if there are no more requests
+                const requestsList = document.querySelector('#requests-tab .connection-list');
+                if (requestsList.children.length === 0) {
+                    requestsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="empty-state-title">No pending requests</div>
+                            <div class="empty-state-text">You don't have any pending connection requests at the moment.</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error declining connection request:', error);
+                showToast('Failed to decline connection request. Please try again.', 'error');
+                
+                // Reset button
+                const declineBtn = document.querySelector(`.decline-request[data-id="${requestId}"]`);
+                if (declineBtn) {
+                    declineBtn.disabled = false;
+                    declineBtn.innerHTML = 'Decline';
+                }
+            }
+        }
+
+        // Function to load notification count
+        async function loadNotificationCount() {
+            try {
+                const response = await fetch('/v1/api/getNotificationCount?userId={{alumni._id}}');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch notification count');
+                }
+                
+                const data = await response.json();
+                const count = data.count || 0;
+                
+                const countElement = document.getElementById('notificationCount');
+                countElement.textContent = count;
+                
+                if (count > 0) {
+                    countElement.style.display = 'flex';
+                } else {
+                    countElement.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading notification count:', error);
+                // Silently fail, not critical
+            }
+        }
+
+        // Helper function to format date
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            const month = date.toLocaleString('default', { month: 'short' });
+            const year = date.getFullYear();
+            
+            return `${month} ${year}`;
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial data
+            loadNetworkStats();
+            loadAlumniDirectory();
+            loadNotificationCount();
+            
+            // Set up tab switching
+            document.querySelectorAll('.nav-link').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // Set up modal close button
+            document.getElementById('closeProfileModal').addEventListener('click', closeProfileModal);
+            
+            // Set up search functionality
+            let searchTimeout;
+            document.getElementById('alumniSearch').addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const searchTerm = this.value.toLowerCase();
+                
+                searchTimeout = setTimeout(() => {
+                    const filters = {
+                        search: searchTerm,
+                        batch: document.getElementById('batchFilter').value,
+                        course: document.getElementById('courseFilter').value,
+                        location: document.getElementById('locationFilter').value
+                    };
+                    
+                    loadAlumniDirectory(1, filters);
+                }, 500);
+            });
+            
+            // Set up filter buttons
+            document.getElementById('applyFilters').addEventListener('click', function() {
+                const filters = {
+                    search: document.getElementById('alumniSearch').value,
+                    batch: document.getElementById('batchFilter').value,
+                    course: document.getElementById('courseFilter').value,
+                    location: document.getElementById('locationFilter').value
+                };
+                
+                loadAlumniDirectory(1, filters);
+                showToast('Filters applied', 'success');
+            });
+            
+            document.getElementById('clearFilters').addEventListener('click', function() {
+                document.getElementById('batchFilter').value = '';
+                document.getElementById('courseFilter').value = '';
+                document.getElementById('locationFilter').value = '';
+                document.getElementById('alumniSearch').value = '';
+                
+                loadAlumniDirectory(1, {});
+                showToast('Filters cleared', 'info');
+            });
+            
+            // Set up connections search
+            document.getElementById('connectionsSearch').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const connectionItems = document.querySelectorAll('#connectionsList .connection-item');
+                
+                connectionItems.forEach(item => {
+                    const name = item.querySelector('.connection-name').textContent.toLowerCase();
+                    const title = item.querySelector('.connection-title').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || title.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Refresh notification count periodically
+            setInterval(loadNotificationCount, 60000); // Every minute
+        });
+    </script>
+</body>
+</html>

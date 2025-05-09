@@ -8,6 +8,7 @@ const axios = require('axios');
 const Razorpay = require('razorpay');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const employeeModel = require("../models/adminModel");
+const employeeSalaryModel = require("../models/employeeSalaryModel");
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
