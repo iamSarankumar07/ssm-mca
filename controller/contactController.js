@@ -16,16 +16,16 @@ exports.contact = async (req, res) => {
       const savedContact = await contact.save();
       // console.log(savedContact);
 
-      const transPorter = nodemailer.createTransport({
-        service:'gmail',
-        auth:{
-            user: 'verifyuserofficial@gmail.com',
-            pass: 'wsdv megz vecp wzen'
-        },
+      const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+              user: "ssmcollegeofengineering.ce@gmail.com",
+              pass: "xotj gtda ojfg zbtc",
+          },
       });
   
-      await transPorter.sendMail({
-        from: 'verifyuserofficial@gmail.com',
+      await transporter.sendMail({
+        from: 'ssmcollegeofengineering.ce@gmail.com',
         to: contact.email,
         subject: 'Thank you for contacting us', 
         html: `
@@ -89,15 +89,15 @@ exports.contact = async (req, res) => {
       `
       });
       const adminTransporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'verifyuserofficial@gmail.com',
-          pass: 'wsdv megz vecp wzen'
-        },
-      });
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
   
       await adminTransporter.sendMail({
-        from: 'verifyuserofficial@gmail.com',
+        from: 'ssmcollegeofengineering.ce@gmail.com',
         to: 'sarankumars053@gmail.com',
         subject: 'New Contact Form Submission',
         html: `

@@ -45,19 +45,19 @@ exports.updateFee = async (req, res) => {
 
     if (alertStudent) {
       const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "verifyuserofficial@gmail.com",
-          pass: "wsdv megz vecp wzen",
-        },
-      });
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
 
       let headerSignature = Buffer.from(studentData.studentId.toString()).toString('base64');
 
       let payUrl = `${req.protocol}://${req.get('host')}/v1/api/createRazorPayPaymentByMail?studentId=${encodeURIComponent(studentData.studentId)}&signature=${encodeURIComponent(headerSignature)}&paymentType=${encodeURIComponent(paymentType)}`;
 
       const mailOptions = {
-        from: "verifyuserofficial@gmail.com",
+        from: "ssmcollegeofengineering.ce@gmail.com",
         to: studentData.email,
         subject: `${paymentType} fees Payment Update Notification` ,
         html: `
@@ -285,19 +285,19 @@ exports.updateExamFee = async (req, res) => {
 
     if (alertStudent) {
       const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "verifyuserofficial@gmail.com",
-          pass: "wsdv megz vecp wzen",
-        },
-      });
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
 
       let headerSignature = Buffer.from(studentData.studentId.toString()).toString('base64');
 
       let payUrl = `${req.protocol}://${req.get('host')}/v1/api/createRazorPayPaymentByMail?studentId=${encodeURIComponent(studentData.studentId)}&signature=${encodeURIComponent(headerSignature)}&paymentType=${encodeURIComponent(paymentType)}`;
 
       const mailOptions = {
-        from: "verifyuserofficial@gmail.com",
+        from: "ssmcollegeofengineering.ce@gmail.com",
         to: studentData.email,
         subject: `${paymentType} fees Payment Update Notification` ,
         html: `
