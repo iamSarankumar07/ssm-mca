@@ -14,8 +14,8 @@ exports.sendMail = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
+        user: "ssmcollegeofengineering.ce@gmail.com",
+        pass: "xotj gtda ojfg zbtc",
       },
     });
 
@@ -104,11 +104,11 @@ exports.sendEmailByRegNum = async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
-      },
+        service: "gmail",
+        auth: {
+          user: "ssmcollegeofengineering.ce@gmail.com",
+          pass: "xotj gtda ojfg zbtc",
+        },
     });
 
     const emailContent = `
@@ -175,7 +175,7 @@ exports.sendEmailByRegNum = async (req, res) => {
 </html>`;
 
     await transporter.sendMail({
-      from: "verifyuserofficial@gmail.com",
+      from: "ssmcollegeofengineering.ce@gmail.com",
       to: student.email,
       subject: subject,
       html: emailContent,
@@ -358,7 +358,18 @@ exports.commonMail = async (req, res) => {
         { isDelete: false, ...(genderFilter && { gender: genderFilter }) },
         "email name"
       );
-      recipientList.push(...allUsers.map(({ email, name, _id }) => ({ email, name, _id })));
+      const staffs = await Admin.find(
+        { isDelete: false, isActive: true, ...(genderFilter && { gender: genderFilter }) }
+      ).lean();
+
+      const formattedStaffs = staffs.map(staff => ({
+        name: staff.fullName,
+        email: staff.email,
+        _id: staff._id.toString()
+      }));
+       
+      let completeUsers = [...allUsers, ...formattedStaffs];
+      recipientList.push(...completeUsers.map(({ email, name, _id }) => ({ email, name, _id })));
     }
 
     if (!recipientList.length) {
@@ -376,16 +387,11 @@ exports.commonMail = async (req, res) => {
     await Promise.all(promiseArr);
 
     const transporter = nodemailer.createTransport({
-      pool: true,
-      service: "gmail",
-      auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen", 
-      },
-      maxConnections: 5,
-      maxMessages: 100,
-      rateLimit: 5,
-      rateDelta: 2000,
+        service: "gmail",
+        auth: {
+            user: "ssmcollegeofengineering.ce@gmail.com",
+            pass: "xotj gtda ojfg zbtc",
+        },
     });
 
     const generateHtml = (name) => `
@@ -621,9 +627,8 @@ exports.sendPaymentAlert = async (req, res) => {
           course: course,
           year: year,
           isDelete: false,
-          $or: [{ paymentStatus: "Pending" }, { paymentStatus: "Partial" }],
-        },
-        "name email tutionDueDate pendingFee"
+          $or: [{ "tuitionFees.status": "Pending" }, { "tuitionFees.status": "Partial" }],
+        }
       );
     } else if (type === "Exam") {
       students = await Student.find(
@@ -632,108 +637,40 @@ exports.sendPaymentAlert = async (req, res) => {
           year: year,
           isDelete: false,
           $or: [
-            { examPaymentStatus: "Pending" },
-            { examPaymentStatus: "Partial" },
+            { "examFees.status": "Pending" },
+            { "examFees.status": "Partial" },
           ],
-        },
-        "name email examDueDate examPendingFee"
+        }
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
-      },
-    });
+    let emailTemplate = await helper.getEmailTemplate("PAYMENT_ALERT_EMAIL");
 
-    const mailOptions = {
-      from: "verifyuserofficial@gmail.com",
-      subject: `${type} Fee Payment Reminder ⏰.`,
-    };
-
-    for (let i = 0; i < students.length; i++) {
-      setTimeout(() => {
-        mailOptions.to = students[i].email;
-        mailOptions.html = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${type} Fee Payment Reminder</title>
-        <style>
-          body, h1, p, a {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-          }
-          body {
-            background-color: #f4f4f4;
-          }
-          .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          }
-          h1 {
-            color: #ff9900;
-            text-align: center;
-            margin-bottom: 20px;
-          }
-          p {
-            margin-bottom: 15px;
-            text-align: justify;
-          }
-          .highlight {
-            font-weight: bold;
-            color: #ff0000; 
-          }
-          .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #777777;
-            text-align: center;
-          }
-          a {
-            color: #007bff;
-            text-decoration: none;
-          }
-        </style>
-        </head>
-        <body>
-        <div class="container">
-          <h1>${type} Fee Payment Reminder ⏰</h1>
-          <p>Dear ${students[i].name},</p>
-          <p>This is a reminder that your ${type} fee payment is pending. The due date for the payment is <span class="highlight">
-          ${type === "Tuition" ? (students[i].tutionDueDate) : (students[i].examDueDate)}</span>. 
-          Your pending fee is <span class="highlight"> Rs. ${type === "Tuition" ? (students[i].pendingFee) : (students[i].examPendingFee)}</span>.
-           Please complete the payment at your earliest convenience to avoid any late fees or penalties.</p>
-          <p>If you have already made the payment, please disregard this message.</p>
-          <p>If you have any questions or need assistance, please <a href="mailto:verifyuserofficial@gmail.com">contact us</a>.</p>
-          <p>Best regards,<br>Sarankumar</p>
-          <div class="footer">
-            This is an automated message. Please do not reply to this email.
-          </div>
-        </div>
-        </body>
-        </html>
-        
-        `;
-        transporter.sendMail(mailOptions, (err, info) => {
-          if (err) {
-            console.log(`Error sending email to ${students[i].email}:`, err);
-          } else {
-            console.log(`Email sent successfully to ${students[i].email}.`);
-          }
-        });
-      }, i * 500); 
+    if (students && students.length > 0) {
+      for (let student of students) {
+        let content = "";
+        if (emailTemplate.status) {
+          content = eval('`' + emailTemplate.template + '`');
+        }
+        await helper.sendEmail(student.email, `${type} Fee Payment Reminder ⏰.`, content);
+        await helper.sendNotification(
+          `${type} Fee Payment Reminder`,
+          `Dear ${student.name}, this is a reminder that your ${type} fee payment is pending. Please complete the payment at your earliest convenience to avoid any late fees or penalties.`,
+          student._id,
+        );
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
+
+    // for (let i = 0; i < students.length; i++) {
+    //   setTimeout(() => {
+    //     let content = "";
+    //     if (emailTemplate.status) {
+    //       content = eval('`' + emailTemplate.template + '`');
+    //     }
+    //     helper.sendEmail(students[i].email, `${type} Fee Payment Reminder ⏰.`, content);
+    //   }, i * 500); 
+    // }
 
     res.json({
       success: true,
@@ -854,5 +791,20 @@ exports.getNotificationCount = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
+exports.sendTestEmail = async (req, res) => {
+  let reqBody = req.body;
+  let { email, subject, template } = reqBody;
+  try {
+    await helper.sendEmail(email, subject, template);
+    res.status(200).json({
+      success: true,
+      message: "Test email sent successfully!",
+    });
+  } catch (err) {
+    console.log("Error in sendTestEmail:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+}
 
 module.exports = exports;
