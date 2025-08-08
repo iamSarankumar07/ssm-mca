@@ -121,96 +121,14 @@ exports.newStudent = async (req, res) => {
 
     res.status(201).json({ success: true, message: 'Student Registration Successfully!' });
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: 'verifyuserofficial@gmail.com', pass: 'wsdv megz vecp wzen' },
-    });
+    let emailTemplate = await helper.getEmailTemplate("NEW_STUDENT_EMAIL");
+    let content = '';
 
-    const mailOptions = {
-      from: 'verifyuserofficial@gmail.com',
-      to: student.email,
-      subject: 'Registration Successful.',
-      html: `<!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <title>Welcome to Our Community!</title>
-          <style>
-            body {
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              font-size: 16px;
-              line-height: 1.6;
-              color: #333;
-              margin: 0;
-              padding: 0;
-            }
-            .container {
-              max-width: 600px;
-              margin: 20px auto;
-              padding: 20px;
-              background-color: #fff;
-              border-radius: 10px;
-              box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            }
-            h1 {
-              font-size: 36px;
-              color: #007bff; 
-              margin-bottom: 20px;
-              text-align: center;
-              text-transform: uppercase;
-            }
-            p {
-              margin-bottom: 15px;
-              text-align: justify;
-            }
-            ul {
-              margin-bottom: 15px;
-              padding-left: 20px;
-            }
-            li {
-              margin-bottom: 5px;
-            }
-            a {
-              color: #007bff;
-              text-decoration: none;
-            }
-            a:hover {
-              text-decoration: underline;
-            }
-            .footer {
-              font-size: 14px;
-              color: #999;
-              margin-top: 20px;
-              text-align: center;
-            }
-            .highlight {
-              background-color: #eaf6ff;
-              padding: 5px 10px;
-              border-radius: 5px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1>Welcome to SSM College Of Engineering! 🎉</h1>
-            <p>Dear ${student.name},</p>
-            <p>We are thrilled to welcome you to our College! Your account has been successfully Registered 🚀.</p>
-            <p>Here are your login details:</p>
-            <ul>
-              <li><strong>Student ID : </strong> ${studentId}</li>
-              <li><strong>Password : </strong> ${password}</li>
-            </ul>
-            <p>If you have any questions or need further assistance, please feel free to <a href="mailto:verifyuserofficial@gmail.com" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
-            <p>Best regards,<br>Saran Kumar.</p>
-            <div class="footer">
-              This is an automated message. Please do not reply to this email.
-            </div>
-          </div>
-        </body>
-        </html>`
-    };
+    if (emailTemplate.status) {
+      content = eval('`' + emailTemplate.template + '`');
+    }
 
-    await transporter.sendMail(mailOptions);
-
+    helper.sendEmail(student.email, "Welcome to SSM College of Engineering", content);
   } catch (error) {
     console.error('Error during student registration:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
@@ -282,8 +200,8 @@ exports.studentForgotPassword = async (req, res) => {
   let body = req.body;
   try {
     let studentId = body.studentId;
-    let studentData = await Student.findOne({ studentId: studentId, isDelete: false });
-    if (!studentData) {
+    let user = await Student.findOne({ studentId: studentId, isDelete: false });
+    if (!user) {
       return res.status(500).json({
         success: false,
         message: "Student not found!"
@@ -296,132 +214,30 @@ exports.studentForgotPassword = async (req, res) => {
 
     let OTPString = OTP.toString();
 
-    studentData.forgotOtp = OTPString;
-    await studentData.save();
+    user.forgotOtp = OTPString;
+    await user.save();
 
     res.status(200).json({
       success: true,
       message: "OTP Sent successfully!"
     });
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
-      },
-    });
+    user.fullName = user.name;
 
-    const mailOptions = {
-      from: "verifyuserofficial@gmail.com",
-      to: studentData.email,
-      subject: "Email Verification",
-      html: `<!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Reset Password</title>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                font-size: 16px;
-                color: #333;
-                margin: 0;
-                padding: 0;
-              }
+    let emailTemplate = await helper.getEmailTemplate("RESET_PASSWORD_OTP");
+    let content = '';
 
-              .container {
-                width: 80%;
-                max-width: 600px;
-                margin: 20px auto;
-                background-color: #f5f5f5;
-                border-radius: 5px;
-                padding: 30px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-              }
+    if (emailTemplate.status) {
+      content = eval('`' + emailTemplate.template + '`');
+    }
 
-              .header {
-                text-align: center;
-                margin-bottom: 20px;
-              }
-
-              .header h1 {
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                color: #007bff; 
-              }
-
-              .content {
-                line-height: 1.5;
-              }
-
-              .otp-code {
-                font-weight: bold;
-                font-size: 18px;
-                text-align: center;
-                margin-bottom: 20px;
-                border: 1px solid #ccc;
-                padding: 10px 20px;
-                border-radius: 5px;
-                color: #007bff;
-              }
-
-              .footer {
-                text-align: center;
-                font-size: 14px;
-                margin-top: 20px;
-                color: #666;
-              }
-
-              .footer p {
-                margin: 5px 0;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <div class="header">
-                <h1>Reset Password</h1>
-              </div>
-              <div class="content">
-                <p>Hello ${studentData.name},</p>
-                <p>You have requested to reset your password. Please use the following OTP to reset your password:</p>
-                <p class="otp-code">${OTPString}</p>
-                <p>This OTP is valid for 10 minutes.</p>
-                <p>If you did not request a password reset, please ignore this email or contact support if you have concerns.</p>
-              </div>
-              <div class="footer">
-                <p>Thank you for using our service.</p>
-                <p>If you need any assistance, please contact us at iamsarankumar@outlook.com.</p>
-              </div>
-            </div>
-          </body>
-          </html>
-      `,
-    };
-
-    await transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log("Error sending OTP email:", err);
-        return res.status(500).json({
-          success: false,
-          message: "Error while sending OTP"
-        });
-      }
-      console.log("OTP sent successfully");
-    });
-
+    helper.sendEmail(user.email, "Reset Password OTP", content);
     // res.render("studentForgotOtp", { studentData });
   } catch (err) {
     res.status(500).json({
       success: false,
       message: "Internal Server Error!"
     });
-    // return res.send(
-    //   '<script>alert("forgot password Failed! - Internal Server Error"); window.location.href = "/v1/api/student/forgotPassword";</script>'
-    // );
   }
 };
 
@@ -602,7 +418,11 @@ exports.deleteStudent = async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await Student.findByIdAndUpdate(userId, { isDelete: true });
-    res.redirect("/v1/api/studentList");
+    return res.json({
+      success: true,
+      message: "Deleted successfully!..."
+    })
+    // res.redirect("/v1/api/studentList");
   } catch (err) {
     console.error(err);
     res.send("Error");
@@ -763,156 +583,65 @@ exports.sendAddressUpdateReq = async (req, res) => {
   let selectedYear = data.year;
   let studentId = data.studentId;
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "verifyuserofficial@gmail.com",
-      pass: "wsdv megz vecp wzen",
-    },
-  });
+  let promiseArr = [];
 
-  const sendMail = (studentEmail, studentName) => {
-    const mailOptions = {
-      from: "verifyuserofficial@gmail.com",
-      to: studentEmail,
-      subject: "Address Update Option Enabled",
-      html: `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <title>Address Update Option Enabled</title>
-          <style>
-            body {
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              font-size: 16px;
-              line-height: 1.6;
-              color: #333;
-              margin: 0;
-              padding: 0;
-            }
-            .container {
-              max-width: 600px;
-              margin: 20px auto;
-              padding: 20px;
-              background-color: #fff;
-              border-radius: 10px;
-              box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            }
-            h1 {
-              font-size: 36px;
-              color: #007bff; 
-              margin-bottom: 20px;
-              text-align: center;
-              text-transform: uppercase;
-            }
-            p {
-              margin-bottom: 15px;
-              text-align: justify;
-            }
-            ul {
-              margin-bottom: 15px;
-              padding-left: 20px;
-            }
-            li {
-              margin-bottom: 5px;
-            }
-            a {
-              color: #007bff;
-              text-decoration: none;
-            }
-            a:hover {
-              text-decoration: underline;
-            }
-            .footer {
-              font-size: 14px;
-              color: #999;
-              margin-top: 20px;
-              text-align: center;
-            }
-            .highlight {
-              background-color: #eaf6ff;
-              padding: 5px 10px;
-              border-radius: 5px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1>Address Update Option Enabled</h1>
-            <p>Dear ${studentName},</p>
-            <p>We are pleased to inform you that the address update option has been enabled for your account. You can now log into your student portal and update your address information in your profile.</p>
-            <p>If you have any questions or need further assistance, please feel free to <a href="mailto:iamsarankumar@outlook.in" style="color: #007bff; text-decoration: none;">contact us</a>.</p>
-            <p>Best regards,<br>Saran Kumar</p>
-            <div class="footer">
-              This is an automated message. Please do not reply to this email.
-            </div>
-          </div>
-        </body>
-        </html>
-      `,
-    };
-
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log(err, "Email Sent Failed...");
-      } else {
-        console.log(`Email Sent Successfully to ${studentName} - ${studentEmail}`);
-      }
-    });
-  };
+  let emailTemplate = await helper.getEmailTemplate("ADDRESS_UPDATE_OPTION_ENABLED");
 
   try {
     if (studentId) {
       let query = { studentId: studentId };
-      const result = await Student.findOneAndUpdate(query, {
+      let result = await Student.findOneAndUpdate(query, {
         $set: {
           addressUpdate: false,
         },
       });
-
-      if (!result) {
-        return res.status(404).send(`
-          <script>
-            alert("Student not found");
-            window.location.href = "/v1/api/addressUpdateReq";
-          </script>
-        `);
-      }
 
       sendMail(result.email, result.name);
       let title = "Address Update Option Enabled";
       let message = `Dear ${result.name} your address update option has been enabled. Please log in to your student portal and update your address information in your profile.`;
-      helper.sendNotification(title, message, result._id);
+      // helper.sendNotification(title, message, result._id);
+
+      let studentName = result.name;
+      let content = "";
+      if (emailTemplate.status) {
+        content = eval('`' + emailTemplate.template + '`');
+      }
+      promiseArr.push(
+        helper.sendNotification(title, message, result._id)
+      );
+      promiseArr.push(
+        helper.sendEmail(result.email, "Address Update Option Enabled", content)
+      );
     } else if (selectedYear) {
-      const query = { year: selectedYear };
-      const result = await Student.updateMany(query, {
+      let query = { year: selectedYear };
+      let result = await Student.updateMany(query, {
         $set: {
           addressUpdate: false,
         },
       });
 
-      if (result.matchedCount === 0) {
-        return res.status(404).send(`
-          <script>
-            alert("No students found for the given year");
-            window.location.href = "/v1/api/addressUpdateReq";
-          </script>
-        `);
-      }
+      if (result && result.length > 0) {
+        result.forEach((student) => {
+          let studentName = student.name;
+          let title = "Address Update Option Enabled";
+          let message = `Dear ${student.name} your address update option has been enabled. Please log in to your student portal and update your address information in your profile.`;
+          let content = "";
+          if (emailTemplate.status) {
+            content = eval('`' + emailTemplate.template + '`');
+          }
+          promiseArr.push(
+            helper.sendNotification(title, message, student._id)
+          );
 
-      const students = await Student.find(query);
-      students.forEach((student, index) => {
-        setTimeout(() => {
-          sendMail(student.email, student.name);
-        }, index * 500);
-      });
-    } else {
-      return res.status(400).send(`
-        <script>
-          alert("Invalid request data");
-          window.location.href = "/v1/api/addressUpdateReq";
-        </script>
-      `);
+          promiseArr.push(
+            helper.sendEmail(student.email, "Address Update Option Enabled", content)
+          );
+        });
+      }
+    }
+
+    if (promiseArr.length > 0) {
+      await Promise.all(promiseArr);
     }
 
     res.send(
@@ -1907,15 +1636,15 @@ exports.approveAndReject = async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'verifyuserofficial@gmail.com',
-        pass: 'wsdv megz vecp wzen',
-      },
-    });
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
 
     const mailOptions = {
-      from: 'verifyuserofficial@gmail.com',
+      from: 'ssmcollegeofengineering.ce@gmail.com',
       to: student.email,
       subject: 'Profile Update Request',
       html: `
@@ -2050,15 +1779,15 @@ exports.approveAndRejectTu = async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'verifyuserofficial@gmail.com',
-        pass: 'wsdv megz vecp wzen',
-      },
-    });
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
 
     const mailOptions = {
-      from: 'verifyuserofficial@gmail.com',
+      from: 'ssmcollegeofengineering.ce@gmail.com',
       to: student.email,
       subject: 'Profile Update Request',
       html: `
@@ -2197,15 +1926,15 @@ exports.approveAndRejectEx = async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'verifyuserofficial@gmail.com',
-        pass: 'wsdv megz vecp wzen',
-      },
-    });
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
 
     const mailOptions = {
-      from: 'verifyuserofficial@gmail.com',
+      from: 'ssmcollegeofengineering.ce@gmail.com',
       to: student.email,
       subject: 'Profile Update Request',
       html: `
@@ -2541,266 +2270,297 @@ exports.insertManyStudents = async (req, res) => {
 exports.admissionApply = async (req, res) => {
   try {
     const body = req.body;
+    
     let existingEmail = await admissionModel.findOne({ email: body.email });
     if (existingEmail) {
-      return res.send(
-        '<script>alert("Email already registered!"); window.location.href = "/";</script>'
-      );
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered!"
+      });
+    }
+    
+    let existingPhone = await admissionModel.findOne({ phone: body.phone });
+    if (existingPhone) {
+      return res.status(400).json({
+        success: false,
+        message: "Phone number already registered!"
+      });
     }
 
-    let existingPhone = await admissionModel.findOne({ email: body.phone });
+    let photoUrl = null;
+    let signatureUrl = null;
+    
+    if (req.files) {
+      if (req.files.photo && req.files.photo[0]) {
+        try {
+          const photoUpload = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream(
+              { 
+                public_id: `photo_${Date.now()}_${req.files.photo[0].originalname}`, 
+                resource_type: 'auto', 
+                folder: 'admission/photos',
+                transformation: [
+                  { width: 300, height: 400, crop: 'fill' },
+                  { quality: 'auto' }
+                ]
+              },
+              (error, result) => (error ? reject(error) : resolve(result))
+            ).end(req.files.photo[0].buffer);
+          });
+          photoUrl = photoUpload.secure_url;
+        } catch (uploadError) {
+          console.error('Photo Upload Error:', uploadError);
+          return res.status(500).json({ 
+            success: false, 
+            message: 'Photo upload failed. Please try again.' 
+          });
+        }
+      }
+      
+      if (req.files.signature && req.files.signature[0]) {
+        try {
+          const signatureUpload = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream(
+              { 
+                public_id: `signature_${Date.now()}_${req.files.signature[0].originalname}`, 
+                resource_type: 'auto', 
+                folder: 'admission/signatures',
+                transformation: [
+                  { width: 200, height: 100, crop: 'fit' }, 
+                  { quality: 'auto' }
+                ]
+              },
+              (error, result) => (error ? reject(error) : resolve(result))
+            ).end(req.files.signature[0].buffer);
+          });
+          signatureUrl = signatureUpload.secure_url;
+        } catch (uploadError) {
+          console.error('Signature Upload Error:', uploadError);
+          return res.status(500).json({ 
+            success: false, 
+            message: 'Signature upload failed. Please try again.' 
+          });
+        }
+      }
+    }
 
-    if (existingPhone) {
-      return res.send(
-        '<script>alert("Phone number already registered!"); window.location.href = "/";</script>'
-      );
+    if (!photoUrl) {
+      return res.status(400).json({
+        success: false,
+        message: "Photo is required for admission application."
+      });
     }
 
     body.dob = moment(body.dob).format("DD-MM-YYYY");
-
+    
     const admission = new admissionModel({
       name: body.name,
       fatherName: body.fatherName,
+      motherName: body.motherName,
       gender: body.gender,
       dob: body.dob,
+      nationality: body.nationality,
+      category: body.category,
       phone: body.phone,
       email: body.email,
       address: body.address,
+      city: body.city,
+      state: body.state,
+      pincode: body.pincode,
       program: body.program,
       previousQualification: body.previousQualification,
+      tenthBoard: body.tenthBoard,
+      tenthYear: body.tenthYear,
       tenthMarks: body.tenthMarks,
+      twelfthBoard: body.twelfthBoard,
+      twelfthYear: body.twelfthYear,
       twelfthMarks: body.twelfthMarks,
-      ugPercentage: body.ugPercentage ? body.ugPercentage : 0,
+      ugUniversity: body.ugUniversity || '',
+      ugDegree: body.ugDegree || '',
+      ugYear: body.ugYear || '',
+      ugPercentage: body.ugPercentage || '',
       emergencyContact: body.emergencyContact,
+      emergencyRelation: body.emergencyRelation,
       emergencyPhone: body.emergencyPhone,
+      emergencyAddress: body.emergencyAddress || '',
+      extraCurricular: body.extraCurricular || '',
+      achievements: body.achievements || '',
+      photoUrl: photoUrl, // Store Cloudinary URL
+      signatureUrl: signatureUrl // Store Cloudinary URL
     });
 
     let admissionRefNoCount = await countModel.findOne({
       name: "admissionRefNo",
     });
+    
+    if (!admissionRefNoCount) {
+      admissionRefNoCount = new countModel({
+        name: "admissionRefNo",
+        count: 0
+      });
+      await admissionRefNoCount.save();
+    }
+    
     let count = admissionRefNoCount.count;
     let date = Date.now();
     let prefix = moment(date).format("YY");
     let center = "SSMREF";
     let totalCount = count + 1;
-    let refNo = `${prefix}${center}${totalCount}`;
-
+    let refNo = `${prefix}${center}${totalCount.toString().padStart(4, '0')}`; 
+    
     await countModel.findByIdAndUpdate(admissionRefNoCount._id.toString(), {
       $set: { count: totalCount },
     });
 
     admission.appliedDate = moment(date).format("DD-MM-YYYY");
     admission.refNo = refNo.toString();
-
+    
     let admissionData = await admission.save();
-
+    
     if (admissionData) {
-      const transPorter = nodemailer.createTransport({
+      const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "verifyuserofficial@gmail.com",
-          pass: "wsdv megz vecp wzen",
+          user: "ssmcollegeofengineering.ce@gmail.com",
+          pass: "xotj gtda ojfg zbtc",
         },
       });
-
+      
       const mailOptions = {
-        from: "verifyuserofficial@gmail.com",
+        from: "ssmcollegeofengineering.ce@gmail.com",
         to: admission.email,
-        subject: "Application Received",
+        subject: "Application Received - SSM College of Engineering",
         html: `
           <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <title>Application Received - SSM College of Engineering</title>
-        <style>
-          body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-          }
-          .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-          }
-          h1 {
-            font-size: 28px;
-            color: #007bff;
-            margin-bottom: 20px;
-            text-align: center;
-          }
-          p {
-            margin-bottom: 15px;
-            text-align: justify;
-          }
-          a {
-            color: #007bff;
-            text-decoration: none;
-          }
-          a:hover {
-            text-decoration: underline;
-          }
-          .footer {
-            font-size: 14px;
-            color: #999;
-            margin-top: 20px;
-            text-align: center;
-          }
-          .highlight {
-            background-color: #eaf6ff;
-            padding: 5px 10px;
-            border-radius: 5px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <h1>Application Received 🎓</h1>
-          <p>Dear ${admission.name},</p>
-          <p>Thank you for applying to <strong>SSM College of Engineering</strong>! We have successfully received your application for admission.</p>
-          <p>Your application is currently under review, and our admissions team will reach out to you shortly with the next steps. Here are your application details for reference:</p>
-          <ul>
-            <li><strong>Application ID:</strong> ${refNo}</li>
-            <li><strong>Program Applied:</strong> ${admission.program}</li>
-            <li><strong>Submission Date:</strong> ${admission.appliedDate}</li>
-          </ul>
-          <p>If you have any questions or need further assistance, feel free to <a href="mailto:iam@sarankumar@outlook.in">contact us</a> or visit our <a href="https://ssm-mca.onrender.com/">admissions portal</a>.</p>
-          <p>We are excited to have you as a prospective member of our community and wish you the best of luck!</p>
-          <p>Warm regards,<br>Admissions Office<br><strong>SSM College of Engineering</strong></p>
-          <div class="footer">
-            This is an automated message. Please do not reply directly to this email.
-          </div>
-        </div>
-      </body>
-      </html>
-  `,
+          <html lang="en">
+          <head>
+            <title>Application Received - SSM College of Engineering</title>
+            <style>
+              body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 16px;
+                line-height: 1.6;
+                color: #333;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9;
+              }
+              .container {
+                max-width: 600px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+              }
+              h1 {
+                font-size: 28px;
+                color: #007bff;
+                margin-bottom: 20px;
+                text-align: center;
+              }
+              p {
+                margin-bottom: 15px;
+                text-align: justify;
+              }
+              .details-box {
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 20px 0;
+              }
+              .details-box ul {
+                margin: 0;
+                padding-left: 20px;
+              }
+              .details-box li {
+                margin-bottom: 8px;
+              }
+              a {
+                color: #007bff;
+                text-decoration: none;
+              }
+              a:hover {
+                text-decoration: underline;
+              }
+              .footer {
+                font-size: 14px;
+                color: #999;
+                margin-top: 20px;
+                text-align: center;
+                border-top: 1px solid #eee;
+                padding-top: 15px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Application Received 🎓</h1>
+              <p>Dear ${admission.name},</p>
+              <p>Thank you for applying to <strong>SSM College of Engineering</strong>! We have successfully received your application for admission.</p>
+              <p>Your application is currently under review, and our admissions team will reach out to you shortly with the next steps.</p>
+              
+              <div class="details-box">
+                <h3>Application Details:</h3>
+                <ul>
+                  <li><strong>Application ID:</strong> ${refNo}</li>
+                  <li><strong>Program Applied:</strong> ${admission.program}</li>
+                  <li><strong>Submission Date:</strong> ${admission.appliedDate}</li>
+                  <li><strong>Email:</strong> ${admission.email}</li>
+                  <li><strong>Phone:</strong> ${admission.phone}</li>
+                </ul>
+              </div>
+              
+              <p><strong>Important:</strong> Please keep your Application ID (${refNo}) safe for future reference. You will need it for any inquiries regarding your application status.</p>
+              
+              <p>If you have any questions or need further assistance, feel free to <a href="mailto:admissions@ssmcollege.edu">contact us</a> or visit our <a href="https://ssm-mca.onrender.com/">admissions portal</a>.</p>
+              
+              <p>We are excited to have you as a prospective member of our community and wish you the best of luck!</p>
+              
+              <p>Warm regards,<br>
+              <strong>Admissions Office</strong><br>
+              SSM College of Engineering</p>
+              
+              <div class="footer">
+                This is an automated message. Please do not reply directly to this email.<br>
+                For support, contact: admissions@ssmcollege.edu
+              </div>
+            </div>
+          </body>
+          </html>
+        `,
       };
-
-      transPorter.sendMail(mailOptions, (err, info) => {
+      
+      transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-          console.log(err, "Email Sent Failed...");
+          console.log('Email Send Error:', err);
         } else {
-          console.log("Email Sent Successfully....");
+          console.log('Email Sent Successfully:', info.messageId);
         }
       });
     }
-    res.send(
-      `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Registration</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: #f4f4f4;
-        }
-    
-        .modal {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: fixed;
-          z-index: 1000;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          overflow: auto;
-          background-color: rgba(0, 0, 0, 0.6);
-        }
-    
-        .modal-content {
-          background-color: #fefefe;
-          padding: 20px;
-          border: 1px solid #ccc;
-          border-radius: 10px;
-          width: 80%;
-          max-width: 400px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-    
-        p {
-          margin: 0 0 20px;
-          font-size: 18px;
-          font-weight: bold;
-          color: #28a745;
-          text-align: center;
-        }
-    
-        .button-container {
-          display: flex;
-          justify-content: center;
-          width: 100%;
-        }
-    
-        button[type="button"] {
-          background-color: #3d6ef5ff;
-          color: #f2f2f2;
-          font-weight: bold;
-          padding: 8px 14px;
-          border: none;
-          font-size: 13px;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-        }
-    
-        button[type="button"]:hover {
-          background-color: #f2f2f2;
-          color: #3d6ef5ff;
-          font-weight: bold;
-        }
-      </style>
-    </head>
-    <body>
-      <div id="myModal" class="modal">
-        <div class="modal-content">
-          <p>Admission application submited successfully!</p>
-          <div class="button-container">
-            <button type="button" onclick="redirect()">Continue</button>
-          </div>
-        </div>
-      </div>
-    
-      <script>
-        function redirect() {
-          window.location.href = "/";
-        }
-    
-        window.onload = function() {
-          var modal = document.getElementById("myModal");
-    
-          modal.style.display = "flex";
-    
-          window.onclick = function(event) {
-            if (event.target == modal) {
-              modal.style.display = "none";
-              redirect();
-            }
-          }
-        }
-      </script>
-    </body>
-    </html>
-    
-    `
-    );
+
+    res.status(200).json({
+      success: true,
+      message: "Application submitted successfully!",
+      refNo: refNo,
+      data: {
+        id: admissionData._id,
+        refNo: refNo,
+        name: admission.name,
+        email: admission.email,
+        program: admission.program,
+        appliedDate: admission.appliedDate
+      }
+    });
+
   } catch (err) {
-    console.log("error in newAdmission : " + err);
-    return res.send(
-      '<script>alert("Admission aplication Failed! due to Internal Server Error"); window.location.href = "/";</script>'
-    );
+    console.error("Error in admissionApply:", err);
+    
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error. Please try again later."
+    });
   }
 };
 
@@ -3360,7 +3120,20 @@ exports.saveSkills = async (req, res) => {
 };
 
 exports.saveExperience = async (req, res) => {
-  let { userId, isEdit, isDelete, experienceId, title, company, location, startDate, endDate, currentlyWorking, description, skills } = req.body;
+  let {
+    userId,
+    isEdit,
+    isDelete,
+    experienceId,
+    title,
+    company,
+    location,
+    startDate,
+    endDate,
+    currentlyWorking,
+    description,
+    skills,
+  } = req.body;
 
   try {
     let studentData = await Student.findById(userId);
@@ -3400,9 +3173,19 @@ exports.saveExperience = async (req, res) => {
       studentData.experiences.push(experience);
     }
 
-    await studentData.save();
+    studentData = await studentData.save();
+
+    let currentExperience = studentData.experiences.find((exp) => exp.currentlyWorking === true);
+
+    if (currentExperience) {
+      studentData.location = currentExperience.location;
+      studentData.company = currentExperience.company;
+      studentData.currentPosition = currentExperience.title;
+      await studentData.save();
+    }
 
     res.status(200).json({ success: true, message: "Experience saved successfully!" });
+
   } catch (err) {
     console.error("Error in saveExperience:", err);
     res.status(500).json({ success: false, message: "Internal Server Error!" });
@@ -3487,12 +3270,42 @@ exports.getEducation = async (req, res) => {
   }
 };
 
-exports.alumniNetwork = async (req, res) => {
+exports.updateAlumniProfile = async (req, res) => {
+  let reqBody = req.body;
+  let logginedUser = req.student
   try {
-    res.render("alumniNetwork", { alumni: true });
+    let update = {}
+    if (reqBody?.email) update.email = reqBody?.email;
+    if (reqBody?.gender) update.gender = reqBody?.gender
+    if (reqBody?.linkedin) update.linkedin = reqBody?.linkedin
+    if (reqBody?.dob) update.dob = reqBody?.dob
+    if (reqBody?.currentLocation) update.currentLocation = reqBody?.currentLocation
+    if (reqBody?.address) {
+      update.address = {
+        address: reqBody?.address?.address,
+        city: reqBody?.address?.city,
+        state: reqBody?.address?.state,
+        pinCode: reqBody?.address?.pinCode,
+        country: reqBody?.address?.country
+      }
+    }
+    let alumniData = await Student.findByIdAndUpdate(logginedUser?.id, update, {new: true});
+
+    if (alumniData) {
+      return res.json({
+        success: true,
+        message: "Updated successfully"
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: "Unable to update"
+      })
+    }
+
   } catch (err) {
-    console.log("Error in alumniNetwork: " + err);
-    res.status(500).render('error', { message: "Internal Server Error. Please try again later" });
+    console.log("Error in updateAlumniProfile: " + err);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 };
 

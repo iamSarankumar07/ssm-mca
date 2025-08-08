@@ -1,4 +1,3 @@
-const express = require("express");
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
@@ -8,9 +7,10 @@ const moment = require("moment");
 const attendanceController = require("../controller/attendanceController");
 const employeeSalaryModel = require("../models/employeeSalaryModel");
 const staffAttendanceModel = require("../models/staffAttendanceModel");
-
-
+const helper = require("../helper");
 const cloudinary = require('cloudinary').v2;
+const contactModel = require("../models/contactModel");
+const admissionModel = require("../models/admissionModel");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -111,16 +111,16 @@ exports.staffRegister = async (req, res) => {
       message: "Registered successfully!"
     });
 
-    let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'verifyuserofficial@gmail.com',
-        pass: 'wsdv megz vecp wzen',
-      },
-    });
+    const transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
 
     let mailOptions = {
-      from: 'verifyuserofficial@gmail.com',
+      from: 'ssmcollegeofengineering.ce@gmail.com',
       to: user.email,
       subject: 'Registration Successful.',
         html: `
@@ -307,111 +307,15 @@ exports.login = async (req, res) => {
     });
 
     await user.save();
-    
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
-      },
-    });
 
-    const mailOptions = {
-      from: "verifyuserofficial@gmail.com",
-      to: user.email,
-      subject: "OTP Verification",
-      html: `<!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Email Verification</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            color: #333;
-            margin: 0;
-            padding: 0;
-          }
-      
-          .container {
-            width: 80%;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-            padding: 30px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-          }
-      
-          .header {
-            text-align: center;
-            margin-bottom: 20px;
-          }
-      
-          .header h1 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #007bff; 
-          }
-      
-          .content {
-            line-height: 1.5;
-          }
-      
-          .otp-code {
-            font-weight: bold;
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: #007bff;
-          }
-      
-          .footer {
-            text-align: center;
-            font-size: 14px;
-            margin-top: 20px;
-            color: #666;
-          }
-      
-          .footer p {
-            margin: 5px 0;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <h1>Email Verification</h1>
-          </div>
-          <div class="content">
-            <p>Hello ${user.fullName},</p>
-            <p>Please use the following OTP to verify your login:</p>
-            <p class="otp-code">${OTPString[0]}${OTPString[1]}${OTPString[2]}${OTPString[3]}${OTPString[4]}${OTPString[5]}</p>
-            <p>This OTP is valid for 10 Minutes.</p>
-            <p>If you didn't request this OTP, please ignore this email.</p>
-          </div>
-          <div class="footer">
-            <p>Thank you for using our service.</p>
-            <p>If you need any assistance, please contact us at iamsarankumar@outlook.com.</p>
-          </div>
-        </div>
-      </body>
-      </html>
-      `,
-    };
+    let emailTemplate = await helper.getEmailTemplate("OTP_VERIFICATION");
+    let content = '';
 
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log("Error sending OTP email:", err);
-      }
-      console.log("OTP sent successfully");
-    });
+    if (emailTemplate.status) {
+      content = eval('`' + emailTemplate.template + '`')
+    }
+
+    helper.sendEmail(user.email, "OTP Verification", content);
   } catch (err) {
     console.log("Error in userLogin:", err);
     return res.status(500).json({
@@ -484,128 +388,29 @@ exports.verifyOtp = async (req, res) => {
 
 exports.resendOtp = async (req, res) => {
   try {
-    let userData = await Admin.findOne({ staffId: req?.body?.staffId});
+    let user = await Admin.findOne({ staffId: req?.body?.staffId});
 
     let OTP = Math.floor(100000 + Math.random() * 900000);
-    if (userData.email === "sarankumar@outlook.in" || userData.email === "saran@outlook.in") {
+    if (user.email === "sarankumar@outlook.in" || user.email === "saran@outlook.in") {
       OTP = 123456;
     }
     let OTPString = OTP.toString();
-    userData.otp = OTPString;
-    await userData.save();
+    user.otp = OTPString;
+    await user.save();
 
     res.status(200).json({
       success: true,
       message: "OTP Sent Successfully!"
     });
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
-      },
-    });
+    let emailTemplate = await helper.getEmailTemplate("OTP_VERIFICATION");
+    let content = '';
 
-    const mailOptions = {
-      from: "verifyuserofficial@gmail.com",
-      to: userData.email,
-      subject: "OTP Verification",
-      html: `<!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Email Verification</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            color: #333;
-            margin: 0;
-            padding: 0;
-          }
-      
-          .container {
-            width: 80%;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-            padding: 30px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-          }
-      
-          .header {
-            text-align: center;
-            margin-bottom: 20px;
-          }
-      
-          .header h1 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #007bff; 
-          }
-      
-          .content {
-            line-height: 1.5;
-          }
-      
-          .otp-code {
-            font-weight: bold;
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: #007bff;
-          }
-      
-          .footer {
-            text-align: center;
-            font-size: 14px;
-            margin-top: 20px;
-            color: #666;
-          }
-      
-          .footer p {
-            margin: 5px 0;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <h1>Email Verification</h1>
-          </div>
-          <div class="content">
-            <p>Hello ${userData.fullName},</p>
-            <p>Please use the following OTP to verify your login:</p>
-            <p class="otp-code">${OTPString[0]}${OTPString[1]}${OTPString[2]}${OTPString[3]}${OTPString[4]}${OTPString[5]}</p>
-            <p>This OTP is valid for 10 Minutes.</p>
-            <p>If you didn't request this OTP, please ignore this email.</p>
-          </div>
-          <div class="footer">
-            <p>Thank you for using our service.</p>
-            <p>If you need any assistance, please contact us at iamsarankumar@outlook.com.</p>
-          </div>
-        </div>
-      </body>
-      </html>
-      `,
-    };
+    if (emailTemplate.status) {
+      content = eval('`' + emailTemplate.template + '`')
+    }
 
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log("Error sending OTP email:", err);
-        // return res.send(
-        //   '<script>alert("Error sending OTP"); window.location.href = "/v1/api/signin";</script>'
-        // );
-      }
-      console.log("OTP sent successfully");
-    });
+    helper.sendEmail(user.email, "OTP Verification", content);
 
   } catch (err) {
     console.log(err);
@@ -705,113 +510,15 @@ exports.forgotPassword = async (req, res) => {
       message: "OTP sent successfully!"
     })
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "verifyuserofficial@gmail.com",
-        pass: "wsdv megz vecp wzen",
-      },
-    });
+    let emailTemplate = await helper.getEmailTemplate("RESET_PASSWORD_OTP");
+    let content = '';
 
-    const mailOptions = {
-      from: "verifyuserofficial@gmail.com",
-      to: user.email,
-      subject: "Email Verification",
-      html: `<!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Reset Password</title>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                font-size: 16px;
-                color: #333;
-                margin: 0;
-                padding: 0;
-              }
+    if (emailTemplate.status) {
+      content = eval('`' + emailTemplate.template + '`');
+    }
 
-              .container {
-                width: 80%;
-                max-width: 600px;
-                margin: 20px auto;
-                background-color: #f5f5f5;
-                border-radius: 5px;
-                padding: 30px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-              }
+    helper.sendEmail(user.email, "Reset Password OTP", content);
 
-              .header {
-                text-align: center;
-                margin-bottom: 20px;
-              }
-
-              .header h1 {
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                color: #007bff; 
-              }
-
-              .content {
-                line-height: 1.5;
-              }
-
-              .otp-code {
-                font-weight: bold;
-                font-size: 18px;
-                text-align: center;
-                margin-bottom: 20px;
-                border: 1px solid #ccc;
-                padding: 10px 20px;
-                border-radius: 5px;
-                color: #007bff;
-              }
-
-              .footer {
-                text-align: center;
-                font-size: 14px;
-                margin-top: 20px;
-                color: #666;
-              }
-
-              .footer p {
-                margin: 5px 0;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <div class="header">
-                <h1>Reset Password</h1>
-              </div>
-              <div class="content">
-                <p>Hello ${user.name},</p>
-                <p>You have requested to reset your password. Please use the following OTP to reset your password:</p>
-                <p class="otp-code">${OTPString[0]}${OTPString[1]}${OTPString[2]}${OTPString[3]}${OTPString[4]}${OTPString[5]}</p>
-                <p>This OTP is valid for 10 minutes.</p>
-                <p>If you did not request a password reset, please ignore this email or contact support if you have concerns.</p>
-              </div>
-              <div class="footer">
-                <p>Thank you for using our service.</p>
-                <p>If you need any assistance, please contact us at iamsarankumar@outlook.com.</p>
-              </div>
-            </div>
-          </body>
-          </html>
-      `,
-    };
-
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log("Error sending OTP email:", err);
-        return res.send(
-          '<script>alert("Error sending OTP"); window.location.href = "/v1/api/signin";</script>'
-        );
-      }
-      console.log("OTP sent successfully");
-    });
     // res.render("forgotOtp", { user: user });
   } catch (err) {
     console.log("Error in forgot password:", err);
@@ -1240,6 +947,528 @@ exports.staffBulkSalaryUpdate = async (req, res) => {
       message: "Internal Server Error!"
     });
   }
+};
+
+exports.updateProfile = async (req, res) => {
+  let userData = req.user;
+  let reqBody = req.body;
+  try {
+    let formatDob = moment(reqBody.dob, ("DD-MM-YYYY" || "YYYY-MM-DD" )).format("DD-MM-YYYY");
+    let updateObj = {
+      aadhaarNum: reqBody.aadhaarNum,
+      address: reqBody.address,
+      bloodGroup: reqBody.bloodGroup,
+      city: reqBody.city,
+      dob: formatDob,
+      email: reqBody.email,
+      emergencyContact: reqBody.emergencyContact,
+      firstName: reqBody.firstName,
+      lastName: reqBody.lastName,
+      phone: reqBody.phone,
+      pinCode: reqBody.pinCode,
+      state: reqBody.state,
+      gender: reqBody.gender,
+      fullName: reqBody.firstName + " " + reqBody.lastName
+    }
+    let updateData = await Admin.findByIdAndUpdate(userData.id, updateObj, {new: true});
+
+    if (updateData) {
+      return res.json({
+        success: true,
+        message: "Profile details updated successfully!..."
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: "Failed to update Profile details"
+      });
+    }
+  } catch (err) {
+    console.log("Error in updateProfile: " + err);
+    res.json({
+      success: false,
+      message: "Internal Server Error!"
+    });
+  }
+};
+
+exports.updateBankDetails = async (req, res) => {
+  let userData = req.user;
+  let reqBody = req.body;
+  try {
+    let updateObj = {
+      bankDetails: {
+        accountHolderName: reqBody.accountHolderName,
+        accountNumber: reqBody.accountNumber,
+        bankName: reqBody.bankName,
+        ifscCode: reqBody.ifscCode,
+        upiId: reqBody.upiId,
+      }
+    }
+    let updateData = await Admin.findByIdAndUpdate(userData.id, updateObj, {new: true});
+
+    if (updateData) {
+      return res.json({
+        success: true,
+        message: "Bank details updated successfully!..."
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: "Failed to update Bank details"
+      });
+    }
+  } catch (err) {
+    console.log("Error in updateBankDetails: " + err);
+    res.json({
+      success: false,
+      message: "Internal Server Error!"
+    });
+  }
+};
+
+exports.getContactMessages = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || "";
+
+    const skip = (page - 1) * limit;
+
+    const query = search
+      ? {
+          $or: [
+            { name: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+            { message: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const contactMessages = await contactModel
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({ date: -1 });
+
+    const totalCount = await contactModel.countDocuments(query);
+    const totalPages = Math.ceil(totalCount / limit);
+    const hasNext = page < totalPages;
+    const hasPrevious = page > 1;
+
+    let pages = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push({ number: i, isCurrent: i === page, isEllipsis: false });
+      }
+    } else {
+      if (page <= 3) {
+        for (let i = 1; i <= 3; i++) {
+          pages.push({ number: i, isCurrent: i === page, isEllipsis: false });
+        }
+        pages.push({ isEllipsis: true });
+        pages.push({ number: totalPages, isCurrent: false, isEllipsis: false });
+      } else if (page >= totalPages - 2) {
+        pages.push({ number: 1, isCurrent: false, isEllipsis: false });
+        pages.push({ isEllipsis: true });
+        for (let i = totalPages - 2; i <= totalPages; i++) {
+          pages.push({ number: i, isCurrent: i === page, isEllipsis: false });
+        }
+      } else {
+        pages.push({ number: 1, isCurrent: false, isEllipsis: false });
+        pages.push({ isEllipsis: true });
+        pages.push({ number: page, isCurrent: true, isEllipsis: false });
+        pages.push({ isEllipsis: true });
+        pages.push({ number: totalPages, isCurrent: false, isEllipsis: false });
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Messages retrieved successfully",
+      data: {
+        messages: contactMessages,
+        pagination: {
+          currentPage: page,
+          totalPages: totalPages,
+          totalItems: totalCount,
+          itemsPerPage: limit,
+          startItem: skip + 1,
+          endItem: skip + contactMessages.length,
+          hasNext,
+          hasPrevious,
+          nextPage: hasNext ? page + 1 : null,
+          previousPage: hasPrevious ? page - 1 : null,
+          pages,
+        },
+      },
+    });
+  } catch (err) {
+    console.error("Error in getContactMessages:", err);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.contactMessagesStats = async (req, res) => {
+  try {
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    let [totalCount, todayCount, newCount] = await Promise.all([
+      contactModel.find({}).countDocuments(),
+      contactModel.find({
+        date: { $gte: startOfToday, $lte: endOfToday }
+      }).countDocuments(),
+      contactModel.find({
+        readStatus: false
+      }).countDocuments()
+    ]);
+    return res.status(200).json({
+      success: true,
+      totalCount,
+      todayCount,
+      newCount
+    })
+  } catch (err) {
+    console.log("Error in contactMessagesStats: " + err);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.updateContactMessageStatus = async (req, res) => {
+  try {
+    const { messageId } = req.params;
+
+    const updatedMessage = await contactModel.findByIdAndUpdate(
+      messageId,
+      { readStatus: true },
+      { new: true }
+    );
+
+    if (!updatedMessage) {
+      return res.status(404).json({ success: false, message: "Message not found" });
+    }
+
+    res.status(200).json({ success: true, data: updatedMessage, message: "Status updated!" });
+  } catch (err) {
+    console.log("Error in updateContactMessageStatus: " + err);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+exports.getAdmissionApplications = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search?.trim() || "";
+    const status = req.query.status;
+    const program = req.query.program;
+
+    const skip = (page - 1) * limit;
+
+    const query = {};
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { phone: { $regex: search, $options: "i" } }
+      ];
+    }
+
+    if (status) {
+      query.status = status;
+    }
+
+    if (program) {
+      query.program = program;
+    }
+
+    const totalCount = await admissionModel.countDocuments(query);
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const applications = await admissionModel
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: "Applications fetched successfully",
+      data: {
+        applications,
+        pagination: {
+          currentPage: page,
+          totalPages,
+          totalCount,
+          limit,
+          hasNext: page < totalPages,
+          hasPrev: page > 1
+        }
+      }
+    });
+  } catch (err) {
+    console.error("Error in getAdmissionApplications:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+exports.admissionApplicationStats = async (req, res) => {
+  try {
+    const now = new Date();
+
+    const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+    const endOfToday = new Date(now.setHours(23, 59, 59, 999));
+
+    const startOfWeek = new Date();
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const [
+      totalCount,
+      todayCount,
+      thisWeekCount,
+      thisMonthCount,
+      statusAggregation,
+      programAggregation
+    ] = await Promise.all([
+      admissionModel.countDocuments(),
+      admissionModel.countDocuments({ createdAt: { $gte: startOfToday, $lte: endOfToday } }),
+      admissionModel.countDocuments({ createdAt: { $gte: startOfWeek } }),
+      admissionModel.countDocuments({ createdAt: { $gte: startOfMonth } }),
+
+      admissionModel.aggregate([
+        {
+          $group: {
+            _id: "$status",
+            count: { $sum: 1 }
+          }
+        }
+      ]),
+
+      admissionModel.aggregate([
+        {
+          $group: {
+            _id: "$program",
+            count: { $sum: 1 }
+          }
+        }
+      ])
+    ]);
+
+    const statusBreakdown = {};
+    let pendingCount = 0,
+      approvedCount = 0,
+      rejectedCount = 0,
+      underReviewCount = 0;
+
+    statusAggregation.forEach(item => {
+      const status = item._id;
+      const count = item.count;
+      statusBreakdown[status] = count;
+
+      if (status === "Pending") pendingCount = count;
+      else if (status === "Approved") approvedCount = count;
+      else if (status === "Rejected") rejectedCount = count;
+      else if (status === "Under Review") underReviewCount = count;
+    });
+
+    const programStats = {};
+    programAggregation.forEach(item => {
+      if (item._id) {
+        programStats[item._id] = item.count;
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Statistics fetched successfully",
+      data: {
+        totalCount,
+        pendingCount,
+        approvedCount,
+        rejectedCount,
+        underReviewCount,
+        todayCount,
+        thisWeekCount,
+        thisMonthCount,
+        programStats,
+        statusBreakdown
+      }
+    });
+  } catch (err) {
+    console.error("Error in admissionApplicationStats:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error"
+    });
+  }
+};
+
+exports.updateAdmissionApplicationStatus = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    const { status, remarks } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ success: false, message: "Status is required" });
+    }
+
+    let update = { status };
+    if (remarks) update.remarks = remarks;
+
+    const updatedApplication = await admissionModel.findByIdAndUpdate(
+      applicationId,
+      update,
+      { new: true }
+    );
+
+    if (!updatedApplication) {
+      return res.status(404).json({ success: false, message: "Application not found" });
+    }
+
+    const subject = getEmailSubject(status);
+    const template = generateEmailTemplate(updatedApplication.name, status, remarks);
+
+    helper.sendEmail(updatedApplication.email, subject, template);
+
+    res.status(200).json({ success: true, data: updatedApplication, message: "Application status updated!" });
+  } catch (err) {
+    console.log("Error in updateAdmissionApplicationStatus: " + err);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+function getEmailSubject(status) {
+  switch (status) {
+    case 'Pending':
+      return "📩 Your Admission Application Has Been Received";
+    case 'Under Review':
+      return "🔍 Your Admission Application Is Under Review";
+    case 'Approved':
+      return "🎉 Congratulations! Your Admission Has Been Approved";
+    case 'Rejected':
+      return "❌ Update: Your Admission Application Was Rejected";
+    default:
+      return "📄 Admission Application Status Update";
+  }
+};
+
+function generateEmailTemplate(name, status, remarks = '') {
+  const statusStyles = {
+    "Pending":    { color: "#17a2b8", icon: "⏳" },
+    "Under Review": { color: "#ffc107", icon: "🔎" },
+    "Approved":   { color: "#28a745", icon: "✅" },
+    "Rejected":   { color: "#dc3545", icon: "❌" }
+  };
+
+  const { color, icon } = statusStyles[status] || { color: "#6c757d", icon: "ℹ️" };
+
+  return `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Application Status Update</title>
+    <style>
+      body {
+        background-color: #f4f6f8;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        overflow: hidden;
+      }
+      .header {
+        background-color: ${color};
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .body {
+        padding: 30px 25px;
+      }
+      .body h2 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #222;
+      }
+      .status-box {
+        margin: 20px 0;
+        padding: 20px;
+        border-left: 6px solid ${color};
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+      .remarks {
+        margin-top: 15px;
+        font-style: italic;
+        color: #555;
+      }
+      .footer {
+        background-color: #f1f1f1;
+        padding: 20px;
+        text-align: center;
+        font-size: 13px;
+        color: #777;
+      }
+      @media (max-width: 600px) {
+        .body, .header, .footer {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <h1>${icon} Admission Status: ${status}</h1>
+      </div>
+      <div class="body">
+        <h2>Dear ${name},</h2>
+        <p>We hope you're doing well. We wanted to inform you that your admission application status has been updated:</p>
+
+        <div class="status-box">
+          <strong>Status:</strong> ${status}
+        </div>
+
+        ${remarks ? `<p class="remarks"><strong>Remarks:</strong> ${remarks}</p>` : ''}
+
+        <p>If you have any questions, feel free to reply to this email or reach out to our admissions team.</p>
+
+        <p>Thank you,<br>The Admissions Team</p>
+      </div>
+      <div class="footer">
+        &copy; ${new Date().getFullYear()} SSM College of Engineering. All rights reserved.<br/>
+        This is an automated message. Please do not reply directly to this email.
+      </div>
+    </div>
+  </body>
+  </html>
+  `;
 };
 
 module.exports = exports;
