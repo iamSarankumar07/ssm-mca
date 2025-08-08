@@ -39,6 +39,10 @@ hbs.registerHelper('subtract', function (a, b) {
     return a - b;
 });
 
+hbs.registerHelper('or', function (a, b, options) {
+  return a || b;
+});
+
 hbs.registerHelper('toJSON', function (object) {
     return JSON.stringify(object);
 });
