@@ -13,6 +13,11 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  readStatus: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
   date: {
     type: Date,
     default: Date.now

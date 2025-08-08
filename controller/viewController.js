@@ -200,10 +200,9 @@ exports.moveStudents = async (req, res) => {
   res.render("moveStudents", { course: course, year: year, moveToYear: moveToYear, isAlumni: moveToYear === "Alumni"});
 };
 
-exports.message = async (req, res) => {
+exports.contactMessages = async (req, res) => {
   try {
-    const messages = await Contact.find().sort({ createdAt: -1 });
-    res.render("message", { messages });
+    res.render("contactMessages");
   } catch (err) {
     console.log(err);
     res.send(err);

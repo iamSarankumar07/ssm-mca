@@ -1,79 +1,45 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const admissionSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: false,
-    },
-    fatherName: {
-        type: String,
-        required: false,
-    },
-    gender: {
-        type: String,
-        required: false,
-    },
-    dob: {
-        type: String,
-        required: false
-    },
-    phone: {
-        type: String,
-        required: false,
-    },
-    email: {
-        type: String,
-        required: false,
-    },
-    address: {
-        type: String,
-        required: false
-    },
-    previousQualification: {
-        type: String,
-        required: false
-    },
-    program: {
-        type: String,
-        required: false
-    },
-    tenthMarks: {
-        type: String,
-        required: false
-    },
-    twelfthMarks: {
-        type: String,
-        required: false
-    },
-    ugPercentage: {
-        type: String,
-        required: false
-    },
-    emergencyContact: {
-        type: String,
-        required: false
-    },
-    emergencyPhone: {
-        type: String,
-        required: false
-    },
-    refNo: {
-        type: String,
-        required: false
-    },
-    appliedDate: {
-        type: String,
-        required: false
-    },
-    isDelete: {
-        type: Boolean,
-        default: false,
-    },
-    createdAt: {
-        type: Date,
-        immutable: true,
-        default: () => Date.now(),
-    }
+  name: { type: String, required: true },
+  fatherName: { type: String, required: true },
+  motherName: { type: String, required: true },
+  gender: { type: String, required: true },
+  dob: { type: String, required: true },
+  nationality: { type: String, required: true },
+  remarks: { type: String, required: true },
+  category: String,
+  phone: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  address: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  pincode: { type: String, required: true },
+  program: { type: String, required: true },
+  previousQualification: { type: String, required: true },
+  tenthBoard: { type: String, required: true },
+  tenthYear: { type: String, required: true },
+  tenthMarks: { type: String, required: true },
+  twelfthBoard: { type: String, required: true },
+  twelfthYear: { type: String, required: true },
+  twelfthMarks: { type: String, required: true },
+  ugUniversity: String,
+  ugDegree: String,
+  ugYear: String,
+  ugPercentage: String,
+  emergencyContact: { type: String, required: true },
+  emergencyRelation: { type: String, required: true },
+  emergencyPhone: { type: String, required: true },
+  emergencyAddress: String,
+  extraCurricular: String,
+  achievements: String,
+  photoUrl: { type: String, required: true },
+  signatureUrl: String,
+  appliedDate: String,
+  refNo: { type: String, unique: true },
+  status: { type: String, default: "Pending" },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('admission', admissionSchema);
+module.exports = mongoose.model("admission", admissionSchema);

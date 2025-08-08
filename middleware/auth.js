@@ -56,6 +56,7 @@ exports.sValidateToken = async (req, res, next) => {
       req.student = {
         studentId: validToken.studentId,
         _id: validToken.id,
+        id: validToken.id,
         name: validToken.name,
         year: validToken.year,
         course: validToken.course
