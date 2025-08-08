@@ -917,6 +917,64 @@
             padding: 0.4rem 0.6rem;
             font-size: 0.8rem;
         }
+
+        /* Delete Modal Styles */
+        .delete-modal .modal-header {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .delete-modal .modal-body {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .delete-icon {
+            font-size: 4rem;
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+
+        .delete-message {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .delete-warning {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .student-delete-info {
+            background-color: var(--secondary);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--danger);
+        }
+
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            margin: auto;
+            border: 2px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
         
         @media (max-width: 768px) {
             .card-header {
@@ -1124,6 +1182,40 @@
             </div>
         </div>
 
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade delete-modal" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmModalLabel">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Confirm Delete
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="delete-icon">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                        <div class="delete-message">Are you sure you want to delete this student?</div>
+                        <div class="delete-warning">This action cannot be undone.</div>
+                        
+                        <div class="student-delete-info" id="studentDeleteInfo">
+                            <!-- Student info will be populated here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                            <i class="fas fa-trash me-1"></i> Delete Student
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="modalsContainer"></div>
     </div>
 
@@ -1134,6 +1226,7 @@
         let filteredStudents = [];
         let currentView = 'card';
         let isLoading = false;
+        let studentToDelete = null;
         
         const loadingSpinner = document.getElementById('loadingSpinner');
         const skeletonLoading = document.getElementById('skeletonLoading');
@@ -1148,9 +1241,14 @@
         const searchInput = document.getElementById('searchInput');
         const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
         
+        // Delete modal elements
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        const studentDeleteInfo = document.getElementById('studentDeleteInfo');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        
         function showToast(message, type = 'info') {
-            const toastClass = type === 'success' ? 'toastify-success' : 
-                              type === 'error' ? 'toastify-error' : 'toastify-info';
+            const toastClass = type === 'success' ? 'toastify-success' :
+                               type === 'error' ? 'toastify-error' : 'toastify-info';
             
             Toastify({
                 text: message,
@@ -1177,6 +1275,9 @@
                     setActiveView(view);
                 });
             });
+
+            // Delete confirmation handler
+            confirmDeleteBtn.addEventListener('click', handleDeleteConfirm);
         });
         
         function generateSkeletons() {
@@ -1309,9 +1410,9 @@
             
             filteredStudents = students.filter(student => {
                 const matchesGender = gender === '' || student.gender === gender;
-                const matchesSearch = search === '' || 
-                    student.name.toLowerCase().includes(search) || 
-                    student.studentId.toLowerCase().includes(search) ||
+                const matchesSearch = search === '' ||
+                     student.name.toLowerCase().includes(search) ||
+                     student.studentId.toLowerCase().includes(search) ||
                     student.registerNumber.toLowerCase().includes(search) ||
                     student.email.toLowerCase().includes(search);
                 
@@ -1354,9 +1455,9 @@
                     <div class="student-header">
                         <div class="student-info">
                             <div class="avatar">
-                                ${student.imageUrl ? 
-                                    `<img src="${student.imageUrl}" alt="${student.name}">` : 
-                                    initials}
+                                ${student.imageUrl ?
+                                     `<img src="${student.imageUrl}" alt="${student.name}">` :
+                                     initials}
                             </div>
                             <div class="student-info-details">
                                 <div class="student-name">${student.name}</div>
@@ -1394,10 +1495,9 @@
                         <a href="/v1/api/studentEdit/${student._id}" class="btn btn-sm btn-warning">
                             <i class="fas fa-edit me-1"></i> Edit
                         </a>
-                        <a href="/v1/api/studentDelete/${student._id}" class="btn btn-sm btn-danger" 
-                           onclick="return confirm('Are you sure you want to delete this student?')">
+                        <button class="btn btn-sm btn-danger delete-student-btn" data-id="${student._id}" data-name="${student.name}" data-student-id="${student.studentId}">
                             <i class="fas fa-trash me-1"></i> Delete
-                        </a>
+                        </button>
                     </div>
                 `;
                 
@@ -1405,6 +1505,9 @@
                 
                 const viewDetailsBtn = card.querySelector('.view-details-btn');
                 viewDetailsBtn.addEventListener('click', () => showDetails(student.studentId));
+
+                const deleteBtn = card.querySelector('.delete-student-btn');
+                deleteBtn.addEventListener('click', (e) => showDeleteConfirmation(e.target.closest('.delete-student-btn')));
             });
         }
         
@@ -1421,9 +1524,9 @@
                     <td>
                         <div class="student-info">
                             <div class="avatar">
-                                ${student.imageUrl ? 
-                                    `<img src="${student.imageUrl}" alt="${student.name}">` : 
-                                    initials}
+                                ${student.imageUrl ?
+                                     `<img src="${student.imageUrl}" alt="${student.name}">` :
+                                     initials}
                             </div>
                             <div class="student-info-details">
                                 <div class="student-name">${student.name}</div>
@@ -1445,16 +1548,106 @@
                             <a href="/v1/api/studentEdit/${student._id}" class="action-btn edit-btn" title="Edit Student">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="/v1/api/studentDelete/${student._id}" class="action-btn delete-btn" 
-                               onclick="return confirm('Are you sure you want to delete this student?')" title="Delete Student">
+                            <button class="action-btn delete-btn delete-student-btn" data-id="${student._id}" data-name="${student.name}" data-student-id="${student.studentId}" title="Delete Student">
                                 <i class="fas fa-trash"></i>
-                            </a>
+                            </button>
                         </div>
                     </td>
                 `;
                 
                 tableBody.appendChild(row);
+
+                const deleteBtn = row.querySelector('.delete-student-btn');
+                deleteBtn.addEventListener('click', (e) => showDeleteConfirmation(e.target.closest('.delete-student-btn')));
             });
+        }
+
+        function showDeleteConfirmation(deleteBtn) {
+            const studentId = deleteBtn.getAttribute('data-id');
+            const studentName = deleteBtn.getAttribute('data-name');
+            const studentStudentId = deleteBtn.getAttribute('data-student-id');
+
+            studentToDelete = {
+                id: studentId,
+                name: studentName,
+                studentId: studentStudentId
+            };
+
+            // Populate student info in modal
+            studentDeleteInfo.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <div class="avatar me-3">
+                        ${getInitials(studentName)}
+                    </div>
+                    <div>
+                        <div class="fw-bold">${studentName}</div>
+                        <div class="text-muted small">Student ID: ${studentStudentId}</div>
+                    </div>
+                </div>
+            `;
+
+            // Reset button state
+            confirmDeleteBtn.classList.remove('btn-loading');
+            confirmDeleteBtn.disabled = false;
+            confirmDeleteBtn.innerHTML = '<i class="fas fa-trash me-1"></i> Delete Student';
+
+            deleteModal.show();
+        }
+
+        async function handleDeleteConfirm() {
+            if (!studentToDelete) return;
+
+            // Show loading state
+            confirmDeleteBtn.classList.add('btn-loading');
+            confirmDeleteBtn.disabled = true;
+            confirmDeleteBtn.innerHTML = 'Deleting...';
+
+            try {
+                const response = await fetch(`/v1/api/studentDelete/${studentToDelete.id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Success
+                    showToast(`Student "${studentToDelete.name}" has been deleted successfully`, 'success');
+                    
+                    // Remove student from local arrays
+                    students = students.filter(s => s._id !== studentToDelete.id);
+                    filterStudents(); // Re-render the list
+                    
+                    // Update stats
+                    updateStats();
+                    
+                    deleteModal.hide();
+                } else {
+                    // Error from server
+                    showToast(result.message || 'Failed to delete student', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting student:', error);
+                showToast('Failed to delete student. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                confirmDeleteBtn.classList.remove('btn-loading');
+                confirmDeleteBtn.disabled = false;
+                confirmDeleteBtn.innerHTML = '<i class="fas fa-trash me-1"></i> Delete Student';
+                studentToDelete = null;
+            }
+        }
+
+        function updateStats() {
+            const totalStudents = students.length;
+            const maleStudents = students.filter(s => s.gender === 'Male').length;
+            const femaleStudents = students.filter(s => s.gender === 'Female').length;
+
+            document.getElementById('totalStudents').textContent = totalStudents;
+            document.getElementById('maleStudents').textContent = maleStudents;
+            document.getElementById('femaleStudents').textContent = femaleStudents;
         }
         
         function showDetails(studentId) {
@@ -1499,11 +1692,11 @@
                                 <img src="${student.imageUrl || '/placeholder.svg?height=120&width=120'}" alt="Student Image" class="student-avatar">
                                 <h4 class="student-name">${student.name}</h4>
                                 <p class="student-id">${student.studentId} | ${student.registerNumber}</p>
-                                ${student.gender === 'Male' ? 
-                                    `<span class="student-badge" style="background-color: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                                ${student.gender === 'Male' ?
+                                     `<span class="student-badge" style="background-color: rgba(59, 130, 246, 0.1); color: #3b82f6;">
                                         <i class="fas fa-male"></i> Male
-                                    </span>` : 
-                                    `<span class="student-badge" style="background-color: rgba(236, 72, 153, 0.1); color: #ec4899;">
+                                    </span>` :
+                                     `<span class="student-badge" style="background-color: rgba(236, 72, 153, 0.1); color: #ec4899;">
                                         <i class="fas fa-female"></i> Female
                                     </span>`
                                 }
@@ -1512,20 +1705,20 @@
                             <!-- Tabs for better organization -->
                             <ul class="nav nav-tabs" id="studentTabs-${student.studentId}" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="personal-tab-${student.studentId}" data-bs-toggle="tab" 
-                                            data-bs-target="#personal-${student.studentId}" type="button" role="tab" aria-selected="true">
+                                    <button class="nav-link active" id="personal-tab-${student.studentId}" data-bs-toggle="tab"
+                                             data-bs-target="#personal-${student.studentId}" type="button" role="tab" aria-selected="true">
                                         <i class="fas fa-id-card me-1"></i> Personal Info
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="academic-tab-${student.studentId}" data-bs-toggle="tab" 
-                                            data-bs-target="#academic-${student.studentId}" type="button" role="tab" aria-selected="false">
+                                    <button class="nav-link" id="academic-tab-${student.studentId}" data-bs-toggle="tab"
+                                             data-bs-target="#academic-${student.studentId}" type="button" role="tab" aria-selected="false">
                                         <i class="fas fa-graduation-cap me-1"></i> Academic Info
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="contact-tab-${student.studentId}" data-bs-toggle="tab" 
-                                            data-bs-target="#contact-${student.studentId}" type="button" role="tab" aria-selected="false">
+                                    <button class="nav-link" id="contact-tab-${student.studentId}" data-bs-toggle="tab"
+                                             data-bs-target="#contact-${student.studentId}" type="button" role="tab" aria-selected="false">
                                         <i class="fas fa-address-book me-1"></i> Contact & Family
                                     </button>
                                 </li>

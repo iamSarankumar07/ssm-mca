@@ -7,24 +7,32 @@
     <link rel="icon" href="https://your-favicon-url.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
         
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
             --primary-light: rgba(99, 102, 241, 0.1);
-            --secondary: #f9fafb;
-            --text-primary: #111827;
-            --text-secondary: #6b7280;
-            --border: #e5e7eb;
+            --primary-dark: #3730a3;
+            --secondary: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
             --success: #10b981;
             --success-light: rgba(16, 185, 129, 0.1);
             --warning: #f59e0b;
             --warning-light: rgba(203, 140, 31, 0.1);
             --danger: #ef4444;
             --danger-light: rgba(239, 68, 68, 0.1);
-            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --transition: all 0.2s ease;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
         }
 
         * {
@@ -40,25 +48,26 @@
         }
 
         body {
-            background-color: #f3f4f6;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             color: var(--text-primary);
-            line-height: 1.5;
+            line-height: 1.6;
             display: flex;
             flex-direction: column;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
         }
 
         .container {
             width: 100%;
             height: 100vh;
             max-width: 100%;
-            padding: 0rem;
+            padding: 0;
             display: flex;
             flex-direction: column;
         }
 
         .card {
             background-color: white;
-            border-radius: 0rem;
+            border-radius: 0;
             box-shadow: var(--card-shadow);
             overflow: hidden;
             display: flex;
@@ -67,45 +76,161 @@
             flex: 1;
         }
 
+        /* Modern Professional Header */
         .header {
             position: relative;
-            padding: 1.2rem;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            color: white;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-light);
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             flex-shrink: 0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            text-align: center;
-            margin: 0;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .back-button {
-            position: absolute;
-            left: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.2);
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: var(--radius-md);
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            text-decoration: none;
             transition: var(--transition);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         .back-button:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: translateX(-3px);
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--card-shadow);
         }
 
         .back-button i {
+            font-size: 0.875rem;
+        }
+
+        .header-title-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
+            font-size: 1.125rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header h1 {
             font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            margin-top: 0.125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-width: 3rem;
+        }
+
+        .stat-number {
+            font-size: 1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.625rem;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.125rem;
+        }
+
+        .refresh-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: var(--radius-md);
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--card-shadow);
+        }
+
+        .refresh-button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px) rotate(180deg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .refresh-button i {
+            font-size: 0.875rem;
         }
 
         .content {
@@ -134,14 +259,15 @@
         }
 
         .search-input {
-            width: 80%;
-            padding: 1rem 1rem 1rem 3rem;
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.75rem;
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            font-size: 1rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
             background-color: white;
             transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            font-weight: 500;
         }
 
         .search-icon {
@@ -149,14 +275,15 @@
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 1.125rem;
+            color: var(--text-tertiary);
+            font-size: 1rem;
         }
 
         .search-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1), var(--card-shadow);
+            transform: translateY(-1px);
         }
 
         .search-spinner {
@@ -175,7 +302,7 @@
         .date-filters {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
@@ -183,38 +310,34 @@
             position: relative;
             display: flex;
             align-items: center;
+            gap: 0.5rem;
         }
 
         .date-label {
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.75rem;
+            font-weight: 600;
             color: var(--text-secondary);
-            margin-right: 0.5rem;
             white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .date-input {
             padding: 0.75rem 1rem;
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
+            border-radius: var(--radius-md);
             font-size: 0.875rem;
             background-color: white;
             transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            width: 170px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            width: 150px;
+            font-weight: 500;
         }
 
         .date-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        }
-
-        .date-icon {
-            position: absolute;
-            right: 0.75rem;
-            color: var(--text-secondary);
-            pointer-events: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1), var(--card-shadow);
         }
 
         .filter-buttons {
@@ -226,50 +349,55 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1.5rem;
-            background-color: var(--primary);
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            font-weight: 500;
-            border-radius: 0.75rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
             border: none;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
             white-space: nowrap;
+            font-size: 0.875rem;
         }
 
         .filter-button:hover {
-            background-color: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-lg);
         }
 
         .filter-button i {
             margin-right: 0.5rem;
+            font-size: 0.75rem;
         }
 
         .reset-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 1.25rem;
             background-color: white;
             color: var(--text-secondary);
-            font-weight: 500;
-            border-radius: 0.75rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
             border: 1px solid var(--border);
             cursor: pointer;
             transition: var(--transition);
             white-space: nowrap;
+            font-size: 0.875rem;
         }
 
         .reset-button:hover {
             background-color: var(--secondary);
             color: var(--text-primary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
         }
 
         .reset-button i {
             margin-right: 0.5rem;
+            font-size: 0.75rem;
         }
 
         .active-filters {
@@ -286,25 +414,32 @@
             padding: 0.375rem 0.75rem;
             background-color: var(--primary-light);
             color: var(--primary);
-            border-radius: 9999px;
+            border-radius: var(--radius-lg);
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
+            border: 1px solid rgba(99, 102, 241, 0.2);
         }
 
         .filter-tag i {
             margin-left: 0.5rem;
             cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .filter-tag i:hover {
+            opacity: 1;
         }
 
         .table-container {
-            overflow: auto;
-            border-radius: 0.75rem;
+            overflow-y: auto;
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border);
-            margin-bottom: 1.5rem;
             flex: 1;
             position: relative;
             background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--card-shadow);
         }
 
         table {
@@ -323,13 +458,17 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         td {
             padding: 1rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--border-light);
             color: var(--text-secondary);
             vertical-align: middle;
+            font-weight: 500;
         }
 
         tr:last-child td {
@@ -344,24 +483,29 @@
             display: inline-flex;
             align-items: center;
             padding: 0.375rem 0.75rem;
-            border-radius: 9999px;
-            font-weight: 500;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
             font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .status-success {
             background-color: var(--success-light);
             color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .status-pending {
             background-color: var(--warning-light);
             color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
         }
 
         .status-failed {
             background-color: var(--danger-light);
             color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
         .status i {
@@ -378,117 +522,84 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 2.25rem;
-            height: 2.25rem;
-            border-radius: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--radius-md);
             color: var(--primary);
             background-color: var(--primary-light);
             transition: var(--transition);
+            border: 1px solid rgba(99, 102, 241, 0.2);
         }
 
         .action-icon:hover {
-            background-color: rgba(99, 102, 241, 0.2);
+            background-color: var(--primary);
+            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1);
+            box-shadow: var(--card-shadow);
         }
 
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
+        /* Infinite scroll loading indicator */
+        .scroll-loading {
+            display: none;
+            padding: 2rem;
+            text-align: center;
             background-color: white;
-            border-radius: 0.75rem;
-            padding: 0.3rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-top: 1px solid var(--border);
         }
 
-        .pagination-info {
+        .scroll-loading.active {
+            display: block;
+        }
+
+        .scroll-loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .scroll-spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .scroll-loading-text {
             color: var(--text-secondary);
             font-size: 0.875rem;
-        }
-
-        .pagination-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .page-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 2.25rem;
-            height: 2.25rem;
-            padding: 0 0.5rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
             font-weight: 500;
+        }
+
+        /* End of data indicator */
+        .end-of-data {
+            display: none;
+            padding: 2rem;
+            text-align: center;
             color: var(--text-secondary);
-            background-color: transparent;
-            border: 1px solid transparent;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .page-button:hover {
-            background-color: var(--secondary);
-            color: var(--text-primary);
-        }
-
-        .page-button.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .page-button.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .page-button i {
-            font-size: 0.75rem;
-        }
-
-        .btn-container {
-            margin-top: 1.5rem;
-            display: flex;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.875rem 1.75rem;
-            background-color: var(--primary);
-            color: white;
+            font-size: 0.875rem;
+            background-color: white;
+            border-top: 1px solid var(--border);
             font-weight: 500;
-            border-radius: 0.75rem;
-            text-decoration: none;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
         }
 
-        .btn:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px -1px rgba(99, 102, 241, 0.3);
+        .end-of-data.active {
+            display: block;
         }
 
-        .btn i {
-            margin-right: 0.5rem;
+        .end-of-data i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--success);
         }
 
         .loading-spinner {
             display: inline-block;
-            width: 1.5rem;
-            height: 1.5rem;
-            border: 3px solid rgba(99, 102, 241, 0.3);
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid rgba(99, 102, 241, 0.3);
             border-radius: 50%;
             border-top-color: var(--primary);
             animation: spin 1s ease-in-out infinite;
@@ -502,7 +613,7 @@
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: loading 1.5s infinite;
-            border-radius: 0.25rem;
+            border-radius: var(--radius-sm);
         }
 
         @keyframes loading {
@@ -530,13 +641,13 @@
         .skeleton-badge {
             height: 1.5rem;
             width: 5rem;
-            border-radius: 9999px;
+            border-radius: var(--radius-lg);
         }
 
         .skeleton-action {
-            height: 2.25rem;
-            width: 2.25rem;
-            border-radius: 0.5rem;
+            height: 2rem;
+            width: 2rem;
+            border-radius: var(--radius-md);
         }
 
         .modal {
@@ -556,10 +667,10 @@
             background-color: white;
             margin: 2rem auto;
             padding: 0;
-            border-radius: 1.25rem;
+            border-radius: var(--radius-xl);
             width: 90%;
             max-width: 32rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: var(--shadow-lg);
             overflow: hidden;
             animation: modalFadeIn 0.3s ease;
             transform: translateY(0);
@@ -576,10 +687,10 @@
 
         .modal-header {
             padding: 1.5rem;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.125rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -588,7 +699,7 @@
 
         .modal-close {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             cursor: pointer;
             transition: var(--transition);
             width: 2rem;
@@ -597,10 +708,12 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            opacity: 0.8;
         }
 
         .modal-close:hover {
             background-color: rgba(255, 255, 255, 0.2);
+            opacity: 1;
         }
 
         .modal-body {
@@ -617,9 +730,12 @@
             background-color: transparent;
             padding: 0.75rem 0;
             color: var(--text-secondary);
-            font-weight: 500;
-            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-light);
             position: relative;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .detail-table td {
@@ -636,7 +752,7 @@
         .receipt-link {
             color: var(--primary);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
@@ -652,7 +768,7 @@
         }
 
         a {
-          text-decoration: none;
+            text-decoration: none;
         }
 
         .empty-state {
@@ -663,14 +779,16 @@
 
         .empty-state i {
             font-size: 3rem;
-            color: var(--border);
+            color: var(--text-tertiary);
             margin-bottom: 1rem;
+            opacity: 0.5;
         }
 
         .empty-state h3 {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+            font-weight: 600;
         }
 
         .toast-container {
@@ -685,12 +803,13 @@
             align-items: center;
             padding: 1rem;
             background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
             margin-bottom: 0.75rem;
             transform: translateX(calc(100% + 1rem));
             transition: transform 0.3s ease;
             max-width: 24rem;
+            border: 1px solid var(--border-light);
         }
 
         .toast.show {
@@ -699,7 +818,7 @@
 
         .toast-icon {
             margin-right: 0.75rem;
-            font-size: 1.25rem;
+            font-size: 1.125rem;
         }
 
         .toast-success .toast-icon {
@@ -717,10 +836,11 @@
         .toast-title {
             font-weight: 600;
             margin-bottom: 0.25rem;
+            font-size: 0.875rem;
         }
 
         .toast-message {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
         }
 
@@ -729,7 +849,7 @@
             cursor: pointer;
             padding: 0.5rem;
             margin: -0.5rem;
-            border-radius: 0.25rem;
+            border-radius: var(--radius-sm);
             transition: var(--transition);
         }
 
@@ -737,55 +857,12 @@
             background-color: var(--secondary);
         }
 
-        .page-loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 20;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            backdrop-filter: blur(2px);
-            border-radius: 0.75rem;
-        }
-
-        .page-loading-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .page-spinner-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .page-spinner {
-            width: 2.5rem;
-            height: 2.5rem;
-            border: 4px solid rgba(99, 102, 241, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 0.75rem;
-        }
-
-        .page-spinner-text {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
+        /* Mobile Responsive */
         @media (max-width: 992px) {
+            .header-stats {
+                display: none;
+            }
+
             .filters-row {
                 flex-direction: column;
                 align-items: stretch;
@@ -802,14 +879,24 @@
         }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.25rem;
-            }
-            
             .header {
-                padding: 1rem;
+                padding: 0.875rem 1rem;
             }
-            
+
+            .header h1 {
+                font-size: 1.125rem;
+            }
+
+            .header-subtitle {
+                font-size: 0.625rem;
+            }
+
+            .header-icon {
+                width: 2.25rem;
+                height: 2.25rem;
+                font-size: 1rem;
+            }
+
             .content {
                 padding: 1rem;
             }
@@ -821,17 +908,12 @@
             .hide-sm {
                 display: none;
             }
-
-            .pagination {
-                flex-direction: column;
-                gap: 0.75rem;
-                align-items: flex-start;
-            }
             
             .date-filters {
                 flex-direction: column;
                 align-items: flex-start;
                 width: 100%;
+                gap: 0.75rem;
             }
             
             .date-input-group {
@@ -852,16 +934,29 @@
         }
 
         @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.125rem;
+            .header {
+                padding: 0.75rem 0.875rem;
             }
-            
+
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .header-left {
+                gap: 0.75rem;
+            }
+
             .back-button {
                 width: 2rem;
                 height: 2rem;
-                left: 1rem;
             }
-            
+
+            .header-icon {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.875rem;
+            }
+
             .content {
                 padding: 0.75rem;
             }
@@ -875,9 +970,12 @@
                 width: 95%;
             }
 
-            .pagination-controls {
-                width: 100%;
-                justify-content: space-between;
+            .search-input {
+                padding: 0.75rem 0.875rem 0.75rem 2.5rem;
+            }
+
+            .search-icon {
+                left: 0.875rem;
             }
         }
     </style>
@@ -885,11 +983,41 @@
 <body>
     <div class="container">
         <div class="card">
+            <!-- Modern Professional Header -->
             <div class="header">
-                <a href="/v1/api/dashboard#fee" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <h1>Fees Transactions Data</h1>
+                <div class="header-left">
+                    <a href="/v1/api/dashboard#fee" class="back-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div class="header-title-section">
+                        <div class="header-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1>Payment Transactions</h1>
+                            <div class="header-subtitle">Financial Records</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalTransactions">-</span>
+                            <span class="stat-label">Total</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="successfulTransactions">-</span>
+                            <span class="stat-label">Success</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="pendingTransactions">-</span>
+                            <span class="stat-label">Pending</span>
+                        </div>
+                    </div>
+                    <button class="refresh-button" onclick="refreshData()" title="Refresh Data">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
             </div>
             
             <div class="content">
@@ -909,25 +1037,23 @@
                     
                     <div class="date-filters">
                         <div class="date-input-group">
-                            <span class="date-label">From Date:</span>
-                            <input 
-                                type="date" 
-                                id="fromDateInput" 
-                                class="date-input" 
-                                placeholder="From date"
+                            <span class="date-label">From:</span>
+                            <input
+                                 type="date"
+                                 id="fromDateInput"
+                                 class="date-input"
+                                 placeholder="From date"
                             />
-                            {{!-- <i class="fas fa-calendar date-icon"></i> --}}
                         </div>
                         
                         <div class="date-input-group">
-                            <span class="date-label">To Date:</span>
-                            <input 
-                                type="date" 
-                                id="toDateInput" 
-                                class="date-input" 
-                                placeholder="To date"
+                            <span class="date-label">To:</span>
+                            <input
+                                 type="date"
+                                 id="toDateInput"
+                                 class="date-input"
+                                 placeholder="To date"
                             />
-                            {{!-- <i class="fas fa-calendar date-icon"></i> --}}
                         </div>
                         
                         <div class="filter-buttons">
@@ -944,14 +1070,7 @@
                 <div id="activeFilters" class="active-filters" style="display: none;">
                 </div>
                 
-                <div class="table-container">
-                    <div id="pageLoadingOverlay" class="page-loading-overlay">
-                        <div class="page-spinner-container">
-                            <div class="page-spinner"></div>
-                            <div class="page-spinner-text">Loading data...</div>
-                        </div>
-                    </div>
-                    
+                <div class="table-container" id="tableContainer">
                     <table>
                         <thead>
                             <tr>
@@ -1013,28 +1132,21 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                
-                <div class="pagination">
-                    <div class="pagination-info">
-                        Showing <span id="startRecord">0</span> to <span id="endRecord">0</span> of <span id="totalRecords">0</span> transactions
+                    
+                    <!-- Infinite scroll loading indicator -->
+                    <div id="scrollLoading" class="scroll-loading">
+                        <div class="scroll-loading-content">
+                            <div class="scroll-spinner"></div>
+                            <div class="scroll-loading-text">Loading more transactions...</div>
+                        </div>
                     </div>
-                    <div class="pagination-controls">
-                        <button id="prevPageBtn" class="page-button disabled">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <div id="paginationNumbers"></div>
-                        <button id="nextPageBtn" class="page-button">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
+                    
+                    <!-- End of data indicator -->
+                    <div id="endOfData" class="end-of-data">
+                        <i class="fas fa-check-circle"></i>
+                        <div>You've reached the end of the transactions list</div>
                     </div>
                 </div>
-                
-                {{!-- <div class="btn-container">
-                    <a class="btn" href="/v1/api/dashboard#fee">
-                        <i class="fas fa-arrow-left"></i> Back to Dashboard
-                    </a>
-                </div> --}}
             </div>
         </div>
     </div>
@@ -1056,25 +1168,20 @@
 
     <script>
         let currentPage = 1;
-        const pageSize = 10;
+        const pageSize = 20;
         let totalRecords = 0;
-        let totalPages = 0;
         let searchTerm = '';
         let dateFilters = {
             fromDate: null,
             toDate: null
         };
         let isLoading = false;
+        let hasMoreData = true;
+        let allTransactions = [];
 
         const transactionsTable = document.getElementById('transactionsTable');
         const searchInput = document.getElementById('searchInput');
         const searchSpinner = document.getElementById('searchSpinner');
-        const prevPageBtn = document.getElementById('prevPageBtn');
-        const nextPageBtn = document.getElementById('nextPageBtn');
-        const paginationNumbers = document.getElementById('paginationNumbers');
-        const startRecord = document.getElementById('startRecord');
-        const endRecord = document.getElementById('endRecord');
-        const totalRecordsElement = document.getElementById('totalRecords');
         const transactionModal = document.getElementById('transactionModal');
         const modalContent = document.getElementById('modalContent');
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -1084,10 +1191,12 @@
         const applyFilterBtn = document.getElementById('applyFilterBtn');
         const resetFilterBtn = document.getElementById('resetFilterBtn');
         const activeFilters = document.getElementById('activeFilters');
-        const pageLoadingOverlay = document.getElementById('pageLoadingOverlay'); // NEW
+        const tableContainer = document.getElementById('tableContainer');
+        const scrollLoading = document.getElementById('scrollLoading');
+        const endOfData = document.getElementById('endOfData');
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetchTransactions();
+            fetchTransactions(true);
             setupEventListeners();
         });
 
@@ -1102,14 +1211,12 @@
                 
                 searchTimeout = setTimeout(() => {
                     searchTerm = this.value.trim();
-                    currentPage = 1; 
-                    fetchTransactions();
+                    resetAndFetch();
                     updateActiveFilters();
                 }, 500);
             });
-            
-            prevPageBtn.addEventListener('click', goToPreviousPage);
-            nextPageBtn.addEventListener('click', goToNextPage);
+
+            tableContainer.addEventListener('scroll', handleScroll);
             
             closeModalBtn.addEventListener('click', closeModal);
             
@@ -1137,6 +1244,29 @@
             });
         }
 
+        function handleScroll() {
+            const { scrollTop, scrollHeight, clientHeight } = tableContainer;
+            
+            if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading && hasMoreData) {
+                loadMoreTransactions();
+            }
+        }
+
+        function resetAndFetch() {
+            currentPage = 1;
+            hasMoreData = true;
+            allTransactions = [];
+            endOfData.classList.remove('active');
+            fetchTransactions(true);
+        }
+
+        function loadMoreTransactions() {
+            if (!hasMoreData || isLoading) return;
+            
+            currentPage++;
+            fetchTransactions(false);
+        }
+
         function applyDateFilter() {
             const fromDate = fromDateInput.value;
             const toDate = toDateInput.value;
@@ -1149,11 +1279,8 @@
             dateFilters.fromDate = fromDate ? fromDate : null;
             dateFilters.toDate = toDate ? toDate : null;
             
-            currentPage = 1;
-            fetchTransactions();
-            
+            resetAndFetch();
             updateActiveFilters();
-            
             showToast('Filter Applied', 'Transactions filtered by date range', 'success');
         }
 
@@ -1170,8 +1297,7 @@
             fromDateInput.setAttribute('max', today);
             toDateInput.setAttribute('min', '');
             
-            currentPage = 1;
-            fetchTransactions();
+            resetAndFetch();
             
             activeFilters.style.display = 'none';
             activeFilters.innerHTML = '';
@@ -1231,8 +1357,7 @@
         function clearSearch() {
             searchInput.value = '';
             searchTerm = '';
-            currentPage = 1;
-            fetchTransactions();
+            resetAndFetch();
             updateActiveFilters();
         }
 
@@ -1241,16 +1366,24 @@
             toDateInput.value = '';
             dateFilters.fromDate = null;
             dateFilters.toDate = null;
-            currentPage = 1;
-            fetchTransactions();
+            resetAndFetch();
             updateActiveFilters();
         }
 
-        async function fetchTransactions() {
+        function refreshData() {
+            resetAndFetch();
+            showToast('Data Refreshed', 'Transaction data has been updated', 'success');
+        }
+
+        async function fetchTransactions(isInitialLoad = false) {
             try {
                 isLoading = true;
                 
-                transactionsTable.innerHTML = getSkeletonRows(pageSize > 5 ? 5 : pageSize);
+                if (isInitialLoad) {
+                    transactionsTable.innerHTML = getSkeletonRows(5);
+                } else {
+                    scrollLoading.classList.add('active');
+                }
                 
                 searchSpinner.classList.add('active');
                 
@@ -1277,28 +1410,47 @@
                 const data = await response.json();
                 
                 totalRecords = data.totalRecords || 0;
-                totalPages = Math.ceil(totalRecords / pageSize);
+                const newTransactions = data.transactions || [];
                 
-                renderTransactions(data.transactions || []);
+                hasMoreData = newTransactions.length === pageSize && allTransactions.length + newTransactions.length < totalRecords;
                 
-                updatePagination();
+                if (isInitialLoad) {
+                    allTransactions = newTransactions;
+                    renderAllTransactions();
+                } else {
+                    allTransactions = [...allTransactions, ...newTransactions];
+                    appendTransactions(newTransactions);
+                }
+                
+                if (!hasMoreData) {
+                    endOfData.classList.add('active');
+                }
+                
+                // Update header stats
+                updateHeaderStats(data);
                 
                 searchSpinner.classList.remove('active');
-    
+                scrollLoading.classList.remove('active');
                 isLoading = false;
                 
             } catch (error) {
                 console.error('Error fetching transactions:', error);
-                
                 showToast('Error loading data', error.message, 'error');
-                
                 searchSpinner.classList.remove('active');
-                
+                scrollLoading.classList.remove('active');
                 isLoading = false;
-                
             }
         }
-        
+
+        function updateHeaderStats(data) {
+            // Update stats in header if available
+            if (data.stats) {
+                document.getElementById('totalTransactions').textContent = data.stats.total || totalRecords;
+                document.getElementById('successfulTransactions').textContent = data.stats.successful || '-';
+                document.getElementById('pendingTransactions').textContent = data.stats.pending || '-';
+            }
+        }
+
         function getSkeletonRows(count) {
             let rows = '';
             for (let i = 0; i < count; i++) {
@@ -1323,10 +1475,10 @@
             return rows;
         }
 
-        function renderTransactions(transactions) {
+        function renderAllTransactions() {
             transactionsTable.innerHTML = '';
             
-            if (transactions.length === 0) {
+            if (allTransactions.length === 0) {
                 transactionsTable.innerHTML = `
                     <tr>
                         <td colspan="8">
@@ -1341,131 +1493,66 @@
                 return;
             }
             
-            transactions.forEach(transaction => {
-                const row = document.createElement('tr');
-                
-                const txnDate = new Date(transaction.txnDate);
-                const formattedDate = txnDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                });
-                
-                let statusClass = 'status-success';
-                let statusIcon = 'fa-check-circle';
-                
-                if (transaction.paymentStatus === 'pending') {
-                    statusClass = 'status-pending';
-                    statusIcon = 'fa-clock';
-                } else if (transaction.paymentStatus === 'failed') {
-                    statusClass = 'status-failed';
-                    statusIcon = 'fa-times-circle';
-                }
-                
-                row.innerHTML = `
-                    <td>${transaction.txnId}</td>
-                    <td>${transaction.currency} ${transaction.amount}</td>
-                    <td class="hide-xs">${transaction.paymentType}</td>
-                    <td class="hide-sm">${transaction.paymentMode}</td>
-                    <td class="hide-sm">${transaction.paymentGateway}</td>
-                    <td>${formattedDate}</td>
-                    <td>
-                        <span class="status ${statusClass}">
-                            <i class="fas ${statusIcon}"></i>
-                            ${transaction.paymentStatus.charAt(0).toUpperCase() + transaction.paymentStatus.slice(1)}
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <a href="${transaction.receipt_url}" target="_blank" class="action-icon" title="View Receipt">
-                                <i class="fas fa-receipt"></i>
-                            </a>
-                            <a href="javascript:void(0)" onclick="showTransactionDetails('${transaction.txnId}')" class="action-icon" title="View Details">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                        </div>
-                    </td>
-                `;
-                
+            allTransactions.forEach(transaction => {
+                const row = createTransactionRow(transaction);
                 transactionsTable.appendChild(row);
             });
-            
-            const startIndex = (currentPage - 1) * pageSize + 1;
-            const endIndex = Math.min(startIndex + transactions.length - 1, totalRecords);
-            updatePaginationInfo(startIndex, endIndex);
         }
 
-        function updatePagination() {
-            prevPageBtn.classList.toggle('disabled', currentPage === 1);
-            nextPageBtn.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
-            
-            paginationNumbers.innerHTML = '';
-            
-            let startPage = Math.max(1, currentPage - 2);
-            let endPage = Math.min(totalPages, startPage + 4);
-            
-            if (endPage === totalPages) {
-                startPage = Math.max(1, endPage - 4);
-            }
-            
-            if (startPage > 1) {
-                addPageButton(1);
-                if (startPage > 2) {
-                    addEllipsis();
-                }
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                addPageButton(i);
-            }
-            
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    addEllipsis();
-                }
-                addPageButton(totalPages);
-            }
+        function appendTransactions(transactions) {
+            transactions.forEach(transaction => {
+                const row = createTransactionRow(transaction);
+                transactionsTable.appendChild(row);
+            });
         }
 
-        function addPageButton(pageNum) {
-            const button = document.createElement('button');
-            button.className = `page-button ${pageNum === currentPage ? 'active' : ''}`;
-            button.textContent = pageNum;
-            button.addEventListener('click', () => goToPage(pageNum));
-            paginationNumbers.appendChild(button);
-        }
-
-        function addEllipsis() {
-            const ellipsis = document.createElement('span');
-            ellipsis.className = 'page-button';
-            ellipsis.textContent = '...';
-            ellipsis.style.cursor = 'default';
-            paginationNumbers.appendChild(ellipsis);
-        }
-
-        function updatePaginationInfo(startIndex, endIndex) {
-            startRecord.textContent = totalRecords > 0 ? startIndex : 0;
-            endRecord.textContent = endIndex;
-            totalRecordsElement.textContent = totalRecords;
-        }
-
-        function goToPage(pageNum) {
-            if (pageNum >= 1 && pageNum <= totalPages && !isLoading) {
-                currentPage = pageNum;
-                fetchTransactions();
+        function createTransactionRow(transaction) {
+            const row = document.createElement('tr');
+            
+            const txnDate = new Date(transaction.txnDate);
+            const formattedDate = txnDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            let statusClass = 'status-success';
+            let statusIcon = 'fa-check-circle';
+            
+            if (transaction.paymentStatus === 'pending') {
+                statusClass = 'status-pending';
+                statusIcon = 'fa-clock';
+            } else if (transaction.paymentStatus === 'failed') {
+                statusClass = 'status-failed';
+                statusIcon = 'fa-times-circle';
             }
-        }
-
-        function goToPreviousPage() {
-            if (currentPage > 1 && !isLoading) {
-                goToPage(currentPage - 1);
-            }
-        }
-
-        function goToNextPage() {
-            if (currentPage < totalPages && !isLoading) {
-                goToPage(currentPage + 1);
-            }
+            
+            row.innerHTML = `
+                <td>${transaction.txnId}</td>
+                <td>${transaction.currency} ${transaction.amount}</td>
+                <td class="hide-xs">${transaction.paymentType}</td>
+                <td class="hide-sm">${transaction.paymentMode}</td>
+                <td class="hide-sm">${transaction.paymentGateway}</td>
+                <td>${formattedDate}</td>
+                <td>
+                    <span class="status ${statusClass}">
+                        <i class="fas ${statusIcon}"></i>
+                        ${transaction.paymentStatus.charAt(0).toUpperCase() + transaction.paymentStatus.slice(1)}
+                    </span>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="${transaction.receipt_url}" target="_blank" class="action-icon" title="View Receipt">
+                            <i class="fas fa-receipt"></i>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showTransactionDetails('${transaction.txnId}')" class="action-icon" title="View Details">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    </div>
+                </td>
+            `;
+            
+            return row;
         }
 
         function showTransactionDetails(txnId) {
@@ -1634,10 +1721,12 @@
             }, 5000);
         }
 
+        // Global functions for onclick handlers
         window.showTransactionDetails = showTransactionDetails;
         window.clearSearch = clearSearch;
         window.resetFilters = resetFilters;
         window.resetDateFilters = resetDateFilters;
+        window.refreshData = refreshData;
     </script>
 </body>
 </html>

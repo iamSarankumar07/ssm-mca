@@ -204,6 +204,132 @@
             font-weight: 500;
             color: var(--dark);
         }
+
+        /* Edit Mode Styles */
+        .edit-mode {
+            display: none;
+        }
+
+        .edit-form-group {
+            margin-bottom: 1rem;
+        }
+
+        .edit-form-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .edit-form-control {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--dark);
+            background-color: var(--white);
+            transition: all 0.2s ease;
+        }
+
+        .edit-form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .edit-form-control:disabled {
+            background-color: var(--secondary);
+            color: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-edit {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.35rem 0.7rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-edit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-save {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: var(--success);
+            color: var(--white);
+            border: none;
+            padding: 0.35rem 0.7rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background-color: #059669;
+        }
+
+        .btn-cancel {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background-color: var(--white);
+            color: var(--gray);
+            border: 1px solid var(--light-gray);
+            padding: 0.35rem 0.7rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-cancel:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0.875rem;
+            height: 0.875rem;
+            margin-top: -0.4375rem;
+            margin-left: -0.4375rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
         
         .nav-tabs {
             border-bottom: 1px solid var(--light-gray);
@@ -316,26 +442,6 @@
         .btn-check-in:disabled {
             background-color: var(--success);
             cursor: not-allowed;
-        }
-        
-        .btn-loading {
-            position: relative;
-            color: transparent !important;
-        }
-        
-        .btn-loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 1rem;
-            height: 1rem;
-            margin-top: -0.5rem;
-            margin-left: -0.5rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--white);
-            animation: spin 1s ease-in-out infinite;
         }
         
         .edit-button {
@@ -509,22 +615,6 @@
             justify-content: center;
             gap: 1rem;
             padding: 0 1rem 1.5rem 1rem;
-        }
-        
-        .btn-cancel {
-            background-color: var(--white);
-            color: var(--gray);
-            border: 1px solid var(--light-gray);
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-cancel:hover {
-            background-color: var(--secondary);
-            color: var(--dark);
         }
         
         .btn-confirm-logout {
@@ -1157,255 +1247,255 @@
             }
         }
 
-.notification-bell {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    color: var(--gray);
-    border: none;
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.notification-bell:hover {
-    background-color: rgba(79, 70, 229, 0.1);
-    color: var(--primary);
-}
-
-.notification-count {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: var(--danger);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.notification-container {
-    position: relative;
-}
-
-.notification-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    width: 380px;
-    max-height: 500px;
-    background-color: white;
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    z-index: 100;
-    display: none;
-    overflow: hidden;
-    border: 1px solid var(--light-gray);
-    transform-origin: top right;
-    animation: notificationOpen 0.2s ease-out;
-}
-
-@keyframes notificationOpen {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.notification-dropdown.show {
-    display: block;
-}
-
-.notification-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--light-gray);
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 5;
-}
-
-.notification-title {
-    font-weight: 600;
-    font-size: 1.125rem;
-    color: var(--dark);
-}
-
-.mark-all-read {
-    font-size: 0.875rem;
-    color: var(--primary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.375rem;
-    transition: all 0.2s ease;
-}
-
-.mark-all-read:hover {
-    background-color: rgba(79, 70, 229, 0.05);
-}
-
-.notification-list-container {
-    max-height: 400px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--light-gray) var(--secondary);
-}
-
-.notification-list-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.notification-list-container::-webkit-scrollbar-track {
-    background: var(--secondary);
-}
-
-.notification-list-container::-webkit-scrollbar-thumb {
-    background-color: var(--light-gray);
-    border-radius: 6px;
-}
-
-.notification-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.notification-item {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--light-gray);
-    transition: background-color 0.2s ease;
-    cursor: pointer;
-    position: relative;
-}
-
-.notification-item:hover {
-    background-color: var(--secondary);
-}
-
-.notification-item.unread {
-    background-color: rgba(79, 70, 229, 0.05);
-}
-
-.notification-item.unread:hover {
-    background-color: rgba(79, 70, 229, 0.1);
-}
-
-.notification-item.unread::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 40%;
-    background-color: var(--primary);
-    border-radius: 0 4px 4px 0;
-}
-
-.notification-content {
-    margin-bottom: 0.75rem;
-}
-
-.notification-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 0.25rem;
-    color: var(--dark);
-}
-
-.notification-message {
-    font-size: 0.875rem;
-    color: var(--gray);
-    line-height: 1.5;
-}
-
-.notification-time {
-    font-size: 0.75rem;
-    color: var(--gray);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.notification-time i {
-    font-size: 0.875rem;
-}
-
-.notification-empty {
-    padding: 3rem 1.5rem;
-    text-align: center;
-    color: var(--gray);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-
-.notification-empty i {
-    font-size: 2.5rem;
-    color: var(--light-gray);
-}
-
-.notification-footer {
-    padding: 1rem;
-    text-align: center;
-    border-top: 1px solid var(--light-gray);
-    background-color: var(--secondary);
-    font-size: 0.875rem;
-    color: var(--gray);
-}
-
-.notification-loader {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-    color: var(--gray);
-}
-
-.notification-loader i {
-    animation: spin 1s linear infinite;
-}
-
-@media (max-width: 640px) {
-    .notification-dropdown {
-        width: 100%;
-        max-width: 100%;
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border-radius: 1rem 1rem 0 0;
-        max-height: 80vh;
-        animation: slideUp 0.3s ease-out;
-    }
-
-    @keyframes slideUp {
-        from {
-            transform: translateY(100%);
+        .notification-bell {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            color: var(--gray);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        to {
-            transform: translateY(0);
+
+        .notification-bell:hover {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
         }
-    }
-}
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-container {
+            position: relative;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 380px;
+            max-height: 500px;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+            border: 1px solid var(--light-gray);
+            transform-origin: top right;
+            animation: notificationOpen 0.2s ease-out;
+        }
+
+        @keyframes notificationOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .notification-dropdown.show {
+            display: block;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 5;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--dark);
+        }
+
+        .mark-all-read {
+            font-size: 0.875rem;
+            color: var(--primary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .mark-all-read:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .notification-list-container {
+            max-height: 400px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--light-gray) var(--secondary);
+        }
+
+        .notification-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-list-container::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        .notification-list-container::-webkit-scrollbar-thumb {
+            background-color: var(--light-gray);
+            border-radius: 6px;
+        }
+
+        .notification-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notification-item {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background-color: var(--secondary);
+        }
+
+        .notification-item.unread {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .notification-item.unread:hover {
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 40%;
+            background-color: var(--primary);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .notification-content {
+            margin-bottom: 0.75rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+
+        .notification-message {
+            font-size: 0.875rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .notification-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notification-time i {
+            font-size: 0.875rem;
+        }
+
+        .notification-empty {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            color: var(--gray);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-empty i {
+            font-size: 2.5rem;
+            color: var(--light-gray);
+        }
+
+        .notification-footer {
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid var(--light-gray);
+            background-color: var(--secondary);
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .notification-loader {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+            color: var(--gray);
+        }
+
+        .notification-loader i {
+            animation: spin 1s linear infinite;
+        }
+
+        @media (max-width: 640px) {
+            .notification-dropdown {
+                width: 100%;
+                max-width: 100%;
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                border-radius: 1rem 1rem 0 0;
+                max-height: 80vh;
+                animation: slideUp 0.3s ease-out;
+            }
+            
+            @keyframes slideUp {
+                from {
+                    transform: translateY(100%);
+                }
+                to {
+                    transform: translateY(0);
+                }
+            }
+        }
     </style>
 </head>
 <body>
@@ -1459,62 +1549,175 @@
                             <i class="fas fa-id-card me-1 text-primary"></i>
                             Staff Details
                         </h2>
+                        <button class="btn-edit" onclick="toggleProfileEdit()">
+                            <i class="fas fa-edit"></i>
+                            <span id="profileEditText">Edit</span>
+                        </button>
                     </div>
                     <div class="card-body">
-                        <div class="profile-header">
-                            <div class="avatar-container">
-                                <img id="avatar-img" class="avatar-img" alt="Staff Avatar">
+                        <!-- View Mode -->
+                        <div id="profileViewMode">
+                            <div class="profile-header">
+                                <div class="avatar-container">
+                                    <img id="avatar-img" class="avatar-img" alt="Staff Avatar">
+                                </div>
+                                <div class="profile-info">
+                                    <h3>{{ staff.firstName }} {{ staff.lastName }}</h3>
+                                    <p>{{ staff.department }} - {{ staff.designation }}</p>
+                                </div>
                             </div>
-                            <div class="profile-info">
-                                <h3>{{ staff.firstName }} {{ staff.lastName }}</h3>
-                                <p>{{ staff.department }} - {{ staff.designation }}</p>
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">Staff ID</div>
+                                    <div class="detail-value">{{ staff.staffId }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Employee ID</div>
+                                    <div class="detail-value">{{ staff.employeeId }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Gender</div>
+                                    <div class="detail-value">{{ staff.gender }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Date of Birth</div>
+                                    <div class="detail-value">{{ staff.dob }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Phone</div>
+                                    <div class="detail-value">+91 {{ staff.phone }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Email</div>
+                                    <div class="detail-value">{{ staff.email }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Blood Group</div>
+                                    <div class="detail-value">{{ staff.bloodGroup }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Emergency Contact</div>
+                                    <div class="detail-value">{{ staff.emergencyContact }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Aadhaar Number</div>
+                                    <div class="detail-value">{{ staff.aadhaarNum }}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Joining Date</div>
+                                    <div class="detail-value" id="joiningDate"></div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Address</div>
+                                    <div class="detail-value" id="hideTd">{{ staff.address }}, {{ staff.city }}, {{ staff.state }}, {{ staff.pinCode }}, India.</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="details-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Staff ID</div>
-                                <div class="detail-value">{{ staff.staffId }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Employee ID</div>
-                                <div class="detail-value">{{ staff.employeeId }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Gender</div>
-                                <div class="detail-value">{{ staff.gender }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Date of Birth</div>
-                                <div class="detail-value">{{ staff.dob }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Phone</div>
-                                <div class="detail-value">+91 {{ staff.phone }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Email</div>
-                                <div class="detail-value">{{ staff.email }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Blood Group</div>
-                                <div class="detail-value">{{ staff.bloodGroup }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Emergency Contact</div>
-                                <div class="detail-value">{{ staff.emergencyContact }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Aadhaar Number</div>
-                                <div class="detail-value">{{ staff.aadhaarNum }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Joining Date</div>
-                                <div class="detail-value">{{ staff.joiningDate }}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Address</div>
-                                <div class="detail-value" id="hideTd">{{ staff.address }}, {{ staff.city }}, {{ staff.state }}, {{ staff.pinCode }}, India.</div>
-                            </div>
+
+                        <!-- Edit Mode -->
+                        <div id="profileEditMode" class="edit-mode">
+                            <form id="profileEditForm">
+                                <div class="profile-header">
+                                    <div class="avatar-container">
+                                        <img id="avatar-img-edit" class="avatar-img" alt="Staff Avatar">
+                                    </div>
+                                    <div class="profile-info">
+                                        <h3>{{ staff.firstName }} {{ staff.lastName }}</h3>
+                                        <p>{{ staff.department }} - {{ staff.designation }}</p>
+                                    </div>
+                                </div>
+                                <div class="details-grid">
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Staff ID</label>
+                                        <input type="text" class="edit-form-control" value="{{ staff.staffId }}" disabled>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Employee ID</label>
+                                        <input type="text" class="edit-form-control" value="{{ staff.employeeId }}" disabled>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">First Name</label>
+                                        <input type="text" class="edit-form-control" id="editFirstName" value="{{ staff.firstName }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Last Name</label>
+                                        <input type="text" class="edit-form-control" id="editLastName" value="{{ staff.lastName }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Gender</label>
+                                        <select class="edit-form-control" id="editGender" required>
+                                            <option value="Male" {{#if (eq staff.gender 'Male')}}selected{{/if}}>Male</option>
+                                            <option value="Female" {{#if (eq staff.gender 'Female')}}selected{{/if}}>Female</option>
+                                            <option value="Other" {{#if (eq staff.gender 'Other')}}selected{{/if}}>Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Date of Birth</label>
+                                        <input type="text" class="edit-form-control" id="editDob" value="{{ staff.dob }}" required placeholder="DD-MM-YYYY">
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Phone</label>
+                                        <input type="text" class="edit-form-control" id="editPhone" value="{{ staff.phone }}" required
+                                            maxlength="10"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);">
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Email</label>
+                                        <input type="email" class="edit-form-control" id="editEmail" value="{{ staff.email }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Blood Group</label>
+                                        <select class="edit-form-control" id="editBloodGroup" required>
+                                            <option value="A+" {{#if (eq staff.bloodGroup 'A+')}}selected{{/if}}>A+</option>
+                                            <option value="A-" {{#if (eq staff.bloodGroup 'A-')}}selected{{/if}}>A-</option>
+                                            <option value="B+" {{#if (eq staff.bloodGroup 'B+')}}selected{{/if}}>B+</option>
+                                            <option value="B-" {{#if (eq staff.bloodGroup 'B-')}}selected{{/if}}>B-</option>
+                                            <option value="AB+" {{#if (eq staff.bloodGroup 'AB+')}}selected{{/if}}>AB+</option>
+                                            <option value="AB-" {{#if (eq staff.bloodGroup 'AB-')}}selected{{/if}}>AB-</option>
+                                            <option value="O+" {{#if (eq staff.bloodGroup 'O+')}}selected{{/if}}>O+</option>
+                                            <option value="O-" {{#if (eq staff.bloodGroup 'O-')}}selected{{/if}}>O-</option>
+                                        </select>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Emergency Contact</label>
+                                        <input type="tel" class="edit-form-control" id="editEmergencyContact" value="{{ staff.emergencyContact }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Aadhaar Number</label>
+                                        <input type="text" class="edit-form-control" id="editAadhaarNum" value="{{ staff.aadhaarNum }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Joining Date</label>
+                                        <input type="date" class="edit-form-control" value="{{ staff.joiningDate }}" disabled>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Address</label>
+                                        <input type="text" class="edit-form-control" id="editAddress" value="{{ staff.address }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">City</label>
+                                        <input type="text" class="edit-form-control" id="editCity" value="{{ staff.city }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">State</label>
+                                        <input type="text" class="edit-form-control" id="editState" value="{{ staff.state }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Pin Code</label>
+                                        <input type="text" class="edit-form-control" id="editPinCode" value="{{ staff.pinCode }}" required>
+                                    </div>
+                                </div>
+                                <div class="edit-actions">
+                                    <button type="button" class="btn-cancel" onclick="cancelProfileEdit()">
+                                        <i class="fas fa-times"></i>
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="btn-save" id="profileSaveBtn">
+                                        <i class="fas fa-save"></i>
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -1526,35 +1729,80 @@
                             <i class="fas fa-university me-1 text-primary"></i>
                             Bank Account Details
                         </h2>
+                        <button class="btn-edit" onclick="toggleBankEdit()">
+                            <i class="fas fa-edit"></i>
+                            <span id="bankEditText">Edit</span>
+                        </button>
                     </div>
                     <div class="card-body">
-                        <div class="bank-details-grid">
-                            <div class="bank-detail-item">
-                                <div class="bank-detail-label">Account Holder Name</div>
-                                <div class="bank-detail-value">{{ staff.bankDetails.accountHolderName }}</div>
-                            </div>
-                            <div class="bank-detail-item">
-                                <div class="bank-detail-label">Account Number</div>
-                                <div class="bank-detail-value">
-                                    <span id="accountNumber" class="masked-value">••••••••••</span>
-                                    <button class="toggle-visibility" onclick="toggleVisibility('accountNumber')">Show</button>
+                        <!-- View Mode -->
+                        <div id="bankViewMode">
+                            <div class="bank-details-grid">
+                                <div class="bank-detail-item">
+                                    <div class="bank-detail-label">Account Holder Name</div>
+                                    <div class="bank-detail-value">{{ staff.bankDetails.accountHolderName }}</div>
+                                </div>
+                                <div class="bank-detail-item">
+                                    <div class="bank-detail-label">Account Number</div>
+                                    <div class="bank-detail-value">
+                                        <span id="accountNumber" class="masked-value">••••••••••</span>
+                                        <button class="toggle-visibility" onclick="toggleVisibility('accountNumber')">Show</button>
+                                    </div>
+                                </div>
+                                <div class="bank-detail-item">
+                                    <div class="bank-detail-label">IFSC Code</div>
+                                    <div class="bank-detail-value">{{ staff.bankDetails.ifscCode }}</div>
+                                </div>
+                                <div class="bank-detail-item">
+                                    <div class="bank-detail-label">Bank Name</div>
+                                    <div class="bank-detail-value">{{ staff.bankDetails.bankName }}</div>
+                                </div>
+                                <div class="bank-detail-item">
+                                    <div class="bank-detail-label">UPI ID</div>
+                                    <div class="bank-detail-value">
+                                        <span id="upiId" class="masked-value">••••••••••</span>
+                                        <button class="toggle-visibility" onclick="toggleVisibility('upiId')">Show</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="bank-detail-item">
-                                <div class="bank-detail-label">IFSC Code</div>
-                                <div class="bank-detail-value">{{ staff.bankDetails.ifscCode }}</div>
-                            </div>
-                            <div class="bank-detail-item">
-                                <div class="bank-detail-label">Bank Name</div>
-                                <div class="bank-detail-value">{{ staff.bankDetails.bankName }}</div>
-                            </div>
-                            <div class="bank-detail-item">
-                                <div class="bank-detail-label">UPI ID</div>
-                                <div class="bank-detail-value">
-                                    <span id="upiId" class="masked-value">••••••••••</span>
-                                    <button class="toggle-visibility" onclick="toggleVisibility('upiId')">Show</button>
+                        </div>
+
+                        <!-- Edit Mode -->
+                        <div id="bankEditMode" class="edit-mode">
+                            <form id="bankEditForm">
+                                <div class="bank-details-grid">
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Account Holder Name</label>
+                                        <input type="text" class="edit-form-control" id="editAccountHolderName" value="{{ staff.bankDetails.accountHolderName }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Account Number</label>
+                                        <input type="text" class="edit-form-control" id="editAccountNumber" value="{{ staff.bankDetails.accountNumber }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">IFSC Code</label>
+                                        <input type="text" class="edit-form-control" id="editIfscCode" value="{{ staff.bankDetails.ifscCode }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">Bank Name</label>
+                                        <input type="text" class="edit-form-control" id="editBankName" value="{{ staff.bankDetails.bankName }}" required>
+                                    </div>
+                                    <div class="edit-form-group">
+                                        <label class="edit-form-label">UPI ID</label>
+                                        <input type="text" class="edit-form-control" id="editUpiId" value="{{ staff.bankDetails.upiId }}" required>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="edit-actions">
+                                    <button type="button" class="btn-cancel" onclick="cancelBankEdit()">
+                                        <i class="fas fa-times"></i>
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="btn-save" id="bankSaveBtn">
+                                        <i class="fas fa-save"></i>
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -1683,7 +1931,6 @@
                                 </a>
                             </span>
                         </div>
-
                         <div class="collapse mt-2" id="chatroomCollapse">
                             <div class="card card-body">
                                 <div class="chatroom-links">
@@ -1809,7 +2056,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="fee-item">
                             <span class="fee-label">AI Chatbot</span>
                             <span class="fee-value">
@@ -1965,30 +2211,199 @@
         let isLoading = false;
         let hasMoreNotifications = true;
         let notificationsPerPage = 10;
-
         let leaveHistoryData = [];
         let sensitiveData = {
             accountNumber: "{{ staff.bankDetails.accountNumber }}",
             upiId: "{{ staff.bankDetails.upiId }}"
         };
-        
+
+        const rawDate = "{{ staff.joiningDate }}";
+        const date = new Date(rawDate);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const formattedDate = `${day}-${month}-${year}`;
+        document.getElementById("joiningDate").innerText = formattedDate;
+
+        let isProfileEditMode = false;
+        let isBankEditMode = false;
+
         function openLogoutModal() {
             document.getElementById('logoutModal').classList.add('active');
         }
-        
+
         function closeLogoutModal() {
             document.getElementById('logoutModal').classList.remove('active');
         }
-        
+
         function confirmLogout() {
             window.location.href = '/v1/api/logout';
         }
+
+        // Profile Edit Functions
+        function toggleProfileEdit() {
+            const viewMode = document.getElementById('profileViewMode');
+            const editMode = document.getElementById('profileEditMode');
+            const editText = document.getElementById('profileEditText');
+
+            if (!isProfileEditMode) {
+                viewMode.style.display = 'none';
+                editMode.style.display = 'block';
+                editText.textContent = 'Cancel';
+                isProfileEditMode = true;
+                
+                // Copy avatar to edit mode
+                const avatarSrc = document.getElementById('avatar-img').src;
+                document.getElementById('avatar-img-edit').src = avatarSrc;
+            } else {
+                cancelProfileEdit();
+            }
+        }
+
+        function cancelProfileEdit() {
+            const viewMode = document.getElementById('profileViewMode');
+            const editMode = document.getElementById('profileEditMode');
+            const editText = document.getElementById('profileEditText');
+
+            viewMode.style.display = 'block';
+            editMode.style.display = 'none';
+            editText.textContent = 'Edit';
+            isProfileEditMode = false;
+
+            // Reset form
+            document.getElementById('profileEditForm').reset();
+        }
+
+        // Bank Edit Functions
+        function toggleBankEdit() {
+            const viewMode = document.getElementById('bankViewMode');
+            const editMode = document.getElementById('bankEditMode');
+            const editText = document.getElementById('bankEditText');
+
+            if (!isBankEditMode) {
+                viewMode.style.display = 'none';
+                editMode.style.display = 'block';
+                editText.textContent = 'Cancel';
+                isBankEditMode = true;
+            } else {
+                cancelBankEdit();
+            }
+        }
+
+        function cancelBankEdit() {
+            const viewMode = document.getElementById('bankViewMode');
+            const editMode = document.getElementById('bankEditMode');
+            const editText = document.getElementById('bankEditText');
+
+            viewMode.style.display = 'block';
+            editMode.style.display = 'none';
+            editText.textContent = 'Edit';
+            isBankEditMode = false;
+
+            // Reset form
+            document.getElementById('bankEditForm').reset();
+        }
+
+        // Form submission handlers
+        document.getElementById('profileEditForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('profileSaveBtn');
+            saveBtn.classList.add('btn-loading');
+            saveBtn.disabled = true;
+
+            const formData = {
+                firstName: document.getElementById('editFirstName').value,
+                lastName: document.getElementById('editLastName').value,
+                gender: document.getElementById('editGender').value,
+                dob: document.getElementById('editDob').value,
+                phone: document.getElementById('editPhone').value,
+                email: document.getElementById('editEmail').value,
+                bloodGroup: document.getElementById('editBloodGroup').value,
+                emergencyContact: document.getElementById('editEmergencyContact').value,
+                aadhaarNum: document.getElementById('editAadhaarNum').value,
+                address: document.getElementById('editAddress').value,
+                city: document.getElementById('editCity').value,
+                state: document.getElementById('editState').value,
+                pinCode: document.getElementById('editPinCode').value
+            };
+
+            try {
+                const response = await fetch('/v1/api/staff/updateProfile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showAttendancePopup('Profile updated successfully!', true);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showAttendancePopup(result.message || 'Failed to update profile', false);
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showAttendancePopup('An error occurred while updating profile', false);
+            } finally {
+                saveBtn.classList.remove('btn-loading');
+                saveBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('bankEditForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('bankSaveBtn');
+            saveBtn.classList.add('btn-loading');
+            saveBtn.disabled = true;
+
+            const formData = {
+                accountHolderName: document.getElementById('editAccountHolderName').value,
+                accountNumber: document.getElementById('editAccountNumber').value,
+                ifscCode: document.getElementById('editIfscCode').value,
+                bankName: document.getElementById('editBankName').value,
+                upiId: document.getElementById('editUpiId').value
+            };
+
+            try {
+                const response = await fetch('/v1/api/staff/updateBankDetails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showAttendancePopup('Bank details updated successfully!', true);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showAttendancePopup(result.message || 'Failed to update bank details', false);
+                }
+            } catch (error) {
+                console.error('Error updating bank details:', error);
+                showAttendancePopup('An error occurred while updating bank details', false);
+            } finally {
+                saveBtn.classList.remove('btn-loading');
+                saveBtn.disabled = false;
+            }
+        });
 
         window.onload = function() {
             const avatarImg = document.getElementById('avatar-img');
             const staffGender = "{{ staff.gender }}";
             const staffImg = "{{ staff.imageUrl }}";
-
+            
             if (staffImg && staffImg.trim() !== '') {
                 avatarImg.src = staffImg;
             } else if (staffGender === 'Male') {
@@ -2007,7 +2422,7 @@
                         document.getElementById('staffAttendanceBtn').disabled = true;
                     }
                 });
-                
+            
             document.getElementById('attachment').addEventListener('change', function(e) {
                 const fileName = e.target.files[0] ? e.target.files[0].name : '';
                 document.getElementById('fileName').textContent = fileName;
@@ -2150,7 +2565,6 @@
             .then(response => response.json())
             .then(data => {
                 showAttendancePopup(data.message, data.success);
-
                 if (data.success) {
                     attendanceBtn.innerText = "Marked";
                     attendanceBtn.disabled = true;
@@ -2182,7 +2596,6 @@
             popupText.innerText = message;
             popup.style.backgroundColor = success ? "#10b981" : "#ef4444";
             popup.style.display = "block";
-
             setTimeout(() => {
                 popup.style.display = "none";
             }, 5000);
@@ -2388,7 +2801,6 @@
             
             notificationListContainer.addEventListener('scroll', function () {
                 const { scrollTop, scrollHeight, clientHeight } = notificationListContainer;
-
                 if (scrollTop + clientHeight >= scrollHeight - 20 && hasMoreNotifications && !isLoading) {
                     currentPage++;
                     fetchNotifications(currentPage);
@@ -2473,13 +2885,13 @@
                             .catch(error => {
                                 console.error('Error fetching notification count:', error);
                             });
-                        
-                        document.getElementById('notificationFooter').textContent = hasMoreNotifications 
-                            ? 'Scroll for more notifications' 
-                            : notifications.length > 0 
-                                ? 'All notifications loaded' 
+                            
+                        document.getElementById('notificationFooter').textContent = hasMoreNotifications
+                            ? 'Scroll for more notifications'
+                            : notifications.length > 0
+                                ? 'All notifications loaded'
                                 : 'No notifications';
-                        
+                                
                         if (page === 1) {
                             setTimeout(() => fetchNewNotifications(), 60000);
                         }
@@ -2536,7 +2948,7 @@
                                         .catch(error => {
                                             console.error('Error fetching notification count:', error);
                                         });
-                                    
+                                        
                                     if (actuallyNew.length === 1) {
                                         showAttendancePopup('You have a new notification', true);
                                     } else {
