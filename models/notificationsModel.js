@@ -16,6 +16,11 @@ const NotificationSchema = new mongoose.Schema({
             required: false,
         }
     },
+    type: {
+        type: String,
+        enum: ["connection", "event", "job", "news", "general"],
+        required: false,
+    },
     isActive: {
         type: Boolean,
         required: false,

@@ -19,5 +19,6 @@ router.use(require("./chatRoutes"));
 router.use(require("./chatbotRoutes"));
 router.use(require("./academicRoutes"));
 router.use(require("./eCommerceRoutes"));
+router.use(require("./alumniNetworkRoutes"));
 
 module.exports = router;

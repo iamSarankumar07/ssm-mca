@@ -3,9 +3,9 @@ const app = express();
 const authonticationController = require("../middleware/auth");
 const studentController = require("../controller/studentController");
 const path = require("path");
-const multer = require("multer");
 const subjectCodeModel = require("../models/subjectCodeModel");
 const Student = require("../models/studentModel");
+const multer = require("multer");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -149,6 +149,10 @@ app.post(
 app.post(
   "/admissionApply",
   // authonticationController.validateToken,
+  upload.fields([
+    { name: 'photo', maxCount: 1 },
+    { name: 'signature', maxCount: 1 }
+  ]),
   studentController.admissionApply
 );
 
@@ -291,7 +295,7 @@ app.get(
 
 app.get(
   "/getJobPage",
-  authonticationController.sValidateToken,
+  // authonticationController.sValidateToken,
   studentController.renderJobPage
 );
 
@@ -343,10 +347,10 @@ app.get(
   studentController.getEducation
 );
 
-app.get(
-  "/alumni/network",
+app.post(
+  "/alumni/updateProfile",
   authonticationController.sValidateToken,
-  studentController.alumniNetwork
+  studentController.updateAlumniProfile
 );
 
 module.exports = app;

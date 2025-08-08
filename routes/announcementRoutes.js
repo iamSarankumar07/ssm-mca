@@ -60,4 +60,9 @@ app.get(
   announcementController.getNotificationCount
 );
 
+app.post(
+  "/sendTestEmail",
+  announcementController.sendTestEmail
+);
+
 module.exports = app;

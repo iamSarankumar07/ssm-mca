@@ -34,13 +34,13 @@ exports.savePaymentData = async (reqBody, paymentData) => {
             const transporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
-                    user: "verifyuserofficial@gmail.com",
-                    pass: "wsdv megz vecp wzen",
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
                 },
             });
 
             const mailOptions = {
-                from: 'verifyuserofficial@gmail.com',
+                from: 'ssmcollegeofengineering.ce@gmail.com',
                 to: reqBody.email,
                 subject: '🎉 Payment Confirmation - Thank You for Your Payment!',
                 html: `
@@ -215,15 +215,15 @@ exports.sendSalaryAlert = async (employee, txnData) => {
         let accountLast4 = employee.bankDetails.accountNumber.slice(-4);
 
         const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: "verifyuserofficial@gmail.com",
-                pass: "wsdv megz vecp wzen",
-            },
-        });
+                service: "gmail",
+                auth: {
+                    user: "ssmcollegeofengineering.ce@gmail.com",
+                    pass: "xotj gtda ojfg zbtc",
+                },
+            });
 
         const mailOptions = {
-            from: 'verifyuserofficial@gmail.com',
+            from: 'ssmcollegeofengineering.ce@gmail.com',
             to: employee.email,
             subject: '🎉 Payment Confirmation - Thank You for Your Payment!',
             html: `

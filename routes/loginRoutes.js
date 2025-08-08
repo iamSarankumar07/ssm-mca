@@ -4,7 +4,7 @@ const path = require("path");
 const loginController = require("../controller/loginController");
 const studentController = require("../controller/studentController");
 const authFile = require("../middleware/auth");
-const authonticationController = require("../middleware/auth")
+const authonticationController = require("../middleware/auth");
 const app = express();
 
 const multer = require("multer");
@@ -123,6 +123,54 @@ app.post(
   "/staff/staffBulkSalaryUpdate",
   authonticationController.validateToken,
   loginController.staffBulkSalaryUpdate
+);
+
+app.post(
+  "/staff/updateProfile",
+  authonticationController.validateToken,
+  loginController.updateProfile
+);
+
+app.post(
+  "/staff/updateBankDetails",
+  authonticationController.validateToken,
+  loginController.updateBankDetails
+);
+
+app.get(
+  "/getContactMessages",
+  authonticationController.validateToken,
+  loginController.getContactMessages
+);
+
+app.get(
+  "/contactMessages/stats",
+  authonticationController.validateToken,
+  loginController.contactMessagesStats
+);
+
+app.post(
+  "/contactMessage/:messageId/read",
+  authonticationController.validateToken,
+  loginController.updateContactMessageStatus
+);
+
+app.get(
+  "/getAdmissionApplications",
+  authonticationController.validateToken,
+  loginController.getAdmissionApplications
+);
+
+app.get(
+  "/admissionApplications/stats",
+  authonticationController.validateToken,
+  loginController.admissionApplicationStats
+);
+
+app.post(
+  "/admissionApplication/:applicationId/status",
+  authonticationController.validateToken,
+  loginController.updateAdmissionApplicationStatus
 );
 
 module.exports = app;

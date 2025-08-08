@@ -188,6 +188,10 @@ const studentSchema = new mongoose.Schema({
     type: String,
     default: false,
   },
+  currentLocation: {
+    type: String,
+    default: false,
+  },
   tuitionFees: {
     totalFee: Number,
     paidFee: Number,
@@ -236,6 +240,18 @@ const studentSchema = new mongoose.Schema({
     type: Array,
     default: [],
     required: false,
+  },
+  currentPosition: {
+    type: String,
+    required: false
+  },
+  company: {
+    type: String,
+    required: false
+  },
+  location: {
+    type: String,
+    required: false
   },
   achievements: [
     {

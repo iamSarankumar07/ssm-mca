@@ -114,9 +114,9 @@ app.get(
 );
 
 app.get(
-  "/messages",
+  "/contactMessages",
   authonticationController.validateToken,
-  viewController.message
+  viewController.contactMessages
 );
 
 app.get(
