@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-
         :root {
             --primary-color: #6366f1;
             --primary-hover: #4f46e5;
@@ -25,12 +23,10 @@
             --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         * {
             font-family: 'Outfit', sans-serif;
             box-sizing: border-box;
         }
-
         body {
             background-color: #f8fafc;
             min-height: 100vh;
@@ -39,12 +35,13 @@
             color: var(--text-color);
             overflow-x: hidden;
         }
-
+        body.modal-open {
+            overflow: hidden;
+        }
         .app-container {
             display: flex;
             min-height: 100vh;
         }
-
         /* Sidebar Styles */
         .sidebar {
             width: 320px;
@@ -56,37 +53,31 @@
             z-index: 100;
             transition: transform 0.3s ease;
         }
-
         .sidebar-content {
             padding: 2.5rem 2rem;
             height: 100%;
             display: flex;
             flex-direction: column;
         }
-
         .sidebar-header {
             margin-bottom: 3rem;
         }
-
         .sidebar-header h1 {
             font-weight: 700;
             font-size: 1.75rem;
             margin-bottom: 1rem;
             letter-spacing: -0.5px;
         }
-
         .sidebar-header p {
             opacity: 0.9;
             font-weight: 400;
             line-height: 1.6;
             font-size: 1rem;
         }
-
         .sidebar-nav {
             margin-top: 1rem;
             flex-grow: 1;
         }
-
         .nav-item {
             display: flex;
             align-items: center;
@@ -97,66 +88,55 @@
             transition: var(--transition);
             opacity: 0.8;
         }
-
         .nav-item.active {
             background-color: rgba(255, 255, 255, 0.1);
             opacity: 1;
         }
-
         .nav-item:hover {
             background-color: rgba(255, 255, 255, 0.05);
             opacity: 1;
         }
-
         .nav-item i {
             font-size: 1.25rem;
             margin-right: 1rem;
         }
-
         .nav-item-content {
             display: flex;
             flex-direction: column;
         }
-
         .nav-item-title {
             font-weight: 600;
             font-size: 1rem;
         }
-
         .nav-item-subtitle {
             font-size: 0.85rem;
             opacity: 0.8;
             margin-top: 0.25rem;
         }
-
         .sidebar-footer {
             margin-top: auto;
             padding-top: 2rem;
             opacity: 0.8;
             font-size: 0.9rem;
         }
-
         .main-content {
             flex: 1;
             margin-left: 320px;
             padding: 2rem;
             transition: margin 0.3s ease;
         }
-
         .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
-
         .page-title {
             font-size: 1.75rem;
             font-weight: 700;
             color: var(--text-color);
             margin: 0;
         }
-
         .back-button {
             display: flex;
             align-items: center;
@@ -171,28 +151,23 @@
             transition: var(--transition);
             text-decoration: none;
         }
-
         .back-button:hover {
             background-color: #f8fafc;
             color: var(--text-color);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-
         .back-button i {
             margin-right: 0.5rem;
         }
-
         .progress-container {
             max-width: 600px;
             margin-bottom: 2.5rem;
         }
-
         .progress-wrapper {
             display: flex;
             align-items: center;
             margin-bottom: 0.75rem;
         }
-
         .progress {
             flex: 1;
             height: 8px;
@@ -200,27 +175,23 @@
             background-color: var(--primary-light);
             margin: 0;
         }
-
         .progress-bar {
             background-color: var(--primary-color);
             border-radius: 4px;
             transition: width 0.5s ease;
         }
-
         .progress-percentage {
             margin-left: 1rem;
             font-weight: 600;
             color: var(--primary-color);
             min-width: 40px;
         }
-
         .progress-steps {
             display: flex;
             justify-content: space-between;
             font-size: 0.85rem;
             color: var(--text-muted);
         }
-
         .form-section {
             background-color: white;
             border-radius: var(--border-radius);
@@ -230,11 +201,9 @@
             transition: var(--transition);
             border: 1px solid var(--border-color);
         }
-
         .form-section:hover {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-
         .section-title {
             display: flex;
             align-items: center;
@@ -242,7 +211,6 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border-color);
         }
-
         .section-title-icon {
             display: flex;
             align-items: center;
@@ -254,25 +222,21 @@
             border-radius: 10px;
             margin-right: 1rem;
         }
-
         .section-title-icon i {
             font-size: 1.25rem;
         }
-
         .section-title-text {
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--text-color);
             margin: 0;
         }
-
         .form-label {
             font-weight: 500;
             color: var(--text-color);
             margin-bottom: 0.5rem;
             font-size: 0.95rem;
         }
-
         .form-control,
         .form-select {
             padding: 0.85rem 1rem;
@@ -283,36 +247,30 @@
             background-color: #f8fafc;
             color: var(--text-color);
         }
-
         .form-control:focus,
         .form-select:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
             background-color: white;
         }
-
         .form-control::placeholder {
             color: #94a3b8;
         }
-
         .required-field::after {
             content: "*";
             color: var(--error-color);
             margin-left: 4px;
         }
-
         .form-text {
             font-size: 0.85rem;
             color: var(--text-muted);
             margin-top: 0.5rem;
         }
-
         .upload-container {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-
         .upload-area {
             border: 2px dashed var(--border-color);
             border-radius: 12px;
@@ -323,12 +281,10 @@
             background-color: #f8fafc;
             flex: 1;
         }
-
         .upload-area:hover {
             border-color: var(--primary-color);
             background-color: var(--primary-light);
         }
-
         .upload-icon {
             display: flex;
             align-items: center;
@@ -341,21 +297,17 @@
             margin: 0 auto 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-
         .upload-icon i {
             font-size: 1.75rem;
         }
-
         .upload-text {
             font-weight: 500;
             margin-bottom: 0.5rem;
         }
-
         .upload-hint {
             font-size: 0.85rem;
             color: var(--text-muted);
         }
-
         .preview-container {
             width: 150px;
             height: 150px;
@@ -369,21 +321,18 @@
             justify-content: center;
             position: relative;
         }
-
         .preview-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
         }
-
         .preview-placeholder {
             color: var(--text-muted);
             font-size: 0.85rem;
             text-align: center;
             padding: 0 10px;
         }
-
         .preview-remove {
             position: absolute;
             top: 5px;
@@ -399,62 +348,52 @@
             opacity: 0;
             transition: opacity 0.2s;
         }
-
         .preview-container:hover .preview-remove {
             opacity: 1;
         }
-
         .btn {
             padding: 0.85rem 1.75rem;
             font-weight: 500;
             border-radius: 10px;
             transition: var(--transition);
         }
-
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
             color: white;
             box-shadow: 0 4px 6px rgba(99, 102, 241, 0.15);
         }
-
         .btn-primary:hover {
             background-color: var(--primary-hover);
             border-color: var(--primary-hover);
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(99, 102, 241, 0.2);
         }
-
         .btn-outline {
             background-color: white;
             border: 1px solid var(--border-color);
             color: var(--text-muted);
         }
-
         .btn-outline:hover {
             background-color: #f8fafc;
             color: var(--text-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-
         .btn i {
             margin-right: 0.5rem;
         }
-
         .form-navigation {
             display: flex;
             justify-content: space-between;
             margin-top: 2rem;
         }
-
         .custom-checkbox {
             display: flex;
             align-items: flex-start;
             margin-bottom: 1rem;
             cursor: pointer;
         }
-
         .custom-checkbox input {
             position: absolute;
             opacity: 0;
@@ -462,7 +401,6 @@
             height: 0;
             width: 0;
         }
-
         .checkbox-mark {
             height: 22px;
             width: 22px;
@@ -475,16 +413,13 @@
             transition: var(--transition);
             flex-shrink: 0;
         }
-
         .custom-checkbox:hover .checkbox-mark {
             border-color: var(--primary-color);
         }
-
         .custom-checkbox input:checked~.checkbox-mark {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
-
         .checkbox-mark:after {
             content: "";
             position: absolute;
@@ -497,24 +432,20 @@
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
-
         .custom-checkbox input:checked~.checkbox-mark:after {
             display: block;
         }
-
         .checkbox-text {
             font-size: 0.95rem;
             line-height: 1.5;
             color: var(--text-color);
         }
-
         .toast-container {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 9999;
         }
-
         .toast {
             display: flex;
             align-items: center;
@@ -527,59 +458,48 @@
             opacity: 0;
             transform: translateX(50px);
         }
-
         @keyframes slideIn {
             to {
                 opacity: 1;
                 transform: translateX(0);
             }
         }
-
         @keyframes slideOut {
             to {
                 opacity: 0;
                 transform: translateX(50px);
             }
         }
-
         .toast-success {
             background-color: #ecfdf5;
             border-left: 4px solid var(--success-color);
         }
-
         .toast-error {
             background-color: #fef2f2;
             border-left: 4px solid var(--error-color);
         }
-
         .toast-icon {
             margin-right: 12px;
             font-size: 1.25rem;
         }
-
         .toast-success .toast-icon {
             color: var(--success-color);
         }
-
         .toast-error .toast-icon {
             color: var(--error-color);
         }
-
         .toast-content {
             flex: 1;
         }
-
         .toast-title {
             font-weight: 600;
             margin-bottom: 4px;
             font-size: 1rem;
         }
-
         .toast-message {
             font-size: 0.9rem;
             color: var(--text-muted);
         }
-
         .toast-close {
             background: none;
             border: none;
@@ -589,7 +509,6 @@
             padding: 0;
             margin-left: 8px;
         }
-
         .mobile-menu-toggle {
             display: none;
             position: fixed;
@@ -607,7 +526,6 @@
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
         .spinner-overlay {
             position: fixed;
             top: 0;
@@ -623,12 +541,10 @@
             opacity: 0;
             transition: opacity 0.3s, visibility 0.3s;
         }
-
         .spinner-overlay.active {
             visibility: visible;
             opacity: 1;
         }
-
         .spinner {
             width: 50px;
             height: 50px;
@@ -637,15 +553,189 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
             }
-
             100% {
                 transform: rotate(360deg);
             }
+        }
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .form-control.is-invalid,
+        .form-select.is-invalid {
+            border-color: var(--error-color);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+        }
+
+        /* Success Modal Styles */
+        .success-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .success-modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .success-modal {
+            background-color: white;
+            border-radius: 16px;
+            padding: 0;
+            max-width: 420px;
+            width: 100%;
+            max-height: 90vh;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            margin: auto;
+        }
+        .success-modal-overlay.active .success-modal {
+            transform: scale(1);
+        }
+        .success-modal-header {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+        .success-modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .success-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+        .success-modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .success-modal-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0;
+            position: relative;
+            z-index: 1;
+        }
+        .success-modal-body {
+            padding: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .application-details {
+            background-color: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-color);
+            text-align: right;
+            font-size: 0.85rem;
+        }
+        .ref-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .success-note {
+            background-color: #ecfdf5;
+            border: 1px solid #d1fae5;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .success-note p {
+            margin: 0;
+            color: #065f46;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        .success-modal-footer {
+            padding: 0 1.5rem 1.5rem;
+            text-align: center;
+        }
+        .success-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
+            min-width: 130px;
+        }
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
+        }
+        .success-btn i {
+            margin-right: 0.5rem;
         }
 
         @media (max-width: 991.98px) {
@@ -653,137 +743,142 @@
                 transform: translateX(-100%);
                 width: 280px;
             }
-
             .sidebar.active {
                 transform: translateX(0);
             }
-
             .main-content {
                 margin-left: 0;
                 padding: 1.5rem;
             }
-
             .mobile-menu-toggle {
                 display: flex;
             }
-
             .content-header {
                 margin-top: 2.5rem;
             }
         }
-
         @media (max-width: 767.98px) {
             .form-section {
                 padding: 1.5rem;
             }
-
             .section-title-text {
                 font-size: 1.1rem;
             }
-
             .page-title {
                 font-size: 1.5rem;
             }
-
             .upload-container {
                 flex-direction: column;
             }
-
             .preview-container {
                 width: 100%;
                 max-width: 150px;
                 margin: 0 auto;
             }
+            .success-modal {
+                max-width: 95%;
+                margin: 1rem auto;
+                max-height: 85vh;
+            }
+            .success-modal-header {
+                padding: 1.2rem;
+            }
+            .success-modal-body {
+                padding: 1.2rem;
+                max-height: 55vh;
+            }
+            .success-modal-footer {
+                padding: 0 1.2rem 1.2rem;
+            }
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+                padding: 0.5rem 0;
+            }
+            .detail-value {
+                text-align: left;
+            }
+            .success-modal-title {
+                font-size: 1.2rem;
+            }
+            .success-icon {
+                width: 50px;
+                height: 50px;
+            }
+            .success-icon i {
+                font-size: 1.5rem;
+            }
         }
-
+        @media (max-height: 600px) {
+            .success-modal {
+                max-height: 95vh;
+            }
+            .success-modal-body {
+                max-height: 50vh;
+            }
+        }
         @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
         .form-section {
             animation: fadeInUp 0.5s ease-out forwards;
         }
-
         .form-section:nth-child(2) {
             animation-delay: 0.1s;
         }
-
         .form-section:nth-child(3) {
             animation-delay: 0.2s;
         }
-
         .form-section:nth-child(4) {
             animation-delay: 0.3s;
         }
-
         .form-section:nth-child(5) {
             animation-delay: 0.4s;
         }
-
-        .tooltip-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 18px;
-            height: 18px;
-            background-color: #e2e8f0;
-            color: var(--light-text);
-            border-radius: 50%;
-            font-size: 12px;
-            margin-left: 6px;
-            cursor: help;
-            position: relative;
-        }
-
-        .tooltip-icon:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #2d3748;
-            color: white;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 10;
-            margin-bottom: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .tooltip-icon:hover::before {
-            content: '';
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2d3748 transparent transparent transparent;
-            margin-bottom: -5px;
-            z-index: 10;
-        }
     </style>
 </head>
-
 <body>
     <button class="mobile-menu-toggle" id="mobileMenuToggle">
         <i class="bi bi-list"></i>
     </button>
-
     <div class="toast-container" id="toastContainer"></div>
-
     <div class="spinner-overlay" id="loadingSpinner">
         <div class="spinner"></div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal-overlay" id="successModal">
+        <div class="success-modal">
+            <div class="success-modal-header">
+                <div class="success-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h2 class="success-modal-title">Application Submitted!</h2>
+                <p class="success-modal-subtitle">Your admission application has been received</p>
+            </div>
+            <div class="success-modal-body">
+                <div class="application-details" id="applicationDetails">
+                    <!-- Details will be populated by JavaScript -->
+                </div>
+                <div class="success-note">
+                    <p><strong>Important:</strong> Please save your reference number for future correspondence. A confirmation email has been sent to your registered email address.</p>
+                </div>
+            </div>
+            <div class="success-modal-footer">
+                <button class="success-btn" id="successOkBtn">
+                    <i class="bi bi-house-fill"></i>
+                    Go to Home
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="app-container">
@@ -793,7 +888,6 @@
                     <h1>College Admission</h1>
                     <p>Complete all required fields to submit your application for the upcoming academic year.</p>
                 </div>
-
                 <div class="sidebar-nav">
                     <div class="nav-item active" data-section="personal" data-step="1">
                         <i class="bi bi-person"></i>
@@ -817,13 +911,11 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="sidebar-footer">
                     <p>Need help? Contact our admission support team at <strong>admissions@college.edu</strong></p>
                 </div>
             </div>
         </div>
-
         <div class="main-content">
             <div class="content-header">
                 <h1 class="page-title">Admission Application</h1>
@@ -831,7 +923,6 @@
                     <i class="bi bi-arrow-left"></i> Back to Home
                 </a>
             </div>
-
             <div class="progress-container">
                 <div class="progress-wrapper">
                     <div class="progress">
@@ -846,8 +937,8 @@
                     <span>Documents & Submission</span>
                 </div>
             </div>
-
-            <form id="admissionForm">
+            <form id="admissionForm" novalidate>
+                <!-- Step 1: Personal Information -->
                 <div class="form-section" id="personalSection" data-step="1">
                     <div class="section-title">
                         <div class="section-title-icon">
@@ -855,32 +946,33 @@
                         </div>
                         <h2 class="section-title-text">Personal Information</h2>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-6">
                             <label for="name" class="form-label required-field">Full Name</label>
                             <input type="text" class="form-control" id="name" name="name"
                                 placeholder="Enter your full name" required>
+                            <div class="error-message" id="nameError"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="fatherName" class="form-label required-field">Father's Name</label>
                             <input type="text" class="form-control" id="fatherName" name="fatherName"
                                 placeholder="Enter your father's name" required>
+                            <div class="error-message" id="fatherNameError"></div>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-6">
                             <label for="motherName" class="form-label required-field">Mother's Name</label>
                             <input type="text" class="form-control" id="motherName" name="motherName"
                                 placeholder="Enter your mother's name" required>
+                            <div class="error-message" id="motherNameError"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="dob" class="form-label required-field">Date of Birth</label>
                             <input type="date" class="form-control" id="dob" name="dob" required>
+                            <div class="error-message" id="dobError"></div>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-4">
                             <label for="gender" class="form-label required-field">Gender</label>
@@ -890,11 +982,13 @@
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
                             </select>
+                            <div class="error-message" id="genderError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="nationality" class="form-label required-field">Nationality</label>
                             <input type="text" class="form-control" id="nationality" name="nationality"
                                 placeholder="Enter your nationality" required>
+                            <div class="error-message" id="nationalityError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="category" class="form-label">Category</label>
@@ -910,6 +1004,7 @@
                     </div>
                 </div>
 
+                <!-- Contact Information -->
                 <div class="form-section" data-step="1">
                     <div class="section-title">
                         <div class="section-title-icon">
@@ -917,48 +1012,52 @@
                         </div>
                         <h2 class="section-title-text">Contact Information</h2>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-6">
                             <label for="email" class="form-label required-field">Email Address</label>
                             <input type="email" class="form-control" id="email" name="email"
                                 placeholder="Enter your email address" required>
                             <div class="form-text">We'll send important updates to this email</div>
+                            <div class="error-message" id="emailError"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="phone" class="form-label required-field">Phone Number</label>
                             <input type="tel" class="form-control" id="phone" name="phone"
                                 placeholder="Enter your phone number" required>
+                            <div class="error-message" id="phoneError"></div>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-12">
                             <label for="address" class="form-label required-field">Permanent Address</label>
                             <textarea class="form-control" id="address" name="address" rows="3"
                                 placeholder="Enter your full address" required></textarea>
+                            <div class="error-message" id="addressError"></div>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-4">
                             <label for="city" class="form-label required-field">City</label>
                             <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city"
                                 required>
+                            <div class="error-message" id="cityError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="state" class="form-label required-field">State</label>
                             <input type="text" class="form-control" id="state" name="state"
                                 placeholder="Enter your state" required>
+                            <div class="error-message" id="stateError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="pincode" class="form-label required-field">Pincode</label>
                             <input type="text" class="form-control" id="pincode" name="pincode"
                                 placeholder="Enter your pincode" required>
+                            <div class="error-message" id="pincodeError"></div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Photo Upload -->
                 <div class="form-section" data-step="1">
                     <div class="section-title">
                         <div class="section-title-icon">
@@ -966,7 +1065,6 @@
                         </div>
                         <h2 class="section-title-text">Photo Upload</h2>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-6">
                             <label class="form-label required-field">Passport Size Photo</label>
@@ -988,6 +1086,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="error-message" id="photoError"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Signature</label>
@@ -1011,7 +1110,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="form-navigation">
                         <a href="/" class="btn btn-outline">
                             <i class="bi bi-house"></i> Back to Home
@@ -1022,6 +1120,7 @@
                     </div>
                 </div>
 
+                <!-- Step 2: Educational Information -->
                 <div class="form-section" id="educationSection" data-step="2">
                     <div class="section-title">
                         <div class="section-title-icon">
@@ -1029,7 +1128,6 @@
                         </div>
                         <h2 class="section-title-text">Educational Information</h2>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-6">
                             <label for="program" class="form-label required-field">Program Applied For</label>
@@ -1037,11 +1135,15 @@
                                 <option value="">Select Program</option>
                                 <option value="BCA">BCA - Bachelor of Computer Applications</option>
                                 <option value="MCA">MCA - Master of Computer Applications</option>
-                                <option value="BTech">B.Tech - Bachelor of Technology</option>
-                                <option value="MTech">M.Tech - Master of Technology</option>
-                                <option value="BBA">BBA - Bachelor of Business Administration</option>
                                 <option value="MBA">MBA - Master of Business Administration</option>
+                                <option value="BTech">B.Tech - Bachelor of Technology</option>
+                                <option value="CSE">CSE - Computer Science and Engineering</option>
+                                <option value="ECE">ECE - Electronics and Communication Engineering</option>
+                                <option value="EEE">EEE - Electrical and Electronics Engineering</option>
+                                <option value="Mechanical">Mechanical - Mechanical Engineering</option>
+                                <option value="Civil">Civil - Civil Engineering</option>
                             </select>
+                            <div class="error-message" id="programError"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="previousQualification" class="form-label required-field">Previous
@@ -1053,68 +1155,137 @@
                                 <option value="Undergraduate">Undergraduate</option>
                                 <option value="Postgraduate">Postgraduate</option>
                             </select>
+                            <div class="error-message" id="previousQualificationError"></div>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-4">
                             <label for="tenthBoard" class="form-label required-field">10th Board</label>
-                            <input type="text" class="form-control" id="tenthBoard" name="tenthBoard"
-                                placeholder="Enter board name" required>
+                            <select class="form-select" id="tenthBoard" name="tenthBoard" required>
+                                <option value="">Select Board</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="State Board">State Board</option>
+                                <option value="NIOS">NIOS</option>
+                                <option value="IB">International Baccalaureate (IB)</option>
+                                <option value="Cambridge">Cambridge International</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="error-message" id="tenthBoardError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="tenthYear" class="form-label required-field">Year of Passing</label>
                             <input type="number" class="form-control" id="tenthYear" name="tenthYear"
                                 placeholder="Enter year" min="1990" max="2030" required>
+                            <div class="error-message" id="tenthYearError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="tenthMarks" class="form-label required-field">Percentage/CGPA</label>
                             <input type="text" class="form-control" id="tenthMarks" name="tenthMarks"
                                 placeholder="Enter percentage or CGPA" required>
+                            <div class="error-message" id="tenthMarksError"></div>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-4">
                             <label for="twelfthBoard" class="form-label required-field">12th Board</label>
-                            <input type="text" class="form-control" id="twelfthBoard" name="twelfthBoard"
-                                placeholder="Enter board name" required>
+                            <select class="form-select" id="twelfthBoard" name="twelfthBoard" required>
+                                <option value="">Select Board</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="State Board">State Board</option>
+                                <option value="NIOS">NIOS</option>
+                                <option value="IB">International Baccalaureate (IB)</option>
+                                <option value="Cambridge">Cambridge International</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="error-message" id="twelfthBoardError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="twelfthYear" class="form-label required-field">Year of Passing</label>
                             <input type="number" class="form-control" id="twelfthYear" name="twelfthYear"
                                 placeholder="Enter year" min="1990" max="2030" required>
+                            <div class="error-message" id="twelfthYearError"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="twelfthMarks" class="form-label required-field">Percentage/CGPA</label>
                             <input type="text" class="form-control" id="twelfthMarks" name="twelfthMarks"
                                 placeholder="Enter percentage or CGPA" required>
+                            <div class="error-message" id="twelfthMarksError"></div>
                         </div>
                     </div>
-
                     <div id="ugDetailsSection" class="row g-4 mb-4" style="display: none;">
                         <div class="col-md-3">
                             <label for="ugUniversity" class="form-label required-field">University/College</label>
                             <input type="text" class="form-control" id="ugUniversity" name="ugUniversity"
                                 placeholder="Enter university name">
+                            <div class="error-message" id="ugUniversityError"></div>
                         </div>
                         <div class="col-md-3">
                             <label for="ugDegree" class="form-label required-field">Degree</label>
                             <input type="text" class="form-control" id="ugDegree" name="ugDegree"
                                 placeholder="Enter degree name">
+                            <div class="error-message" id="ugDegreeError"></div>
                         </div>
                         <div class="col-md-3">
                             <label for="ugYear" class="form-label required-field">Year of Passing</label>
                             <input type="number" class="form-control" id="ugYear" name="ugYear" placeholder="Enter year"
                                 min="1990" max="2030">
+                            <div class="error-message" id="ugYearError"></div>
                         </div>
                         <div class="col-md-3">
                             <label for="ugPercentage" class="form-label required-field">Percentage/CGPA</label>
                             <input type="text" class="form-control" id="ugPercentage" name="ugPercentage"
                                 placeholder="Enter percentage or CGPA">
+                            <div class="error-message" id="ugPercentageError"></div>
                         </div>
                     </div>
+                </div>
 
+                <!-- Emergency Contact -->
+                <div class="form-section" data-step="2">
+                    <div class="section-title">
+                        <div class="section-title-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h2 class="section-title-text">Emergency Contact</h2>
+                    </div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label for="emergencyContact" class="form-label required-field">Emergency Contact
+                                Name</label>
+                            <input type="text" class="form-control" id="emergencyContact" name="emergencyContact"
+                                placeholder="Enter contact name" required>
+                            <div class="error-message" id="emergencyContactError"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="emergencyRelation" class="form-label required-field">Relationship</label>
+                            <select class="form-select" id="emergencyRelation" name="emergencyRelation" required>
+                                <option value="">Select Relationship</option>
+                                <option value="Father">Father</option>
+                                <option value="Mother">Mother</option>
+                                <option value="Guardian">Guardian</option>
+                                <option value="Sibling">Sibling</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="error-message" id="emergencyRelationError"></div>
+                        </div>
+                    </div>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label for="emergencyPhone" class="form-label required-field">Emergency Contact
+                                Phone</label>
+                            <input type="tel" class="form-control" id="emergencyPhone" name="emergencyPhone"
+                                placeholder="Enter contact phone" required>
+                            <div class="error-message" id="emergencyPhoneError"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="emergencyAddress" class="form-label">Emergency Contact Address</label>
+                            <textarea class="form-control" id="emergencyAddress" name="emergencyAddress" rows="1"
+                                placeholder="Enter address"></textarea>
+                        </div>
+                    </div>
                     <div class="form-navigation">
                         <button type="button" class="btn btn-outline" onclick="goToStep(1)">
                             <i class="bi bi-arrow-left"></i> Previous
@@ -1125,43 +1296,7 @@
                     </div>
                 </div>
 
-                <div class="form-section" data-step="2">
-                    <div class="section-title">
-                        <div class="section-title-icon">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <h2 class="section-title-text">Emergency Contact</h2>
-                    </div>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label for="emergencyContact" class="form-label required-field">Emergency Contact
-                                Name</label>
-                            <input type="text" class="form-control" id="emergencyContact" name="emergencyContact"
-                                placeholder="Enter contact name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="emergencyRelation" class="form-label required-field">Relationship</label>
-                            <input type="text" class="form-control" id="emergencyRelation" name="emergencyRelation"
-                                placeholder="Enter relationship" required>
-                        </div>
-                    </div>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label for="emergencyPhone" class="form-label required-field">Emergency Contact
-                                Phone</label>
-                            <input type="text" class="form-control" id="emergencyPhone" name="emergencyPhone"
-                                placeholder="Enter contact phone" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="emergencyAddress" class="form-label">Emergency Contact Address</label>
-                            <textarea class="form-control" id="emergencyAddress" name="emergencyAddress" rows="1"
-                                placeholder="Enter address"></textarea>
-                        </div>
-                    </div>
-                </div>
-
+                <!-- Step 3: Documents & Submission -->
                 <div class="form-section" id="documentsSection" data-step="3">
                     <div class="section-title">
                         <div class="section-title-icon">
@@ -1169,7 +1304,6 @@
                         </div>
                         <h2 class="section-title-text">Additional Information</h2>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-12">
                             <label for="extraCurricular" class="form-label">Extra-curricular Activities</label>
@@ -1177,7 +1311,6 @@
                                 placeholder="List any sports, clubs, or activities you participate in"></textarea>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-4">
                         <div class="col-md-12">
                             <label for="achievements" class="form-label">Achievements & Awards</label>
@@ -1185,7 +1318,6 @@
                                 placeholder="List any notable achievements or awards"></textarea>
                         </div>
                     </div>
-
                     <div class="row g-4 mb-5">
                         <div class="col-md-12">
                             <label class="custom-checkbox">
@@ -1197,9 +1329,9 @@
                                     of my application.
                                 </span>
                             </label>
+                            <div class="error-message" id="termsCheckError"></div>
                         </div>
                     </div>
-
                     <div class="form-navigation">
                         <button type="button" class="btn btn-outline" onclick="goToStep(2)">
                             <i class="bi bi-arrow-left"></i> Previous
@@ -1214,16 +1346,13 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         let currentStep = 1;
         const totalSteps = 3;
 
         function initForm() {
             updateFormSections();
-
             updateProgressBar();
-
             updateNavItems();
         }
 
@@ -1242,7 +1371,6 @@
             const progressPercentage = Math.round((currentStep / totalSteps) * 100);
             const progressBar = document.querySelector('.progress-bar');
             const progressText = document.querySelector('.progress-percentage');
-
             progressBar.style.width = `${progressPercentage}%`;
             progressBar.setAttribute('aria-valuenow', progressPercentage);
             progressText.textContent = `${progressPercentage}%`;
@@ -1259,21 +1387,126 @@
             });
         }
 
+        function validateCurrentStep() {
+            const currentSections = document.querySelectorAll(`[data-step="${currentStep}"]`);
+            let isValid = true;
+
+            currentSections.forEach(section => {
+                const requiredFields = section.querySelectorAll('[required]');
+                requiredFields.forEach(field => {
+                    clearFieldError(field);
+                    if (!field.value.trim()) {
+                        showFieldError(field, 'This field is required');
+                        isValid = false;
+                    } else {
+                        // Additional validation
+                        if (field.type === 'email' && !isValidEmail(field.value)) {
+                            showFieldError(field, 'Please enter a valid email address');
+                            isValid = false;
+                        }
+                        if (field.name === 'phone' || field.name === 'emergencyPhone') {
+                            if (field.value.length !== 10) {
+                                showFieldError(field, 'Phone number must be 10 digits');
+                                isValid = false;
+                            }
+                        }
+                        if (field.name === 'pincode' && field.value.length !== 6) {
+                            showFieldError(field, 'Pincode must be 6 digits');
+                            isValid = false;
+                        }
+                    }
+                });
+            });
+
+            return isValid;
+        }
+
+        function showFieldError(field, message) {
+            field.classList.add('is-invalid');
+            const errorElement = document.getElementById(field.name + 'Error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        function clearFieldError(field) {
+            field.classList.remove('is-invalid');
+            const errorElement = document.getElementById(field.name + 'Error');
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
         function goToStep(step) {
+            if (step > currentStep) {
+                // Validate current step before moving forward
+                if (!validateCurrentStep()) {
+                    return;
+                }
+            }
+
             if (step >= 1 && step <= totalSteps) {
                 currentStep = step;
                 updateFormSections();
                 updateProgressBar();
                 updateNavItems();
-
                 document.querySelector('.main-content').scrollTop = 0;
             }
         }
 
+        // Success Modal Functions
+        function showSuccessModal(data) {
+            const modal = document.getElementById('successModal');
+            const detailsContainer = document.getElementById('applicationDetails');
+            
+            // Populate application details
+            detailsContainer.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Reference Number</span>
+                    <span class="detail-value ref-number">${data.refNo}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Applicant Name</span>
+                    <span class="detail-value">${data.data.name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email Address</span>
+                    <span class="detail-value">${data.data.email}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Program Applied</span>
+                    <span class="detail-value">${data.data.program}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Application Date</span>
+                    <span class="detail-value">${data.data.appliedDate}</span>
+                </div>
+            `;
+            
+            // Block scrolling
+            document.body.classList.add('modal-open');
+            modal.classList.add('active');
+        }
+
+        function hideSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('active');
+            // Restore scrolling
+            document.body.classList.remove('modal-open');
+        }
+
+        // Mobile menu toggle
         document.getElementById('mobileMenuToggle').addEventListener('click', function () {
             document.getElementById('sidebar').classList.toggle('active');
         });
 
+        // Photo upload functionality
         document.getElementById('photoUploadArea').addEventListener('click', function () {
             document.getElementById('photoUpload').click();
         });
@@ -1281,6 +1514,11 @@
         document.getElementById('photoUpload').addEventListener('change', function () {
             const file = this.files[0];
             if (file) {
+                if (file.size > 1024 * 1024) { // 1MB limit
+                    showToast('error', 'File Too Large', 'Photo must be less than 1MB');
+                    this.value = '';
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const preview = document.getElementById('photoPreview');
@@ -1302,6 +1540,7 @@
             this.style.display = 'none';
         });
 
+        // Signature upload functionality
         document.getElementById('signatureUploadArea').addEventListener('click', function () {
             document.getElementById('signatureUpload').click();
         });
@@ -1309,6 +1548,11 @@
         document.getElementById('signatureUpload').addEventListener('change', function () {
             const file = this.files[0];
             if (file) {
+                if (file.size > 512 * 1024) { // 500KB limit
+                    showToast('error', 'File Too Large', 'Signature must be less than 500KB');
+                    this.value = '';
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const preview = document.getElementById('signaturePreview');
@@ -1330,30 +1574,28 @@
             this.style.display = 'none';
         });
 
+        // Previous qualification change handler
         document.getElementById('previousQualification').addEventListener('change', function () {
             const ugSection = document.getElementById('ugDetailsSection');
+            const ugFields = ['ugUniversity', 'ugDegree', 'ugYear', 'ugPercentage'];
+            
             if (this.value === 'Undergraduate' || this.value === 'Postgraduate') {
                 ugSection.style.display = 'flex';
-
-                document.getElementById('ugUniversity').required = true;
-                document.getElementById('ugDegree').required = true;
-                document.getElementById('ugYear').required = true;
-                document.getElementById('ugPercentage').required = true;
+                ugFields.forEach(fieldId => {
+                    document.getElementById(fieldId).required = true;
+                });
             } else {
                 ugSection.style.display = 'none';
-
-                document.getElementById('ugUniversity').required = false;
-                document.getElementById('ugDegree').required = false;
-                document.getElementById('ugYear').required = false;
-                document.getElementById('ugPercentage').required = false;
-
-                document.getElementById('ugUniversity').value = '';
-                document.getElementById('ugDegree').value = '';
-                document.getElementById('ugYear').value = '';
-                document.getElementById('ugPercentage').value = '';
+                ugFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    field.required = false;
+                    field.value = '';
+                    clearFieldError(field);
+                });
             }
         });
 
+        // Phone number validation
         const phoneInputs = document.querySelectorAll('#phone, #emergencyPhone');
         phoneInputs.forEach(input => {
             input.addEventListener('input', function () {
@@ -1364,6 +1606,7 @@
             });
         });
 
+        // Pincode validation
         document.getElementById('pincode').addEventListener('input', function () {
             this.value = this.value.replace(/\D/g, '');
             if (this.value.length > 6) {
@@ -1371,6 +1614,7 @@
             }
         });
 
+        // Percentage validation
         const percentageInputs = document.querySelectorAll('#tenthMarks, #twelfthMarks, #ugPercentage');
         percentageInputs.forEach(input => {
             input.addEventListener('input', function () {
@@ -1388,12 +1632,11 @@
             });
         });
 
+        // Toast notification function
         function showToast(type, title, message) {
             const toastContainer = document.getElementById('toastContainer');
-
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
-
             toast.innerHTML = `
                 <div class="toast-icon">
                     <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
@@ -1406,7 +1649,6 @@
                     <i class="bi bi-x"></i>
                 </button>
             `;
-
             toastContainer.appendChild(toast);
 
             toast.querySelector('.toast-close').addEventListener('click', function () {
@@ -1428,6 +1670,7 @@
             }, 5000);
         }
 
+        // Loading spinner function
         function toggleLoading(show) {
             const spinner = document.getElementById('loadingSpinner');
             if (show) {
@@ -1437,16 +1680,37 @@
             }
         }
 
+        // Success modal OK button handler
+        document.getElementById('successOkBtn').addEventListener('click', function () {
+            hideSuccessModal();
+            window.location.href = '/';
+        });
+
+        // Form submission
         document.getElementById('admissionForm').addEventListener('submit', function (e) {
             e.preventDefault();
+            
+            // Validate all steps
+            let allValid = true;
+            for (let step = 1; step <= totalSteps; step++) {
+                const tempCurrentStep = currentStep;
+                currentStep = step;
+                if (!validateCurrentStep()) {
+                    allValid = false;
+                    if (tempCurrentStep !== step) {
+                        goToStep(step);
+                        break;
+                    }
+                }
+                currentStep = tempCurrentStep;
+            }
 
-            if (!this.checkValidity()) {
-                this.reportValidity();
+            if (!allValid) {
+                showToast('error', 'Validation Error', 'Please fill all required fields correctly');
                 return;
             }
 
             toggleLoading(true);
-
             const formData = new FormData(this);
 
             fetch('/v1/api/admissionApply', {
@@ -1461,51 +1725,62 @@
                 })
                 .then(data => {
                     toggleLoading(false);
-
-                    showToast('success', 'Application Submitted', 'Your application has been submitted successfully. You will receive a confirmation email shortly.');
-
-                    document.getElementById('admissionForm').reset();
-
-                    document.getElementById('photoPreview').style.display = 'none';
-                    document.getElementById('signaturePreview').style.display = 'none';
-                    document.querySelector('#photoPreviewContainer .preview-placeholder').style.display = 'block';
-                    document.querySelector('#signaturePreviewContainer .preview-placeholder').style.display = 'block';
-                    document.getElementById('photoRemove').style.display = 'none';
-                    document.getElementById('signatureRemove').style.display = 'none';
-
-                    setTimeout(() => {
-                        // window.location.href = '/admission-success';
-                        console.log('Redirecting to success page...');
-                    }, 2000);
+                    
+                    if (data.success) {
+                        // Reset form
+                        document.getElementById('admissionForm').reset();
+                        document.getElementById('photoPreview').style.display = 'none';
+                        document.getElementById('signaturePreview').style.display = 'none';
+                        document.querySelector('#photoPreviewContainer .preview-placeholder').style.display = 'block';
+                        document.querySelector('#signaturePreviewContainer .preview-placeholder').style.display = 'block';
+                        document.getElementById('photoRemove').style.display = 'none';
+                        document.getElementById('signatureRemove').style.display = 'none';
+                        document.getElementById('ugDetailsSection').style.display = 'none';
+                        
+                        // Clear all error messages
+                        document.querySelectorAll('.error-message').forEach(error => {
+                            error.style.display = 'none';
+                        });
+                        document.querySelectorAll('.is-invalid').forEach(field => {
+                            field.classList.remove('is-invalid');
+                        });
+                        
+                        // Go back to step 1
+                        currentStep = 1;
+                        updateFormSections();
+                        updateProgressBar();
+                        updateNavItems();
+                        
+                        // Show success modal with response data
+                        showSuccessModal(data);
+                    } else {
+                        showToast('error', 'Submission Failed', data.message || 'There was an error submitting your application.');
+                    }
                 })
                 .catch(error => {
                     toggleLoading(false);
-
                     showToast('error', 'Submission Failed', 'There was an error submitting your application. Please try again later.');
-
                     console.error('Error:', error);
                 });
         });
 
+        // Navigation item click handlers
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function () {
                 const step = parseInt(this.getAttribute('data-step'));
-
                 goToStep(step);
-
                 if (window.innerWidth < 992) {
                     document.getElementById('sidebar').classList.remove('active');
                 }
             });
         });
 
+        // Initialize form on page load
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('photoRemove').style.display = 'none';
             document.getElementById('signatureRemove').style.display = 'none';
-
             initForm();
         });
     </script>
 </body>
-
 </html>

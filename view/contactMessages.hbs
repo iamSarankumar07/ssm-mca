@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Messages</title>
+    <link rel="icon" href="https://i.postimg.cc/Y9kpSNhL/live-chat.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #4338ca;
+            --surface: #ffffff;
+            --surface-hover: #f8fafc;
+            --surface-secondary: #f1f5f9;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+            --text-muted: #cbd5e1;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --success-bg: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --radius-xs: 0.25rem;
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-full: 9999px;
+            --header-height: 140px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Compact Professional Header */
+        .header-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            border-top: none;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+        }
+
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .header-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .header-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .header-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            font-size: 0.625rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.5rem 0.75rem;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            min-width: 60px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-xs);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-number {
+            font-size: 1.125rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.625rem;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.125rem;
+        }
+
+        .refresh-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .refresh-btn:hover {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .refresh-btn.loading {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .search-section {
+            padding: 0.75rem 1.25rem;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.625rem 0.875rem 0.625rem 2.25rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* Messages Section - Adjusted for compact header */
+        .messages-section {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            margin: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .messages-header {
+            padding: 0.875rem 1.25rem;
+            border-bottom: 1px solid var(--border-light);
+            flex-shrink: 0;
+            background: var(--surface);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .messages-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .debug-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .debug-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .messages-container {
+            flex: 1;
+            padding: 1rem;
+            background: var(--surface);
+            overflow-y: auto;
+            max-height: calc(100vh - var(--header-height) - 80px);
+            scroll-behavior: smooth;
+        }
+
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+            width: 100%;
+            min-height: 300px;
+        }
+
+        .message-card {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            box-shadow: var(--shadow-xs);
+            overflow: hidden;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .message-card:hover::before {
+            opacity: 1;
+        }
+
+        .message-card.unread-message {
+            background: linear-gradient(135deg, #fefefe 0%, #f8fafc 100%);
+            border-color: var(--primary-light);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1);
+        }
+
+        .message-card.unread-message::before {
+            opacity: 1;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.875rem;
+            margin-bottom: 0.875rem;
+            width: 100%;
+        }
+
+        .message-avatar {
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .avatar-img {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            border: 2px solid var(--border-light);
+            background: var(--surface-hover);
+            display: block;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .avatar-status {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            background: var(--success);
+            border: 2px solid var(--surface);
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .message-info {
+            flex: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .message-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .message-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            letter-spacing: -0.025em;
+        }
+
+        .message-datetime {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            background: var(--surface-secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-full);
+            white-space: nowrap;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.1rem;
+        }
+
+        .message-date {
+            font-weight: 700;
+        }
+
+        .message-time {
+            font-size: 0.6rem;
+            opacity: 0.8;
+        }
+
+        .message-email {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .message-email i {
+            color: var(--primary);
+            flex-shrink: 0;
+            font-size: 0.75rem;
+        }
+
+        .message-email span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .message-content {
+            background: var(--surface-hover);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            border: 1px solid var(--border-light);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.625rem;
+            font-weight: 700;
+            gap: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .status-unread {
+            background: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success-light);
+            animation: pulse-unread 2s infinite;
+        }
+
+        .status-unread i {
+            font-size: 0.5rem;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes pulse-unread {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Infinite Scroll Loading */
+        .infinite-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-top: 1px solid var(--border-light);
+            margin-top: 1rem;
+            background: var(--surface-hover);
+            border-radius: var(--radius-lg);
+        }
+
+        .infinite-loading.hidden {
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-top: 2px solid var(--primary);
+            border-radius: var(--radius-full);
+            animation: spin 1s linear infinite;
+        }
+
+        .end-of-messages {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-top: 1px solid var(--border-light);
+            margin-top: 1rem;
+            background: var(--surface-hover);
+            border-radius: var(--radius-lg);
+        }
+
+        .end-of-messages.hidden {
+            display: none;
+        }
+
+        .end-of-messages i {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--success);
+        }
+
+        /* Debug info */
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            font-size: 0.7rem;
+            z-index: 1000;
+            display: none;
+            font-family: monospace;
+        }
+
+        .debug-info.show {
+            display: block;
+        }
+
+        /* Loading and Empty States */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Skeleton Loading */
+        .skeleton-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+            width: 100%;
+        }
+
+        .skeleton-message {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            display: flex;
+            gap: 0.875rem;
+            width: 100%;
+        }
+
+        .skeleton-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(90deg, var(--surface-hover) 25%, var(--border-light) 50%, var(--surface-hover) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            flex-shrink: 0;
+        }
+
+        .skeleton-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .skeleton-line {
+            height: 10px;
+            background: linear-gradient(90deg, var(--surface-hover) 25%, var(--border-light) 50%, var(--surface-hover) 75%);
+            background-size: 200% 100%;
+            border-radius: var(--radius-xs);
+            animation: shimmer 2s infinite;
+        }
+
+        .skeleton-line.title { width: 40%; height: 14px; }
+        .skeleton-line.subtitle { width: 60%; height: 10px; }
+        .skeleton-line.content { width: 80%; height: 10px; }
+        .skeleton-line.content-short { width: 55%; height: 10px; }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            z-index: 1001;
+            transition: width 0.1s ease;
+            box-shadow: 0 1px 3px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Message Counter */
+        .message-counter {
+            position: sticky;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-top: 1px solid var(--border-light);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 160px;
+            }
+
+            body {
+                font-size: 13px;
+            }
+
+            .header-content {
+                padding: 0.625rem 1rem;
+                flex-wrap: wrap;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 0.5rem;
+            }
+
+            .header-stats {
+                gap: 0.5rem;
+            }
+
+            .stat-item {
+                min-width: 50px;
+                padding: 0.375rem 0.5rem;
+            }
+
+            .stat-number {
+                font-size: 1rem;
+            }
+
+            .stat-label {
+                font-size: 0.55rem;
+            }
+
+            .search-section {
+                padding: 0.625rem 1rem;
+            }
+
+            .messages-section {
+                margin: 0.75rem;
+                margin-top: 0.375rem;
+            }
+
+            .messages-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .messages-container {
+                padding: 0.75rem;
+                max-height: calc(100vh - var(--header-height) - 60px);
+            }
+
+            .message-card {
+                padding: 0.875rem;
+            }
+
+            .message-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .message-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .scroll-to-top {
+                bottom: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .avatar-img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .avatar-status {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 12px;
+            }
+
+            .messages-container {
+                max-height: calc(100vh - var(--header-height) - 40px);
+            }
+
+            .message-card {
+                padding: 0.75rem;
+            }
+
+            .infinite-loading {
+                padding: 1.25rem;
+            }
+
+            .end-of-messages {
+                padding: 1.25rem 0.875rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header-content {
+                padding: 0.5rem 0.875rem;
+            }
+
+            .search-section {
+                padding: 0.5rem 0.875rem;
+            }
+
+            .messages-section {
+                margin: 0.5rem;
+            }
+
+            .messages-container {
+                padding: 0.625rem;
+            }
+
+            .message-card {
+                padding: 0.625rem;
+            }
+
+            .avatar-img {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- Debug Info -->
+    <div class="debug-info" id="debug-info">
+        <div>Scroll: <span id="debug-scroll">0</span></div>
+        <div>Height: <span id="debug-height">0</span></div>
+        <div>Client: <span id="debug-client">0</span></div>
+        <div>Loading: <span id="debug-loading">false</span></div>
+        <div>HasMore: <span id="debug-hasmore">true</span></div>
+        <div>Page: <span id="debug-page">1</span></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Compact Professional Header Section -->
+        <div class="header-section">
+            <div class="header-content">
+                <div class="header-left">
+                    <a href="/v1/api/dashboard#admission" class="back-btn">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                    <div class="header-icon">
+                        <i class="bi bi-chat-dots-fill"></i>
+                    </div>
+                    <div class="header-title-section">
+                        <h1 class="header-title">
+                            Contact Messages
+                            <span class="header-badge">Inbox</span>
+                        </h1>
+                        <div class="header-subtitle">
+                            <i class="bi bi-envelope-fill"></i>
+                            Manage customer inquiries and support requests
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-messages">-</span>
+                        <span class="stat-label">Total</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="new-messages">-</span>
+                            <span class="stat-label">Unread</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="today-messages">-</span>
+                            <span class="stat-label">Today</span>
+                        </div>
+                    </div>
+                    <button class="refresh-btn" id="refresh-btn" title="Refresh messages">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-section">
+                <div class="search-container">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search messages by name, email, or content..." id="search-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Section -->
+        <div class="messages-section">
+            <div class="messages-header">
+                <div class="messages-title">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="bi bi-inbox-fill"></i>
+                        Recent Messages
+                    </div>
+                    <button onclick="toggleDebug()" class="debug-btn">Debug</button>
+                </div>
+            </div>
+            <div class="messages-container" id="messages-container">
+                <div id="message-list" class="message-list">
+                    <!-- Messages will be loaded here via JavaScript -->
+                </div>
+                
+                <!-- Infinite Loading Indicator -->
+                <div class="infinite-loading hidden" id="infinite-loading">
+                    <div class="loading-spinner"></div>
+                    <span>Loading more messages...</span>
+                </div>
+                
+                <!-- End of Messages Indicator -->
+                <div class="end-of-messages hidden" id="end-of-messages">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <p>You've reached the end of all messages</p>
+                </div>
+            </div>
+            <!-- Message Counter -->
+            <div class="message-counter" id="message-counter">
+                <span id="loaded-count">0</span> messages loaded
+            </div>
+        </div>
+
+        <!-- Scroll to Top Button -->
+        <button class="scroll-to-top" id="scroll-to-top" title="Scroll to top">
+            <i class="bi bi-arrow-up"></i>
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // App state
+            let currentPage = 1;
+            let currentSearch = '';
+            let isLoading = false;
+            let hasMoreMessages = true;
+            let allMessages = [];
+            let loadedMessageIds = new Set();
+            let debugMode = false;
+
+            // DOM elements
+            const messageList = document.getElementById('message-list');
+            const messagesContainer = document.getElementById('messages-container');
+            const searchInput = document.getElementById('search-input');
+            const totalMessagesEl = document.getElementById('total-messages');
+            const newMessagesEl = document.getElementById('new-messages');
+            const todayMessagesEl = document.getElementById('today-messages');
+            const infiniteLoading = document.getElementById('infinite-loading');
+            const endOfMessages = document.getElementById('end-of-messages');
+            const scrollToTopBtn = document.getElementById('scroll-to-top');
+            const scrollProgress = document.getElementById('scroll-progress');
+            const messageCounter = document.getElementById('message-counter');
+            const loadedCount = document.getElementById('loaded-count');
+            const debugInfo = document.getElementById('debug-info');
+            const refreshBtn = document.getElementById('refresh-btn');
+
+            // Debug elements
+            const debugScroll = document.getElementById('debug-scroll');
+            const debugHeight = document.getElementById('debug-height');
+            const debugClient = document.getElementById('debug-client');
+            const debugLoading = document.getElementById('debug-loading');
+            const debugHasMore = document.getElementById('debug-hasmore');
+            const debugPage = document.getElementById('debug-page');
+
+            // API endpoints
+            const API_BASE = '/v1/api';
+            const ENDPOINTS = {
+                messages: `${API_BASE}/getContactMessages`,
+                stats: `${API_BASE}/contactMessages/stats`,
+                markRead: `${API_BASE}/contactMessage`
+            };
+
+            // Debug toggle function
+            window.toggleDebug = function() {
+                debugMode = !debugMode;
+                debugInfo.classList.toggle('show', debugMode);
+            };
+
+            // Update debug info
+            function updateDebugInfo() {
+                if (!debugMode) return;
+                
+                const container = messagesContainer;
+                debugScroll.textContent = Math.round(container.scrollTop);
+                debugHeight.textContent = Math.round(container.scrollHeight);
+                debugClient.textContent = Math.round(container.clientHeight);
+                debugLoading.textContent = isLoading;
+                debugHasMore.textContent = hasMoreMessages;
+                debugPage.textContent = currentPage;
+            }
+
+            // Utility functions
+            function formatDate(dateString) {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    if (isNaN(date.getTime())) return dateString;
+                    
+                    return date.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                } catch (e) {
+                    return dateString;
+                }
+            }
+
+            function formatTime(dateString) {
+                if (!dateString) return '';
+                try {
+                    const date = new Date(dateString);
+                    if (isNaN(date.getTime())) return dateString;
+                    
+                    return date.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                } catch (e) {
+                    return dateString;
+                }
+            }
+
+            function updateMessageCounter() {
+                loadedCount.textContent = allMessages.length;
+            }
+
+            function updateScrollProgress() {
+                const container = messagesContainer;
+                const scrollTop = container.scrollTop;
+                const scrollHeight = container.scrollHeight - container.clientHeight;
+                const scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+                scrollProgress.style.width = Math.min(scrollPercent, 100) + '%';
+            }
+
+            // Show skeleton loading
+            function showSkeletonLoading() {
+                const skeletonHTML = `
+                    <div class="skeleton-container">
+                        ${Array(6).fill().map(() => `
+                            <div class="skeleton-message">
+                                <div class="skeleton-avatar"></div>
+                                <div class="skeleton-content">
+                                    <div class="skeleton-line title"></div>
+                                    <div class="skeleton-line subtitle"></div>
+                                    <div class="skeleton-line content"></div>
+                                    <div class="skeleton-line content-short"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                messageList.innerHTML = skeletonHTML;
+            }
+
+            // Show loading state
+            function showLoading() {
+                messageList.innerHTML = `
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <span>Loading messages...</span>
+                    </div>
+                `;
+            }
+
+            // Show empty state
+            function showEmptyState(message = 'No messages found') {
+                messageList.innerHTML = `
+                    <div class="empty-state fade-in">
+                        <i class="bi bi-inbox"></i>
+                        <h3>No Messages</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
+                hideInfiniteScrollElements();
+                updateMessageCounter();
+            }
+
+            // Hide infinite scroll elements
+            function hideInfiniteScrollElements() {
+                infiniteLoading.classList.add('hidden');
+                endOfMessages.classList.add('hidden');
+            }
+
+            // Show infinite loading
+            function showInfiniteLoading() {
+                infiniteLoading.classList.remove('hidden');
+                endOfMessages.classList.add('hidden');
+            }
+
+            // Show end of messages
+            function showEndOfMessages() {
+                infiniteLoading.classList.add('hidden');
+                endOfMessages.classList.remove('hidden');
+            }
+
+            // Fetch and update stats
+            async function fetchStats() {
+                try {
+                    const response = await fetch(ENDPOINTS.stats);
+                    if (!response.ok) throw new Error('Failed to fetch stats');
+                    
+                    const stats = await response.json();
+                    updateStats(stats);
+                } catch (error) {
+                    console.error('Error fetching stats:', error);
+                    updateStats({ totalCount: 0, newCount: 0, todayCount: 0 });
+                }
+            }
+
+            // Update statistics display
+            function updateStats(stats) {
+                totalMessagesEl.textContent = stats.totalCount || 0;
+                newMessagesEl.textContent = stats.newCount || 0;
+                todayMessagesEl.textContent = stats.todayCount || 0;
+            }
+
+            // Fetch messages from API
+            async function fetchMessages(page = 1, search = '', append = false) {
+                if (isLoading) {
+                    console.log('Already loading, skipping request');
+                    return;
+                }
+                
+                console.log(`🚀 Fetching messages - Page: ${page}, Search: "${search}", Append: ${append}`);
+                
+                isLoading = true;
+                
+                if (!append) {
+                    showSkeletonLoading();
+                    hideInfiniteScrollElements();
+                    allMessages = [];
+                    loadedMessageIds.clear();
+                } else {
+                    showInfiniteLoading();
+                }
+
+                try {
+                    const params = new URLSearchParams({
+                        page: page.toString(),
+                        limit: '10'
+                    });
+
+                    if (search.trim()) {
+                        params.append('search', search.trim());
+                    }
+
+                    const url = `${ENDPOINTS.messages}?${params}`;
+                    console.log('📡 API Request:', url);
+
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to fetch messages`);
+
+                    const data = await response.json();
+                    console.log('📦 API Response:', data);
+                    
+                    if (data.success) {
+                        const messages = data.data.messages || [];
+                        console.log(`📨 Received ${messages.length} messages`);
+                        
+                        // Filter out duplicate messages
+                        const newMessages = messages.filter(msg => !loadedMessageIds.has(msg._id));
+                        console.log(`✨ New messages after deduplication: ${newMessages.length}`);
+                        
+                        // Add new message IDs to the set
+                        newMessages.forEach(msg => loadedMessageIds.add(msg._id));
+                        
+                        if (append) {
+                            allMessages = [...allMessages, ...newMessages];
+                            appendMessages(newMessages);
+                        } else {
+                            allMessages = newMessages;
+                            renderMessages(newMessages);
+                        }
+
+                        // Update pagination state
+                        const pagination = data.data.pagination;
+                        hasMoreMessages = pagination && pagination.hasNext;
+                        currentPage = page;
+                        currentSearch = search;
+
+                        console.log(`📄 Pagination - Current: ${currentPage}, HasNext: ${hasMoreMessages}`);
+
+                        // Handle end of messages
+                        if (!hasMoreMessages && allMessages.length > 0) {
+                            showEndOfMessages();
+                            console.log('🏁 Reached end of messages');
+                        } else {
+                            hideInfiniteScrollElements();
+                        }
+
+                        updateMessageCounter();
+
+                    } else {
+                        throw new Error(data.message || 'Failed to fetch messages');
+                    }
+                } catch (error) {
+                    console.error('❌ Error fetching messages:', error);
+                    if (!append) {
+                        showEmptyState('Error loading messages. Please try again.');
+                    } else {
+                        hideInfiniteScrollElements();
+                    }
+                } finally {
+                    isLoading = false;
+                    console.log('✅ Fetch complete, isLoading set to false');
+                }
+            }
+
+            // Render messages (replace all)
+            function renderMessages(messages) {
+                if (!messages || messages.length === 0) {
+                    showEmptyState(currentSearch ? `No messages found for "${currentSearch}"` : 'No messages found');
+                    return;
+                }
+
+                const messagesHTML = messages.map(message => createMessageHTML(message)).join('');
+                messageList.innerHTML = messagesHTML;
+                addMessageClickHandlers();
+            }
+
+            // Append messages (for infinite scroll)
+            function appendMessages(messages) {
+                if (!messages || messages.length === 0) return;
+
+                const messagesHTML = messages.map(message => createMessageHTML(message)).join('');
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = messagesHTML;
+                
+                // Add fade-in animation to new messages
+                const newCards = tempDiv.querySelectorAll('.message-card');
+                newCards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.4s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+                
+                while (tempDiv.firstChild) {
+                    messageList.appendChild(tempDiv.firstChild);
+                }
+                
+                addMessageClickHandlers();
+            }
+
+            // Create message HTML
+            function createMessageHTML(message) {
+                return `
+                    <div class="message-card ${!message.readStatus ? 'unread-message' : ''} fade-in"
+                         data-message-id="${message._id}"
+                         data-read-status="${message.readStatus}">
+                        <div class="message-header">
+                            <div class="message-avatar">
+                                <img src="https://i.postimg.cc/4ddrMCpN/bussiness-man.png" alt="${message.name}" class="avatar-img">
+                                ${!message.readStatus ? '<div class="avatar-status"></div>' : ''}
+                            </div>
+                            <div class="message-info">
+                                <div class="message-meta">
+                                    <h3 class="message-name">
+                                        ${message.name}
+                                        ${!message.readStatus ? `
+                                            <span class="status-badge status-unread">
+                                                <i class="bi bi-circle-fill"></i>
+                                                Unread
+                                            </span>
+                                        ` : ''}
+                                    </h3>
+                                    <div class="message-datetime">
+                                        <span class="message-date">${formatDate(message.createdAt || message.date)}</span>
+                                        <span class="message-time">${formatTime(message.createdAt || message.date)}</span>
+                                    </div>
+                                </div>
+                                <div class="message-email">
+                                    <i class="bi bi-envelope-fill"></i>
+                                    <span>${message.email}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-content">${message.message}</div>
+                    </div>
+                `;
+            }
+
+            // Add click handlers to message cards
+            function addMessageClickHandlers() {
+                const messageCards = messageList.querySelectorAll('.message-card:not([data-click-handler])');
+                messageCards.forEach(card => {
+                    card.setAttribute('data-click-handler', 'true');
+                    card.addEventListener('click', function() {
+                        markAsRead(this);
+                    });
+                });
+            }
+
+            // Mark message as read
+            async function markAsRead(messageCard) {
+                const messageId = messageCard.dataset.messageId;
+                const readStatus = messageCard.dataset.readStatus === 'true';
+
+                if (readStatus) return; // Already read
+
+                const statusBadge = messageCard.querySelector('.status-badge.status-unread');
+                const avatarStatus = messageCard.querySelector('.avatar-status');
+
+                try {
+                    const response = await fetch(`${ENDPOINTS.markRead}/${messageId}/read`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Update UI
+                        if (statusBadge) {
+                            statusBadge.style.opacity = '0';
+                            setTimeout(() => statusBadge.remove(), 300);
+                        }
+                        if (avatarStatus) {
+                            avatarStatus.style.opacity = '0';
+                            setTimeout(() => avatarStatus.remove(), 300);
+                        }
+
+                        messageCard.classList.remove('unread-message');
+                        messageCard.dataset.readStatus = 'true';
+
+                        // Update stats
+                        const currentUnread = parseInt(newMessagesEl.textContent) || 0;
+                        if (currentUnread > 0) {
+                            newMessagesEl.textContent = currentUnread - 1;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error marking message as read:', error);
+                }
+            }
+
+            // Enhanced infinite scroll handler
+            function handleScroll() {
+                const container = messagesContainer;
+                const scrollTop = container.scrollTop;
+                const scrollHeight = container.scrollHeight;
+                const clientHeight = container.clientHeight;
+
+                // Update debug info
+                updateDebugInfo();
+
+                // Update scroll progress
+                updateScrollProgress();
+
+                // Show/hide scroll to top button
+                if (scrollTop > 300) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+
+                // Calculate distance from bottom
+                const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+                
+                // More aggressive threshold for infinite scroll
+                const threshold = 300; // Increased threshold
+                
+                console.log(`📏 Scroll Check - Distance from bottom: ${Math.round(distanceFromBottom)}px, Threshold: ${threshold}px`);
+                
+                // Check if we should load more messages
+                if (distanceFromBottom <= threshold) {
+                    if (hasMoreMessages && !isLoading && allMessages.length > 0) {
+                        console.log('🔄 Triggering infinite scroll load');
+                        fetchMessages(currentPage + 1, currentSearch, true);
+                    } else {
+                        console.log(`⏸️ Not loading - HasMore: ${hasMoreMessages}, Loading: ${isLoading}, Messages: ${allMessages.length}`);
+                    }
+                }
+            }
+
+            // Scroll to top functionality
+            scrollToTopBtn.addEventListener('click', function() {
+                messagesContainer.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Refresh functionality
+            refreshBtn.addEventListener('click', function() {
+                refreshBtn.classList.add('loading');
+                
+                // Reset state for fresh data
+                currentPage = 1;
+                hasMoreMessages = true;
+                allMessages = [];
+                loadedMessageIds.clear();
+                
+                Promise.all([
+                    fetchStats(),
+                    fetchMessages(1, currentSearch, false)
+                ]).finally(() => {
+                    setTimeout(() => {
+                        refreshBtn.classList.remove('loading');
+                    }, 500);
+                });
+            });
+
+            // Search functionality with debounce
+            let searchTimeout;
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = e.target.value.trim();
+                    console.log('🔍 Searching for:', searchTerm);
+                    
+                    // Reset state for new search
+                    currentPage = 1;
+                    hasMoreMessages = true;
+                    allMessages = [];
+                    loadedMessageIds.clear();
+                    
+                    fetchMessages(1, searchTerm, false);
+                }, 500);
+            });
+
+            // Enhanced scroll event listener - removed throttling for better responsiveness
+            messagesContainer.addEventListener('scroll', handleScroll);
+
+            // Also listen for scroll events on window (fallback)
+            window.addEventListener('scroll', function() {
+                // Only handle if the messages container is in view
+                const rect = messagesContainer.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    handleScroll();
+                }
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + F to focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    searchInput.focus();
+                }
+                
+                // Escape to clear search
+                if (e.key === 'Escape' && document.activeElement === searchInput) {
+                    searchInput.value = '';
+                    searchInput.blur();
+                    
+                    // Reset to show all messages
+                    currentPage = 1;
+                    hasMoreMessages = true;
+                    allMessages = [];
+                    loadedMessageIds.clear();
+                    fetchMessages(1, '', false);
+                }
+
+                // R key to refresh
+                if (e.key === 'r' && !e.ctrlKey && !e.metaKey && document.activeElement !== searchInput) {
+                    e.preventDefault();
+                    refreshBtn.click();
+                }
+            });
+
+            // Initialize app
+            function init() {
+                console.log('🚀 Initializing Contact Messages App with Enhanced Infinite Scroll...');
+                
+                // Load initial data
+                Promise.all([
+                    fetchStats(),
+                    fetchMessages(1)
+                ]).then(() => {
+                    console.log('✅ App initialized successfully');
+                }).catch(error => {
+                    console.error('❌ Error initializing app:', error);
+                });
+
+                // Auto-refresh stats every 30 seconds
+                setInterval(fetchStats, 30000);
+
+                // Auto-refresh messages every 2 minutes (only if at top)
+                setInterval(() => {
+                    if (messagesContainer.scrollTop < 100 && !currentSearch) {
+                        console.log('🔄 Auto-refreshing messages...');
+                        currentPage = 1;
+                        hasMoreMessages = true;
+                        allMessages = [];
+                        loadedMessageIds.clear();
+                        fetchMessages(1, '', false);
+                    }
+                }, 120000);
+            }
+
+            // Handle visibility change (refresh when tab becomes visible)
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden && messagesContainer.scrollTop < 100 && !currentSearch) {
+                    fetchStats();
+                }
+            });
+
+            // Start the app
+            init();
+        });
+    </script>
+</body>
+</html>

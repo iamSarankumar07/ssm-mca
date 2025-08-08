@@ -205,6 +205,77 @@
             font-weight: 500;
             color: var(--dark);
         }
+
+        /* Profile Edit Styles */
+        .profile-edit-mode .detail-value {
+            display: none;
+        }
+
+        .profile-edit-mode .detail-edit {
+            display: block;
+        }
+
+        .detail-edit {
+            display: none;
+        }
+
+        .detail-edit .form-control {
+            width: 100%;
+            padding: 0.375rem 0.5rem;
+            font-size: 0.875rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 0.25rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .detail-edit .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+
+        .profile-edit-actions {
+            display: none;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .profile-edit-mode .profile-edit-actions {
+            display: flex;
+        }
+
+        .btn-save-profile {
+            background-color: var(--success);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-save-profile:hover {
+            background-color: #059669;
+        }
+
+        .btn-cancel-profile {
+            background-color: var(--white);
+            color: var(--gray);
+            border: 1px solid var(--light-gray);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cancel-profile:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
         
         .nav-tabs {
             border-bottom: 1px solid var(--light-gray);
@@ -1314,8 +1385,11 @@
                             <i class="fas fa-id-card me-1 text-primary"></i>
                             Alumni Details
                         </h2>
+                        <button class="btn-update" id="editProfileBtn" onclick="toggleProfileEdit()">
+                            <i class="fas fa-edit me-1"></i> Edit Profile
+                        </button>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="profileDetailsContainer">
                         <div class="profile-header">
                             <div class="avatar-container">
                                 <img id="avatar-img" class="avatar-img" alt="Alumni Avatar">
@@ -1336,27 +1410,46 @@
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Gender</div>
-                                <div class="detail-value">{{ alumni.gender }}</div>
+                                <div class="detail-value" id="genderDisplay">{{ alumni.gender }}</div>
+                                <div class="detail-edit">
+                                    <select class="form-control" id="genderEdit">
+                                        <option value="Male" {{#if (eq alumni.gender 'Male')}}selected{{/if}}>Male</option>
+                                        <option value="Female" {{#if (eq alumni.gender 'Female')}}selected{{/if}}>Female</option>
+                                        <option value="Other" {{#if (eq alumni.gender 'Other')}}selected{{/if}}>Other</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Date of Birth</div>
-                                <div class="detail-value">{{ alumni.dob }}</div>
+                                <div class="detail-value" id="dobDisplay">{{ alumni.dob }}</div>
+                                <div class="detail-edit">
+                                    <input type="text" class="form-control" id="dobEdit" value="{{ alumni.dob }}" placeholder="DD-MM-YYYY">
+                                </div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Phone</div>
-                                <div class="detail-value">+91 {{ alumni.phone }}</div>
+                                <div class="detail-value" id="phoneDisplay">+91 {{ alumni.phone }}</div>
+                                <div class="detail-edit">
+                                    <input type="tel" class="form-control" id="phoneEdit" value="{{ alumni.phone }}" placeholder="Enter phone number">
+                                </div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Email</div>
-                                <div class="detail-value">{{ alumni.email }}</div>
+                                <div class="detail-value" id="emailDisplay">{{ alumni.email }}</div>
+                                <div class="detail-edit">
+                                    <input type="email" class="form-control" id="emailEdit" value="{{ alumni.email }}" placeholder="Enter email address">
+                                </div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Current Location</div>
-                                <div class="detail-value">{{ alumni.currentLocation }}</div>
+                                <div class="detail-value" id="locationDisplay">{{ alumni.currentLocation }}</div>
+                                <div class="detail-edit">
+                                    <input type="text" class="form-control" id="locationEdit" value="{{ alumni.currentLocation }}" placeholder="Enter current location">
+                                </div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">LinkedIn</div>
-                                <div class="detail-value">
+                                <div class="detail-value" id="linkedinDisplay">
                                     {{#if alumni.linkedin}}
                                     <a href="{{ alumni.linkedin }}" target="_blank" class="table-link">
                                         <i class="fab fa-linkedin"></i> Profile
@@ -1365,18 +1458,50 @@
                                     Not provided
                                     {{/if}}
                                 </div>
+                                <div class="detail-edit">
+                                    <input type="url" class="form-control" id="linkedinEdit" value="{{ alumni.linkedin }}" placeholder="Enter LinkedIn profile URL">
+                                </div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Address</div>
-                                <div class="detail-value" id="hideButton">
-                                    <button type="button" class="btn-update" onclick="addressUpdate()">Update Address</button>
+                                <div class="detail-value" id="addressDisplay">
+                                    {{ alumni.address.address }}, {{ alumni.address.city }}, {{ alumni.address.state }}, {{ alumni.address.pinCode }}, {{ alumni.address.country }}
                                 </div>
-                                <div class="detail-value" id="hideTd">{{ alumni.address.address }}, {{ alumni.address.city }}, {{ alumni.address.state }}, {{ alumni.address.pinCode }}, {{ alumni.address.country }}.</div>
+                                <div class="detail-edit">
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            <input type="text" class="form-control" id="addressEdit" value="{{ alumni.address.address }}" placeholder="Street Address">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="text" class="form-control" id="cityEdit" value="{{ alumni.address.city }}" placeholder="City">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="text" class="form-control" id="stateEdit" value="{{ alumni.address.state }}" placeholder="State">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="text" class="form-control" id="pinCodeEdit" value="{{ alumni.address.pinCode }}" placeholder="Pin Code">
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <input type="text" class="form-control" id="countryEdit" value="{{ alumni.address.country }}" placeholder="Country">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        
+                        <!-- Profile Edit Actions -->
+                        <div class="profile-edit-actions">
+                            <button class="btn-save-profile" onclick="saveProfileChanges()">
+                                <i class="fas fa-save me-1"></i> Save Changes
+                            </button>
+                            <button class="btn-cancel-profile" onclick="cancelProfileEdit()">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Rest of your existing cards (Education, Work Experience) remain the same -->
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title">
@@ -1480,6 +1605,7 @@
             </div>
 
             <div class="col-lg-4">
+                <!-- Rest of your existing right sidebar cards remain the same -->
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title">
@@ -1592,20 +1718,13 @@
                                 </a>
                             </span>
                         </div>
-                        {{!-- <div class="fee-item">
-                            <span class="fee-label">Events & Reunions</span>
-                            <span class="fee-value">
-                                <a href="/v1/api/alumni/events" class="service-link">
-                                    <i class="fas fa-calendar-alt service-icon"></i>
-                                </a>
-                            </span>
-                        </div> --}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- All your existing modals remain the same -->
     <!-- Logout Modal -->
     <div class="logout-modal" id="logoutModal">
         <div class="logout-modal-content">
@@ -1676,6 +1795,7 @@
         </div>
     </div>
 
+    <!-- Experience Modal -->
     <div class="custom-modal" id="experienceModal">
         <div class="custom-modal-content">
             <div class="custom-modal-header">
@@ -1738,6 +1858,7 @@
         </div>
     </div>
 
+    <!-- Skills Modal -->
     <div class="custom-modal" id="skillsModal">
         <div class="custom-modal-content">
             <div class="custom-modal-header">
@@ -1763,6 +1884,7 @@
         </div>
     </div>
 
+    <!-- Achievement Modal -->
     <div class="custom-modal" id="achievementModal">
         <div class="custom-modal-content">
             <div class="custom-modal-header">
@@ -1792,6 +1914,7 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
     <div class="custom-modal" id="deleteConfirmModal">
         <div class="custom-modal-content">
             <div class="custom-modal-header">
@@ -1821,7 +1944,9 @@
         let skillsTags = [];
         let currentEducationId = null;
         const alumniId = "{{alumni._id}}";
-        
+        let isProfileEditMode = false;
+        let originalProfileData = {};
+
         function showToast(message, type = 'info') {
             const toastClasses = {
                 success: 'toast-success',
@@ -1829,7 +1954,7 @@
                 info: 'toast-info',
                 warning: 'toast-warning'
             };
-            
+
             Toastify({
                 text: message,
                 duration: 3000,
@@ -1840,66 +1965,224 @@
                 stopOnFocus: true
             }).showToast();
         }
-        
+
+        // Profile Edit Functions
+        function toggleProfileEdit() {
+            const container = document.getElementById('profileDetailsContainer');
+            const editBtn = document.getElementById('editProfileBtn');
+
+            if (!isProfileEditMode) {
+                // Store original data
+                originalProfileData = {
+                    gender: document.getElementById('genderDisplay').textContent,
+                    dob: document.getElementById('dobEdit').value,
+                    phone: document.getElementById('phoneEdit').value,
+                    email: document.getElementById('emailEdit').value,
+                    location: document.getElementById('locationEdit').value,
+                    linkedin: document.getElementById('linkedinEdit').value,
+                    address: document.getElementById('addressEdit').value,
+                    city: document.getElementById('cityEdit').value,
+                    state: document.getElementById('stateEdit').value,
+                    pinCode: document.getElementById('pinCodeEdit').value,
+                    country: document.getElementById('countryEdit').value
+                };
+
+                // Enter edit mode
+                container.classList.add('profile-edit-mode');
+                editBtn.innerHTML = '<i class="fas fa-times me-1"></i> Cancel';
+                isProfileEditMode = true;
+            } else {
+                // Cancel edit mode
+                cancelProfileEdit();
+            }
+        }
+
+        function cancelProfileEdit() {
+            const container = document.getElementById('profileDetailsContainer');
+            const editBtn = document.getElementById('editProfileBtn');
+
+            // Restore original values
+            document.getElementById('genderEdit').value = originalProfileData.gender;
+            document.getElementById('dobEdit').value = originalProfileData.dob;
+            document.getElementById('phoneEdit').value = originalProfileData.phone;
+            document.getElementById('emailEdit').value = originalProfileData.email;
+            document.getElementById('locationEdit').value = originalProfileData.location;
+            document.getElementById('linkedinEdit').value = originalProfileData.linkedin;
+            document.getElementById('addressEdit').value = originalProfileData.address;
+            document.getElementById('cityEdit').value = originalProfileData.city;
+            document.getElementById('stateEdit').value = originalProfileData.state;
+            document.getElementById('pinCodeEdit').value = originalProfileData.pinCode;
+            document.getElementById('countryEdit').value = originalProfileData.country;
+
+            // Exit edit mode
+            container.classList.remove('profile-edit-mode');
+            editBtn.innerHTML = '<i class="fas fa-edit me-1"></i> Edit Profile';
+            isProfileEditMode = false;
+        }
+
+        function saveProfileChanges() {
+            const saveBtn = document.querySelector('.btn-save-profile');
+            saveBtn.disabled = true;
+            saveBtn.classList.add('btn-loading');
+
+            const profileData = {
+                userId: alumniId,
+                gender: document.getElementById('genderEdit').value,
+                dob: document.getElementById('dobEdit').value,
+                phone: document.getElementById('phoneEdit').value,
+                email: document.getElementById('emailEdit').value,
+                currentLocation: document.getElementById('locationEdit').value,
+                linkedin: document.getElementById('linkedinEdit').value,
+                address: {
+                    address: document.getElementById('addressEdit').value,
+                    city: document.getElementById('cityEdit').value,
+                    state: document.getElementById('stateEdit').value,
+                    pinCode: document.getElementById('pinCodeEdit').value,
+                    country: document.getElementById('countryEdit').value
+                }
+            };
+
+            // Validate required fields
+            if (!profileData.phone || !profileData.email) {
+                showToast('Phone and Email are required fields', 'error');
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-loading');
+                return;
+            }
+
+            // Validate address required fields
+            if (!profileData.address.address || !profileData.address.city || !profileData.address.state || !profileData.address.pinCode || !profileData.address.country) {
+                showToast('All address fields are required', 'error');
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-loading');
+                return;
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(profileData.email)) {
+                showToast('Please enter a valid email address', 'error');
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-loading');
+                return;
+            }
+
+            // Validate phone format (basic validation)
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(profileData.phone)) {
+                showToast('Please enter a valid 10-digit phone number', 'error');
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-loading');
+                return;
+            }
+
+            // Validate pin code format
+            const pinCodeRegex = /^[0-9]{6}$/;
+            if (!pinCodeRegex.test(profileData.address.pinCode)) {
+                showToast('Please enter a valid 6-digit pin code', 'error');
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-loading');
+                return;
+            }
+
+            // Call API to update profile
+            fetch('/v1/api/alumni/updateProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(profileData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update profile');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showToast('Profile updated successfully!', 'success');
+                
+                // Update display values
+                document.getElementById('genderDisplay').textContent = profileData.gender;
+                document.getElementById('dobDisplay').textContent = profileData.dob;
+                document.getElementById('phoneDisplay').textContent = '+91 ' + profileData.phone;
+                document.getElementById('emailDisplay').textContent = profileData.email;
+                document.getElementById('locationDisplay').textContent = profileData.currentLocation;
+                
+                // Update LinkedIn display
+                const linkedinDisplay = document.getElementById('linkedinDisplay');
+                if (profileData.linkedin) {
+                    linkedinDisplay.innerHTML = `<a href="${profileData.linkedin}" target="_blank" class="table-link"><i class="fab fa-linkedin"></i> Profile</a>`;
+                } else {
+                    linkedinDisplay.textContent = 'Not provided';
+                }
+
+                // Update address display
+                const addressDisplay = document.getElementById('addressDisplay');
+                addressDisplay.textContent = `${profileData.address.address}, ${profileData.address.city}, ${profileData.address.state}, ${profileData.address.pinCode}, ${profileData.address.country}`;
+
+                // Exit edit mode
+                const container = document.getElementById('profileDetailsContainer');
+                const editBtn = document.getElementById('editProfileBtn');
+                container.classList.remove('profile-edit-mode');
+                editBtn.innerHTML = '<i class="fas fa-edit me-1"></i> Edit Profile';
+                isProfileEditMode = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Failed to update profile. Please try again.', 'error');
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-loading');
+            });
+        }
+
         function openLogoutModal() {
             document.getElementById('logoutModal').classList.add('active');
         }
-        
+
         function closeLogoutModal() {
             document.getElementById('logoutModal').classList.remove('active');
         }
-        
+
         function confirmLogout() {
             window.location.href = '/v1/api/slogout';
         }
 
-        function addressUpdate() {
-            window.location.href = '/v1/api/alumniAddressUpdate/{{alumni._id}}';
-        }
-
-        function hideUpdateButton() {
-            var updateButtonRow = document.getElementById("hideButton");
-            var hideTd = document.getElementById("hideTd");
-            if ({{ alumni.addressUpdate }}) {
-                updateButtonRow.style.display = "none";
-            } else {
-                hideTd.style.display = "none";
-            }
-        }
-        
         // Education functions
         function openEducationModal() {
             document.getElementById('educationModal').classList.add('active');
             document.getElementById('educationForm').reset();
             document.getElementById('startYear').value = new Date().getFullYear() - 4;
             document.getElementById('endYear').value = new Date().getFullYear();
-            
+
             document.querySelector('#educationModal .custom-modal-header h2').textContent = 'Add Education';
-            
+
             const saveBtn = document.getElementById('saveEducationBtn');
             saveBtn.textContent = 'Save';
             saveBtn.onclick = saveEducation;
-            
+
             currentEducationId = null;
         }
-        
+
         function closeEducationModal() {
             document.getElementById('educationModal').classList.remove('active');
         }
-        
+
         function saveEducation() {
             const form = document.getElementById('educationForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
-            
+
             const saveBtn = document.getElementById('saveEducationBtn');
             saveBtn.disabled = true;
             saveBtn.classList.add('btn-loading');
-            
+
             const formData = new FormData(form);
-            
+
             const educationData = {
                 degree: formData.get('degree'),
                 institution: formData.get('institution'),
@@ -1911,7 +2194,7 @@
                 isEdit: !!currentEducationId,
                 educationId: currentEducationId
             };
-            
+
             fetch(`/v1/api/student/save/education`, {
                 method: 'POST',
                 headers: {
@@ -1941,7 +2224,7 @@
                 saveBtn.classList.remove('btn-loading');
             });
         }
-        
+
         function editEducation(id) {
             fetch(`/v1/api/student/get/education/${id}`)
             .then(response => {
@@ -1952,7 +2235,7 @@
             })
             .then(data => {
                 openEducationModal();
-                
+
                 const education = data.education;
                 document.getElementById('degree').value = education.degree;
                 document.getElementById('institution').value = education.institution;
@@ -1960,12 +2243,12 @@
                 document.getElementById('startYear').value = education.startYear;
                 document.getElementById('endYear').value = education.endYear;
                 document.getElementById('educationDescription').value = education.description || '';
-                
+
                 document.querySelector('#educationModal .custom-modal-header h2').textContent = 'Edit Education';
-                
+
                 const saveBtn = document.getElementById('saveEducationBtn');
                 saveBtn.textContent = 'Update';
-                
+
                 currentEducationId = id;
             })
             .catch(error => {
@@ -1973,20 +2256,20 @@
                 showToast('Failed to load education data. Please try again.', 'error');
             });
         }
-        
+
         function deleteEducation(id) {
             openDeleteConfirmModal('education', id);
         }
-        
+
         function toggleEditEducation() {
             const container = document.getElementById('educationContainer');
             container.classList.toggle('editing-active');
-            
+
             const controls = container.querySelectorAll('.edit-delete-controls');
             controls.forEach(control => {
                 control.classList.toggle('active');
             });
-            
+
             const editBtn = document.getElementById('editEducationBtn');
             if (container.classList.contains('editing-active')) {
                 editBtn.innerHTML = '<i class="fas fa-times me-1"></i> Cancel';
@@ -1994,7 +2277,7 @@
                 editBtn.innerHTML = '<i class="fas fa-edit me-1"></i> Edit';
             }
         }
-        
+
         // Experience functions
         function openExperienceModal() {
             document.getElementById('experienceModal').classList.add('active');
@@ -2002,19 +2285,19 @@
             experienceTags = [];
             updateExperienceTagsInput();
         }
-        
+
         function closeExperienceModal() {
             document.getElementById('experienceModal').classList.remove('active');
         }
-        
+
         function updateExperienceTagsInput() {
             const container = document.getElementById('skillsInputContainer');
             const tagsElements = container.querySelectorAll('.tag-item');
-            
+
             tagsElements.forEach(tag => {
                 container.removeChild(tag);
             });
-            
+
             experienceTags.forEach(tag => {
                 const tagElement = document.createElement('div');
                 tagElement.classList.add('tag-item');
@@ -2024,33 +2307,33 @@
                 `;
                 container.insertBefore(tagElement, document.getElementById('skillsInput'));
             });
-            
+
             document.getElementById('skillsHidden').value = JSON.stringify(experienceTags);
         }
-        
+
         function removeExperienceTag(tag) {
             experienceTags = experienceTags.filter(t => t !== tag);
             updateExperienceTagsInput();
         }
-        
+
         function saveExperience() {
             const form = document.getElementById('experienceForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
-            
+
             const saveBtn = document.getElementById('saveExperienceBtn');
             saveBtn.disabled = true;
             saveBtn.classList.add('btn-loading');
-            
+
             const formData = new FormData(form);
             const currentlyWorking = formData.get('currentlyWorking') === 'on';
-            
+
             if (currentlyWorking) {
                 formData.delete('endDate');
             }
-            
+
             const experienceData = {
                 title: formData.get('title'),
                 company: formData.get('company'),
@@ -2062,7 +2345,7 @@
                 skills: experienceTags,
                 userId: alumniId
             };
-            
+
             fetch(`/v1/api/student/save/experience`, {
                 method: 'POST',
                 headers: {
@@ -2091,52 +2374,52 @@
                 saveBtn.classList.remove('btn-loading');
             });
         }
-        
+
         function openSkillsModal() {
             document.getElementById('skillsModal').classList.add('active');
             document.getElementById('skillsForm').reset();
-            
+
             skillsTags = [];
             updateSkillsTagsInput();
-            
+
             document.querySelector('#skillsModal .custom-modal-header h2').textContent = 'Add Skills';
-            
+
             const saveBtn = document.getElementById('saveSkillsBtn');
             saveBtn.textContent = 'Save';
             saveBtn.onclick = saveSkills;
         }
-        
+
         function editAllSkills() {
             document.getElementById('skillsModal').classList.add('active');
             document.getElementById('skillsForm').reset();
-            
+
             skillsTags = [];
             const skillElements = document.querySelectorAll('#skillsContainer .skill-badge');
             skillElements.forEach(element => {
                 skillsTags.push(element.textContent);
             });
-            
+
             updateSkillsTagsInput();
-            
+
             document.querySelector('#skillsModal .custom-modal-header h2').textContent = 'Edit Skills';
-            
+
             const saveBtn = document.getElementById('saveSkillsBtn');
             saveBtn.textContent = 'Save Changes';
             saveBtn.onclick = saveSkills;
         }
-        
+
         function closeSkillsModal() {
             document.getElementById('skillsModal').classList.remove('active');
         }
-        
+
         function updateSkillsTagsInput() {
             const container = document.getElementById('skillsModalContainer');
             const tagsElements = container.querySelectorAll('.tag-item');
-            
+
             tagsElements.forEach(tag => {
                 container.removeChild(tag);
             });
-            
+
             skillsTags.forEach(tag => {
                 const tagElement = document.createElement('div');
                 tagElement.classList.add('tag-item');
@@ -2146,36 +2429,36 @@
                 `;
                 container.insertBefore(tagElement, document.getElementById('skillsModalInput'));
             });
-            
+
             document.getElementById('skillsModalHidden').value = JSON.stringify(skillsTags);
         }
-        
+
         function removeSkillTag(tag) {
             skillsTags = skillsTags.filter(t => t !== tag);
             updateSkillsTagsInput();
         }
-        
+
         function saveSkills() {
             if (skillsTags.length === 0) {
                 showToast('Please add at least one skill', 'warning');
                 return;
             }
-            
+
             const saveBtn = document.getElementById('saveSkillsBtn');
             saveBtn.disabled = true;
             saveBtn.classList.add('btn-loading');
-            
+
             const isEdit = document.querySelector('#skillsModal .custom-modal-header h2').textContent === 'Edit Skills';
             const isNew = document.querySelector('#skillsModal .custom-modal-header h2').textContent === 'Add Skills';
-            
+
             fetch(`/v1/api/student/save/skills`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ 
-                    skills: skillsTags, 
-                    userId: alumniId,
+                body: JSON.stringify({
+                     skills: skillsTags,
+                     userId: alumniId,
                     replaceAll: true,
                     isEdit: isEdit,
                     isNew: isNew
@@ -2203,39 +2486,38 @@
                 saveBtn.classList.remove('btn-loading');
             });
         }
-        
-        
+
         function openAchievementModal() {
             document.getElementById('achievementModal').classList.add('active');
             document.getElementById('achievementForm').reset();
-            
+
             document.getElementById('achievementYear').value = new Date().getFullYear();
         }
-        
+
         function closeAchievementModal() {
             document.getElementById('achievementModal').classList.remove('active');
         }
-        
+
         function saveAchievement() {
             const form = document.getElementById('achievementForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
-            
+
             const saveBtn = document.getElementById('saveAchievementBtn');
             saveBtn.disabled = true;
             saveBtn.classList.add('btn-loading');
-            
+
             const formData = new FormData(form);
-            
+
             const achievementData = {
                 title: formData.get('title'),
                 year: formData.get('year'),
                 description: formData.get('description'),
                 userId: alumniId
             };
-            
+
             fetch(`/v1/api/student/save/achievement`, {
                 method: 'POST',
                 headers: {
@@ -2276,7 +2558,7 @@
                 this.value = '';
             }
         });
-        
+
         document.getElementById('skillsModalInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && this.value.trim() !== '') {
                 e.preventDefault();
@@ -2288,7 +2570,7 @@
                 this.value = '';
             }
         });
-        
+
         document.getElementById('currentlyWorking').addEventListener('change', function() {
             const endDateField = document.getElementById('endDate');
             endDateField.disabled = this.checked;
@@ -2300,12 +2582,12 @@
         function toggleEditAchievements() {
             const container = document.getElementById('achievementsContainer');
             container.classList.toggle('editing-active');
-            
+
             const controls = container.querySelectorAll('.edit-delete-controls');
             controls.forEach(control => {
                 control.classList.toggle('active');
             });
-            
+
             const editBtn = document.getElementById('editAchievementsBtn');
             if (container.classList.contains('editing-active')) {
                 editBtn.innerHTML = '<i class="fas fa-times me-1"></i> Cancel';
@@ -2313,16 +2595,16 @@
                 editBtn.innerHTML = '<i class="fas fa-edit me-1"></i> Edit';
             }
         }
-        
+
         function toggleEditExperience() {
             const container = document.getElementById('experienceContainer');
             container.classList.toggle('editing-active');
-            
+
             const controls = container.querySelectorAll('.edit-delete-controls');
             controls.forEach(control => {
                 control.classList.toggle('active');
             });
-            
+
             const editBtn = document.getElementById('editExperienceBtn');
             if (container.classList.contains('editing-active')) {
                 editBtn.innerHTML = '<i class="fas fa-times me-1"></i> Cancel';
@@ -2330,33 +2612,33 @@
                 editBtn.innerHTML = '<i class="fas fa-edit me-1"></i> Edit';
             }
         }
-        
+
         function editAchievement(id, title, year, description) {
             document.getElementById('achievementModal').classList.add('active');
             document.getElementById('achievementTitle').value = title;
             document.getElementById('achievementYear').value = year;
             document.getElementById('achievementDescription').value = description || '';
-            
+
             const saveBtn = document.getElementById('saveAchievementBtn');
             saveBtn.textContent = 'Update';
             saveBtn.onclick = function() {
                 updateAchievement(id);
             };
         }
-        
+
         function updateAchievement(id) {
             const form = document.getElementById('achievementForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
-            
+
             const saveBtn = document.getElementById('saveAchievementBtn');
             saveBtn.disabled = true;
             saveBtn.classList.add('btn-loading');
-            
+
             const formData = new FormData(form);
-            
+
             const achievementData = {
                 title: formData.get('title'),
                 year: formData.get('year'),
@@ -2365,7 +2647,7 @@
                 isEdit: true,
                 achievementId: id
             };
-            
+
             fetch(`/v1/api/student/save/achievement`, {
                 method: 'POST',
                 headers: {
@@ -2394,11 +2676,11 @@
                 saveBtn.classList.remove('btn-loading');
             });
         }
-        
+
         function deleteAchievement(id) {
             openDeleteConfirmModal('achievement', id);
         }
-        
+
         function editExperience(id) {
             fetch(`/v1/api/student/get/experience/${id}`)
             .then(response => {
@@ -2409,25 +2691,25 @@
             })
             .then(data => {
                 openExperienceModal();
-                
+
                 const experience = data.experience;
                 document.getElementById('title').value = experience.title;
                 document.getElementById('company').value = experience.company;
                 document.getElementById('location').value = experience.location;
                 document.getElementById('startDate').value = experience.startDate;
-                
+
                 if (experience.currentlyWorking) {
                     document.getElementById('currentlyWorking').checked = true;
                     document.getElementById('endDate').disabled = true;
                 } else {
                     document.getElementById('endDate').value = experience.endDate;
                 }
-                
+
                 document.getElementById('description').value = experience.description || '';
-                
+
                 experienceTags = experience.skills || [];
                 updateExperienceTagsInput();
-                
+
                 const saveBtn = document.getElementById('saveExperienceBtn');
                 saveBtn.textContent = 'Update';
                 saveBtn.onclick = function() {
@@ -2439,25 +2721,25 @@
                 showToast('Failed to load experience data. Please try again.', 'error');
             });
         }
-        
+
         function updateExperience(id) {
             const form = document.getElementById('experienceForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
-            
+
             const saveBtn = document.getElementById('saveExperienceBtn');
             saveBtn.disabled = true;
             saveBtn.classList.add('btn-loading');
-            
+
             const formData = new FormData(form);
             const currentlyWorking = formData.get('currentlyWorking') === 'on';
-            
+
             if (currentlyWorking) {
                 formData.delete('endDate');
             }
-            
+
             const experienceData = {
                 title: formData.get('title'),
                 company: formData.get('company'),
@@ -2471,7 +2753,7 @@
                 isEdit: true,
                 experienceId: id
             };
-            
+
             fetch(`/v1/api/student/save/experience`, {
                 method: 'POST',
                 headers: {
@@ -2500,24 +2782,24 @@
                 saveBtn.classList.remove('btn-loading');
             });
         }
-        
+
         function deleteExperience(id) {
             openDeleteConfirmModal('experience', id);
         }
-        
+
         let itemToDeleteId = null;
         let itemTypeToDelete = null;
 
         function openDeleteConfirmModal(type, id) {
             itemToDeleteId = id;
             itemTypeToDelete = type;
-            
+
             const modalTitle = document.querySelector('#deleteConfirmModal .custom-modal-header h2');
             modalTitle.textContent = `Delete ${type.charAt(0).toUpperCase() + type.slice(1)}`;
-            
+
             const confirmBtn = document.getElementById('confirmDeleteBtn');
             confirmBtn.onclick = executeDelete;
-            
+
             document.getElementById('deleteConfirmModal').classList.add('active');
         }
 
@@ -2529,17 +2811,17 @@
 
         function executeDelete() {
             if (!itemToDeleteId || !itemTypeToDelete) return;
-            
+
             const confirmBtn = document.getElementById('confirmDeleteBtn');
             confirmBtn.disabled = true;
             confirmBtn.classList.add('btn-loading');
-            
+
             let endpoint = '/v1/api/student/save/experience';
             let payload = {
                 userId: alumniId,
                 isDelete: true
             };
-            
+
             if (itemTypeToDelete === 'experience') {
                 payload.experienceId = itemToDeleteId;
             } else if (itemTypeToDelete === 'achievement') {
@@ -2552,7 +2834,7 @@
                 endpoint = '/v1/api/student/save/education';
                 payload.educationId = itemToDeleteId;
             }
-            
+
             fetch(endpoint, {
                 method: 'POST',
                 headers: {
@@ -2582,36 +2864,37 @@
                 closeDeleteConfirmModal();
             });
         }
-        
+
         const originalOpenAchievementModal = openAchievementModal;
         openAchievementModal = function() {
             originalOpenAchievementModal();
-            
+
             const saveBtn = document.getElementById('saveAchievementBtn');
             saveBtn.textContent = 'Save';
             saveBtn.onclick = saveAchievement;
         };
-        
+
         const originalOpenSkillsModal = openSkillsModal;
         openSkillsModal = function() {
             originalOpenSkillsModal();
-            
+
             const saveBtn = document.getElementById('saveSkillsBtn');
             saveBtn.textContent = 'Save';
             saveBtn.onclick = saveSkills;
-            
+
             document.querySelector('#skillsModal .custom-modal-header h2').textContent = 'Add Skills';
         };
-        
+
         const originalOpenExperienceModal = openExperienceModal;
         openExperienceModal = function() {
             originalOpenExperienceModal();
-            
+
             const saveBtn = document.getElementById('saveExperienceBtn');
             saveBtn.textContent = 'Save';
             saveBtn.onclick = saveExperience;
         };
 
+        // Notification functionality (keeping your existing code)
         let notifications = [];
         let unreadCount = 0;
         let currentPage = 1;
@@ -2622,7 +2905,7 @@
         function updateNotificationCount() {
             const countElement = document.getElementById('notificationCount');
             countElement.textContent = unreadCount;
-            
+
             if (unreadCount > 0) {
                 countElement.style.display = 'flex';
             } else {
@@ -2632,7 +2915,7 @@
 
         function renderNotifications() {
             const notificationList = document.getElementById('notificationList');
-            
+
             if (notifications.length === 0) {
                 notificationList.innerHTML = `
                     <li class="notification-empty">
@@ -2642,17 +2925,17 @@
                 `;
                 return;
             }
-            
+
             notificationList.innerHTML = '';
-            
+
             notifications.forEach((notification, index) => {
                 const notificationDate = new Date(notification.createdAt);
                 const formattedDate = formatDate(notificationDate);
-                
+
                 const li = document.createElement('li');
                 li.className = `notification-item ${!notification.readStatus ? 'unread' : ''}`;
                 li.onclick = () => markAsRead(notification._id, index);
-                
+
                 li.innerHTML = `
                     <div class="notification-content">
                         <div class="notification-title">${notification.message.title}</div>
@@ -2663,22 +2946,22 @@
                         <span>${formattedDate}</span>
                     </div>
                 `;
-                
+
                 notificationList.appendChild(li);
             });
         }
 
         function fetchNotifications(page = 1) {
             if (isLoading || !hasMoreNotifications) return;
-            
+
             isLoading = true;
-            
+
             if (page === 1) {
                 document.getElementById('notificationList').innerHTML = '<li class="notification-empty"><i class="fas fa-spinner fa-spin"></i><p>Loading notifications...</p></li>';
             } else {
                 document.getElementById('notificationLoader').style.display = 'flex';
             }
-            
+
             try {
                 fetch(`/v1/api/notifications?page=${page}&limit=${notificationsPerPage}&userId={{alumni._id}}`)
                     .then(response => {
@@ -2693,11 +2976,11 @@
                         } else {
                             notifications = [...notifications, ...(data.notifications || [])];
                         }
-                        
+
                         hasMoreNotifications = data.notifications && data.notifications.length === notificationsPerPage;
-                        
+
                         renderNotifications();
-                        
+
                         fetch('/v1/api/getNotificationCount?userId={{alumni._id}}')
                             .then(response => response.json())
                             .then(countData => {
@@ -2707,13 +2990,13 @@
                             .catch(error => {
                                 console.error('Error fetching notification count:', error);
                             });
-                        
-                        document.getElementById('notificationFooter').textContent = hasMoreNotifications 
-                            ? 'Scroll for more notifications' 
-                            : notifications.length > 0 
-                                ? 'All notifications loaded' 
-                                : 'No notifications';
-                        
+
+                        document.getElementById('notificationFooter').textContent = hasMoreNotifications
+                             ? 'Scroll for more notifications'
+                             : notifications.length > 0
+                                 ? 'All notifications loaded'
+                                 : 'No notifications';
+
                         if (page === 1) {
                             setTimeout(() => fetchNewNotifications(), 60000);
                         }
@@ -2752,15 +3035,15 @@
                         })
                         .then(data => {
                             const newNotifications = data.notifications || [];
-                            
+
                             if (newNotifications.length > 0) {
                                 const existingIds = new Set(notifications.map(n => n._id));
                                 const actuallyNew = newNotifications.filter(n => !existingIds.has(n._id));
-                                
+
                                 if (actuallyNew.length > 0) {
                                     notifications = [...actuallyNew, ...notifications];
                                     renderNotifications();
-                                    
+
                                     fetch('/v1/api/getNotificationCount?userId={{alumni._id}}')
                                         .then(response => response.json())
                                         .then(countData => {
@@ -2770,7 +3053,7 @@
                                         .catch(error => {
                                             console.error('Error fetching notification count:', error);
                                         });
-                                    
+
                                     if (actuallyNew.length === 1) {
                                         showToast('You have a new notification', 'success');
                                     } else {
@@ -2794,7 +3077,7 @@
 
         function markAsRead(id, index) {
             if (notifications[index].readStatus) return;
-            
+
             try {
                 fetch(`/v1/api/notifications/${id}/markAsRead`, {
                     method: 'POST',
@@ -2807,7 +3090,7 @@
                     if (response.ok) {
                         notifications[index].readStatus = true;
                         renderNotifications();
-                        
+
                         fetch('/v1/api/getNotificationCount?userId={{alumni._id}}')
                             .then(response => response.json())
                             .then(countData => {
@@ -2838,7 +3121,7 @@
             const diffMins = Math.floor(diffSecs / 60);
             const diffHours = Math.floor(diffMins / 60);
             const diffDays = Math.floor(diffHours / 24);
-            
+
             if (diffSecs < 60) {
                 return 'Just now';
             } else if (diffMins < 60) {
@@ -2848,10 +3131,10 @@
             } else if (diffDays < 7) {
                 return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
             } else {
-                return date.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric',
+                return date.toLocaleDateString('en-US', {
+                     year: 'numeric',
+                     month: 'short',
+                     day: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit'
                 });
@@ -2863,25 +3146,24 @@
             const notificationDropdown = document.getElementById('notificationDropdown');
             const markAllRead = document.getElementById('markAllRead');
             const notificationListContainer = document.getElementById('notificationListContainer');
-            
+
             notificationBell.addEventListener('click', function(e) {
                 e.stopPropagation();
                 notificationDropdown.classList.toggle('show');
             });
-            
+
             document.addEventListener('click', function(e) {
                 if (!notificationContainer.contains(e.target)) {
                     notificationDropdown.classList.remove('show');
                 }
             });
-            
+
             notificationDropdown.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
-            
+
             notificationListContainer.addEventListener('scroll', function () {
                 const { scrollTop, scrollHeight, clientHeight } = notificationListContainer;
-
                 if (scrollTop + clientHeight >= scrollHeight - 20 && hasMoreNotifications && !isLoading) {
                     currentPage++;
                     fetchNotifications(currentPage);
@@ -2897,13 +3179,13 @@
                         },
                         body: JSON.stringify({ userId: '{{alumni._id}}' })
                     });
-                    
+
                     if (response.ok) {
                         notifications.forEach(notification => {
                             notification.readStatus = true;
                         });
                         renderNotifications();
-                        
+
                         fetch('/v1/api/getNotificationCount?userId={{alumni._id}}')
                             .then(response => response.json())
                             .then(countData => {
@@ -2913,7 +3195,7 @@
                             .catch(error => {
                                 console.error('Error fetching notification count:', error);
                             });
-                            
+
                         showToast('All notifications marked as read', 'success');
                     } else {
                         showToast('Failed to mark notifications as read', 'error');
@@ -2940,12 +3222,9 @@
         }, 30000);
 
         window.onload = function() {
-            hideUpdateButton();
-
             const avatarImg = document.getElementById('avatar-img');
             const alumniGender = "{{ alumni.gender }}";
             const alumniImg = "{{ alumni.imageUrl }}";
-
             if (alumniImg) {
                 avatarImg.src = alumniImg;
             } else if (alumniGender === 'Male') {
@@ -2955,7 +3234,7 @@
             } else {
                 avatarImg.src = '';
             }
-            
+
             document.getElementById('closeLogoutModal').addEventListener('click', closeLogoutModal);
             document.getElementById('cancelLogout').addEventListener('click', closeLogoutModal);
         };
